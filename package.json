@@ -11,6 +11,7 @@
     "test": "tsx --test tests/*.test.ts",
     "test:browser": "node scripts/test-browser.mjs",
     "test:portable": "node --import tsx scripts/test-portable.mjs",
+    "test:audio": "node --import tsx scripts/test-audio.mjs",
     "import:story": "python scripts/import_story.py"
   },
   "dependencies": {

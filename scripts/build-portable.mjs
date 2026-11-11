@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // A real single-file game: all illustrations, transparent sprites, fonts,
-// original screenplay, engine and UI are embedded. No server or CDN is needed.
+// original screenplay, mastered score, sound effects, engine and UI are embedded.
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = path.join(root, 'dist');
 let html = await readFile(path.join(dist, 'index.html'), 'utf8');
@@ -14,7 +14,13 @@ for (const name of await readdir(path.join(dist, 'art'))) {
   assetMap[name.slice(0, -5)] = `data:image/webp;base64,${image.toString('base64')}`;
 }
 const source = await readFile(path.join(dist, '原著剧本-V6.txt'));
-const embedded = `<script>globalThis.__HETEROTOPIA_ASSETS__=${JSON.stringify(assetMap)};globalThis.__HETEROTOPIA_SOURCE__="data:text/plain;charset=utf-8;base64,${source.toString('base64')}";</script>`;
+const audioMap = {};
+for (const name of await readdir(path.join(dist, 'audio'))) {
+  if (!name.endsWith('.mp3')) continue;
+  const audio = await readFile(path.join(dist, 'audio', name));
+  audioMap[name] = `data:audio/mpeg;base64,${audio.toString('base64')}`;
+}
+const embedded = `<script>globalThis.__HETEROTOPIA_ASSETS__=${JSON.stringify(assetMap)};globalThis.__HETEROTOPIA_AUDIO__=${JSON.stringify(audioMap)};globalThis.__HETEROTOPIA_SOURCE__="data:text/plain;charset=utf-8;base64,${source.toString('base64')}";</script>`;
 const cssMatch = html.match(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/);
 if (!cssMatch) throw new Error('Built CSS link was not found');
 let css = await readFile(path.join(dist, cssMatch[1]), 'utf8');
@@ -45,3 +51,4 @@ await writeFile(destination, html, 'utf8');
 await writeFile(path.join(root, '字体授权-OFL.txt'), license, 'utf8');
 console.log(`Portable game: ${destination}`);
 console.log(`${Object.keys(assetMap).length} image assets embedded; ${(await stat(destination)).size / 1024 / 1024 >> 0} MB. No network or server required.`);
+console.log(`${Object.keys(audioMap).length} music, ambience and effect files embedded.`);

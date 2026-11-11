@@ -81,6 +81,31 @@ try {
   assert.deepEqual(integrity.broken, []);
   assert.equal(integrity.fonts.length, 2);
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
+  const expectedAudio = JSON.parse(await readFile(new URL('../public/audio/manifest.json', import.meta.url), 'utf8')).files;
+  const audioIntegrity = await page.evaluate(async expectedFiles => {
+    const assets = globalThis.__HETEROTOPIA_AUDIO__ ?? {};
+    const missing = expectedFiles.filter(item => !assets[item.file]?.startsWith('data:audio/mpeg;base64,')).map(item => item.file);
+    const context = new AudioContext();
+    const broken = [], decoded = [];
+    try {
+      for (const item of expectedFiles) {
+        try {
+          const data = await (await fetch(assets[item.file])).arrayBuffer();
+          const buffer = await context.decodeAudioData(data);
+          if (Math.abs(buffer.duration - item.seconds) > .1 || buffer.numberOfChannels !== 2) throw new Error('Duration or channels');
+          const channel = buffer.getChannelData(0);
+          let energy = 0;
+          for (let i = 0; i < channel.length; i += 97) energy += channel[i] * channel[i];
+          if (!(energy > 0)) throw new Error('Silent or non-finite samples');
+          decoded.push(item.file);
+        } catch { broken.push(item.file); }
+      }
+    } finally { await context.close(); }
+    return { missingAudio: missing, brokenAudio: broken, audioAssets: decoded.length };
+  }, expectedAudio);
+  assert.deepEqual(audioIntegrity.missingAudio, []);
+  assert.deepEqual(audioIntegrity.brokenAudio, []);
+  assert.equal(audioIntegrity.audioAssets, 51);
   await page.getByRole('button', { name: '启程 BEGIN THE JOURNEY' }).click();
   if (await page.getByTestId('chapter-intro').count()) await page.getByTestId('chapter-intro').click();
   await page.getByTestId('dialogue-text').waitFor();
@@ -147,8 +172,8 @@ try {
   await endingPage.getByRole('button', { name: '循光归来' }).click();
   assert.equal(await endingPage.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).sceneId), '终-1');
   assert.deepEqual(errors, []);
-  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, errors }, null, 2));
-  console.log('Offline checks passed: embedded art and fonts, saves and reload, export/import, corrected portraits, mobile choices, ending and final return. No network requests.');
+  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...audioIntegrity, errors }, null, 2));
+  console.log('Offline checks passed: embedded art, fonts and all 51 decoded audio files; saves and reload, export/import, corrected portraits, mobile choices, ending and final return. No network requests.');
 } catch (error) {
   await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), errors, failure: String(error) }, null, 2));
   if (errors.length) console.error(errors);

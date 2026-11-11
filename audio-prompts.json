@@ -1,0 +1,384 @@
+{
+  "generator": "Local ComfyUI / ACE-Step 1.5 Turbo, 1.7B planner",
+  "note": "Original instrumental score; each track uses the quality preset, eight steps, batch size one. Lossless masters stay in ignored artifacts/audio-masters; web files are looped and loudness-normalized. Sound effects and environmental layers are original project sound design.",
+  "tracks": [
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "river-home",
+      "title": "循水归来",
+      "subtitle": "月下的小舟，未尽的归途",
+      "bpm": 68,
+      "keyscale": "D minor",
+      "caption": "Original instrumental cinematic chamber-folk soundtrack for a Chinese literary visual novel. A lone small boat crossing a moonlit river, ancient mountains in mist, homesickness held with tenderness. An intimate guqin plays a very sparse five-note pentatonic motif, answered by a breathy xiao bamboo flute. Warm low cello, soft felt piano, distant sheng air and tiny bronze chime overtones. D minor with open fifths and occasional hopeful suspended harmony. Slow 68 BPM, spacious 4/4, restrained dynamics, delicate human phrasing, wide but natural stereo, warm detailed acoustic recording, long quiet spaces for reading dialogue. Begin gently, develop a small answering phrase, settle into an understated unresolved tail suitable for a game loop. No vocals, no choir, no spoken words, no pop beat, no electronic lead, no trailer climax.",
+      "prompt_id": "fedabd54-5cb8-475f-af1e-c22a40801fbc",
+      "seed": 6111101
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "paper-note",
+      "title": "那张未谈完的便签",
+      "subtitle": "教室、放学路，与欲言又止",
+      "bpm": 84,
+      "keyscale": "G major",
+      "caption": "Instrumental soundtrack for an intimate coming-of-age visual novel, ordinary school days in a riverside Chinese town. Warm felt piano, a quietly fingerpicked nylon guitar, soft acoustic bass and a tiny celesta response. A short hesitant melody leaves one beat empty, playful at first and quietly wistful underneath. Gentle 84 BPM, light 4/4, natural room tone, delicate brush taps very far back, no prominent drum groove. Small ensemble, tender and human, open space for reading, moderate dynamics, no sentimental orchestral swell. Introduce the melody softly and return to a calm repeating figure. No vocals, no choir, no speech, no pop song, no electronic dance instruments.",
+      "seed": 6111102,
+      "prompt_id": "85bc8d4f-d535-4963-8373-1c02589bca78"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "hearth",
+      "title": "灶火未凉",
+      "subtitle": "旧衣、热粥，与等你的人",
+      "bpm": 64,
+      "keyscale": "D major",
+      "caption": "Original instrumental Chinese acoustic chamber score, a humble clay-walled home beside a slow river, a grandmother tending the hearth. Mellow low guqin plucks, warm wooden xun and very soft cello, occasional low sheng breath. D major pentatonic, gentle 64 BPM, unhurried 4/4, a simple reassuring answering melody, hand-played and imperfectly tender. Intimate dry acoustic sound with a little natural room reverberation, little treble, almost no percussion, restrained bass, peaceful rather than cute. Long pauses, small variations, seamless background atmosphere for quiet dialogue. No vocals, no choir, no speech, no modern beat, no dramatic climax.",
+      "seed": 6111103,
+      "prompt_id": "90db40ae-949d-4022-901e-d6f36873ca7f"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "river-journey",
+      "title": "把船撑向远方",
+      "subtitle": "河风把六个名字送向群山",
+      "bpm": 76,
+      "keyscale": "G major",
+      "caption": "Instrumental cinematic Chinese chamber-folk journey music. Children leave a riverbank at dawn in a wooden boat and discover a vast quiet world together. A clear but soft dizi bamboo flute answers lightly picked pipa and guqin, warm cello pizzicato, small wooden percussion like a slow oar, a little breathy sheng. G major pentatonic, 76 BPM in flowing 4/4, gentle forward motion, curiosity, companionship and a thread of homesickness. Airy natural acoustics, understated melody, lots of space for dialogue. No heroic trailer drums, no glossy pop production, no vocals, no choir, no words. End with a calm open phrase.",
+      "seed": 6111104,
+      "prompt_id": "71fff537-b524-4429-a9db-0e4b3f9720d3"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "old-jade",
+      "title": "旧玉与故人",
+      "subtitle": "名字藏在旧箱与十根竹简里",
+      "bpm": 64,
+      "keyscale": "D minor",
+      "caption": "Original instrumental historical Chinese mystery score for a restrained literary visual novel. Ancient Chu palace corridors, an old jade fragment, names engraved on bamboo slips. Dark intimate guqin in its low register, a single warm bowed cello, slow sheng reed chords and very sparse bronze bianzhong overtones. D minor pentatonic, 64 BPM, spacious 4/4, quiet dignity, memory and moral uncertainty. A small three-note question is answered incompletely, elegant and human, not evil or bombastic. Soft distant room reverb, long silences between notes, controlled dynamics, no busy percussion, no vocals, no choir, no speech, no modern synth lead.",
+      "seed": 6111105,
+      "prompt_id": "7923a661-74f4-4e24-86ea-168ae8e5435f"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "ritual",
+      "title": "高台千灯",
+      "subtitle": "铜铃与祭鼓之间，仍活着的人",
+      "bpm": 84,
+      "keyscale": "D minor",
+      "caption": "Instrumental ancient Chu ceremonial dramatic score, tense but controlled and suitable underneath reading. Deep hand-played ritual frame drums with lots of air between strokes, resonant bronze bianzhong chimes, low sheng reeds, bowed low strings and a thin guqin answering figure. 84 BPM in 4/4, D minor with open fifths. Processional, solemn, gathering pressure without becoming an action trailer. No constant pounding, no military march, no explosive hits, no rock drums, no modern electronic bass, no vocals or chanting or choir. Distant wooden hall acoustics, warm bronze resonance, carefully restrained loudness, an unresolved quiet tail.",
+      "seed": 6111106,
+      "prompt_id": "0a7730e0-c237-4045-bc17-fada056e2c38"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "under-current",
+      "title": "水下有人唤名",
+      "subtitle": "看不见的河，听得见的回声",
+      "bpm": 60,
+      "keyscale": "C minor",
+      "caption": "Instrumental dark cinematic ambient soundscape for a literary supernatural visual novel. An ancient marsh under still black water, distant memory and hidden bronze faces. Soft bowed bronze resonance, low prepared-piano harmonics, extremely sparse guqin scratches, breathy unpitched air and a restrained cello drone. C minor, very slow 60 BPM, almost no perceptible beat. Suspense through negative space and small changes, mysterious rather than aggressive. No jump scares, no sudden loud impacts, no screaming, no human voice, no vocals, no choir, no drums or pop groove. Natural dark acoustic textures, deep spacious distance, soft edges, consistent quiet dynamics.",
+      "seed": 6111107,
+      "prompt_id": "1545f81a-ea95-43d2-938a-b626981f9002"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "small-goodbyes",
+      "title": "药檐下的雪",
+      "subtitle": "冷了就说，疼也说",
+      "bpm": 56,
+      "keyscale": "D minor",
+      "caption": "Original instrumental elegy for a very quiet Chinese narrative game, a small farewell handled with dignity and tenderness. One soft xiao bamboo flute, sparse guqin harmonics, a close warm cello and only a few muted felt-piano notes. D minor pentatonic, 56 BPM, 4/4, long genuine silences, fragile breathing phrases, restrained grief with no melodramatic swell. Small human gestures, unfinished words, warmth surviving in winter. Very light natural reverb, delicate detail, smooth quiet dynamics. Do not build to a climax, no percussion, no singing, no wordless choir, no spoken voice, no electronic lead.",
+      "seed": 6111108,
+      "prompt_id": "52ea379e-f75c-48d9-b44f-0499dbf66a57"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "last-flute",
+      "title": "未说完的一声笛",
+      "subtitle": "风雪里，谁也没有松手",
+      "bpm": 60,
+      "keyscale": "A minor",
+      "caption": "Pure instrumental winter chamber ambient score, a damaged bamboo flute still trying to finish one gentle phrase beside a very small fire. Solo low breathy xiao with audible air in its tone, a softly bowed cello harmonic, almost silent guqin single notes, very thin distant sheng breath. A minor pentatonic, 60 BPM in very loose 4/4, extremely spacious, nearly motionless, intimate and tender. The flute repeats a short incomplete phrase with slight variations and rests, never a virtuoso solo. Natural acoustic recording, no sharp treble, no dramatic crescendo, no percussion, no vocals, no choir, no human speech.",
+      "seed": 6111109,
+      "prompt_id": "dc46d85e-6f21-4eff-980c-4a6f430224a0"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "river-of-names",
+      "title": "光河上的名字",
+      "subtitle": "记住一个名字，也记住一个人",
+      "bpm": 68,
+      "keyscale": "D major",
+      "caption": "Original instrumental luminous Chinese cinematic chamber score for the final river of a literary visual novel. The remembered children stand together by a river of light; grief opens gently into acceptance. A simple five-note pentatonic guqin motif answered by a warm clear xiao, broad but very quiet cello and viola, a few felt-piano notes and distant bronze chime harmonics. D major pentatonic, 68 BPM, flowing 4/4. Tender, spacious, humane, quietly cathartic without triumph or bombast. The harmony resolves patiently, dynamic growth stays small, beautiful natural stereo room acoustics. No vocals, no choir, no speech, no drums, no trailer climax, no glossy pop sound.",
+      "seed": 6111110,
+      "prompt_id": "d3fdd73e-eec9-4b3c-83e1-d8f43c3ec980"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "en",
+      "id": "light-in-kitchen",
+      "title": "灯下有人等",
+      "subtitle": "故事写到这里，日子还在继续",
+      "bpm": 72,
+      "keyscale": "G major",
+      "caption": "Instrumental end-credit chamber folk music for a Chinese coming-of-age visual novel, back home in an ordinary warm kitchen after an impossible journey. Intimate felt piano and fingerpicked nylon-string guitar, warm lyrical cello, a faint xiao bamboo-flute reply carrying the memory of the ancient world. G major pentatonic, 72 BPM, 4/4, a gently resolved small melody, honest and hopeful with a trace of bittersweetness. Soft natural room sound, warm detail, lots of air, no busy drums, no sentimental big orchestral build. Quiet ending and continuing everyday life. No vocals, no choir, no spoken words, no electronic beat.",
+      "seed": 6111111,
+      "prompt_id": "9247cb04-4db1-46a6-a604-bde6ecfbf300"
+    }
+  ],
+  "effects": [
+    {
+      "id": "amb-river",
+      "title": "河水与微澜",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-rain",
+      "title": "檐上夜雨",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-hearth",
+      "title": "灶火未熄",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-wind",
+      "title": "山风穿林",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-winter",
+      "title": "风雪渐细",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-room",
+      "title": "教室电扇",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-night",
+      "title": "竹林夜虫",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-street",
+      "title": "小城远街",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-marsh",
+      "title": "泽中暗水",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-underwater",
+      "title": "水下深处",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-cave",
+      "title": "旧洞滴水",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "amb-palace",
+      "title": "长廊空响",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-page",
+      "title": "纸页轻翻",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-choice",
+      "title": "木与玉",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-bookmark",
+      "title": "一枚书签",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-bronze",
+      "title": "铜铃一声",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-triple-bell",
+      "title": "铜铃三响",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-ritual-drum",
+      "title": "祭鼓渐近",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-hull",
+      "title": "船底三叩",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-alarm",
+      "title": "清晨闹钟",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-school-bell",
+      "title": "放学铃",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-door",
+      "title": "两下叩门",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-wood-latch",
+      "title": "门闩轻落",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-bamboo",
+      "title": "竹简与旧木",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-cloth",
+      "title": "衣料轻擦",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-ceramic",
+      "title": "陶碗轻碰",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-splash",
+      "title": "破水",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-oar",
+      "title": "船橹入水",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-drop",
+      "title": "水滴入深处",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-electric",
+      "title": "灯管与电流",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-chair",
+      "title": "椅脚掠地",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-steps",
+      "title": "远近脚步",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-stone",
+      "title": "石门缓移",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-string-snap",
+      "title": "绷弦轻裂",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-ball",
+      "title": "篮球弹地",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-bike-bell",
+      "title": "归路车铃",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-flute",
+      "title": "断笛未尽",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-crow",
+      "title": "远鸦",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-pottery",
+      "title": "陶缸里的轻叩",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-heartbeat",
+      "title": "近处心跳",
+      "source": "Original deterministic procedural sound design"
+    }
+  ]
+}

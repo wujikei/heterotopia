@@ -15,6 +15,7 @@ const context = await browser.newContext({ viewport: { width: 1440, height: 900 
 const page = await context.newPage();
 page.on('pageerror', error => errors.push(error.message));
 page.on('response', response => { if (response.status() >= 400 && !response.url().includes('favicon.ico')) errors.push(`${response.status()} ${response.url()}`); });
+try {
 await page.goto(base);
 await page.evaluate(() => document.fonts.ready);
 await page.waitForTimeout(1900);
@@ -72,6 +73,11 @@ for (const [name, width, height] of [['tablet', 820, 1180], ['landscape', 844, 3
   });
   if (layout.overflow || layout.top < 0 || layout.bottom > layout.height + 1) errors.push(`${name} layout: ${JSON.stringify(layout)}`);
   await page.screenshot({ path: screenshotPath(`08-story-${name}.png`), fullPage: true });
+}
+} catch (error) {
+  await page.screenshot({ path: screenshotPath('failure.png'), fullPage: true });
+  await writeFile(new URL('browser-failure.json', folder), JSON.stringify({ errors, failure: String(error), dialogs: await page.getByRole('dialog').allTextContents(), body: (await page.locator('body').innerText()).slice(0, 6000) }, null, 2));
+  await context.close(); await browser.close(); throw error;
 }
 await context.close();
 await browser.close();

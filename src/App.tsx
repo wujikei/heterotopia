@@ -4,13 +4,15 @@ import type { CSSProperties, ReactNode } from 'react';
 import { sound } from './audio';
 import { Atmosphere, BoatMark, BoneMark, SceneArt } from './components/Atmosphere';
 import { Modal } from './components/Modal';
+import { MusicRoom } from './components/MusicRoom';
 import { AboutView, ChaptersView, CharactersView, GalleryView, JournalView, SaveView, SettingsView } from './components/Library';
 import { asset, BACKGROUNDS, characterFor, ENDINGS, portraitAsset } from './data/world';
 import { advance, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES, sceneById } from './engine';
 import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist, validState } from './storage';
+import { scoreFrame } from './score';
 import type { GameState, Profile, SaveSlot, Settings } from './types';
 
-type ModalName = 'chapters' | 'characters' | 'gallery' | 'journal' | 'settings' | 'saves' | 'history' | 'menu' | 'about';
+type ModalName = 'chapters' | 'characters' | 'gallery' | 'journal' | 'settings' | 'saves' | 'history' | 'menu' | 'about' | 'music';
 type Intro = { chapter: string; title: string; subtitle: string };
 
 const ROUTE_NAMES = { prologue: '序章', common: '共通线', royal: '王裔线', kunlun: '昆仑线', return: '归来' };
@@ -64,6 +66,7 @@ export default function App() {
   const [toastKey, setToastKey] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
   const previousScene = useRef('');
+  const audioJump = useRef(false);
   const historyEnd = useRef<HTMLDivElement>(null);
   const toastTimer = useRef<number>(0);
   const currentProfile = useRef(profile); currentProfile.current = profile;
@@ -86,7 +89,14 @@ export default function App() {
     document.documentElement.classList.toggle('reduced-motion', settings.reducedMotion);
   }, [settings]);
 
-  useEffect(() => { sound.setScene(background); }, [background]);
+  useEffect(() => {
+    const discontinuous = audioJump.current;
+    audioJump.current = false;
+    sound.direct(scoreFrame(screen === 'home' ? '' : scene.id, screen === 'home' ? null : beat), {
+      discontinuous, suppressEffects: discontinuous || skipping,
+      blocked: !!modal || !!intro, dimmed: !!modal && modal !== 'music', skipping,
+    });
+  }, [screen, scene.id, beat, modal, intro, skipping]);
 
   useEffect(() => {
     if (screen !== 'play' || !game) return;
@@ -160,8 +170,11 @@ export default function App() {
     return () => document.removeEventListener('fullscreenchange', change);
   }, []);
 
+  const keyboard = useRef({ modal, hidden, screen, next, openModal, openSaves, toggleFullscreen });
+  keyboard.current = { modal, hidden, screen, next, openModal, openSaves, toggleFullscreen };
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
+      const { modal, hidden, screen, next, openModal, openSaves, toggleFullscreen } = keyboard.current;
       if (event.target instanceof HTMLElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName)) return;
       if (modal) return;
       const key = event.key.toLowerCase();
@@ -177,7 +190,7 @@ export default function App() {
     };
     window.addEventListener('keydown', keydown);
     return () => window.removeEventListener('keydown', keydown);
-  }, [modal, hidden, screen, next, openModal, openSaves, toggleFullscreen]);
+  }, []);
 
   useEffect(() => {
     if (modal === 'history') requestAnimationFrame(() => historyEnd.current?.scrollIntoView({ block: 'end' }));
@@ -190,11 +203,17 @@ export default function App() {
 
   const resume = (state = game) => {
     if (!state) return;
+    audioJump.current = true;
     void sound.unlock(settings); previousScene.current = state.sceneId;
     setGame(state); setScreen('play'); setModal(null); setIntro(null); setAuto(false); setSkipping(false); setHidden(false);
   };
 
   const toHome = () => { setScreen('home'); setModal(null); setAuto(false); setSkipping(false); setHidden(false); setIntro(null); };
+
+  const toggleMute = () => {
+    const next = { ...settings, muted: !settings.muted };
+    setSettings(next); if (!next.muted) void sound.unlock(next);
+  };
 
   const handleChoice = (key: string) => {
     if (!game) return;
@@ -212,6 +231,7 @@ export default function App() {
     if (id === '0-1' && !profile.visited.includes(id)) { start(); return; }
     const state = game ?? newGame(profile);
     const jumped = revisitScene(state, profile, id);
+    audioJump.current = true;
     previousScene.current = ''; setGame(jumped); setScreen('play'); setModal(null); setAuto(false); setSkipping(false); setHidden(false);
     void sound.unlock(settings);
   };
@@ -249,7 +269,7 @@ export default function App() {
         return item?.version === 1 && validState(item.state) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? item as SaveSlot : slot;
       });
       setSlots(importedSlots); persist('slots', importedSlots);
-      if (validState(data.state)) { persist('autosave', data.state); setGame(data.state); }
+      if (validState(data.state)) { audioJump.current = true; persist('autosave', data.state); setGame(data.state); }
       notify('旅途已导入，已经历的记忆合在了一处。');
     } catch { notify('这份文件无法识读，请选择从本作导出的 JSON 存档。'); }
   };
@@ -270,15 +290,15 @@ export default function App() {
   const sceneNumber = String(SCENES.findIndex(item => item.id === scene.id) + 1).padStart(2, '0');
   const locationName = background === 'dream-boat' ? '梦中 · 夜船' : scene.title.split('·').at(-1);
   const modalInfo: Record<ModalName, [string, string]> = {
-    chapters: ['行迹', 'THE PATH WE WALKED'], characters: ['人物志', 'REMEMBER THEIR NAMES'], gallery: ['浮生绘卷', 'LANDSCAPES OF A JOURNEY'], journal: ['旅人手记', 'WHAT THE RIVER REMEMBERS'], settings: ['听风与读字', 'AT YOUR OWN PACE'], saves: ['一枚书签', 'KEEP A MOMENT'], history: ['方才的话', 'ECHOES OF WORDS'], menu: ['梦间小憩', 'A MOMENT BY THE RIVER'], about: ['关于此梦', 'BEFORE THE WATER FADES'],
+    chapters: ['行迹', 'THE PATH WE WALKED'], characters: ['人物志', 'REMEMBER THEIR NAMES'], gallery: ['浮生绘卷', 'LANDSCAPES OF A JOURNEY'], journal: ['旅人手记', 'WHAT THE RIVER REMEMBERS'], settings: ['听风与读字', 'AT YOUR OWN PACE'], saves: ['一枚书签', 'KEEP A MOMENT'], history: ['方才的话', 'ECHOES OF WORDS'], menu: ['梦间小憩', 'A MOMENT BY THE RIVER'], about: ['关于此梦', 'BEFORE THE WATER FADES'], music: ['听水集', 'THE RIVER IN ELEVEN PIECES'],
   };
 
-  return <main className={`app app--${screen} ${hidden ? 'app--hidden' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`} onPointerDown={() => { if (!settings.muted) void sound.unlock(settings); }}>
+  return <main className={`app app--${screen} ${hidden ? 'app--hidden' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`} onPointerDown={() => { if (!settings.muted) void sound.unlock(settings); }} onKeyDownCapture={() => { if (!settings.muted) void sound.unlock(settings); }}>
     <SceneArt name={background} motion={!settings.reducedMotion} />
     <Atmosphere scene={background} reduced={settings.reducedMotion} />
 
     {screen === 'home' ? <div className="home-screen">
-      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label="关于异托邦"><BoatMark /><span>异托邦<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />一场未尽的楚地远行<span className="tiny-line" /></div><div className="header-tools"><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={() => setSettings({ ...settings, muted: !settings.muted })}>{settings.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</IconButton><IconButton label={fullscreen ? '退出全屏' : '全屏'} onClick={() => void toggleFullscreen()}><Expand size={17} /></IconButton><IconButton label="阅读设置" onClick={() => openModal('settings')}><SlidersHorizontal size={18} /></IconButton></div></header>
+      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label="关于异托邦"><BoatMark /><span>异托邦<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />一场未尽的楚地远行<span className="tiny-line" /></div><div className="header-tools"><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={toggleMute}>{settings.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</IconButton><IconButton label={fullscreen ? '退出全屏' : '全屏'} onClick={() => void toggleFullscreen()}><Expand size={17} /></IconButton><IconButton label="阅读设置" onClick={() => openModal('settings')}><SlidersHorizontal size={18} /></IconButton></div></header>
       <div className="home-body">
         <div className="home-eyebrow"><span className="vermillion-seal">归</span><span>东方奇幻 · 叙事视觉小说</span></div>
         <h1 className="home-title">异托邦<span className="title-dust">·</span></h1>
@@ -288,10 +308,10 @@ export default function App() {
         <div className="home-library">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={16} strokeWidth={1.2} /><span>{item.text}</span></button>)}</div>
       </div>
       <div className="home-side-poem" aria-hidden="true"><span>一条河，两片夜。</span><i /><span>循着水声，回家。</span></div>
-      <footer className="home-footer"><button className="headphone-note" onClick={() => setSettings({ ...settings, muted: !settings.muted })}><Headphones size={14} strokeWidth={1.2} /><span>{settings.muted ? '此刻静默' : '建议佩戴耳机'}</span></button><span className="home-edition">八十一场故事 <i /> 两条归路 <i /> V6 完整版</span><button className="about-link" onClick={() => openModal('about')}>关于此梦 <CircleHelp size={13} strokeWidth={1.3} /></button></footer>
+      <footer className="home-footer"><button className="headphone-note" onClick={() => openModal('music')} aria-label="听水集"><Headphones size={14} strokeWidth={1.2} /><span>听水集 · 原声重听</span></button><span className="home-edition">八十一场故事 <i /> 两条归路 <i /> V6 完整版</span><button className="about-link" onClick={() => openModal('about')}>关于此梦 <CircleHelp size={13} strokeWidth={1.3} /></button></footer>
       <div className="home-coordinate" aria-hidden="true"><span>19:37</span><i />THE MOMENT BEFORE THE WATER</div>
     </div> : game && beat ? <div className="game-screen">
-      {beat.kind !== 'ending' && <><header className="game-header"><button className="game-location" onClick={() => openModal('chapters')}><span className="location-route">{ROUTE_NAMES[scene.route]}</span><span className="location-divider" /><span className="location-name">{locationName}</span><ChevronDown size={13} strokeWidth={1.2} /></button><span className="chapter-current">{scene.chapter}</span><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label="打开旅人手记"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /></button><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={() => setSettings({ ...settings, muted: !settings.muted })}>{settings.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</IconButton><IconButton label="打开菜单" onClick={() => openModal('menu')}><Menu size={20} strokeWidth={1.2} /></IconButton></div></header>
+      {beat.kind !== 'ending' && <><header className="game-header"><button className="game-location" onClick={() => openModal('chapters')}><span className="location-route">{ROUTE_NAMES[scene.route]}</span><span className="location-divider" /><span className="location-name">{locationName}</span><ChevronDown size={13} strokeWidth={1.2} /></button><span className="chapter-current">{scene.chapter}</span><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label="打开旅人手记"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /></button><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={toggleMute}>{settings.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</IconButton><IconButton label="打开菜单" onClick={() => openModal('menu')}><Menu size={20} strokeWidth={1.2} /></IconButton></div></header>
       <div className="scene-margin-label" key={scene.id} aria-hidden="true"><span>{scene.title.split('·')[0]}</span><i /><small>{scene.id.toUpperCase()}</small></div></>}
 
       {beat.kind === 'text' && <><button className="advance-surface" onClick={next} aria-label={hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文'} tabIndex={-1} />
@@ -307,7 +327,7 @@ export default function App() {
 
       {beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label="命运选择"><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{beat.prompt}</p><div className="choice-options">{beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''}`} key={choice.key} disabled={choice.disabled} onClick={() => handleChoice(choice.key)} style={{ '--choice-index': i } as CSSProperties}><span className="choice-index">{String(i + 1).padStart(2, '0')}</span><span className="choice-copy"><strong>{choice.disabled ? '尚未听见的名字' : choice.title}</strong><small>{choice.disabled ? choice.hint : choice.detail}</small></span><ArrowRight size={22} strokeWidth={1} /></button>)}</div>{game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。'}</span></div>}<button className="choice-save text-button" onClick={() => openSaves('save')}><Bookmark size={14} strokeWidth={1.2} />在分路前，留一枚书签</button></section>}
 
-      {beat.kind === 'ending' && <section className={`ending-screen ${beat.ending === 'home' ? 'ending-screen--home' : ''}`}><div className="ending-content"><span className="eyebrow">{ENDINGS[beat.ending].subtitle}</span><div className="ending-emblem"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /></div><p className="ending-kicker">{beat.ending === 'home' ? '全 剧 终' : '命 运 的 回 声'}</p><h2>{ENDINGS[beat.ending].title}</h2><div className="ending-title-line"><span /><i /><span /></div><blockquote>{ENDINGS[beat.ending].quote}</blockquote><p className="ending-memory">{beat.ending === 'home' ? '故事写到这里，日子还在继续。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。'}</p><button className="gold-button" onClick={() => { if (beat.ending === 'home') toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{beat.ending === 'home' ? '回到标题' : canReturn(profile) ? '循光归来' : '再赴灯下'}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>看看留下的记忆 <Feather size={14} /></button></div><span className="ending-copyright">异托邦 · {beat.ending === 'home' ? '谢谢你，记住他们。' : '未完的路，留给下一次启程。'}</span></section>}
+      {beat.kind === 'ending' && <section className={`ending-screen ${beat.ending === 'home' ? 'ending-screen--home' : ''}`}><div className="ending-content"><span className="eyebrow">{ENDINGS[beat.ending].subtitle}</span><div className="ending-emblem"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /></div><p className="ending-kicker">{beat.ending === 'home' ? '全 剧 终' : '命 运 的 回 声'}</p><h2>{ENDINGS[beat.ending].title}</h2><div className="ending-title-line"><span /><i /><span /></div><blockquote>{ENDINGS[beat.ending].quote}</blockquote><p className="ending-memory">{beat.ending === 'home' ? '故事写到这里，日子还在继续。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。'}</p><button className="gold-button" onClick={() => { if (beat.ending === 'home') toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); audioJump.current = true; setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{beat.ending === 'home' ? '回到标题' : canReturn(profile) ? '循光归来' : '再赴灯下'}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>看看留下的记忆 <Feather size={14} /></button></div><span className="ending-copyright">异托邦 · {beat.ending === 'home' ? '谢谢你，记住他们。' : '未完的路，留给下一次启程。'}</span></section>}
 
       {intro && <button className="chapter-intro" data-testid="chapter-intro" onClick={() => setIntro(null)} aria-label="进入故事"><span className="chapter-intro-rule" /><span className="intro-chapter">{intro.chapter}</span><h2>{intro.title}</h2><span className="intro-subtitle">{intro.subtitle}</span><span className="intro-click">点击，听水声继续。</span><span className="chapter-intro-rule" /></button>}
     </div> : null}
@@ -317,11 +337,12 @@ export default function App() {
       {modal === 'characters' && <CharactersView profile={profile} />}
       {modal === 'gallery' && <GalleryView profile={profile} />}
       {modal === 'journal' && <JournalView state={game} profile={profile} />}
-      {modal === 'settings' && <SettingsView settings={settings} onChange={setSettings} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { setSettings(DEFAULT_SETTINGS); notify('阅读设置已恢复。'); }} />}
+      {modal === 'settings' && <SettingsView settings={settings} onChange={setSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { setSettings(DEFAULT_SETTINGS); notify('阅读设置已恢复。'); }} />}
       {modal === 'saves' && <SaveView slots={slots} state={game} autosave={loadAutosave()} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />}
       {modal === 'history' && <div className="history-content">{game?.history.length ? game.history.map((entry, index) => <div className={`history-entry ${entry.kind === 'choice' ? 'history-entry--choice' : ''}`} key={`${entry.id}-${index}`}><span className="history-speaker">{entry.speaker || '叙'}</span><p>{entry.kind === 'choice' && <ChevronRight size={14} />}{entry.text}</p></div>) : <p className="empty-note">刚翻开的书，还没有远去的话。</p>}<div ref={historyEnd} /></div>}
-      {modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>不用急。水也可以慢慢流。</p><div className="pause-buttons">{screen === 'play' && <button className="gold-button" onClick={() => setModal(null)}>继续此梦 <Play size={15} /></button>}<div className="pause-grid">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={19} strokeWidth={1.2} /><span>{item.text}</span><small>{item.english}</small></button>)}</div><button className="pause-row" onClick={() => openSaves('save')}><Save size={17} strokeWidth={1.2} />存读档<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><SlidersHorizontal size={17} strokeWidth={1.2} />阅读设置<ChevronRight size={16} /></button>{screen === 'play' && <button className="pause-row quiet" onClick={toHome}><ChevronLeft size={17} strokeWidth={1.2} />回到标题<small>此刻已自动留存</small></button>}</div></div>}
+      {modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>不用急。水也可以慢慢流。</p><div className="pause-buttons">{screen === 'play' && <button className="gold-button" onClick={() => setModal(null)}>继续此梦 <Play size={15} /></button>}<div className="pause-grid">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={19} strokeWidth={1.2} /><span>{item.text}</span><small>{item.english}</small></button>)}</div><button className="pause-row" onClick={() => openSaves('save')}><Save size={17} strokeWidth={1.2} />存读档<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><Headphones size={17} strokeWidth={1.2} />听水集<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><SlidersHorizontal size={17} strokeWidth={1.2} />阅读设置<ChevronRight size={16} /></button>{screen === 'play' && <button className="pause-row quiet" onClick={toHome}><ChevronLeft size={17} strokeWidth={1.2} />回到标题<small>此刻已自动留存</small></button>}</div></div>}
       {modal === 'about' && <AboutView />}
+      {modal === 'music' && <MusicRoom profile={profile} settings={settings} onChange={setSettings} />}
     </Modal>}
     {toast && <div className="toast" key={toastKey} role="status"><Check size={15} strokeWidth={1.5} />{toast}<button onClick={() => setToast('')} aria-label="关闭提示"><X size={13} /></button></div>}
     {auto && screen === 'play' && !modal && !intro && beat?.kind === 'text' && <button className="reading-mode-indicator" onClick={() => setAuto(false)}><span />自动阅读中 <Pause size={11} /></button>}

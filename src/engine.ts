@@ -76,6 +76,7 @@ export function compileScene(sceneId: string, profile: Profile, state: Pick<Game
   let background = scene.background;
   let cast: string[] = [];
   let atmosphere = '';
+  let audioCueId = '';
   let direction = '';
   let active = true;
   scene.blocks.forEach((block, blockIndex) => {
@@ -85,10 +86,10 @@ export function compileScene(sceneId: string, profile: Profile, state: Pick<Game
     if (tag.startsWith('若')) { active = conditionMatches(tag, profile, state.choices); return; }
     if (tag === '共同剧情') { active = true; return; }
     if (!active) return;
-    const base = () => ({ id: `${sceneId}:${blockIndex}`, background, cast: [...cast], atmosphere, direction });
+    const base = () => ({ id: `${sceneId}:${blockIndex}`, background, cast: [...cast], atmosphere, audioCueId, direction });
     if (mainTag === '背景') { background = chooseBackground(scene, text, scene.background); return; }
     if (mainTag === '立绘') { cast = CHARACTERS.filter(c => text.includes(c.name)).map(c => c.key); return; }
-    if (mainTag === '音效') { atmosphere = text; return; }
+    if (mainTag === '音效') { atmosphere = text; audioCueId = `${sceneId}:${blockIndex}`; return; }
     if (mainTag === '演出') { direction = text; return; }
     if (tag === '选择') { beats.push(makeChoices(scene, base(), profile, state.inventory)); return; }
     if (tag === '路线提示' || tag === '记录') return;
@@ -105,7 +106,7 @@ export function compileScene(sceneId: string, profile: Profile, state: Pick<Game
     });
     direction = '';
   });
-  if (sceneId === '终-5') beats.push({ id: '终-5:ending', kind: 'ending', ending: 'home', background, atmosphere, cast, direction: '' });
+  if (sceneId === '终-5') beats.push({ id: '终-5:ending', kind: 'ending', ending: 'home', background, atmosphere, audioCueId, cast, direction: '' });
   return beats;
 }
 

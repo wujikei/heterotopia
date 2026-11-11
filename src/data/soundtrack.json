@@ -1,0 +1,101 @@
+[
+  {
+    "id": "river-home",
+    "title": "循水归来",
+    "subtitle": "月下的小舟，未尽的归途",
+    "bpm": 68,
+    "keyscale": "D minor",
+    "file": "music-river-home.mp3",
+    "seconds": 56.47059
+  },
+  {
+    "id": "paper-note",
+    "title": "那张未谈完的便签",
+    "subtitle": "教室、放学路，与欲言又止",
+    "bpm": 84,
+    "keyscale": "G major",
+    "file": "music-paper-note.mp3",
+    "seconds": 57.14286
+  },
+  {
+    "id": "hearth",
+    "title": "灶火未凉",
+    "subtitle": "旧衣、热粥，与等你的人",
+    "bpm": 64,
+    "keyscale": "D major",
+    "file": "music-hearth.mp3",
+    "seconds": 56.25
+  },
+  {
+    "id": "river-journey",
+    "title": "把船撑向远方",
+    "subtitle": "河风把六个名字送向群山",
+    "bpm": 76,
+    "keyscale": "G major",
+    "file": "music-river-journey.mp3",
+    "seconds": 56.84211
+  },
+  {
+    "id": "old-jade",
+    "title": "旧玉与故人",
+    "subtitle": "名字藏在旧箱与十根竹简里",
+    "bpm": 64,
+    "keyscale": "D minor",
+    "file": "music-old-jade.mp3",
+    "seconds": 56.25
+  },
+  {
+    "id": "ritual",
+    "title": "高台千灯",
+    "subtitle": "铜铃与祭鼓之间，仍活着的人",
+    "bpm": 84,
+    "keyscale": "D minor",
+    "file": "music-ritual.mp3",
+    "seconds": 57.14286
+  },
+  {
+    "id": "under-current",
+    "title": "水下有人唤名",
+    "subtitle": "看不见的河，听得见的回声",
+    "bpm": 60,
+    "keyscale": "C minor",
+    "file": "music-under-current.mp3",
+    "seconds": 56.0
+  },
+  {
+    "id": "small-goodbyes",
+    "title": "药檐下的雪",
+    "subtitle": "冷了就说，疼也说",
+    "bpm": 56,
+    "keyscale": "D minor",
+    "file": "music-small-goodbyes.mp3",
+    "seconds": 55.71429
+  },
+  {
+    "id": "last-flute",
+    "title": "未说完的一声笛",
+    "subtitle": "风雪里，谁也没有松手",
+    "bpm": 60,
+    "keyscale": "A minor",
+    "file": "music-last-flute.mp3",
+    "seconds": 56.0
+  },
+  {
+    "id": "river-of-names",
+    "title": "光河上的名字",
+    "subtitle": "记住一个名字，也记住一个人",
+    "bpm": 68,
+    "keyscale": "D major",
+    "file": "music-river-of-names.mp3",
+    "seconds": 56.47059
+  },
+  {
+    "id": "light-in-kitchen",
+    "title": "灯下有人等",
+    "subtitle": "故事写到这里，日子还在继续",
+    "bpm": 72,
+    "keyscale": "G major",
+    "file": "music-light-in-kitchen.mp3",
+    "seconds": 56.66667
+  }
+]

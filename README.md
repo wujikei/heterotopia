@@ -16,13 +16,23 @@
 
 “行迹”只允许回到已经到达的场景；人物志、绘卷与结局页随实际阅读解锁。
 
+标题左下角、暂停菜单与阅读设置中的“听水集”可重听已解锁的原声，并下载 MP3。试听可暂停、继续，关闭后恢复当前故事的配乐。配乐、环境声和音效可分别调节；切到其他标签页时声音暂停。
+
+## 原声与演出
+
+11 首本机生成的器乐配乐贯穿两条路线：从《那张未谈完的便签》的日常，到《高台千灯》的祭礼、《未说完的一声笛》的风雪，最后回到《灯下有人等》。琴、箫、低音弦乐与克制的钢琴形成主要音色。
+
+配乐经过小节交叠循环和双遍响度处理，场景间自然交叉渐变；相同主题继续播放，不因翻页重新开始。12 层环境声与 28 种音效随剧本音效标记触发，包括船底叩击、铜铃三响、纸页、椅脚、石门、断笛与归路车铃。重要告别处逐步撤去配乐，保留静默与远水。读档、章节跳转和已读快进不会重放剧情动作音效。
+
 ## 剧本规则
 
 回到 1-12 时直接落在选择处。路线经历与“已追问旧队名简”跨轮保留，实物回到这一夜原样；“问名”仍需在本轮取得三玉。完成任一王裔结局与完整昆仑线后才能进入终章。B-12 起名牌显示沈辞，归还身体前立绘仍采用戌。
 
 ## 美术、声音与授权
 
-主视觉、场景与人物由本机 ComfyUI / Qwen-Image 2.1 制作。人物采用透明背景 WebP；完整提示词与任务记录见 `art-prompts.json`。配乐与环境声为本作 Web Audio 原创合成。无角色配音。
+主视觉、场景与人物由本机 ComfyUI / Qwen-Image 2.1 制作。人物采用透明背景 WebP；完整提示词与任务记录见 `art-prompts.json`。11 首器乐配乐由本机 ComfyUI / ACE-Step 1.5 Turbo 生成，提示词、种子与任务记录见 `audio-prompts.json`。环境声与音效由本作程序化声音设计制作，源码见 `scripts/produce_audio.py`；没有使用第三方声音采样或角色配音。
+
+网站使用 44.1 kHz 立体声 MP3，配乐为 192 kbps，目标约 -18 LUFS；技术数据与来源见 `public/audio/manifest.json`。游玩和重听均不需要启动 ComfyUI。音频按场景加载，解码缓存设有容量上限，避免一次加载整张原声。
 
 中文字体为 Noto Serif SC，遵循 SIL Open Font License；授权全文见 `字体授权-OFL.txt`。原著剧本由用户提供，保存在 `public/原著剧本-V6.txt`。源稿 SHA-256 记录于 `src/data/story.json`。
 
@@ -32,7 +42,11 @@
 
 `npm test` 验证分支、四个王裔结局、两种路线顺序、条件记忆及物件重置。先运行开发服务器，再执行 `npm run test:browser` 可检查桌面、窄屏、存读档与设置。
 
-生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查全部内嵌美术与字体、存档导入导出、立绘、窄屏选项及终章入口。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
+运行 `npm run preview -- --port 4173 --base /heterotopia/` 后，`npm run test:audio` 检查首次手势、场景音效去重、闹钟切断、三个音量通道、试听暂停继续、下载、慢请求取消、快进抑制与播放器窄屏布局。使用独立测试浏览器和明确的临时模拟进度，不修改玩家存档。
+
+生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查全部内嵌美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
+
+重新处理声音需要 Python、numpy 与 FFmpeg：将 11 首同名 FLAC 母带放入忽略的 `artifacts/audio-masters/`，执行 `python scripts/produce_audio.py`。母带留在本机；Git 只包含处理后的游戏音频、提示记录与可复现的声音设计脚本。
 
 修改原著后，运行 `python scripts/import_story.py` 重新导入。`scripts/collect_art.py` 只收集此项目已提交的本机生成任务；游玩不会调用生成服务。
 
@@ -42,4 +56,4 @@
 
 网站使用 GitHub 提供的 HTTPS，不依赖本机服务器。所有画面、字体和声音均随网站提供；部署配置位于 `.github/workflows/pages.yml`。发布状态可在仓库的 Actions 与 Environments 页面查看。
 
-可通过 `VN_TEST_URL` 指定生产网址，`VN_TEST_BROWSER` 选择 `chromium`、`firefox` 或 `webkit`，再运行 `npm run test:browser` 检查桌面、手机、平板和横屏布局。浏览器未提供音频接口时，游戏仍可静默阅读。
+可通过 `VN_TEST_URL` 指定生产网址，`VN_TEST_BROWSER` 选择 `chromium`、`firefox` 或 `webkit`，再运行 `npm run test:browser` 或 `npm run test:audio`。浏览器未提供 Web Audio 时尝试原生媒体播放；完全不支持音频时仍可静默阅读。

@@ -3,7 +3,7 @@ export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home'
 export interface RawBlock { tag: string; lines: string[]; pages?: string[] }
 export interface Scene { id: string; title: string; chapter: string; route: Route; background: string; blocks: RawBlock[] }
 export interface Choice { key: string; title: string; detail: string; target?: string; disabled?: boolean; hint?: string }
-export interface BeatBase { id: string; background: string; cast: string[]; atmosphere: string; direction: string }
+export interface BeatBase { id: string; background: string; cast: string[]; atmosphere: string; audioCueId: string; direction: string }
 export interface TextBeat extends BeatBase { kind: 'text'; speaker: string; mood: string; text: string }
 export interface ChoiceBeat extends BeatBase { kind: 'choice'; prompt: string; choices: Choice[] }
 export interface EndingBeat extends BeatBase { kind: 'ending'; ending: EndingId }
@@ -34,6 +34,7 @@ export interface Settings {
   fontSize: number;
   musicVolume: number;
   ambienceVolume: number;
+  sfxVolume: number;
   muted: boolean;
   reducedMotion: boolean;
   showSprites: boolean;

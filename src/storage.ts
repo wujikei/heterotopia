@@ -31,7 +31,7 @@ export function loadProfile(): Profile {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  textSpeed: 32, autoDelay: 4, fontSize: 22, musicVolume: 30, ambienceVolume: 38,
+  textSpeed: 32, autoDelay: 4, fontSize: 22, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55,
   muted: false, reducedMotion: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false, showSprites: true,
 };
 
@@ -48,6 +48,7 @@ export function loadSettings(): Settings {
     fontSize: clamp(raw.fontSize, 17, 29, DEFAULT_SETTINGS.fontSize),
     musicVolume: clamp(raw.musicVolume, 0, 100, DEFAULT_SETTINGS.musicVolume),
     ambienceVolume: clamp(raw.ambienceVolume, 0, 100, DEFAULT_SETTINGS.ambienceVolume),
+    sfxVolume: clamp(raw.sfxVolume, 0, 100, DEFAULT_SETTINGS.sfxVolume),
     muted: raw.muted === true,
     reducedMotion: typeof raw.reducedMotion === 'boolean' ? raw.reducedMotion : DEFAULT_SETTINGS.reducedMotion,
     showSprites: raw.showSprites !== false,
