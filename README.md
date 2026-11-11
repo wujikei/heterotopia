@@ -41,3 +41,5 @@
 仓库：[wujikei/heterotopia](https://github.com/wujikei/heterotopia)。推送至 `main` 后，GitHub Actions 会安装依赖、验证剧情分支、构建静态文件并发布至 GitHub Pages。也可在仓库的 Actions 页面手动运行发布工作流。
 
 网站使用 GitHub 提供的 HTTPS，不依赖本机服务器。所有画面、字体和声音均随网站提供；部署配置位于 `.github/workflows/pages.yml`。发布状态可在仓库的 Actions 与 Environments 页面查看。
+
+可通过 `VN_TEST_URL` 指定生产网址，`VN_TEST_BROWSER` 选择 `chromium`、`firefox` 或 `webkit`，再运行 `npm run test:browser` 检查桌面、手机、平板和横屏布局。浏览器未提供音频接口时，游戏仍可静默阅读。

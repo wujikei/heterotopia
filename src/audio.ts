@@ -18,7 +18,9 @@ class Soundscape {
   async unlock(settings: Settings): Promise<void> {
     this.settings = settings;
     if (!this.context) {
-      this.context = new AudioContext();
+      const Context = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!Context) return;
+      try { this.context = new Context(); } catch { return; }
       this.music = this.context.createGain();
       this.ambience = this.context.createGain();
       const compressor = this.context.createDynamicsCompressor();
@@ -42,11 +44,13 @@ class Soundscape {
       this.timer = window.setInterval(() => this.schedule(), 4400);
       document.addEventListener('visibilitychange', () => {
         if (!this.context) return;
-        if (document.hidden) void this.context.suspend();
-        else if (!this.settings?.muted) void this.context.resume();
+        if (document.hidden) void this.context.suspend().catch(() => {});
+        else if (!this.settings?.muted) void this.context.resume().catch(() => {});
       });
     }
-    if (this.context.state === 'suspended') await this.context.resume();
+    if (this.context.state === 'suspended') {
+      try { await this.context.resume(); } catch { return; }
+    }
     this.update(settings);
   }
 
