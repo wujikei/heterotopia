@@ -110,8 +110,17 @@ try {
     checks.push('Gesture unlock, stable paragraph cues, alarm cutoff and score change');
 
     await page.getByRole('button', { name: '静音', exact: true }).click();
-    await page.waitForTimeout(300);
+    // Idle Web Audio nodes can expose the last processed AudioParam value.
+    // A tiny, isolated DC probe keeps all buses rendering during this assertion.
+    await page.evaluate(() => {
+      const trace = window.__audioTest, probe = trace.contexts[0].createConstantSource();
+      probe.offset.value = .00001;
+      trace.gains.slice(0, 3).forEach(gain => probe.connect(gain));
+      probe.start(); trace.muteProbe = probe;
+    });
+    await page.waitForFunction(() => window.__audioTest.gains.slice(0, 3).every(gain => gain.gain.value < .002), undefined, { timeout: 5000 });
     const muted = await page.evaluate(() => window.__audioTest.gains.slice(0, 3).map(gain => gain.gain.value));
+    await page.evaluate(() => { window.__audioTest.muteProbe.stop(); window.__audioTest.muteProbe.disconnect(); });
     assert.ok(muted.every(value => value < .002), `All three buses must mute: ${muted}`);
     await page.getByRole('button', { name: '开启声音', exact: true }).click();
     checks.push('Global mute controls music, ambience and effects');
