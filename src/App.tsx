@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, Bookmark, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronsRight, CircleHelp, Compass, Expand, EyeOff, Feather, Headphones, History, Image as ImageIcon, Menu, Pause, Play, Save, Settings2, SkipForward, SlidersHorizontal, Users, Volume2, VolumeX, X } from 'lucide-react';
+import { ArrowRight, Check, ChevronDown, ChevronRight, CircleHelp, Feather, Pause, Play, SkipForward, X } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { sound } from './audio';
 import { Atmosphere, BoatMark, BoneMark, SceneArt } from './components/Atmosphere';
 import { Modal } from './components/Modal';
+import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
 import { MusicRoom } from './components/MusicRoom';
 import { AboutView, ChaptersView, CharactersView, GalleryView, JournalView, SaveView, SettingsView } from './components/Library';
 import { asset, BACKGROUNDS, characterFor, ENDINGS, portraitAsset } from './data/world';
@@ -16,12 +17,13 @@ type ModalName = 'chapters' | 'characters' | 'gallery' | 'journal' | 'settings' 
 type Intro = { chapter: string; title: string; subtitle: string };
 
 const ROUTE_NAMES = { prologue: '序章', common: '共通线', royal: '王裔线', kunlun: '昆仑线', return: '归来' };
-const LIBRARY: { name: ModalName; text: string; english: string; icon: typeof BookOpen }[] = [
-  { name: 'chapters', text: '行迹', english: 'CHAPTERS', icon: Compass },
-  { name: 'characters', text: '人物志', english: 'ENCOUNTERS', icon: Users },
-  { name: 'gallery', text: '浮生绘卷', english: 'GALLERY', icon: ImageIcon },
-  { name: 'journal', text: '旅人手记', english: 'MEMORIES', icon: Feather },
+const LIBRARY: { name: ModalName; text: string; note: string; icon: typeof InkPath }[] = [
+  { name: 'chapters', text: '行迹', note: '走过的水路', icon: InkPath },
+  { name: 'characters', text: '人物志', note: '记住的名字', icon: InkFigure },
+  { name: 'gallery', text: '浮生绘卷', note: '沿途的山河', icon: InkMountain },
+  { name: 'journal', text: '旅人手记', note: '河水记得的', icon: InkBrush },
 ];
+const CHOICE_NUMERALS = ['壹', '贰', '叁', '肆', '伍', '陆'];
 
 function useTypewriter(id: string | undefined, text: string, speed: number) {
   const [count, setCount] = useState(0);
@@ -65,6 +67,9 @@ export default function App() {
   const [toast, setToast] = useState('');
   const [toastKey, setToastKey] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [confirmHome, setConfirmHome] = useState(false);
+  const [stamped, setStamped] = useState<string | null>(null);
   const previousScene = useRef('');
   const audioJump = useRef(false);
   const historyEnd = useRef<HTMLDivElement>(null);
@@ -192,6 +197,9 @@ export default function App() {
     return () => window.removeEventListener('keydown', keydown);
   }, []);
 
+  useEffect(() => { setConfirmHome(false); }, [modal]);
+  useEffect(() => { setStamped(null); }, [beat?.id]);
+
   useEffect(() => {
     if (modal === 'history') requestAnimationFrame(() => historyEnd.current?.scrollIntoView({ block: 'end' }));
   }, [modal]);
@@ -216,10 +224,20 @@ export default function App() {
   };
 
   const handleChoice = (key: string) => {
-    if (!game) return;
+    const state = currentGame.current;
+    if (!state) return;
     void sound.unlock(settings); sound.click('choice'); setAuto(false); setSkipping(false);
-    const updated = choose(game, profile, key);
+    const updated = choose(state, currentProfile.current, key);
     setGame(updated);
+  };
+
+  // 朱印落下之后再翻页；减弱动态时立即选择。
+  const pickChoice = (key: string) => {
+    if (stamped) return;
+    if (settings.reducedMotion) { handleChoice(key); return; }
+    void sound.unlock(settings);
+    setStamped(key);
+    window.setTimeout(() => handleChoice(key), 640);
   };
 
   const toggleSkip = () => {
@@ -286,53 +304,74 @@ export default function App() {
     }
   }
   const beats = game ? compileScene(game.sceneId, profile, game) : [];
+  const lineKind = beat?.kind !== 'text' ? 'speech' : !beat.speaker ? 'narration' : beat.mood.includes('内心') ? 'inner' : 'speech';
   const position = Math.max(0, beats.findIndex(item => item.id === beat?.id));
   const sceneNumber = String(SCENES.findIndex(item => item.id === scene.id) + 1).padStart(2, '0');
   const locationName = background === 'dream-boat' ? '梦中 · 夜船' : scene.title.split('·').at(-1);
+  const modalSeals: Record<ModalName, string> = { chapters: '迹', characters: '名', gallery: '绘', journal: '记', settings: '听', saves: '签', history: '回', menu: '憩', about: '梦', music: '水' };
   const modalInfo: Record<ModalName, [string, string]> = {
-    chapters: ['行迹', 'THE PATH WE WALKED'], characters: ['人物志', 'REMEMBER THEIR NAMES'], gallery: ['浮生绘卷', 'LANDSCAPES OF A JOURNEY'], journal: ['旅人手记', 'WHAT THE RIVER REMEMBERS'], settings: ['听风与读字', 'AT YOUR OWN PACE'], saves: ['一枚书签', 'KEEP A MOMENT'], history: ['方才的话', 'ECHOES OF WORDS'], menu: ['梦间小憩', 'A MOMENT BY THE RIVER'], about: ['关于此梦', 'BEFORE THE WATER FADES'], music: ['听水集', 'THE RIVER IN ELEVEN PIECES'],
+    chapters: ['行迹', '走过的水路'], characters: ['人物志', '记住他们的名字'], gallery: ['浮生绘卷', '一程山河'], journal: ['旅人手记', '河水记得的事'], settings: ['听风与读字', '按你自己的节奏'], saves: ['一枚书签', '留住一个瞬间'], history: ['方才的话', '水面上的回声'], menu: ['梦间小憩', '在河边歇一歇'], about: ['关于此梦', '水声未散之前'], music: ['听水集', '河上的十一支曲子'],
   };
 
-  return <main className={`app app--${screen} ${hidden ? 'app--hidden' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`} onPointerDown={() => { if (!settings.muted) void sound.unlock(settings); }} onKeyDownCapture={() => { if (!settings.muted) void sound.unlock(settings); }}>
+  return <main className={`app app--${screen} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`} onPointerDown={() => { if (!settings.muted) void sound.unlock(settings); }} onKeyDownCapture={() => { if (!settings.muted) void sound.unlock(settings); }}>
     <SceneArt name={background} motion={!settings.reducedMotion} />
     <Atmosphere scene={background} reduced={settings.reducedMotion} />
 
     {screen === 'home' ? <div className="home-screen">
-      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label="关于异托邦"><BoatMark /><span>异托邦<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />一场未尽的楚地远行<span className="tiny-line" /></div><div className="header-tools"><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={toggleMute}>{settings.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</IconButton><IconButton label={fullscreen ? '退出全屏' : '全屏'} onClick={() => void toggleFullscreen()}><Expand size={17} /></IconButton><IconButton label="阅读设置" onClick={() => openModal('settings')}><SlidersHorizontal size={18} /></IconButton></div></header>
+      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label="关于异托邦"><BoatMark /><span>异托邦<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />一场未尽的楚地远行<span className="tiny-line" /></div><div className="header-tools"><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={fullscreen ? '退出全屏' : '全屏'} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label="阅读设置" onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
       <div className="home-body">
         <div className="home-eyebrow"><span className="vermillion-seal">归</span><span>东方奇幻 · 叙事视觉小说</span></div>
         <h1 className="home-title">异托邦<span className="title-dust">·</span></h1>
         <div className="home-english"><span />H E T E R O T O P I A<span /></div>
         <div className="home-verse"><span>魂兮归来。</span><p>看路，也看看走路的人。</p></div>
-        <nav className="home-main-menu" aria-label="启程菜单"><button className="start-button" onClick={start}><span className="start-decoration" /><span><strong>{game ? '重新启程' : '启程'}</strong><small>BEGIN THE JOURNEY</small></span><ArrowRight size={24} strokeWidth={1} /></button><button className="continue-button" disabled={!game} onClick={() => resume()}><span><strong>续梦</strong><small>{game ? `${sceneById(game.sceneId).chapter} · ${sceneById(game.sceneId).title.split('·').at(-1)}` : '此刻尚无未尽的梦'}</small></span><ChevronRight size={18} strokeWidth={1} /></button></nav>
-        <div className="home-library">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={16} strokeWidth={1.2} /><span>{item.text}</span></button>)}</div>
+        <nav className={`home-main-menu ${game ? 'home-main-menu--resume' : ''}`} aria-label="启程菜单">
+          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'}`} onClick={start}><span className="cta-glow" aria-hidden="true" /><strong>{game ? '重新启程' : '启程'}</strong><BoatMark className="cta-boat" /></button>
+          <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game} onClick={() => resume()}><span className="cta-glow" aria-hidden="true" /><strong>续梦</strong><small>{game ? `${sceneById(game.sceneId).chapter} · ${sceneById(game.sceneId).title.split('·').at(-1)}` : '此刻尚无未尽的梦'}</small></button>
+        </nav>
+        <div className="home-library">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={18} /><span>{item.text}</span></button>)}</div>
       </div>
       <div className="home-side-poem" aria-hidden="true"><span>一条河，两片夜。</span><i /><span>循着水声，回家。</span></div>
-      <footer className="home-footer"><button className="headphone-note" onClick={() => openModal('music')} aria-label="听水集"><Headphones size={14} strokeWidth={1.2} /><span>听水集 · 原声重听</span></button><span className="home-edition">八十一场故事 <i /> 两条归路 <i /> V6 完整版</span><button className="about-link" onClick={() => openModal('about')}>关于此梦 <CircleHelp size={13} strokeWidth={1.3} /></button></footer>
+      <footer className="home-footer"><button className="headphone-note" onClick={() => openModal('music')} aria-label="听水集"><InkDrop size={16} /><span>听水集 · 原声重听</span></button><span className="home-edition">八十一场故事 <i /> 两条归路 <i /> V6 完整版</span><button className="about-link" onClick={() => openModal('about')}>关于此梦 <CircleHelp size={13} strokeWidth={1.3} /></button></footer>
       <div className="home-coordinate" aria-hidden="true"><span>19:37</span><i />THE MOMENT BEFORE THE WATER</div>
     </div> : game && beat ? <div className="game-screen">
-      {beat.kind !== 'ending' && <><header className="game-header"><button className="game-location" onClick={() => openModal('chapters')}><span className="location-route">{ROUTE_NAMES[scene.route]}</span><span className="location-divider" /><span className="location-name">{locationName}</span><ChevronDown size={13} strokeWidth={1.2} /></button><span className="chapter-current">{scene.chapter}</span><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label="打开旅人手记"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /></button><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={toggleMute}>{settings.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</IconButton><IconButton label="打开菜单" onClick={() => openModal('menu')}><Menu size={20} strokeWidth={1.2} /></IconButton></div></header>
+      {beat.kind !== 'ending' && <><header className="game-header"><button className="game-location" onClick={() => openModal('chapters')}><span className="location-route">{ROUTE_NAMES[scene.route]}</span><span className="location-divider" /><span className="location-name">{locationName}</span><ChevronDown size={13} strokeWidth={1.2} /></button><span className="chapter-current">{scene.chapter}</span><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label="打开旅人手记"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /></button><IconButton label={settings.muted ? '开启声音' : '静音'} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label="打开菜单" onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>
       <div className="scene-margin-label" key={scene.id} aria-hidden="true"><span>{scene.title.split('·')[0]}</span><i /><small>{scene.id.toUpperCase()}</small></div></>}
 
       {beat.kind === 'text' && <><button className="advance-surface" onClick={next} aria-label={hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文'} tabIndex={-1} />
-        {portrait && settings.showSprites && !intro && <div key={portrait.key} className={`actor actor--${portrait.key}`} aria-hidden="true"><div className="actor-glow" style={{ background: portrait.color }} /><img src={portraitAsset(portrait.key)} alt="" /><span className="actor-vertical-name">{borrowedBody ? '戌（沈辞）' : portrait.name}</span></div>}
-        <section className={`dialogue ${beat.mood.includes('内心') ? 'dialogue--inner' : ''}`} aria-label="故事正文">
-          <div className="dialogue-top-line"><span className="dialogue-corner" /><span className="dialogue-rule" /><span className="dialogue-page">{String(position + 1).padStart(2, '0')} <i>/ {beats.length}</i></span></div>
-          <div className="speaker"><span className="speaker-diamond" /><strong>{beat.speaker || '叙'}</strong>{beat.mood && <span className="speaker-mood">{beat.mood}</span>}<span className="speaker-line" /></div>
-          <button className="dialogue-advance" onClick={next} aria-label={typing.done ? '继续' : '立即显示全文'}><p className="dialogue-text" data-testid="dialogue-text" aria-label={beat.text}><span aria-hidden="true">{beat.text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{beat.text.slice(typing.count)}</span></p><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true"><span /> <ChevronRight size={17} strokeWidth={1} /></span></button>
-          <footer className="dialogue-footer"><div className="scene-bookmark"><Bookmark size={12} strokeWidth={1} /><span>{sceneNumber} <i>/ 81</i></span><span className="autosaved-dot" title="进度已自动保存" /></div><nav className="reading-controls" aria-label="阅读控制"><button onClick={() => openModal('history')} title="回看 · ←"><History size={14} strokeWidth={1.2} /><span>回看</span></button><button className={auto ? 'selected' : ''} onClick={() => { setAuto(!auto); setSkipping(false); }}>{auto ? <Pause size={13} /> : <Play size={13} strokeWidth={1.2} />}<span>自动</span></button><button className={skipping ? 'selected' : ''} onClick={toggleSkip} title="仅跳过已经读过的文字"><ChevronsRight size={16} strokeWidth={1.2} /><span>快进</span></button><i /><button onClick={() => openSaves('save')} title="存档 · S"><Save size={14} strokeWidth={1.2} /><span>存档</span></button><button onClick={() => openSaves('load')} title="读档 · L"><BookOpen size={14} strokeWidth={1.2} /><span>读档</span></button><button onClick={() => openModal('settings')}><Settings2 size={14} strokeWidth={1.2} /><span>设置</span></button><button onClick={() => setHidden(true)} title="隐藏界面 · H"><EyeOff size={14} strokeWidth={1.2} /><span>隐藏</span></button></nav></footer>
+        {portrait && settings.showSprites && !intro && <div key={portrait.key} className={`actor actor--${portrait.key}`} style={{ '--actor-tint': portrait.color } as CSSProperties} aria-hidden="true"><div className="actor-glow" /><img src={portraitAsset(portrait.key)} alt="" /><span className="actor-vertical-name">{borrowedBody ? '戌（沈辞）' : portrait.name}</span></div>}
+        <section className={`dialogue dialogue--${lineKind}`} aria-label="故事正文">
+          <div className="dialogue-mist" aria-hidden="true" />
+          <div className="dialogue-body">
+            {beat.speaker && <div className="speaker"><span className="speaker-seal"><strong>{beat.speaker}</strong></span>{beat.mood && <span className="speaker-mood">{beat.mood}</span>}</div>}
+            <button className="dialogue-advance" onClick={next} aria-label={typing.done ? '继续' : '立即显示全文'}><p className="dialogue-text" data-testid="dialogue-text" aria-label={beat.text}><span aria-hidden="true">{beat.text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{beat.text.slice(typing.count)}</span><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true" /></p></button>
+            <footer className="dialogue-footer">
+              <div className="scene-bookmark" title="进度已自动保存"><span className="autosaved-dot" /><span>第 {sceneNumber} 场<i> / 81</i></span><span className="dialogue-page">{position + 1}<i> / {beats.length}</i></span></div>
+              <nav className={`reading-controls ${toolsOpen ? 'is-open' : ''}`} aria-label="阅读控制">
+                <button onClick={() => openModal('history')} title="回看 · ←"><InkBacklog /><span>回看</span></button>
+                <button className={auto ? 'selected' : ''} onClick={() => { setAuto(!auto); setSkipping(false); }} aria-pressed={auto} title="自动阅读"><InkLamp lit={auto} /><span>自动</span></button>
+                <button className={skipping ? 'selected' : ''} onClick={toggleSkip} aria-pressed={skipping} title="仅跳过已经读过的文字"><InkFlow /><span>快进</span></button>
+                <div className="reading-more" id="reading-more" inert={!toolsOpen}>
+                  <button onClick={() => openSaves('save')} title="存档 · S"><InkBookmark /><span>存档</span></button>
+                  <button onClick={() => openSaves('load')} title="读档 · L"><InkScroll /><span>读档</span></button>
+                  <button onClick={() => openModal('settings')} title="阅读设置"><InkWind /><span>设置</span></button>
+                  <button onClick={() => { setHidden(true); setToolsOpen(false); }} title="隐藏界面 · H"><InkClosedEye /><span>隐藏</span></button>
+                </div>
+                <button className="reading-toggle" onClick={() => setToolsOpen(value => !value)} aria-expanded={toolsOpen} aria-controls="reading-more" title={toolsOpen ? '收起' : '存档、读档、设置、隐藏'}><InkMore open={toolsOpen} /><span>{toolsOpen ? '收起' : '更多'}</span></button>
+              </nav>
+            </footer>
+          </div>
         </section>
         {hidden && <div className="hidden-hint">点击画面，或按 H，继续听故事。</div>}
       </>}
 
-      {beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label="命运选择"><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{beat.prompt}</p><div className="choice-options">{beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''}`} key={choice.key} disabled={choice.disabled} onClick={() => handleChoice(choice.key)} style={{ '--choice-index': i } as CSSProperties}><span className="choice-index">{String(i + 1).padStart(2, '0')}</span><span className="choice-copy"><strong>{choice.disabled ? '尚未听见的名字' : choice.title}</strong><small>{choice.disabled ? choice.hint : choice.detail}</small></span><ArrowRight size={22} strokeWidth={1} /></button>)}</div>{game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。'}</span></div>}<button className="choice-save text-button" onClick={() => openSaves('save')}><Bookmark size={14} strokeWidth={1.2} />在分路前，留一枚书签</button></section>}
+      {beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label="命运选择"><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{beat.prompt}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[i] ?? i + 1}</span><span className="choice-copy"><strong>{choice.disabled ? '尚未听见的名字' : choice.title}</strong><small>{choice.disabled ? choice.hint : choice.detail}</small></span><span className="choice-stamp" aria-hidden="true">定</span></button>)}</div>{game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。'}</span></div>}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />在分路前，留一枚书签</button></section>}
 
       {beat.kind === 'ending' && <section className={`ending-screen ${beat.ending === 'home' ? 'ending-screen--home' : ''}`}><div className="ending-content"><span className="eyebrow">{ENDINGS[beat.ending].subtitle}</span><div className="ending-emblem"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /></div><p className="ending-kicker">{beat.ending === 'home' ? '全 剧 终' : '命 运 的 回 声'}</p><h2>{ENDINGS[beat.ending].title}</h2><div className="ending-title-line"><span /><i /><span /></div><blockquote>{ENDINGS[beat.ending].quote}</blockquote><p className="ending-memory">{beat.ending === 'home' ? '故事写到这里，日子还在继续。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。'}</p><button className="gold-button" onClick={() => { if (beat.ending === 'home') toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); audioJump.current = true; setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{beat.ending === 'home' ? '回到标题' : canReturn(profile) ? '循光归来' : '再赴灯下'}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>看看留下的记忆 <Feather size={14} /></button></div><span className="ending-copyright">异托邦 · {beat.ending === 'home' ? '谢谢你，记住他们。' : '未完的路，留给下一次启程。'}</span></section>}
 
-      {intro && <button className="chapter-intro" data-testid="chapter-intro" onClick={() => setIntro(null)} aria-label="进入故事"><span className="chapter-intro-rule" /><span className="intro-chapter">{intro.chapter}</span><h2>{intro.title}</h2><span className="intro-subtitle">{intro.subtitle}</span><span className="intro-click">点击，听水声继续。</span><span className="chapter-intro-rule" /></button>}
+      {intro && <button className="chapter-intro" data-testid="chapter-intro" onClick={() => setIntro(null)} aria-label="进入故事"><span className="intro-ink" aria-hidden="true" /><span className="intro-ripple" aria-hidden="true" /><span className="intro-scroll"><span className="intro-chapter">{intro.chapter}</span><h2>{intro.title}</h2><span className="intro-subtitle">{intro.subtitle.replace(/\s*·\s*/g, '・')}</span></span><span className="intro-seal" aria-hidden="true">{intro.chapter === '终章' ? '归' : intro.chapter.slice(0, 2)}</span><span className="intro-click">点击，听水声继续。</span></button>}
     </div> : null}
 
-    {modal && <Modal title={modalInfo[modal][0]} eyebrow={modalInfo[modal][1]} onClose={() => setModal(null)} className={`modal--${modal}`}>
+    {modal && <Modal title={modalInfo[modal][0]} eyebrow={modalInfo[modal][1]} seal={modalSeals[modal]} onClose={() => setModal(null)} className={`modal--${modal}`}>
       {modal === 'chapters' && <ChaptersView profile={profile} currentScene={screen === 'play' ? game?.sceneId : undefined} onJump={jump} />}
       {modal === 'characters' && <CharactersView profile={profile} />}
       {modal === 'gallery' && <GalleryView profile={profile} />}
@@ -340,11 +379,11 @@ export default function App() {
       {modal === 'settings' && <SettingsView settings={settings} onChange={setSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { setSettings(DEFAULT_SETTINGS); notify('阅读设置已恢复。'); }} />}
       {modal === 'saves' && <SaveView slots={slots} state={game} autosave={loadAutosave()} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />}
       {modal === 'history' && <div className="history-content">{game?.history.length ? game.history.map((entry, index) => <div className={`history-entry ${entry.kind === 'choice' ? 'history-entry--choice' : ''}`} key={`${entry.id}-${index}`}><span className="history-speaker">{entry.speaker || '叙'}</span><p>{entry.kind === 'choice' && <ChevronRight size={14} />}{entry.text}</p></div>) : <p className="empty-note">刚翻开的书，还没有远去的话。</p>}<div ref={historyEnd} /></div>}
-      {modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>不用急。水也可以慢慢流。</p><div className="pause-buttons">{screen === 'play' && <button className="gold-button" onClick={() => setModal(null)}>继续此梦 <Play size={15} /></button>}<div className="pause-grid">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={19} strokeWidth={1.2} /><span>{item.text}</span><small>{item.english}</small></button>)}</div><button className="pause-row" onClick={() => openSaves('save')}><Save size={17} strokeWidth={1.2} />存读档<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><Headphones size={17} strokeWidth={1.2} />听水集<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><SlidersHorizontal size={17} strokeWidth={1.2} />阅读设置<ChevronRight size={16} /></button>{screen === 'play' && <button className="pause-row quiet" onClick={toHome}><ChevronLeft size={17} strokeWidth={1.2} />回到标题<small>此刻已自动留存</small></button>}</div></div>}
+      {modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>不用急。水也可以慢慢流。</p><div className="pause-buttons">{screen === 'play' && <button className="gold-button" onClick={() => setModal(null)}>继续此梦 <Play size={15} /></button>}<div className="pause-grid">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={24} /><span>{item.text}</span><small>{item.note}</small></button>)}</div><div className="pause-rows"><button className="pause-row" onClick={() => openSaves('save')}><InkBookmark />存读档<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><InkDrop />听水集<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><InkWind />阅读设置<ChevronRight size={16} /></button></div>{screen === 'play' && <button className={`pause-row pause-row--home ${confirmHome ? 'is-confirming' : ''}`} onClick={() => { if (confirmHome) toHome(); else setConfirmHome(true); }} aria-live="polite"><InkReturn />{confirmHome ? '再点一次，回到标题' : '回到标题'}<small>{confirmHome ? '此刻已自动留存，可随时续梦' : '此刻已自动留存'}</small></button>}</div></div>}
       {modal === 'about' && <AboutView />}
       {modal === 'music' && <MusicRoom profile={profile} settings={settings} onChange={setSettings} />}
     </Modal>}
-    {toast && <div className="toast" key={toastKey} role="status"><Check size={15} strokeWidth={1.5} />{toast}<button onClick={() => setToast('')} aria-label="关闭提示"><X size={13} /></button></div>}
+    {toast && <div className="toast" key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span>{toast}<button onClick={() => setToast('')} aria-label="关闭提示"><X size={13} /></button></div>}
     {auto && screen === 'play' && !modal && !intro && beat?.kind === 'text' && <button className="reading-mode-indicator" onClick={() => setAuto(false)}><span />自动阅读中 <Pause size={11} /></button>}
     {skipping && screen === 'play' && !modal && <button className="reading-mode-indicator" onClick={() => setSkipping(false)}><SkipForward size={12} />已读快进中</button>}
   </main>;

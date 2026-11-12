@@ -1,0 +1,478 @@
+/* ==========================================================================
+   对白：没有方框，只有从画面底部升起的一层墨雾
+   ========================================================================== */
+.actor {
+  position: absolute;
+  right: 6%;
+  bottom: 0;
+  width: min(48vw, 640px);
+  height: min(93vh, 980px);
+  z-index: 2;
+  pointer-events: none;
+  /* 立绘下沿融进墨雾，而不是被横刀切断 */
+  -webkit-mask-image: linear-gradient(to bottom, #000 52%, rgba(0, 0, 0, 0.72) 68%, rgba(0, 0, 0, 0.18) 84%, transparent 94%);
+  mask-image: linear-gradient(to bottom, #000 52%, rgba(0, 0, 0, 0.72) 68%, rgba(0, 0, 0, 0.18) 84%, transparent 94%);
+  animation: actor-emerge 1s var(--ease-ink) both;
+}
+.actor > img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  /* 一圈与场景同色的边缘光 */
+  filter: drop-shadow(0 0 1.2px rgba(255, 238, 208, 0.42))
+    drop-shadow(-14px -4px 26px color-mix(in srgb, var(--actor-tint, #c9a46a) 38%, transparent))
+    drop-shadow(0 10px 30px rgba(2, 12, 16, 0.45));
+}
+.actor-glow {
+  position: absolute;
+  left: 18%;
+  top: 22%;
+  width: 64%;
+  height: 52%;
+  border-radius: 50%;
+  background: var(--actor-tint, #c9a46a);
+  filter: blur(90px);
+  opacity: 0.16;
+}
+.actor-vertical-name {
+  position: absolute;
+  right: 8%;
+  top: 30%;
+  writing-mode: vertical-rl;
+  font-family: var(--hand);
+  font-size: 15px;
+  letter-spacing: 0.5em;
+  color: rgba(239, 232, 214, 0.55);
+  text-shadow: 0 0 12px rgba(4, 19, 26, 0.9);
+}
+@keyframes actor-emerge {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.dialogue {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 128px clamp(28px, 7vw, 120px) 18px;
+  isolation: isolate;
+  transition:
+    opacity 0.7s var(--ease-ink),
+    transform 0.7s var(--ease-ink);
+}
+.dialogue-mist {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 34% 46% at 18% 38%, rgba(3, 14, 19, 0.5), transparent 72%),
+    radial-gradient(ellipse 30% 40% at 62% 30%, rgba(3, 14, 19, 0.38), transparent 72%),
+    radial-gradient(ellipse 28% 42% at 88% 44%, rgba(3, 14, 19, 0.42), transparent 72%),
+    linear-gradient(to top, rgba(3, 14, 19, 0.95) 0%, rgba(3, 14, 19, 0.86) 34%, rgba(3, 14, 19, 0.6) 62%, rgba(3, 14, 19, 0.22) 84%, transparent 100%);
+  background-size:
+    140% 100%,
+    150% 100%,
+    140% 100%,
+    100% 100%;
+  backdrop-filter: blur(5px);
+  -webkit-mask-image: linear-gradient(to top, #000 55%, rgba(0, 0, 0, 0.6) 78%, transparent);
+  mask-image: linear-gradient(to top, #000 55%, rgba(0, 0, 0, 0.6) 78%, transparent);
+  animation: mist-drift 26s ease-in-out infinite alternate;
+}
+.dialogue--inner .dialogue-mist {
+  background:
+    radial-gradient(ellipse 40% 50% at 30% 40%, rgba(16, 38, 52, 0.45), transparent 72%),
+    radial-gradient(ellipse 30% 40% at 80% 40%, rgba(16, 38, 52, 0.4), transparent 72%),
+    linear-gradient(to top, rgba(5, 17, 26, 0.95) 0%, rgba(6, 20, 30, 0.84) 36%, rgba(6, 20, 30, 0.55) 64%, rgba(6, 20, 30, 0.2) 85%, transparent 100%);
+  background-size:
+    150% 100%,
+    140% 100%,
+    100% 100%;
+}
+@keyframes mist-drift {
+  from {
+    background-position:
+      0% 0,
+      100% 0,
+      0% 0,
+      0 0;
+  }
+  to {
+    background-position:
+      100% 0,
+      0% 0,
+      100% 0,
+      0 0;
+  }
+}
+.dialogue-body {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 说话的人：一枚朱砂印 —— 对白用白文（实底），内心用朱文（空心） */
+.speaker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  animation: seal-press 0.6s var(--ease-ink) both;
+}
+.speaker-seal {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 3px 12px 4px 14px;
+  transform: rotate(-1.5deg);
+}
+.speaker-seal strong {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  line-height: 1.4;
+}
+.dialogue--inner .speaker-seal {
+  background-color: transparent;
+  color: #e07a5f;
+  box-shadow: inset 0 0 0 1.5px #c2553b;
+}
+.speaker-mood {
+  font-family: var(--hand);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: var(--brass-dim);
+}
+@keyframes seal-press {
+  from {
+    opacity: 0;
+    transform: scale(1.18);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.dialogue-advance {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.dialogue-advance:hover:not(:disabled) {
+  color: inherit;
+}
+.dialogue-advance:focus-visible {
+  box-shadow: none;
+}
+.dialogue-advance:focus-visible .dialogue-text {
+  text-decoration: underline 1px rgba(201, 164, 106, 0.4);
+  text-underline-offset: 10px;
+}
+.dialogue-text {
+  min-height: calc(var(--dialogue-size) * 1.9 * 2);
+  font-family: var(--serif);
+  font-size: var(--dialogue-size);
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+  color: #f2ecdc;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(3, 14, 19, 0.65);
+  overflow-wrap: anywhere;
+}
+.dialogue--narration .dialogue-text {
+  color: #d9d7ca;
+  padding-left: 24px;
+  border-left: 1px solid rgba(201, 164, 106, 0.32);
+  letter-spacing: 0.08em;
+}
+.dialogue--inner .dialogue-text {
+  font-family: var(--hand);
+  color: #cbdcda;
+  letter-spacing: 0.08em;
+}
+.unrevealed {
+  opacity: 0;
+}
+.advance-indicator {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 14px;
+  vertical-align: middle;
+  transform: rotate(45deg) translateY(-2px);
+  background: var(--brass-bright);
+  box-shadow: 0 0 12px var(--brass);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.advance-indicator.is-ready {
+  opacity: 1;
+  animation: continue-pulse 1.8s ease-in-out infinite;
+}
+
+.dialogue-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 14px;
+  min-height: 44px;
+}
+.scene-bookmark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: #8b9893;
+  white-space: nowrap;
+}
+.scene-bookmark i {
+  font-style: normal;
+  opacity: 0.6;
+}
+.autosaved-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brass);
+  box-shadow: 0 0 8px rgba(201, 164, 106, 0.7);
+  opacity: 0.7;
+}
+.dialogue-page {
+  padding-left: 14px;
+  border-left: 1px solid rgba(201, 164, 106, 0.22);
+}
+
+.reading-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.reading-controls button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 11px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: #b8c3bd;
+  border-radius: 20px;
+  white-space: nowrap;
+  transition:
+    color 0.5s,
+    background 0.5s;
+}
+.reading-controls button:hover:not(:disabled) {
+  color: var(--brass-bright);
+  background: radial-gradient(closest-side, rgba(201, 164, 106, 0.16), transparent);
+}
+.reading-controls button.selected {
+  color: var(--brass-bright);
+  background: radial-gradient(closest-side, rgba(234, 190, 120, 0.22), transparent);
+  text-shadow: 0 0 12px rgba(234, 190, 120, 0.6);
+}
+.reading-controls button.selected .ink-icon {
+  filter: drop-shadow(0 0 6px rgba(234, 190, 120, 0.7));
+}
+.reading-more {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width 0.8s var(--ease-scroll),
+    opacity 0.6s var(--ease-ink);
+}
+.reading-controls.is-open .reading-more {
+  max-width: 460px;
+  opacity: 1;
+}
+.reading-toggle {
+  position: relative;
+  margin-left: 6px;
+}
+.reading-toggle::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: rgba(201, 164, 106, 0.28);
+}
+.reading-toggle[aria-expanded="true"] {
+  color: var(--brass-bright);
+}
+
+/* 隐藏界面 / 章节卡出现时，对白退场 */
+.app--hidden .dialogue,
+.app--intro .dialogue {
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+}
+.app--hidden .actor-vertical-name {
+  opacity: 0;
+}
+
+/* ---------- 大屏 ---------- */
+@media (min-width: 1700px) {
+  .dialogue-body {
+    max-width: 1120px;
+  }
+}
+
+/* ---------- 矮屏桌面 ---------- */
+@media (max-height: 780px) and (min-width: 901px) {
+  .dialogue {
+    padding-top: 96px;
+  }
+  .dialogue-text {
+    min-height: calc(var(--dialogue-size) * 1.85 * 2);
+    line-height: 1.85;
+  }
+}
+
+/* ---------- 手机竖屏 ---------- */
+@media (max-width: 760px) {
+  .actor {
+    right: -14%;
+    width: 112vw;
+    height: 76dvh;
+    bottom: 12dvh;
+  }
+  .actor-vertical-name {
+    right: 16%;
+    top: 18%;
+    font-size: 14px;
+  }
+  .dialogue {
+    padding: 104px 20px calc(10px + env(safe-area-inset-bottom));
+  }
+  .dialogue-mist {
+    background:
+      radial-gradient(ellipse 60% 40% at 30% 30%, rgba(3, 14, 19, 0.45), transparent 72%),
+      linear-gradient(to top, rgba(3, 14, 19, 0.96) 0%, rgba(3, 14, 19, 0.88) 42%, rgba(3, 14, 19, 0.55) 70%, transparent 100%);
+    background-size:
+      160% 100%,
+      100% 100%;
+  }
+  .speaker {
+    margin-bottom: 10px;
+  }
+  .speaker-seal strong {
+    font-size: 17px;
+  }
+  .dialogue-text {
+    font-size: clamp(17px, calc(var(--dialogue-size) * 0.86), 25px);
+    min-height: calc(clamp(17px, calc(var(--dialogue-size) * 0.86), 25px) * 1.85 * 3);
+    line-height: 1.85;
+    letter-spacing: 0.04em;
+  }
+  .dialogue--narration .dialogue-text {
+    padding-left: 14px;
+  }
+  .dialogue-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .scene-bookmark {
+    justify-content: center;
+    gap: 10px;
+  }
+  .reading-controls {
+    justify-content: space-between;
+    border-top: 1px solid rgba(201, 164, 106, 0.14);
+    padding-top: 4px;
+  }
+  .reading-controls button {
+    flex-direction: column;
+    gap: 2px;
+    height: 50px;
+    min-width: 46px;
+    padding: 0 4px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    border-radius: 10px;
+  }
+  .reading-more {
+    flex: 0 1 auto;
+    gap: 0;
+  }
+  .reading-controls.is-open .reading-more {
+    max-width: 240px;
+  }
+  .reading-toggle {
+    margin-left: 0;
+  }
+  .reading-toggle::before {
+    left: 0;
+    top: 14px;
+    bottom: 14px;
+  }
+  .hidden-hint {
+    bottom: calc(30px + env(safe-area-inset-bottom));
+    white-space: nowrap;
+  }
+}
+
+/* ---------- 手机横屏 / 很矮的窗口 ---------- */
+@media (max-height: 520px) and (min-width: 600px) {
+  .actor {
+    height: 100dvh;
+    width: 40vw;
+    right: 4%;
+    bottom: 0;
+  }
+  .dialogue {
+    padding: 56px 32px 6px;
+  }
+  .dialogue-body {
+    max-width: none;
+    margin-right: 30vw;
+  }
+  .speaker {
+    margin-bottom: 4px;
+  }
+  .dialogue-text {
+    font-size: 17px;
+    min-height: calc(17px * 1.75 * 2);
+    line-height: 1.75;
+  }
+  .dialogue-footer {
+    margin-top: 4px;
+    min-height: 40px;
+  }
+  .reading-controls button {
+    height: 36px;
+    padding: 0 8px;
+  }
+  .scene-bookmark .dialogue-page {
+    display: none;
+  }
+}

@@ -8,3 +8,4 @@ artifacts/
 .env.*
 !.env.example
 .DS_Store
+resources/fonts/LXGWWenKai-Regular.ttf
