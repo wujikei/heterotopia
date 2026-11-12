@@ -1,0 +1,290 @@
+/* ==========================================================================
+   转场与章节卡：墨从中心晕开，水纹一圈圈荡出去，竖排标题，朱印落款
+   ========================================================================== */
+@property --reveal {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 150%;
+}
+@property --bleed {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 140%;
+}
+
+/* 换景：新画面像墨一样从中间洇开 */
+.scene-image--current {
+  -webkit-mask-image: radial-gradient(ellipse 80% 90% at 50% 55%, #000 calc(var(--reveal) - 35%), transparent var(--reveal));
+  mask-image: radial-gradient(ellipse 80% 90% at 50% 55%, #000 calc(var(--reveal) - 35%), transparent var(--reveal));
+  animation: ink-reveal 1.5s var(--ease-ink) both;
+}
+.scene-art--motion .scene-image--current {
+  animation:
+    ink-reveal 1.5s var(--ease-ink) both,
+    scene-drift 48s ease-in-out infinite alternate;
+}
+@keyframes ink-reveal {
+  from {
+    --reveal: 0%;
+    opacity: 0.35;
+  }
+  to {
+    --reveal: 150%;
+    opacity: 1;
+  }
+}
+
+.chapter-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(28px, 4vw, 56px);
+  width: 100%;
+  height: 100%;
+  padding: 10vh 24px;
+  color: var(--rice);
+  cursor: pointer;
+  isolation: isolate;
+}
+.chapter-intro:hover:not(:disabled) {
+  color: var(--rice);
+}
+.chapter-intro:focus-visible {
+  box-shadow: none;
+}
+.intro-ink {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(3, 12, 16, 0.95), rgba(3, 12, 16, 0.9) 45%, rgba(3, 12, 16, 0.78) 75%, rgba(3, 12, 16, 0.68));
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 calc(var(--bleed) - 22%), transparent var(--bleed));
+  mask-image: radial-gradient(circle at 50% 50%, #000 calc(var(--bleed) - 22%), transparent var(--bleed));
+  animation: ink-bleed 1.1s var(--ease-ink) both;
+}
+@keyframes ink-bleed {
+  from {
+    --bleed: 0%;
+  }
+  to {
+    --bleed: 140%;
+  }
+}
+.intro-ripple,
+.intro-ripple::after {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 164, 106, 0.5);
+  opacity: 0;
+  animation: ripple-out 2.2s 0.15s var(--ease-ink) both;
+}
+.intro-ripple::after {
+  content: "";
+  left: 0;
+  top: 0;
+  margin: 0;
+  animation-delay: 0.55s;
+}
+@keyframes ripple-out {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(14);
+  }
+}
+.intro-scroll {
+  writing-mode: vertical-rl;
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+  max-height: 72vh;
+}
+.intro-chapter {
+  font-size: 18px;
+  letter-spacing: 0.6em;
+  color: var(--brass);
+  animation: brush-down 0.9s 0.35s var(--ease-ink) both;
+}
+.chapter-intro h2 {
+  font-family: var(--serif);
+  font-size: clamp(40px, 5.4vh, 58px);
+  font-weight: 400;
+  letter-spacing: 0.36em;
+  line-height: 1.2;
+  color: #f4ecd8;
+  text-shadow: 0 0 30px rgba(234, 208, 160, 0.25);
+  animation: brush-down 1.1s 0.5s var(--ease-ink) both;
+}
+.intro-subtitle {
+  margin-block-start: 4.5em;
+  font-family: var(--hand);
+  font-size: 17px;
+  letter-spacing: 0.32em;
+  color: #b9c3bc;
+  animation: brush-down 0.9s 0.8s var(--ease-ink) both;
+}
+.intro-seal {
+  align-self: center;
+  margin-top: 22vh;
+  writing-mode: vertical-rl;
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  padding: 8px 4px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  animation: stamp-down 0.55s 1s var(--ease-ink) both;
+}
+.intro-click {
+  position: absolute;
+  left: 50%;
+  bottom: 8vh;
+  transform: translateX(-50%);
+  font-family: var(--hand);
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  color: rgba(207, 211, 200, 0.7);
+  white-space: nowrap;
+  animation: veil-in 0.8s 1.2s ease both;
+}
+@keyframes brush-down {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 -10% 0);
+    filter: none;
+  }
+}
+
+/* ---------- 标题页：手机上让出船与人 ---------- */
+@media (max-width: 760px) {
+  .home-body {
+    top: calc(11dvh + env(safe-area-inset-top));
+    bottom: calc(64px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+  }
+  .home-main-menu {
+    margin-top: auto;
+    width: 100%;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .cta-primary,
+  .cta-secondary {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 58px;
+    padding: 0 12px;
+    justify-content: center;
+    column-gap: 8px;
+  }
+  .cta-primary {
+    flex-grow: 1.35;
+  }
+  .cta-primary strong {
+    font-size: 22px;
+    letter-spacing: 0.36em;
+    margin-right: -0.36em;
+  }
+  .cta-secondary strong {
+    font-size: 17px;
+    letter-spacing: 0.3em;
+  }
+  .cta-primary small,
+  .cta-secondary small {
+    display: none;
+  }
+  .cta-primary .cta-boat {
+    width: 26px;
+    height: 26px;
+  }
+  .cta-secondary .cta-boat {
+    display: none;
+  }
+  .home-library {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 14px;
+    max-width: none;
+    gap: 4px;
+  }
+  .home-library button {
+    flex-direction: column;
+    justify-content: center;
+    min-height: 54px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    gap: 4px;
+  }
+  .home-library button svg {
+    width: 18px;
+    height: 18px;
+  }
+  .home-footer {
+    bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+  .home-edition {
+    display: none;
+  }
+  .home-coordinate {
+    display: none;
+  }
+  .home-verse {
+    margin-top: 22px;
+  }
+  .chapter-intro {
+    gap: 22px;
+  }
+  .chapter-intro h2 {
+    font-size: 38px;
+    letter-spacing: 0.28em;
+  }
+  .intro-chapter {
+    font-size: 16px;
+  }
+  .intro-subtitle {
+    font-size: 15px;
+    margin-block-start: 3em;
+  }
+  .intro-seal {
+    margin-top: 16vh;
+  }
+}
+@media (max-height: 520px) and (min-width: 600px) {
+  .chapter-intro h2 {
+    font-size: 30px;
+  }
+  .intro-scroll {
+    max-height: 80vh;
+    gap: 16px;
+  }
+  .intro-subtitle {
+    margin-block-start: 2em;
+  }
+  .intro-seal {
+    margin-top: 10vh;
+  }
+  .intro-click {
+    bottom: 4vh;
+  }
+}
