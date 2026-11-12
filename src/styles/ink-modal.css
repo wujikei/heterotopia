@@ -11,6 +11,7 @@
   padding: 44px 28px;
   background:
     radial-gradient(ellipse 75% 70% at 50% 50%, rgba(3, 14, 19, 0.62), rgba(3, 14, 19, 0.28) 75%, rgba(3, 14, 19, 0.18));
+  -webkit-backdrop-filter: blur(1.5px) saturate(0.9);
   backdrop-filter: blur(1.5px) saturate(0.9);
   animation: veil-in 0.6s var(--ease-ink) both;
 }

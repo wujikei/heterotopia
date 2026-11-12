@@ -1,0 +1,19 @@
+/* ==========================================================================
+   轻量模式：触屏 / 窄屏 / 省流量 / 偏好少透明时，
+   去掉逐帧重绘的毛玻璃与雾气漂移，噪点纹理换成单层低频版本。
+   ========================================================================== */
+@media (pointer: coarse), (max-width: 760px), (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
+  :root {
+    --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .29 0 0 0 0 .2 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    --fiber-texture: linear-gradient(transparent, transparent);
+  }
+  .dialogue-mist::before {
+    animation: none;
+    will-change: auto;
+  }
+  .modal-backdrop,
+  .cta-secondary {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
