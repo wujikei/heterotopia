@@ -21,7 +21,7 @@
   --ease-ink: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-scroll: cubic-bezier(0.65, 0, 0.35, 1);
   --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .29 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-  --fiber-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .18' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .33 0 0 0 0 .22 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --fiber-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .18' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .33 0 0 0 0 .22 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   font-family: var(--serif);
   color: var(--rice);
 }
@@ -77,7 +77,10 @@ button:hover:not(:disabled) {
 .speaker-seal,
 .intro-seal,
 .toast-seal,
-.choice-stamp {
+.choice-stamp,
+.item-seal,
+.about-seal,
+.ending-seal {
   --seal-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1 1 1 1 1 1 0 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23r)'/%3E%3C/svg%3E");
   background-color: var(--cinnabar);
   color: #f6e6cf;
@@ -263,6 +266,7 @@ button:hover:not(:disabled) {
   background: linear-gradient(90deg, rgba(6, 22, 28, 0.55), rgba(6, 22, 28, 0.2));
   box-shadow: inset 0 0 0 1px rgba(201, 164, 106, 0.38);
   border-radius: 2px;
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
 .cta-secondary strong {
@@ -454,20 +458,6 @@ button:hover:not(:disabled) {
   position: relative;
   z-index: 1;
   color: rgba(234, 208, 160, 0.7);
-}
-.ending-card:not(.ending-card--known) {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-.ending-card:not(.ending-card--known)::before {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  z-index: -1;
-  background: var(--glimpse) center / cover;
-  filter: blur(16px) grayscale(0.8) brightness(0.45);
-  opacity: 0.7;
 }
 
 /* 动效减弱：保持既有开关的含义 */

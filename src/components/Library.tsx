@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, ChevronRight, Download, Headphones, Image as ImageIcon, LockKeyhole, RotateCcw, Upload, X } from 'lucide-react';
-import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitAsset, sourceDocument } from '../data/world';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Download, Headphones, Image as ImageIcon, LockKeyhole, RotateCcw, Upload, X } from 'lucide-react';
+import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitAsset, portraitFace, sourceDocument } from '../data/world';
 import { canReturn, hasKunlun, hasRoyal, SCENES, sceneById } from '../engine';
 import { BoneMark } from './Atmosphere';
 import type { GameState, Profile, Route, SaveSlot, Settings } from '../types';
@@ -19,23 +19,34 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
   const scenes = SCENES.filter(scene => scene.route === route);
   const visited = scenes.filter(scene => profile.visited.includes(scene.id));
   return <div className="chapter-layout">
-    <nav className="route-nav" aria-label="路线">
-      {ROUTES.map(item => <button key={item.key} className={`route-option ${route === item.key ? 'selected' : ''}`} onClick={() => setRoute(item.key)}>
-        <span className="route-numeral">{item.number}</span><span><small>{item.subtitle}</small><strong>{item.name}</strong></span><ChevronRight size={16} strokeWidth={1} />
-      </button>)}
+    <nav className="route-river" aria-label="路线">
+      <svg className="route-river-line" viewBox="0 0 40 500" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0C34 50 6 80 20 125S34 200 20 250 6 330 20 375 34 450 20 500" /></svg>
+      {ROUTES.map(item => {
+        const all = SCENES.filter(scene => scene.route === item.key);
+        const seen = all.filter(scene => profile.visited.includes(scene.id)).length;
+        return <button key={item.key} className={`route-stop ${route === item.key ? 'selected' : ''} ${seen ? '' : 'route-stop--unseen'}`} onClick={() => setRoute(item.key)} aria-pressed={route === item.key}>
+          <span className="route-node" aria-hidden="true">{item.number}</span>
+          <span className="route-copy"><small>{item.subtitle}</small><strong>{item.name}</strong><em>{seen ? `${seen} / ${all.length} 场` : '尚未行至'}</em></span>
+        </button>;
+      })}
       <div className="route-memory"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><p>两条路，同一夜。<br />经历会留在卜骨里。</p></div>
     </nav>
     <div className="chapter-content">
-      <div className="chapter-banner" style={{ backgroundImage: `linear-gradient(90deg, rgba(8,24,29,.78), rgba(8,24,29,.1)),url("${asset(selected.art)}")` }}><span className="eyebrow">{selected.subtitle} · {visited.length} / {scenes.length} 场已读</span><h3>{selected.name}</h3><p>{route === 'return' && !canReturn(profile) ? '走过王裔与昆仑，两道裂纹才会相合。' : '循着记忆，回到已经走过的地方。'}</p></div>
-      <div className="scene-list">
+      <div className="chapter-banner" key={route}>
+        <img className="chapter-banner-art" src={asset(selected.art)} alt="" />
+        <div className="chapter-banner-copy"><span className="chapter-banner-numeral" aria-hidden="true">{selected.number}</span><div><span className="eyebrow">{selected.subtitle} · 已读 {visited.length} / {scenes.length} 场</span><h3>{selected.name}</h3><p>{route === 'return' && !canReturn(profile) ? '走过王裔与昆仑，两道裂纹才会相合。' : '循着记忆，回到已经走过的地方。'}</p></div></div>
+        <div className="chapter-progress" aria-hidden="true"><i style={{ width: `${scenes.length ? visited.length / scenes.length * 100 : 0}%` }} /></div>
+      </div>
+      <ol className="scene-list">
         {scenes.map((scene, index) => {
           const unlocked = profile.visited.includes(scene.id) || scene.id === '0-1';
+          const current = currentScene === scene.id;
           const [time, ...place] = scene.title.split('·');
-          return <button className={`scene-row ${currentScene === scene.id ? 'scene-row--current' : ''}`} key={scene.id} disabled={!unlocked} onClick={() => onJump(scene.id)}>
-            <span className="scene-row-index">{String(index + 1).padStart(2, '0')}</span><span><strong>{place.join(' · ') || time}</strong><small>{place.length ? time : scene.chapter}</small></span><span className="scene-row-status">{!unlocked ? <LockKeyhole size={14} strokeWidth={1.2} /> : currentScene === scene.id ? '此刻' : <ArrowRight size={17} strokeWidth={1} />}</span>
-          </button>;
+          return <li key={scene.id}><button className={`scene-row ${current ? 'scene-row--current' : ''} ${unlocked ? '' : 'scene-row--locked'}`} disabled={!unlocked} onClick={() => onJump(scene.id)}>
+            <span className="scene-row-node" aria-hidden="true" /><span className="scene-row-index">{String(index + 1).padStart(2, '0')}</span><span className="scene-row-copy"><strong>{place.join(' · ') || time}</strong><small>{place.length ? time : scene.chapter}</small></span><span className="scene-row-status">{!unlocked ? '未至' : current ? '此刻' : <>重游<ArrowRight size={15} strokeWidth={1.2} /></>}</span>
+          </button></li>;
         })}
-      </div>
+      </ol>
     </div>
   </div>;
 }
@@ -43,19 +54,27 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
 export function CharactersView({ profile }: { profile: Profile }) {
   const [selected, setSelected] = useState(CHARACTERS[0]);
   const known = (key: string) => profile.met.includes(key) || key === 'shen';
+  const count = CHARACTERS.filter(character => known(character.key)).length;
   return <div className="characters-layout">
-    <div className="character-list">
-      <p className="quiet">记住一个名字，也记住一个人。</p>
-      {CHARACTERS.map((character, index) => <button className={`character-row ${selected.key === character.key ? 'selected' : ''}`} key={character.key} disabled={!known(character.key)} onClick={() => setSelected(character)}>
-        <span className="character-index">{String(index + 1).padStart(2, '0')}</span><span className="character-name">{known(character.key) ? character.name : '未相逢'}<small>{known(character.key) ? character.subtitle : '名字还在远方'}</small></span>{!known(character.key) ? <LockKeyhole size={13} /> : <span className="character-dot" style={{ background: character.color }} />}
-      </button>)}
+    <div className="character-gallery">
+      <p className="character-hint">记住一个名字，也记住一个人。<span>{count}<i> / {CHARACTERS.length}</i></span></p>
+      <div className="character-grid">{CHARACTERS.map((character, index) => {
+        const met = known(character.key);
+        return <button className={`character-card ${selected.key === character.key ? 'selected' : ''} ${met ? '' : 'character-card--locked'}`} key={character.key} disabled={!met} onClick={() => setSelected(character)} aria-pressed={selected.key === character.key} aria-label={met ? `${character.name}，${character.subtitle}` : `第 ${index + 1} 位，尚未相逢`}>
+          <span className="character-thumb" style={{ '--character-color': character.color } as React.CSSProperties}><img src={portraitFace(character.key)} alt="" loading="lazy" />{!met && <span className="character-unknown" aria-hidden="true">？</span>}</span>
+          <span className="character-card-name">{met ? character.name : '未相逢'}</span>
+        </button>;
+      })}</div>
     </div>
-    <div key={selected.key} className="character-detail" style={{ '--character-color': selected.color } as React.CSSProperties}>
-      <div className="character-detail-orbit" aria-hidden="true" />
-      <div className="character-detail-watermark" aria-hidden="true">{selected.name.at(-1)}</div>
-      <img className="character-detail-portrait" src={portraitAsset(selected.key)} alt={selected.name} />
-      <div className="character-biography"><span className="eyebrow">{selected.subtitle}</span><h3>{selected.name}<small>{selected.reading}</small></h3><p className="character-description">{selected.description}</p><blockquote>「 {selected.quote} 」</blockquote></div>
-    </div>
+    <article key={selected.key} className="character-scroll" style={{ '--character-color': selected.color } as React.CSSProperties}>
+      <div className="character-portrait-frame"><span className="character-detail-watermark" aria-hidden="true">{selected.name.at(-1)}</span><img className="character-detail-portrait" src={portraitAsset(selected.key)} alt={selected.name} /></div>
+      <div className="character-biography">
+        <span className="eyebrow">{selected.subtitle}</span>
+        <h3>{selected.name}{selected.reading && <small>{selected.reading}</small>}</h3>
+        <p className="character-description">{selected.description}</p>
+        <blockquote>{selected.quote}</blockquote>
+      </div>
+    </article>
   </div>;
 }
 
@@ -86,11 +105,26 @@ export function GalleryView({ profile }: { profile: Profile }) {
 
 export function JournalView({ state, profile }: { state: GameState | null; profile: Profile }) {
   const [tab, setTab] = useState<'bag' | 'endings'>('bag');
-  return <div className="journal-content"><div className="tab-bar"><button className={tab === 'bag' ? 'selected' : ''} onClick={() => setTab('bag')}>随身之物</button><button className={tab === 'endings' ? 'selected' : ''} onClick={() => setTab('endings')}>命运的回声<span>{profile.endings.length} / 6</span></button></div>
-    {tab === 'bag' ? <><div className="bone-panel"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><div><span className="eyebrow">卜骨上的两道裂纹</span><h3>{canReturn(profile) ? '来处与归处，终于相合。' : hasRoyal(profile) || hasKunlun(profile) ? '另一条路，仍在等你。' : '两条路，共享这一夜。'}</h3><p>记忆留存，物件归于此夜原样。<br />{profile.oldNames ? '那十根旧队名简，你已经问过。' : '有些名字，还没有被听见。'}</p><div className="bone-legend"><span className={hasRoyal(profile) ? 'is-lit' : ''}>第一道 · 王裔 {hasRoyal(profile) && <Check size={12} />}</span><span className={hasKunlun(profile) ? 'is-lit' : ''}>第二道 · 昆仑 {hasKunlun(profile) && <Check size={12} />}</span></div></div></div><h4 className="section-label">此刻，行囊里</h4><div className="inventory-grid">{state?.inventory.length ? state.inventory.map(id => ITEMS[id] && <div className="inventory-item" key={id}><span className="item-seal">{ITEMS[id].mark}</span><div><h4>{ITEMS[id].name}</h4><p>{ITEMS[id].detail}</p></div></div>) : <p className="empty-note">行囊还轻。先走到故事里去吧。</p>}</div></> : <div className="endings-grid">{Object.entries(ENDINGS).map(([id, ending]) => {
-      const known = profile.endings.includes(id as keyof typeof ENDINGS);
-      return <div className={`ending-card ${known ? 'ending-card--known' : ''}`} key={id} style={known ? { backgroundImage: `linear-gradient(0deg,rgba(6,21,26,.98),rgba(6,21,26,.4)),url("${asset(ending.background)}")` } : { '--glimpse': `url("${asset(`${ending.background}-thumb`)}")` } as React.CSSProperties}><span className="ending-roman">{ending.index}</span>{!known && <LockKeyhole className="ending-lock" size={17} strokeWidth={1} />}<small>{known ? ending.subtitle : '一页未尽的命运'}</small><h3>{known ? ending.title : '未闻'}</h3><p>{known ? ending.quote : '亲历之后，才能记住。'}</p></div>;
-    })}</div>}
+  const items = (state?.inventory ?? []).filter(id => ITEMS[id]);
+  const ghosts = Math.max(0, 4 - items.length);
+  return <div className="journal-content">
+    <div className="notebook">
+      <div className="tab-bar notebook-tabs" role="tablist"><button role="tab" aria-selected={tab === 'bag'} className={tab === 'bag' ? 'selected' : ''} onClick={() => setTab('bag')}>随身之物</button><button role="tab" aria-selected={tab === 'endings'} className={tab === 'endings' ? 'selected' : ''} onClick={() => setTab('endings')}>命运的回声<span>{profile.endings.length} / 6</span></button></div>
+      <div className="notebook-page" key={tab}>
+        {tab === 'bag' ? <>
+          <div className="bone-panel"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><div><span className="eyebrow">卜骨上的两道裂纹</span><h3>{canReturn(profile) ? '来处与归处，终于相合。' : hasRoyal(profile) || hasKunlun(profile) ? '另一条路，仍在等你。' : '两条路，共享这一夜。'}</h3><p>记忆留存，物件归于此夜原样。<br />{profile.oldNames ? '那十根旧队名简，你已经问过。' : '有些名字，还没有被听见。'}</p><div className="bone-legend"><span className={hasRoyal(profile) ? 'is-lit' : ''}>第一道 · 王裔 {hasRoyal(profile) && <Check size={12} />}</span><span className={hasKunlun(profile) ? 'is-lit' : ''}>第二道 · 昆仑 {hasKunlun(profile) && <Check size={12} />}</span></div></div></div>
+          <h4 className="section-label">此刻，行囊里</h4>
+          <div className="inventory-grid">
+            {items.map(id => <div className="inventory-item" key={id}><span className="item-seal">{ITEMS[id].mark}</span><div><h4>{ITEMS[id].name}</h4><p>{ITEMS[id].detail}</p></div></div>)}
+            {Array.from({ length: ghosts }, (_, i) => <div className="inventory-item inventory-item--ghost" key={`ghost-${i}`} aria-hidden="true"><span className="item-seal">{['图', '玉', '简', '笛'][i % 4]}</span><div><h4>尚未拾得</h4><p>{items.length || i ? '路上还会遇见。' : '行囊还轻。先走到故事里去吧。'}</p></div></div>)}
+          </div>
+          {!items.length && <p className="empty-note">行囊还轻。先走到故事里去吧。</p>}
+        </> : <div className="endings-grid">{Object.entries(ENDINGS).map(([id, ending]) => {
+          const known = profile.endings.includes(id as keyof typeof ENDINGS);
+          return <div className={`ending-card ${known ? 'ending-card--known' : ''}`} key={id} style={{ '--glimpse': `url("${asset(`${ending.background}-thumb`)}")` } as React.CSSProperties}><span className="ending-roman" aria-hidden="true">{ending.index}</span>{!known && <LockKeyhole className="ending-lock" size={16} strokeWidth={1.2} />}<small>{known ? ending.subtitle : '一页未尽的命运'}</small><h3>{known ? ending.title : '未闻'}</h3><p>{known ? ending.quote : '亲历之后，才能记住。'}</p></div>;
+        })}</div>}
+      </div>
+    </div>
   </div>;
 }
 
@@ -117,5 +151,15 @@ export function SettingsView({ settings, onChange, onExport, onImport, onReset, 
 }
 
 export function AboutView() {
-  return <div className="about-content"><div className="about-title">异托邦<span>H E T E R O T O P I A</span></div><blockquote>「 看路，也看看走路的人。 」</blockquote><p>一部关于远行、记忆与回家的楚地奇幻视觉小说。</p><p>改编自《异托邦 V6 完整剧本》，保留序章、共通线、王裔线、昆仑线与归来的完整故事，以及跨路线记忆与四个王裔结局。</p><div className="about-stats"><span><strong>81</strong>场故事</span><span><strong>2</strong>条命运</span><span><strong>6</strong>页回声</span></div><p className="about-credit">原著剧本 · 用户提供<br />场景与人物美术 · 本机 Qwen-Image 2.1<br />原声配乐 · 本机 ACE-Step 1.5 / 十一首<br />环境与音效 · 本作程序化声音设计<br />中文字体 · Noto Serif SC、霞鹜文楷 LXGW WenKai / SIL Open Font License</p><a className="text-button" href={sourceDocument()} download="异托邦-V6-原著剧本.txt">阅读原著剧本 <ArrowRight size={15} /></a></div>;
+  const credits: [string, string][] = [['原著剧本', '用户提供'], ['场景与人物美术', '本机 Qwen-Image 2.1'], ['原声配乐', '本机 ACE-Step 1.5 · 十一首'], ['环境与音效', '本作程序化声音设计'], ['中文字体', 'Noto Serif SC · 霞鹜文楷 LXGW WenKai'], ['字体授权', 'SIL Open Font License']];
+  return <div className="about-content">
+    <div className="about-hero"><span className="about-seal" aria-hidden="true">异托</span><div className="about-title">异托邦</div></div>
+    <blockquote>看路，也看看走路的人。</blockquote>
+    <p>一部关于远行、记忆与回家的楚地奇幻视觉小说。</p>
+    <p>改编自《异托邦 V6 完整剧本》，保留序章、共通线、王裔线、昆仑线与归来的完整故事，以及跨路线记忆与四个王裔结局。</p>
+    <div className="about-stats"><span><strong>81</strong>场故事</span><span><strong>2</strong>条命运</span><span><strong>6</strong>页回声</span></div>
+    <dl className="about-credit">{credits.map(([role, name]) => <div key={role}><dt>{role}</dt><dd>{name}</dd></div>)}</dl>
+    <a className="text-button about-source" href={sourceDocument()} download="异托邦-V6-原著剧本.txt">阅读原著剧本 <ArrowRight size={15} /></a>
+  </div>;
 }
+
