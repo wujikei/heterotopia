@@ -3,6 +3,7 @@ import type { Character, EndingId } from '../types';
 type EmbeddedAssets = typeof globalThis & { __HETEROTOPIA_ASSETS__?: Record<string, string>; __HETEROTOPIA_SOURCE__?: string };
 export const asset = (name: string) => (globalThis as EmbeddedAssets).__HETEROTOPIA_ASSETS__?.[name] ?? `${import.meta.env.BASE_URL}art/${name}.webp`;
 export const portraitAsset = (key: string) => asset(`portrait-${key}${key === 'tu' ? '-v2' : key === 'xua' ? '-v3' : ''}`);
+export const portraitFace = (key: string) => asset(`portrait-${key}-face`);
 export const sourceDocument = () => (globalThis as EmbeddedAssets).__HETEROTOPIA_SOURCE__ ?? `${import.meta.env.BASE_URL}原著剧本-V6.txt`;
 
 export const CHARACTERS: Character[] = [

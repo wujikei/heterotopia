@@ -24,6 +24,7 @@ const LIBRARY: { name: ModalName; text: string; note: string; icon: typeof InkPa
   { name: 'journal', text: '旅人手记', note: '河水记得的', icon: InkBrush },
 ];
 const CHOICE_NUMERALS = ['壹', '贰', '叁', '肆', '伍', '陆'];
+const ENDING_NUMERALS: Record<string, string> = { I: '一', II: '二', III: '三', IV: '四', V: '五', VI: '六' };
 
 function useTypewriter(id: string | undefined, text: string, speed: number) {
   const [count, setCount] = useState(0);
@@ -366,7 +367,21 @@ export default function App() {
 
       {beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label="命运选择"><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{beat.prompt}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[i] ?? i + 1}</span><span className="choice-copy"><strong>{choice.disabled ? '尚未听见的名字' : choice.title}</strong><small>{choice.disabled ? choice.hint : choice.detail}</small></span><span className="choice-stamp" aria-hidden="true">定</span></button>)}</div>{game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。'}</span></div>}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />在分路前，留一枚书签</button></section>}
 
-      {beat.kind === 'ending' && <section className={`ending-screen ${beat.ending === 'home' ? 'ending-screen--home' : ''}`}><div className="ending-content"><span className="eyebrow">{ENDINGS[beat.ending].subtitle}</span><div className="ending-emblem"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /></div><p className="ending-kicker">{beat.ending === 'home' ? '全 剧 终' : '命 运 的 回 声'}</p><h2>{ENDINGS[beat.ending].title}</h2><div className="ending-title-line"><span /><i /><span /></div><blockquote>{ENDINGS[beat.ending].quote}</blockquote><p className="ending-memory">{beat.ending === 'home' ? '故事写到这里，日子还在继续。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。'}</p><button className="gold-button" onClick={() => { if (beat.ending === 'home') toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); audioJump.current = true; setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{beat.ending === 'home' ? '回到标题' : canReturn(profile) ? '循光归来' : '再赴灯下'}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>看看留下的记忆 <Feather size={14} /></button></div><span className="ending-copyright">异托邦 · {beat.ending === 'home' ? '谢谢你，记住他们。' : '未完的路，留给下一次启程。'}</span></section>}
+      {beat.kind === 'ending' && <section className={`ending-screen ending-screen--${beat.ending} ${beat.ending === 'home' ? 'ending-screen--home' : ''}`} aria-label={`结局 · ${ENDINGS[beat.ending].title}`}>
+        <span className="ending-ink" aria-hidden="true" /><span className="ending-ripple" aria-hidden="true" />
+        <div className="ending-content">
+          <p className="ending-kicker">{beat.ending === 'home' ? '全剧终' : '命运的回声'}</p>
+          <div className="ending-stage">
+            <span className="ending-seal" aria-hidden="true">{[...(beat.ending === 'home' ? '团圆' : `回声其${ENDING_NUMERALS[ENDINGS[beat.ending].index] ?? ''}`)].map((char, index) => <i key={index}>{char}</i>)}</span>
+            <h2 className="ending-title">{ENDINGS[beat.ending].title}</h2>
+            <div className="ending-side"><span className="ending-subtitle">{ENDINGS[beat.ending].subtitle}</span><div className="ending-emblem"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /></div></div>
+          </div>
+          <blockquote>{ENDINGS[beat.ending].quote}</blockquote>
+          <p className="ending-memory">{beat.ending === 'home' ? '故事写到这里，日子还在继续。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。'}</p>
+          <div className="ending-actions"><button className="gold-button" onClick={() => { if (beat.ending === 'home') toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); audioJump.current = true; setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{beat.ending === 'home' ? '回到标题' : canReturn(profile) ? '循光归来' : '再赴灯下'}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>看看留下的记忆 <Feather size={14} /></button></div>
+        </div>
+        <span className="ending-copyright">异托邦 · {beat.ending === 'home' ? '谢谢你，记住他们。' : '未完的路，留给下一次启程。'}</span>
+      </section>}
 
       {intro && <button className="chapter-intro" data-testid="chapter-intro" onClick={() => setIntro(null)} aria-label="进入故事"><span className="intro-ink" aria-hidden="true" /><span className="intro-ripple" aria-hidden="true" /><span className="intro-scroll"><span className="intro-chapter">{intro.chapter}</span><h2>{intro.title}</h2><span className="intro-subtitle">{intro.subtitle.replace(/\s*·\s*/g, '・')}</span></span><span className="intro-seal" aria-hidden="true">{intro.chapter === '终章' ? '归' : intro.chapter.slice(0, 2)}</span><span className="intro-click">点击，听水声继续。</span></button>}
     </div> : null}
