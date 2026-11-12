@@ -11,7 +11,7 @@
   font-display: swap;
 }
 :root {
-  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-family: var(--serif);
   color: #ede9de;
   background: #081b21;
   font-synthesis: weight;
@@ -102,9 +102,9 @@ button:hover:not(:disabled) {
 }
 .eyebrow {
   display: block;
-  font-family: Georgia, "Microsoft YaHei", serif;
-  font-size: 10px;
-  letter-spacing: 3px;
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.16em;
   color: var(--gold);
   line-height: 1.7;
 }
@@ -218,9 +218,9 @@ button:hover:not(:disabled) {
 }
 .brand small {
   display: block;
-  font-family: Georgia, serif;
-  font-size: 7px;
-  letter-spacing: 3px;
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.16em;
   margin-top: 7px;
   color: #afbcbb;
 }
@@ -232,8 +232,8 @@ button:hover:not(:disabled) {
   align-items: center;
   gap: 17px;
   font-family: var(--serif);
-  font-size: 11px;
-  letter-spacing: 4px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
   color: #c8d2cc;
   opacity: 0.8;
 }
@@ -272,9 +272,9 @@ button:hover:not(:disabled) {
   align-items: center;
   gap: 12px;
   color: #c1c8be;
-  letter-spacing: 4px;
+  letter-spacing: 0.16em;
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   margin-bottom: 14px;
 }
 .vermillion-seal {
@@ -319,9 +319,9 @@ button:hover:not(:disabled) {
   align-items: center;
   gap: 17px;
   color: #d2c6a8;
-  font-family: Georgia, serif;
-  font-size: 11px;
-  letter-spacing: 2.5px;
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: 0.16em;
   width: 351px;
   padding-top: 10px;
 }
@@ -407,7 +407,7 @@ button:hover:not(:disabled) {
   white-space: nowrap;
 }
 .start-button small {
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: 1.7px;
   color: #c7c4ae;
   line-height: 2;
@@ -436,7 +436,7 @@ button:hover:not(:disabled) {
   white-space: nowrap;
 }
 .continue-button small {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.3px;
   max-width: 160px;
   white-space: nowrap;
@@ -457,7 +457,7 @@ button:hover:not(:disabled) {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   color: #c5c9bb;
   position: relative;
@@ -506,7 +506,7 @@ button:hover:not(:disabled) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.4px;
   color: #9caaa6;
   z-index: 3;
@@ -516,7 +516,7 @@ button:hover:not(:disabled) {
   align-items: center;
   gap: 10px;
   color: #a7b5b2;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.5px;
 }
 .home-edition {
@@ -524,7 +524,7 @@ button:hover:not(:disabled) {
   align-items: center;
   gap: 17px;
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .home-edition i {
@@ -537,7 +537,7 @@ button:hover:not(:disabled) {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 10px;
+  font-size: 12px;
   color: #9caaa6;
 }
 .home-coordinate {
@@ -547,8 +547,8 @@ button:hover:not(:disabled) {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: Georgia, serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 1.6px;
   color: #d2d2b9;
   opacity: 0.6;
@@ -583,7 +583,7 @@ button:hover:not(:disabled) {
   max-width: 40%;
 }
 .location-route {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--gold);
   letter-spacing: 2px;
   flex-shrink: 0;
@@ -602,8 +602,8 @@ button:hover:not(:disabled) {
   text-overflow: ellipsis;
 }
 .chapter-current {
-  font-size: 10px;
-  letter-spacing: 3px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   color: #b1c0bb;
   position: absolute;
   left: 50%;
@@ -656,9 +656,9 @@ button:hover:not(:disabled) {
 }
 .scene-margin-label > span {
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   writing-mode: vertical-rl;
-  letter-spacing: 5px;
+  letter-spacing: 0.16em;
   line-height: 1.9;
 }
 .scene-margin-label i {
@@ -667,8 +667,8 @@ button:hover:not(:disabled) {
   background: #d4c49b75;
 }
 .scene-margin-label small {
-  font-size: 8px;
-  font-family: Georgia, serif;
+  font-size: 12px;
+  font-family: var(--serif);
   letter-spacing: 1px;
   writing-mode: vertical-rl;
 }
@@ -772,8 +772,8 @@ button:hover:not(:disabled) {
 .dialogue-page {
   margin-left: auto;
   margin-right: 38px;
-  font-family: Georgia, serif;
-  font-size: 11px;
+  font-family: var(--serif);
+  font-size: 13px;
   letter-spacing: 1px;
   padding: 2px 10px;
   background: #0b2028;
@@ -781,7 +781,7 @@ button:hover:not(:disabled) {
 }
 .dialogue-page i {
   font-style: normal;
-  font-size: 9px;
+  font-size: 12px;
   color: #73898a;
   margin-left: 5px;
 }
@@ -806,7 +806,7 @@ button:hover:not(:disabled) {
   white-space: nowrap;
 }
 .speaker-mood {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #8fa2a1;
 }
@@ -880,8 +880,8 @@ button:hover:not(:disabled) {
   gap: 10px;
   align-items: center;
   color: #718c90;
-  font-size: 9px;
-  font-family: Georgia, serif;
+  font-size: 12px;
+  font-family: var(--serif);
   letter-spacing: 1px;
 }
 .scene-bookmark i {
@@ -908,7 +908,7 @@ button:hover:not(:disabled) {
   padding: 1px 0;
   color: #9aafae;
   letter-spacing: 1px;
-  font-size: 10px;
+  font-size: 12px;
   white-space: nowrap;
 }
 .reading-controls > button.selected {
@@ -935,7 +935,7 @@ button:hover:not(:disabled) {
   bottom: 26px;
   transform: translateX(-50%);
   color: #d5dfd280;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
   pointer-events: none;
   z-index: 3;
@@ -949,7 +949,7 @@ button:hover:not(:disabled) {
   gap: 8px;
   align-items: center;
   color: var(--gold);
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   z-index: 8;
 }
@@ -1037,7 +1037,7 @@ button:hover:not(:disabled) {
   background: #1e3739f0;
 }
 .choice-index {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 12px;
   letter-spacing: 1px;
   color: #b9ae8c;
@@ -1057,7 +1057,7 @@ button:hover:not(:disabled) {
 }
 .choice-copy small {
   display: block;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   color: #9eb1ad;
   margin-top: 9px;
@@ -1081,14 +1081,14 @@ button:hover:not(:disabled) {
   gap: 12px;
   margin-top: 22px;
   color: #bbc8bf;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
   line-height: 1.9;
 }
 .choice-save {
   margin: 24px auto 0;
   color: #a6b7ae !important;
-  font-size: 10px !important;
+  font-size: 12px !important;
   letter-spacing: 1.5px;
 }
 .choices--4 .choice-option {
@@ -1125,8 +1125,8 @@ button:hover:not(:disabled) {
   animation: ending-arrive 1.7s both;
 }
 .ending-content > .eyebrow {
-  font-size: 11px;
-  letter-spacing: 5px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
 }
 .ending-emblem {
   margin: 13px auto -2px;
@@ -1138,8 +1138,8 @@ button:hover:not(:disabled) {
 }
 .ending-kicker {
   font-family: var(--serif);
-  font-size: 9px;
-  letter-spacing: 6px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   color: #b9c5ba;
   margin-top: 15px;
 }
@@ -1182,7 +1182,7 @@ button:hover:not(:disabled) {
   margin: 0 0 20px;
 }
 .ending-memory {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1.5px;
   line-height: 2;
   color: #a2b8b7;
@@ -1214,7 +1214,7 @@ button:hover:not(:disabled) {
   align-items: center;
   justify-content: center;
   gap: 9px;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   color: var(--gold);
   padding: 5px 0;
@@ -1224,7 +1224,7 @@ button:hover:not(:disabled) {
 }
 .ending-secondary {
   margin: 22px auto 0;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #a0b2aa;
 }
@@ -1234,8 +1234,8 @@ button:hover:not(:disabled) {
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--serif);
-  font-size: 10px;
-  letter-spacing: 3px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   color: #92a6a2;
   white-space: nowrap;
 }
@@ -1292,8 +1292,8 @@ button:hover:not(:disabled) {
   margin-top: 24px;
 }
 .intro-click {
-  font-size: 8px;
-  letter-spacing: 3px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   color: #789393;
   margin-top: 35px;
 }
@@ -1312,7 +1312,7 @@ button:hover:not(:disabled) {
   border: 1px solid #bbbd9766;
   box-shadow: 0 10px 50px #001216aa;
   backdrop-filter: blur(16px);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   line-height: 1.7;
   color: #e2dcc3;
@@ -1380,8 +1380,8 @@ button:hover:not(:disabled) {
   margin-top: 7px;
 }
 .modal-header .eyebrow {
-  font-size: 8px;
-  letter-spacing: 3px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   color: #acb9aa;
 }
 .modal-close {
@@ -1429,7 +1429,7 @@ button:hover:not(:disabled) {
 }
 .route-option small {
   display: block;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #799596;
 }
@@ -1470,7 +1470,7 @@ button:hover:not(:disabled) {
 }
 .route-memory p {
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.9;
   letter-spacing: 1px;
   color: #8fa4a0;
@@ -1491,8 +1491,8 @@ button:hover:not(:disabled) {
   position: relative;
 }
 .chapter-banner .eyebrow {
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 2px;
 }
 .chapter-banner h3 {
@@ -1505,7 +1505,7 @@ button:hover:not(:disabled) {
   color: #eee4c9;
 }
 .chapter-banner p {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #b8c4b9;
   line-height: 1.9;
@@ -1525,8 +1525,8 @@ button:hover:not(:disabled) {
   min-height: 75px;
 }
 .scene-row-index {
-  font-family: Georgia, serif;
-  font-size: 11px;
+  font-family: var(--serif);
+  font-size: 13px;
   letter-spacing: 2px;
   color: #b4ad8b;
 }
@@ -1542,14 +1542,14 @@ button:hover:not(:disabled) {
 }
 .scene-row small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #829c9a;
   margin-top: 7px;
 }
 .scene-row-status {
   color: #a3b6ac;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 2px;
 }
 .scene-row--current {
@@ -1576,7 +1576,7 @@ button:hover:not(:disabled) {
 }
 .character-list > .quiet {
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   line-height: 1.8;
   margin: 0 0 22px;
@@ -1595,9 +1595,9 @@ button:hover:not(:disabled) {
   color: var(--gold-bright);
 }
 .character-index {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   color: #859f9b;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 .character-name {
@@ -1608,8 +1608,8 @@ button:hover:not(:disabled) {
 }
 .character-name > small {
   display: block;
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 1px;
   color: #7c9997;
   line-height: 1.6;
@@ -1677,9 +1677,9 @@ button:hover:not(:disabled) {
   z-index: 2;
 }
 .character-biography .eyebrow {
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.16em;
 }
 .character-biography h3 {
   font-family: var(--serif);
@@ -1690,7 +1690,7 @@ button:hover:not(:disabled) {
   margin: 14px 0 17px;
 }
 .character-biography h3 small {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 12px;
   letter-spacing: 1px;
   margin-left: 15px;
@@ -1726,7 +1726,7 @@ button:hover:not(:disabled) {
   color: #aebeb6;
 }
 .library-intro > span {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 20px;
   letter-spacing: 1px;
   color: var(--gold);
@@ -1788,8 +1788,8 @@ button:hover:not(:disabled) {
   position: absolute;
   top: 10px;
   left: 12px;
-  font-size: 9px;
-  font-family: Georgia, serif;
+  font-size: 12px;
+  font-family: var(--serif);
   color: #d9dec8;
   letter-spacing: 1px;
   text-shadow: 0 2px 7px #001a22;
@@ -1809,7 +1809,7 @@ button:hover:not(:disabled) {
 .gallery-card-title > small {
   display: block;
   color: #86a19b;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   margin-top: 8px;
   line-height: 1.6;
@@ -1872,8 +1872,8 @@ button:hover:not(:disabled) {
   transition: opacity 0.4s;
 }
 .gallery-caption .eyebrow {
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
 }
 .gallery-caption h3 {
   font-family: var(--serif);
@@ -1884,7 +1884,7 @@ button:hover:not(:disabled) {
 }
 .gallery-caption p {
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 2px;
   color: #bcc7bc;
   margin-top: 10px;
@@ -1894,7 +1894,7 @@ button:hover:not(:disabled) {
   right: 36px;
   bottom: 33px;
   pointer-events: auto;
-  font-size: 9px;
+  font-size: 12px;
   color: #bac9bd;
 }
 .gallery-arrows {
@@ -1906,7 +1906,7 @@ button:hover:not(:disabled) {
   gap: 15px;
   color: #d4d1b6;
   background: #0821299e;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 2px;
   padding: 0 4px;
 }
@@ -1957,14 +1957,14 @@ button:hover:not(:disabled) {
   height: 1px;
 }
 .tab-bar > button > span {
-  font-family: Georgia, serif;
-  font-size: 10px;
+  font-family: var(--serif);
+  font-size: 12px;
   color: #839e96;
   letter-spacing: 1px;
 }
 .tab-description {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #7f9c95;
 }
@@ -1981,8 +1981,8 @@ button:hover:not(:disabled) {
   flex-shrink: 0;
 }
 .bone-panel .eyebrow {
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 2px;
 }
 .bone-panel h3 {
@@ -2006,7 +2006,7 @@ button:hover:not(:disabled) {
   display: flex;
   gap: 28px;
   margin-top: 17px;
-  font-size: 9px;
+  font-size: 12px;
   color: #6c8a83;
   letter-spacing: 1px;
 }
@@ -2061,7 +2061,7 @@ button:hover:not(:disabled) {
 }
 .inventory-item p {
   font-family: var(--serif);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
   line-height: 1.8;
   color: #8fa99f;
@@ -2095,7 +2095,7 @@ button:hover:not(:disabled) {
   position: absolute;
   top: 23px;
   left: 22px;
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 18px;
   color: #67877e;
 }
@@ -2103,7 +2103,7 @@ button:hover:not(:disabled) {
   color: var(--gold);
 }
 .ending-card > small {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #64867f;
 }
@@ -2123,7 +2123,7 @@ button:hover:not(:disabled) {
 }
 .ending-card p {
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   line-height: 2;
   letter-spacing: 1px;
   color: #62857c;
@@ -2183,8 +2183,8 @@ button:hover:not(:disabled) {
 }
 .save-slot-image > span:nth-child(2) {
   font-family: var(--serif);
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
 }
 .empty-slot-mark {
   font-family: var(--serif);
@@ -2195,8 +2195,8 @@ button:hover:not(:disabled) {
   position: absolute;
   top: 12px;
   left: 15px;
-  font-family: Georgia, serif;
-  font-size: 10px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 2px;
   color: #d1cfb2 !important;
 }
@@ -2219,7 +2219,7 @@ button:hover:not(:disabled) {
 }
 .save-slot-info > small {
   display: block;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   color: #779a8e;
   margin-top: 10px;
@@ -2249,7 +2249,7 @@ button:hover:not(:disabled) {
   align-items: center;
   justify-content: center;
   color: #e1cda3;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
   padding: 20px;
   line-height: 2;
@@ -2259,7 +2259,7 @@ button:hover:not(:disabled) {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #76998b;
   line-height: 1.9;
@@ -2289,7 +2289,7 @@ button:hover:not(:disabled) {
 }
 .autosave-row small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #8aa99b;
   line-height: 1.7;
@@ -2328,7 +2328,7 @@ button:hover:not(:disabled) {
 }
 .setting-row small {
   display: block;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   color: #7e9e92;
   line-height: 1.8;
@@ -2342,7 +2342,7 @@ button:hover:not(:disabled) {
   min-width: 135px;
 }
 .range-control > output {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   width: 41px;
   text-align: right;
@@ -2410,7 +2410,7 @@ button:hover:not(:disabled) {
   color: #b5bfa7;
 }
 .settings-note > p {
-  font-size: 11px;
+  font-size: 13px;
   color: #809f91;
   margin-top: 4px;
   letter-spacing: 1px;
@@ -2428,7 +2428,7 @@ button:hover:not(:disabled) {
   gap: 28px;
 }
 .settings-footer .text-button {
-  font-size: 10px;
+  font-size: 12px;
 }
 .settings-footer .quiet {
   color: #829f91;
@@ -2440,7 +2440,7 @@ button:hover:not(:disabled) {
   justify-content: center;
   gap: 24px;
   padding-top: 23px;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #77978a;
 }
@@ -2453,8 +2453,8 @@ kbd {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 0;
   border: 1px solid #829b803d;
   min-height: 21px;
@@ -2552,8 +2552,8 @@ kbd {
   color: #d0d0b7;
 }
 .pause-grid > button > small {
-  font-family: Georgia, serif;
-  font-size: 6px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 1px;
   color: #779d89;
 }
@@ -2574,8 +2574,8 @@ kbd {
   margin-left: auto;
 }
 .pause-row > small {
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 1px;
   color: #729783;
   margin-left: auto;
@@ -2600,8 +2600,8 @@ kbd {
 }
 .about-title > span {
   display: block;
-  font-family: Georgia, serif;
-  font-size: 8px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 2px;
   padding-top: 12px;
   padding-left: 0;
@@ -2633,13 +2633,13 @@ kbd {
 }
 .about-stats > span {
   font-family: var(--serif);
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #8da78f;
 }
 .about-stats strong {
   display: block;
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 29px;
   font-weight: 400;
   letter-spacing: 1px;
@@ -2647,12 +2647,12 @@ kbd {
   margin-bottom: 12px;
 }
 .about-content .about-credit {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 2.2;
   color: #73927e;
 }
 .about-content > .text-button {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
 }
 
@@ -2803,13 +2803,13 @@ kbd {
     font-size: 26px;
   }
   .start-button small {
-    font-size: 8px;
+    font-size: 12px;
   }
   .continue-button strong {
     font-size: 20px;
   }
   .continue-button small {
-    font-size: 11px;
+    font-size: 13px;
   }
   .home-library {
     margin-top: 36px;
@@ -2845,7 +2845,7 @@ kbd {
     gap: 27px;
   }
   .reading-controls > button {
-    font-size: 11px;
+    font-size: 13px;
   }
   .game-header {
     left: 55px;
@@ -2875,7 +2875,7 @@ kbd {
   }
   .home-english {
     padding-top: 8px;
-    font-size: 9px;
+    font-size: 12px;
     width: 320px;
   }
   .home-verse {
@@ -2886,7 +2886,7 @@ kbd {
   }
   .home-verse p {
     margin-top: 8px;
-    font-size: 11px;
+    font-size: 13px;
   }
   .home-main-menu {
     margin-top: 25px;
@@ -3024,7 +3024,7 @@ kbd {
     padding-right: 33px;
   }
   .home-header-note {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 2px;
   }
   .home-body {
@@ -3116,13 +3116,13 @@ kbd {
   }
   .setting-row small {
     max-width: 170px;
-    font-size: 7px;
+    font-size: 12px;
   }
   .setting-row strong {
     font-size: 14px;
   }
   .tab-description {
-    font-size: 8px;
+    font-size: 12px;
   }
   .save-grid {
     gap: 17px;
@@ -3157,7 +3157,7 @@ kbd {
     letter-spacing: 4px;
   }
   .brand small {
-    font-size: 6px;
+    font-size: 12px;
     letter-spacing: 2px;
   }
   .home-header-note {
@@ -3185,13 +3185,13 @@ kbd {
     margin-left: -8px;
   }
   .home-eyebrow {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 2px;
     margin-bottom: 14px;
   }
   .home-english {
     width: 290px;
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 2px;
     gap: 10px;
   }
@@ -3202,7 +3202,7 @@ kbd {
     font-size: 22px;
   }
   .home-verse p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .home-main-menu {
     width: 295px;
@@ -3216,7 +3216,7 @@ kbd {
     font-size: 23px;
   }
   .start-button small {
-    font-size: 7px;
+    font-size: 12px;
   }
   .continue-button {
     padding-top: 19px;
@@ -3233,7 +3233,7 @@ kbd {
     row-gap: 22px;
   }
   .home-library button {
-    font-size: 10px;
+    font-size: 12px;
     gap: 7px;
   }
   .home-library button svg {
@@ -3246,12 +3246,12 @@ kbd {
     bottom: 23px;
   }
   .home-edition {
-    font-size: 9px;
+    font-size: 12px;
     gap: 11px;
     letter-spacing: 1px;
   }
   .headphone-note {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1px;
     gap: 7px;
   }
@@ -3266,14 +3266,14 @@ kbd {
   .home-side-poem {
     right: 25px;
     top: 33%;
-    font-size: 10px;
-    letter-spacing: 4px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
     gap: 18px;
   }
   .home-coordinate {
     right: 28px;
     bottom: 88px;
-    font-size: 6px;
+    font-size: 12px;
     letter-spacing: 1px;
     gap: 8px;
   }
@@ -3301,7 +3301,7 @@ kbd {
     max-width: 66%;
   }
   .location-route {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .location-name {
@@ -3325,8 +3325,8 @@ kbd {
     top: 94px;
   }
   .scene-margin-label > span {
-    font-size: 10px;
-    letter-spacing: 4px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
   }
   .dialogue {
     bottom: 19px;
@@ -3356,12 +3356,12 @@ kbd {
     gap: 11px;
   }
   .speaker-mood {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .dialogue-page {
     margin-right: 21px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .dialogue-footer {
     padding-top: 12px;
@@ -3384,7 +3384,7 @@ kbd {
     display: none;
   }
   .scene-bookmark {
-    font-size: 8px;
+    font-size: 12px;
     gap: 7px;
   }
   .autosaved-dot {
@@ -3399,7 +3399,7 @@ kbd {
   }
   .actor-vertical-name {
     right: 19%;
-    font-size: 10px;
+    font-size: 12px;
   }
   .choices {
     width: calc(100% - 55px);
@@ -3419,14 +3419,14 @@ kbd {
   }
   .choice-index {
     padding-right: 16px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .choice-copy strong {
     font-size: 20px;
     letter-spacing: 3px;
   }
   .choice-copy small {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     line-height: 1.8;
     margin-top: 7px;
@@ -3442,7 +3442,7 @@ kbd {
     height: 36px;
   }
   .choice-note {
-    font-size: 8px;
+    font-size: 12px;
     gap: 10px;
     line-height: 2;
     text-align: left;
@@ -3453,7 +3453,7 @@ kbd {
     width: 33px;
   }
   .choice-save {
-    font-size: 9px !important;
+    font-size: 12px !important;
     letter-spacing: 1px;
     margin-top: 18px;
   }
@@ -3466,7 +3466,7 @@ kbd {
     letter-spacing: 3px;
   }
   .choices--4 .choice-copy small {
-    font-size: 9px;
+    font-size: 12px;
   }
   .choices--4 .choice-prompt {
     margin-bottom: 18px;
@@ -3479,8 +3479,8 @@ kbd {
     padding-bottom: 56px;
   }
   .ending-content > .eyebrow {
-    font-size: 9px;
-    letter-spacing: 3px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
   }
   .ending-emblem {
     margin: 20px auto 8px;
@@ -3499,14 +3499,14 @@ kbd {
     margin: 0 auto 21px;
   }
   .ending-memory {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 1px;
     line-height: 2;
     max-width: 300px;
     margin: 0 auto 28px;
   }
   .ending-copyright {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 2px;
     bottom: 23px;
   }
@@ -3521,7 +3521,7 @@ kbd {
     line-height: 1.9;
   }
   .intro-subtitle {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 2px;
     max-width: 85%;
     line-height: 2;
@@ -3532,7 +3532,7 @@ kbd {
   .reading-mode-indicator {
     top: 83px;
     right: 25px;
-    font-size: 8px;
+    font-size: 12px;
   }
   .modal-backdrop {
     padding: 16px;
@@ -3555,7 +3555,7 @@ kbd {
     margin-top: 8px;
   }
   .modal-header .eyebrow {
-    font-size: 6px;
+    font-size: 12px;
     letter-spacing: 2px;
   }
   .modal-close {
@@ -3582,13 +3582,13 @@ kbd {
     margin: 0;
   }
   .route-option strong {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 1px;
     margin-top: 3px;
     white-space: nowrap;
   }
   .route-option small {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1px;
     white-space: nowrap;
   }
@@ -3611,10 +3611,10 @@ kbd {
     letter-spacing: 3px;
   }
   .chapter-banner .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
   }
   .chapter-banner p {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .scene-row {
@@ -3623,14 +3623,14 @@ kbd {
     min-height: 70px;
   }
   .scene-row-index {
-    font-size: 10px;
+    font-size: 12px;
   }
   .scene-row strong {
     font-size: 15px;
     letter-spacing: 1px;
   }
   .scene-row small {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .characters-layout {
@@ -3676,7 +3676,7 @@ kbd {
     flex: 0;
   }
   .character-row:disabled .character-name {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 1px;
   }
   .character-detail {
@@ -3717,7 +3717,7 @@ kbd {
     letter-spacing: 0.5px;
   }
   .character-biography .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 2px;
   }
   .character-biography blockquote {
@@ -3738,7 +3738,7 @@ kbd {
     margin-bottom: 22px;
   }
   .library-intro > p {
-    font-size: 11px;
+    font-size: 13px;
     line-height: 2;
     letter-spacing: 1px;
     max-width: 220px;
@@ -3748,14 +3748,14 @@ kbd {
     line-height: 1.6;
   }
   .library-intro i {
-    font-size: 10px;
+    font-size: 12px;
   }
   .gallery-card-title > strong {
     font-size: 13px;
     letter-spacing: 1px;
   }
   .gallery-card-title > small {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     margin-top: 6px;
   }
@@ -3763,7 +3763,7 @@ kbd {
     padding-top: 11px;
   }
   .gallery-index {
-    font-size: 7px;
+    font-size: 12px;
     left: 9px;
     top: 8px;
   }
@@ -3777,7 +3777,7 @@ kbd {
     font-size: 25px;
   }
   .gallery-caption p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .gallery-caption > a {
     right: 25px;
@@ -3819,7 +3819,7 @@ kbd {
     display: none;
   }
   .tab-bar > button > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .bone-panel {
     padding: 5px 0 24px;
@@ -3837,17 +3837,17 @@ kbd {
     line-height: 1.9;
   }
   .bone-panel .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .bone-panel p {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .bone-legend {
     gap: 11px;
     flex-wrap: wrap;
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     margin-top: 14px;
   }
@@ -3864,7 +3864,7 @@ kbd {
     font-size: 15px;
   }
   .inventory-item p {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     line-height: 1.9;
   }
@@ -3897,7 +3897,7 @@ kbd {
     width: 14px;
   }
   .ending-card > small {
-    font-size: 6px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .ending-card h3 {
@@ -3906,7 +3906,7 @@ kbd {
     margin: 10px 0 13px;
   }
   .ending-card p {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     line-height: 1.9;
     min-height: 50px;
@@ -3920,11 +3920,11 @@ kbd {
     min-height: 75px;
   }
   .save-slot-info > strong {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.5px;
   }
   .save-slot-info > small {
-    font-size: 6px;
+    font-size: 12px;
     letter-spacing: 0;
     margin-top: 8px;
   }
@@ -3935,11 +3935,11 @@ kbd {
     font-size: 21px;
   }
   .save-slot-image > span:nth-child(2) {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .save-slot-number {
-    font-size: 8px !important;
+    font-size: 12px !important;
     left: 11px;
     top: 9px;
   }
@@ -3950,12 +3950,12 @@ kbd {
     height: 20px;
   }
   .save-overwrite {
-    font-size: 9px;
+    font-size: 12px;
     padding: 15px;
     letter-spacing: 0;
   }
   .save-footnote {
-    font-size: 8px;
+    font-size: 12px;
     align-items: flex-start;
     line-height: 2;
   }
@@ -3973,7 +3973,7 @@ kbd {
     letter-spacing: 1px;
   }
   .autosave-row small {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .settings-columns {
@@ -3989,7 +3989,7 @@ kbd {
     font-size: 14px;
   }
   .setting-row small {
-    font-size: 8px;
+    font-size: 12px;
     max-width: 190px;
     line-height: 1.9;
     margin-top: 6px;
@@ -4002,7 +4002,7 @@ kbd {
     width: 87px;
   }
   .range-control > output {
-    font-size: 8px;
+    font-size: 12px;
     width: 36px;
   }
   .settings-note {
@@ -4014,7 +4014,7 @@ kbd {
     font-size: 12px;
   }
   .settings-note p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .settings-footer {
     align-items: flex-start;
@@ -4026,12 +4026,12 @@ kbd {
     gap: 23px;
   }
   .settings-footer .text-button {
-    font-size: 9px;
+    font-size: 12px;
   }
   .keyboard-reference {
     gap: 16px;
     justify-content: flex-start;
-    font-size: 7px;
+    font-size: 12px;
     padding-top: 20px;
   }
   .history-content {
@@ -4042,7 +4042,7 @@ kbd {
     padding: 19px 0;
   }
   .history-speaker {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 2px;
     line-height: 1.8;
   }
@@ -4076,7 +4076,7 @@ kbd {
     letter-spacing: 1px;
   }
   .pause-grid > button > small {
-    font-size: 5px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .pause-grid > button > svg {
@@ -4089,7 +4089,7 @@ kbd {
     padding-bottom: 15px;
   }
   .pause-row > small {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .about-content {
@@ -4100,7 +4100,7 @@ kbd {
     letter-spacing: 8px;
   }
   .about-title > span {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .about-content blockquote {
@@ -4110,7 +4110,7 @@ kbd {
     margin: 22px 0;
   }
   .about-content > p {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.5px;
     line-height: 2.2;
   }
@@ -4123,19 +4123,19 @@ kbd {
     font-size: 26px;
   }
   .about-stats > span {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .about-content .about-credit {
-    font-size: 8px;
+    font-size: 12px;
     line-height: 2.3;
   }
   .about-content > .text-button {
-    font-size: 9px;
+    font-size: 12px;
   }
   .toast {
     bottom: 23px;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     padding: 13px 17px;
     gap: 10px;
@@ -4144,7 +4144,7 @@ kbd {
     margin-left: 3px;
   }
   .empty-note {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 1px;
   }
 }
@@ -4157,13 +4157,13 @@ kbd {
     font-size: 96px;
   }
   .home-eyebrow {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 2px;
     gap: 10px;
   }
   .home-english {
     width: 277px;
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 2px;
   }
   .home-side-poem {
@@ -4181,7 +4181,7 @@ kbd {
     gap: 19px;
   }
   .home-library button {
-    font-size: 9px;
+    font-size: 12px;
     gap: 6px;
   }
   .home-footer {
@@ -4190,18 +4190,18 @@ kbd {
     bottom: 24px;
   }
   .home-edition {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     gap: 8px;
   }
   .headphone-note {
-    font-size: 7px;
+    font-size: 12px;
     gap: 6px;
     letter-spacing: 0.5px;
   }
   .home-coordinate {
     right: 25px;
-    font-size: 5px;
+    font-size: 12px;
     bottom: 80px;
   }
   .game-header {
@@ -4213,7 +4213,7 @@ kbd {
     gap: 8px;
   }
   .location-route {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .location-name {
@@ -4256,14 +4256,14 @@ kbd {
     font-size: 16px;
   }
   .speaker-mood {
-    font-size: 8px;
+    font-size: 12px;
   }
   .scene-margin-label {
     left: 21px;
     top: 88px;
   }
   .scene-margin-label > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .actor {
     right: -16%;
@@ -4279,7 +4279,7 @@ kbd {
     letter-spacing: 2px;
   }
   .choice-copy small {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .choice-prompt {
@@ -4297,7 +4297,7 @@ kbd {
     gap: 11px;
   }
   .choice-note {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 0.4px;
   }
   .modal-backdrop {
@@ -4310,7 +4310,7 @@ kbd {
     font-size: 27px;
   }
   .modal-header .eyebrow {
-    font-size: 6px;
+    font-size: 12px;
     letter-spacing: 1.7px;
   }
   .modal-close {
@@ -4328,11 +4328,11 @@ kbd {
     font-size: 12px;
   }
   .gallery-card-title > small {
-    font-size: 6px;
+    font-size: 12px;
     letter-spacing: 0;
   }
   .library-intro > p {
-    font-size: 10px;
+    font-size: 12px;
     max-width: 190px;
   }
   .setting-row {
@@ -4347,7 +4347,7 @@ kbd {
   }
   .setting-row small {
     max-width: 169px;
-    font-size: 7px;
+    font-size: 12px;
   }
   .pause-content {
     padding-left: 23px;
@@ -4363,7 +4363,7 @@ kbd {
     margin-right: 17px;
   }
   .character-description {
-    font-size: 11px;
+    font-size: 13px;
   }
   .character-biography h3 {
     font-size: 35px;
@@ -4385,7 +4385,7 @@ kbd {
   }
   .home-english {
     padding-top: 6px;
-    font-size: 8px;
+    font-size: 12px;
     width: 265px;
   }
   .home-verse {
@@ -4396,7 +4396,7 @@ kbd {
   }
   .home-verse p {
     margin-top: 8px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .home-main-menu {
     margin-top: 23px;
@@ -4458,7 +4458,7 @@ kbd {
     font-size: 18px;
   }
   .choice-copy small {
-    font-size: 8px;
+    font-size: 12px;
   }
   .choice-note {
     margin-top: 15px;
@@ -4475,7 +4475,7 @@ kbd {
     font-size: 17px;
   }
   .choices--4 .choice-copy small {
-    font-size: 8px;
+    font-size: 12px;
   }
   .ending-content {
     padding-top: 35px;
@@ -4489,7 +4489,7 @@ kbd {
     height: 65px;
   }
   .ending-kicker {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: 8px;
   }
   .ending-content h2 {
@@ -4500,7 +4500,7 @@ kbd {
     margin-bottom: 15px;
   }
   .ending-memory {
-    font-size: 9px;
+    font-size: 12px;
     margin-bottom: 24px;
   }
   .ending-title-line {
@@ -4518,11 +4518,11 @@ kbd {
     margin: 9px 0 11px;
   }
   .character-description {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.95;
   }
   .character-biography blockquote {
-    font-size: 11px;
+    font-size: 13px;
     margin-top: 11px;
   }
   .character-detail-portrait {
@@ -4530,14 +4530,14 @@ kbd {
     top: -33px;
   }
   .character-biography .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
   }
   .pause-content > .bone-mark {
     width: 55px;
     height: 55px;
   }
   .pause-content > p {
-    font-size: 11px;
+    font-size: 13px;
     margin-bottom: 20px;
   }
   .pause-content {
@@ -4579,7 +4579,7 @@ kbd {
     font-size: 76px;
   }
   .home-eyebrow {
-    font-size: 8px;
+    font-size: 12px;
     margin-bottom: 6px;
   }
   .vermillion-seal {
@@ -4589,7 +4589,7 @@ kbd {
   }
   .home-english {
     width: 232px;
-    font-size: 7px;
+    font-size: 12px;
     padding-top: 4px;
   }
   .home-verse {
@@ -4623,7 +4623,7 @@ kbd {
     gap: 14px;
   }
   .start-button small {
-    font-size: 5px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .start-button > svg {
@@ -4639,7 +4639,7 @@ kbd {
     letter-spacing: 3px;
   }
   .continue-button small {
-    font-size: 7px;
+    font-size: 12px;
     max-width: 115px;
   }
   .continue-button > span {
@@ -4677,7 +4677,7 @@ kbd {
     font-size: 14px;
   }
   .speaker-mood {
-    font-size: 8px;
+    font-size: 12px;
   }
   .speaker {
     min-height: 18px;
@@ -4700,7 +4700,7 @@ kbd {
     gap: 20px;
   }
   .reading-controls > button {
-    font-size: 8px;
+    font-size: 12px;
   }
   .reading-controls > button > span {
     display: inline;
@@ -4739,12 +4739,12 @@ kbd {
     font-size: 17px;
   }
   .choice-copy small {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: 4px;
   }
   .choice-note {
     margin-top: 10px;
-    font-size: 8px;
+    font-size: 12px;
   }
   .choice-note .bone-mark {
     width: 27px;
@@ -4752,7 +4752,7 @@ kbd {
   }
   .choice-save {
     margin-top: 9px;
-    font-size: 8px !important;
+    font-size: 12px !important;
   }
   .choices--4 .choice-option {
     min-height: 53px;
@@ -4762,7 +4762,7 @@ kbd {
     font-size: 16px;
   }
   .choices--4 .choice-copy small {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: 3px;
   }
   .choices--4 .choice-prompt {
@@ -4783,8 +4783,8 @@ kbd {
     line-height: 1.3;
   }
   .ending-kicker {
-    font-size: 7px;
-    letter-spacing: 4px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
     margin-top: 9px;
   }
   .ending-content blockquote {
@@ -4793,7 +4793,7 @@ kbd {
     max-width: 500px;
   }
   .ending-memory {
-    font-size: 8px;
+    font-size: 12px;
     margin-bottom: 15px;
     max-width: none;
   }
@@ -4807,11 +4807,11 @@ kbd {
     width: 220px;
   }
   .ending-secondary {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: 11px;
   }
   .ending-copyright {
-    font-size: 7px;
+    font-size: 12px;
     bottom: 13px;
   }
   .modal-backdrop {
@@ -4832,7 +4832,7 @@ kbd {
     font-size: 24px;
   }
   .modal-header .eyebrow {
-    font-size: 6px;
+    font-size: 12px;
   }
   .chapter-layout {
     display: grid;
@@ -4883,7 +4883,7 @@ kbd {
   }
   .character-name > small {
     display: block;
-    font-size: 7px;
+    font-size: 12px;
   }
   .character-index {
     display: block;
@@ -4900,11 +4900,11 @@ kbd {
     margin: 8px 0;
   }
   .character-description {
-    font-size: 9px;
+    font-size: 12px;
     max-width: 360px;
   }
   .character-biography blockquote {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.7;
   }
   .character-detail-portrait {

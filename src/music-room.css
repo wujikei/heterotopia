@@ -49,7 +49,7 @@
 .music-cover-top {
   display: flex;
   justify-content: space-between;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #d5d1b5;
   gap: 12px;
@@ -97,7 +97,7 @@
   padding-top: 190px;
 }
 .music-cover-copy > .eyebrow {
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #acbaac;
 }
@@ -112,7 +112,7 @@
 }
 .music-cover-copy > p {
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   line-height: 2;
   color: #b6c3b6;
@@ -122,7 +122,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.3px;
   color: #b7bda7;
   margin-top: 24px;
@@ -180,14 +180,14 @@
   color: #bdc9ba;
 }
 .music-track-intro > span {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 19px;
   color: var(--gold);
   white-space: nowrap;
 }
 .music-track-intro i {
   font-style: normal;
-  font-size: 11px;
+  font-size: 13px;
   color: #8da4a0;
 }
 .music-track-list {
@@ -221,8 +221,8 @@
 }
 .music-track-index {
   min-width: 23px;
-  font-family: Georgia, serif;
-  font-size: 11px;
+  font-family: var(--serif);
+  font-size: 13px;
   color: #b7b492;
 }
 .music-track-copy {
@@ -240,15 +240,15 @@
 }
 .music-track-copy > small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.7px;
   line-height: 1.8;
   color: #8da5a0;
   margin-top: 5px;
 }
 .music-track-duration {
-  font-family: Georgia, serif;
-  font-size: 10px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 1px;
   color: #9daf9d;
 }
@@ -266,8 +266,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  font-family: Georgia, serif;
-  font-size: 10px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: 1px;
   color: #9dae9f;
   font-variant-numeric: tabular-nums;
@@ -335,13 +335,13 @@
   cursor: pointer;
 }
 .music-volume > span {
-  font-size: 9px;
+  font-size: 12px;
   color: #9db2a5;
   min-width: 29px;
   font-variant-numeric: tabular-nums;
 }
 .music-download {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
   white-space: nowrap;
   padding: 8px 0;
@@ -351,7 +351,7 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 0.9px;
   color: #829e99;
   line-height: 1.9;
@@ -411,7 +411,7 @@
     flex-shrink: 0;
   }
   .music-cover-top {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1.5px;
   }
   .music-orbit {
@@ -434,15 +434,15 @@
     margin: 9px 0 6px;
   }
   .music-cover-copy > p {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     max-width: 245px;
   }
   .music-cover-copy > .eyebrow {
-    font-size: 6px;
+    font-size: 12px;
   }
   .music-cover-status {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: 13px;
   }
   .music-track-section {
@@ -453,7 +453,7 @@
     padding: 19px 23px 14px;
   }
   .music-track-intro p {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 1px;
   }
   .music-track-list {
@@ -470,17 +470,17 @@
     letter-spacing: 1px;
   }
   .music-track-copy > small {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 0.2px;
   }
   .music-track-duration {
-    font-size: 9px;
+    font-size: 12px;
   }
   .music-player {
     padding: 16px 21px 14px;
   }
   .music-player-progress {
-    font-size: 9px;
+    font-size: 12px;
     gap: 10px;
   }
   .music-player-controls {
@@ -509,11 +509,11 @@
     min-width: 35px;
   }
   .music-volume > span {
-    font-size: 8px;
+    font-size: 12px;
     min-width: 24px;
   }
   .music-download {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 1px;
     gap: 5px;
   }
@@ -521,7 +521,7 @@
     width: 12px;
   }
   .music-player-note {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 0.2px;
     margin-top: 12px;
   }
@@ -543,7 +543,7 @@
     font-size: 25px;
   }
   .music-track-copy > small {
-    font-size: 7px;
+    font-size: 12px;
   }
 }
 @media (max-height: 520px) and (min-width: 600px) {
@@ -565,14 +565,14 @@
     margin: 7px 0 5px;
   }
   .music-cover-copy > p {
-    font-size: 8px;
+    font-size: 12px;
   }
   .music-cover-copy > .eyebrow {
-    font-size: 6px;
+    font-size: 12px;
   }
   .music-cover-status {
     margin-top: 9px;
-    font-size: 7px;
+    font-size: 12px;
   }
   .music-orbit {
     width: 130px;
@@ -582,13 +582,13 @@
     top: 40%;
   }
   .music-cover-top {
-    font-size: 6px;
+    font-size: 12px;
   }
   .music-track-intro {
     padding: 13px 21px;
   }
   .music-track-intro p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .music-track {
     min-height: 61px;
@@ -598,7 +598,7 @@
     font-size: 13px;
   }
   .music-track-copy > small {
-    font-size: 7px;
+    font-size: 12px;
     margin-top: 2px;
   }
   .music-player {
