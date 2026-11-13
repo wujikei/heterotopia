@@ -64,6 +64,7 @@ try {
   const expected = [
     ...Object.keys(BACKGROUNDS).flatMap(name => [name, `${name}-thumb`]),
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
+    ...CHARACTERS.map(c => `portrait-${c.key}-face`),
   ];
   const integrity = await page.evaluate(async expectedNames => {
     const assets = globalThis.__HETEROTOPIA_ASSETS__;
@@ -75,11 +76,13 @@ try {
     }
     await document.fonts.load('400 22px StorySerif', '异托邦，魂兮归来。');
     await document.fonts.load('600 22px StorySerif', '循着水声，回家。');
+    await document.fonts.load('400 22px StoryHand', '水声还在，慢慢说。');
     return { missing, broken, imageAssets: Object.keys(assets ?? {}).length, fonts: [...document.fonts].map(font => ({ family: font.family, status: font.status })) };
   }, expected);
   assert.deepEqual(integrity.missing, []);
   assert.deepEqual(integrity.broken, []);
-  assert.equal(integrity.fonts.length, 2);
+  assert.equal(integrity.fonts.length, 3);
+  assert.ok(integrity.fonts.some(font => font.family === 'StoryHand'));
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
   const expectedAudio = JSON.parse(await readFile(new URL('../public/audio/manifest.json', import.meta.url), 'utf8')).files;
   const audioIntegrity = await page.evaluate(async expectedFiles => {
@@ -106,12 +109,12 @@ try {
   assert.deepEqual(audioIntegrity.missingAudio, []);
   assert.deepEqual(audioIntegrity.brokenAudio, []);
   assert.equal(audioIntegrity.audioAssets, 51);
-  await page.getByRole('button', { name: '启程 BEGIN THE JOURNEY' }).click();
+  await page.getByRole('button', { name: '启程', exact: true }).click();
   if (await page.getByTestId('chapter-intro').count()) await page.getByTestId('chapter-intro').click();
   await page.getByTestId('dialogue-text').waitFor();
   await page.waitForTimeout(200);
   await page.screenshot({ path: artifact('08-offline-opening.png') });
-  assert.equal(await page.locator('.location-name').textContent(), '梦中 · 夜船');
+  assert.equal(await page.locator('.location-name').textContent(), BACKGROUNDS['dream-boat'].subtitle);
   const bookmarked = await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')));
   await page.keyboard.press('s');
   await page.locator('.save-slot-main').first().click();
@@ -143,11 +146,11 @@ try {
   assert.ok((await castPage.locator('.actor img').getAttribute('src')).startsWith('data:image/webp;'));
   await castPage.screenshot({ path: artifact('09-kunlun-dialogue-desktop.png') });
   await castPage.getByRole('button', { name: '打开菜单' }).click();
-  await castPage.getByRole('button', { name: '人物志 ENCOUNTERS' }).click();
+  await castPage.getByRole('button', { name: '人物志 记住的名字' }).click();
   for (const name of ['媭', '荼']) {
-    await castPage.locator('.character-row').filter({ hasText: name }).click();
+    await castPage.locator('.character-card').filter({ hasText: name }).click();
     await castPage.locator('.character-detail-portrait').evaluate(img => img.decode());
-    await castPage.waitForFunction(() => Number(getComputedStyle(document.querySelector('.character-detail')).opacity) > 0.99);
+    await castPage.waitForFunction(() => Number(getComputedStyle(document.querySelector('.character-scroll')).opacity) > 0.99);
     await castPage.screenshot({ path: artifact(name === '媭' ? '10-characters-xua-desktop.png' : '11-characters-tu-desktop.png') });
   }
   await castPage.getByRole('button', { name: '关闭', exact: true }).click();
