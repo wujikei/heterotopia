@@ -44,6 +44,8 @@
 
 `npm run test:audio` 同样自动启动预览，检查首次手势、场景音效去重、闹钟切断、三个音量通道、试听暂停继续、下载、慢请求取消、快进抑制与播放器窄屏布局。`npm run test:perf -- <标签>` 以 Chromium 测量无限速、4G、Fast3G 的首屏和立绘，结果与对比截图保存在 `artifacts/perf/`。使用 `VN_TEST_URL` 时连接已有服务器。
 
+`test:sprites` 默认在本机 Chromium 检查 250ms 人物恢复、300ms 缓存换人门限。共享 CI 设置 `VN_TEST_TIMINGS=record` 记录实际帧时，并继续检查过渡时长和全部功能，避免共享机器负载影响验收。
+
 生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查全部内嵌美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
 
 重新处理声音需要 Python、numpy 与 FFmpeg：将 11 首同名 FLAC 母带放入忽略的 `artifacts/audio-masters/`，执行 `python scripts/produce_audio.py`。母带留在本机；Git 只包含处理后的游戏音频、提示记录与可复现的声音设计脚本。

@@ -36,6 +36,8 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Verify reading controls and decoded portraits
+        env:
+          VN_TEST_TIMINGS: record
         run: |
           npm run test:interactions
           npm run test:sprites

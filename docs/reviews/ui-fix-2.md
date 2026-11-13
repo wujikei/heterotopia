@@ -35,7 +35,7 @@ Fast3G 冷缓存立即翻页仍包含网络下载，未达到简报的 ≤550ms 
 | firefox | 211ms | 233ms |
 | webkit | 338ms | 342ms |
 
-性能门限在 Chromium 上断言；各引擎均检查 220ms CSS 过渡。Windows WebKit 的帧调度更慢，以上不是 iPhone 实机数据。
+性能门限在本机 Chromium 上断言；各引擎均检查 220ms CSS 过渡。共享 CI 采用 `VN_TEST_TIMINGS=record` 记录帧时，继续验证节点、交叉淡入、解码、缺图和触控等功能；其机器负载不用于判定本机性能回归。Windows WebKit 的帧调度更慢，以上不是 iPhone 实机数据。
 
 ## 验证
 
