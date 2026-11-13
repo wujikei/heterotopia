@@ -1,0 +1,356 @@
+[
+  {
+    "engine": "chromium",
+    "sprites": {
+      "testedAt": "2026-11-13T10:03:09.671Z",
+      "browser": "chromium",
+      "results": [
+        {
+          "label": "The title screen requests no portraits; Save-Data skips unrelated idle art",
+          "passed": true
+        },
+        {
+          "metric": "narrationReturnMs",
+          "value": 237
+        },
+        {
+          "label": "Narration retains the exact actor node with a short speaking transition",
+          "passed": true
+        },
+        {
+          "metric": "cachedSwitchMs",
+          "value": 272
+        },
+        {
+          "label": "Cached speaker changes crossfade with at most two layers",
+          "passed": true
+        },
+        {
+          "label": "A delayed image stays invisible until decoded, then fades in",
+          "passed": true
+        },
+        {
+          "label": "Late decoding cannot revive an old speaker after advancing",
+          "passed": true
+        },
+        {
+          "label": "A failed portrait leaves the story readable and later speakers working",
+          "passed": true
+        },
+        {
+          "label": "A scene change clears the previous actor; choices do not retain it",
+          "passed": true
+        },
+        {
+          "label": "A choice finishes the actor departure with reduced motion",
+          "passed": true
+        },
+        {
+          "label": "Fast-forward uses decoded, opaque replacements without accumulating layers",
+          "passed": true
+        },
+        {
+          "label": "Mobile composition and both control rows fit 360/390/430px screens",
+          "passed": true
+        },
+        {
+          "label": "A dream bookmark thumbnail, location, excerpt and reload agree",
+          "passed": true
+        }
+      ],
+      "errors": []
+    },
+    "interactions": {
+      "testedAt": "2026-11-13T10:03:27.548Z",
+      "browser": "chromium",
+      "url": "http://127.0.0.1:4179",
+      "results": [
+        {
+          "label": "Escape returns through nested pages; focus stays in the modal",
+          "passed": true
+        },
+        {
+          "label": "Mouse controls do not steal Space or Enter from reading",
+          "passed": true
+        },
+        {
+          "label": "Deleting a bookmark requires a second click and confirmation resets",
+          "passed": true
+        },
+        {
+          "label": "Wheel and PageUp open history; re-reading preserves choices and items",
+          "passed": true
+        },
+        {
+          "label": "Three rapid clicks reveal a sentence or advance at most one page",
+          "passed": true
+        },
+        {
+          "label": "The chapter card pauses typing and names the opening background",
+          "passed": true
+        },
+        {
+          "label": "Skip renders whole sentences and releasing Ctrl stops held skip",
+          "passed": true
+        },
+        {
+          "label": "Choices show hover feedback and accept number keys",
+          "passed": true
+        },
+        {
+          "label": "Number keys respect locked choices",
+          "passed": true
+        },
+        {
+          "label": "Opening a menu cancels an unfinished choice stamp",
+          "passed": true
+        },
+        {
+          "label": "Phone targets, hidden mode and narrow layouts stay usable",
+          "passed": true
+        },
+        {
+          "label": "First-play guidance dismisses persistently and screen readers receive full lines",
+          "passed": true
+        }
+      ],
+      "errors": []
+    }
+  },
+  {
+    "engine": "firefox",
+    "sprites": {
+      "testedAt": "2026-11-13T09:45:46.969Z",
+      "browser": "firefox",
+      "results": [
+        {
+          "label": "The title screen requests no portraits; Save-Data skips unrelated idle art",
+          "passed": true
+        },
+        {
+          "metric": "narrationReturnMs",
+          "value": 211
+        },
+        {
+          "label": "Narration retains the exact actor node; speaking returns within 250ms",
+          "passed": true
+        },
+        {
+          "metric": "cachedSwitchMs",
+          "value": 233
+        },
+        {
+          "label": "Cached speaker changes crossfade within 300ms with at most two layers",
+          "passed": true
+        },
+        {
+          "label": "A delayed image stays invisible until decoded, then fades in",
+          "passed": true
+        },
+        {
+          "label": "Late decoding cannot revive an old speaker after advancing",
+          "passed": true
+        },
+        {
+          "label": "A failed portrait leaves the story readable and later speakers working",
+          "passed": true
+        },
+        {
+          "label": "A scene change clears the previous actor; choices do not retain it",
+          "passed": true
+        },
+        {
+          "label": "A choice finishes the actor departure with reduced motion",
+          "passed": true
+        },
+        {
+          "label": "Fast-forward uses decoded, opaque replacements without accumulating layers",
+          "passed": true
+        },
+        {
+          "label": "Mobile composition and both control rows fit 360/390/430px screens",
+          "passed": true
+        },
+        {
+          "label": "A dream bookmark thumbnail, location, excerpt and reload agree",
+          "passed": true
+        }
+      ],
+      "errors": []
+    },
+    "interactions": {
+      "testedAt": "2026-11-13T10:04:26.901Z",
+      "browser": "firefox",
+      "url": "http://127.0.0.1:4179",
+      "results": [
+        {
+          "label": "Escape returns through nested pages; focus stays in the modal",
+          "passed": true
+        },
+        {
+          "label": "Mouse controls do not steal Space or Enter from reading",
+          "passed": true
+        },
+        {
+          "label": "Deleting a bookmark requires a second click and confirmation resets",
+          "passed": true
+        },
+        {
+          "label": "Wheel and PageUp open history; re-reading preserves choices and items",
+          "passed": true
+        },
+        {
+          "label": "Three rapid clicks reveal a sentence or advance at most one page",
+          "passed": true
+        },
+        {
+          "label": "The chapter card pauses typing and names the opening background",
+          "passed": true
+        },
+        {
+          "label": "Skip renders whole sentences and releasing Ctrl stops held skip",
+          "passed": true
+        },
+        {
+          "label": "Choices show hover feedback and accept number keys",
+          "passed": true
+        },
+        {
+          "label": "Number keys respect locked choices",
+          "passed": true
+        },
+        {
+          "label": "Opening a menu cancels an unfinished choice stamp",
+          "passed": true
+        },
+        {
+          "label": "Phone targets, hidden mode and narrow layouts stay usable",
+          "passed": true
+        },
+        {
+          "label": "First-play guidance dismisses persistently and screen readers receive full lines",
+          "passed": true
+        }
+      ],
+      "errors": []
+    }
+  },
+  {
+    "engine": "webkit",
+    "sprites": {
+      "testedAt": "2026-11-13T09:52:20.694Z",
+      "browser": "webkit",
+      "results": [
+        {
+          "label": "The title screen requests no portraits; Save-Data skips unrelated idle art",
+          "passed": true
+        },
+        {
+          "metric": "narrationReturnMs",
+          "value": 338
+        },
+        {
+          "label": "Narration retains the exact actor node with a short speaking transition",
+          "passed": true
+        },
+        {
+          "metric": "cachedSwitchMs",
+          "value": 342
+        },
+        {
+          "label": "Cached speaker changes crossfade with at most two layers",
+          "passed": true
+        },
+        {
+          "label": "A delayed image stays invisible until decoded, then fades in",
+          "passed": true
+        },
+        {
+          "label": "Late decoding cannot revive an old speaker after advancing",
+          "passed": true
+        },
+        {
+          "label": "A failed portrait leaves the story readable and later speakers working",
+          "passed": true
+        },
+        {
+          "label": "A scene change clears the previous actor; choices do not retain it",
+          "passed": true
+        },
+        {
+          "label": "A choice finishes the actor departure with reduced motion",
+          "passed": true
+        },
+        {
+          "label": "Fast-forward uses decoded, opaque replacements without accumulating layers",
+          "passed": true
+        },
+        {
+          "label": "Mobile composition and both control rows fit 360/390/430px screens",
+          "passed": true
+        },
+        {
+          "label": "A dream bookmark thumbnail, location, excerpt and reload agree",
+          "passed": true
+        }
+      ],
+      "errors": []
+    },
+    "interactions": {
+      "testedAt": "2026-11-13T09:56:21.420Z",
+      "browser": "webkit",
+      "url": "http://127.0.0.1:4179",
+      "results": [
+        {
+          "label": "Escape returns through nested pages; focus stays in the modal",
+          "passed": true
+        },
+        {
+          "label": "Mouse controls do not steal Space or Enter from reading",
+          "passed": true
+        },
+        {
+          "label": "Deleting a bookmark requires a second click and confirmation resets",
+          "passed": true
+        },
+        {
+          "label": "Wheel and PageUp open history; re-reading preserves choices and items",
+          "passed": true
+        },
+        {
+          "label": "Three rapid clicks reveal a sentence or advance at most one page",
+          "passed": true
+        },
+        {
+          "label": "The chapter card pauses typing and names the opening background",
+          "passed": true
+        },
+        {
+          "label": "Skip renders whole sentences and releasing Ctrl stops held skip",
+          "passed": true
+        },
+        {
+          "label": "Choices show hover feedback and accept number keys",
+          "passed": true
+        },
+        {
+          "label": "Number keys respect locked choices",
+          "passed": true
+        },
+        {
+          "label": "Opening a menu cancels an unfinished choice stamp",
+          "passed": true
+        },
+        {
+          "label": "Phone targets, hidden mode and narrow layouts stay usable",
+          "passed": true
+        },
+        {
+          "label": "First-play guidance dismisses persistently and screen readers receive full lines",
+          "passed": true
+        }
+      ],
+      "errors": []
+    }
+  }
+]

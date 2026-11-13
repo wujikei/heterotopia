@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { asset } from '../data/world';
+import { preloadImage } from '../preload';
 
 export function SceneArt({ name, motion = true }: { name: string; motion?: boolean }) {
   const [loaded, setLoaded] = useState(name);
   const [previous, setPrevious] = useState<string | null>(null);
   useEffect(() => {
     let cancelled = false;
-    const image = new Image();
-    image.onload = () => {
+    void preloadImage(asset(name)).then(() => {
       if (cancelled) return;
       setLoaded(current => { if (current !== name) setPrevious(current); return name; });
-    };
-    image.src = asset(name);
+    }).catch(() => {});
     return () => { cancelled = true; };
   }, [name]);
   useEffect(() => {

@@ -159,14 +159,19 @@ try {
   }, { settings: { textSpeed: 2 } });
 
   await check('The chapter card pauses typing and names the opening background', async page => {
-    await page.getByRole('button', { name: '启程', exact: true }).click();
+    // Hold the story clock while Playwright waits for layout. Software WebKit
+    // may otherwise spend the entire 2.3s chapter card on automation round trips.
+    await page.clock.install({ time: new Date('2026-11-13T04:00:00Z') });
+    await page.clock.pauseAt(new Date('2026-11-13T04:00:01Z'));
+    await page.getByRole('button', { name: '启程', exact: true }).click({ force: true });
     await page.getByTestId('chapter-intro').waitFor();
     assert.match(await page.locator('.intro-subtitle').innerText(), /夜梦|船底/);
-    await page.waitForTimeout(750);
+    await page.clock.runFor(750);
     assert.equal(await page.locator('.dialogue-text > span').first().innerText(), '');
-    await page.getByTestId('chapter-intro').click();
+    await page.getByTestId('chapter-intro').click({ force: true });
     const initial = (await page.locator('.dialogue-text > span').first().innerText()).length;
     assert.ok(initial <= 1, `Typing started behind the intro: ${initial}`);
+    await page.clock.runFor(600);
     await page.waitForFunction(() => document.querySelector('.dialogue-text > span')?.textContent.length > 0);
     await page.screenshot({ path: screenshot('04-opening-typing.png'), fullPage: true });
   }, { state: null, settings: { textSpeed: 2, reducedMotion: false } });

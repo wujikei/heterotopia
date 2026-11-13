@@ -3,6 +3,8 @@ name: Build and deploy the visual novel
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -31,7 +33,14 @@ jobs:
         run: npm test
       - name: Build the website
         run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify reading controls and decoded portraits
+        run: |
+          npm run test:interactions
+          npm run test:sprites
       - name: Configure GitHub Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
       - name: Upload the website
         uses: actions/upload-pages-artifact@v5
@@ -39,6 +48,7 @@ jobs:
           path: dist
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:

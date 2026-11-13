@@ -3,6 +3,7 @@ import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Download, Headphones, Im
 import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitAsset, portraitFace, sourceDocument } from '../data/world';
 import { canReturn, hasKunlun, hasRoyal, SCENES, sceneById } from '../engine';
 import { BoneMark } from './Atmosphere';
+import { slotPresentation } from '../savePresentation';
 import type { GameState, Profile, Route, SaveSlot, Settings } from '../types';
 
 const ROUTES: { key: Route; name: string; subtitle: string; art: string; number: string }[] = [
@@ -128,20 +129,22 @@ export function JournalView({ state, profile }: { state: GameState | null; profi
   </div>;
 }
 
-export function SaveView({ slots, state, initialMode, onSave, onLoad, onDelete, autosave }: { slots: (SaveSlot | null)[]; state: GameState | null; initialMode: 'save' | 'load'; onSave: (index: number) => void; onLoad: (state: GameState) => void; onDelete: (index: number) => void; autosave: GameState | null }) {
+export function SaveView({ slots, state, profile, initialMode, onSave, onLoad, onDelete, autosave }: { slots: (SaveSlot | null)[]; state: GameState | null; profile: Profile; initialMode: 'save' | 'load'; onSave: (index: number) => void; onLoad: (state: GameState) => void; onDelete: (index: number) => void; autosave: GameState | null }) {
   const [mode, setMode] = useState(initialMode);
   const [confirmation, setConfirmation] = useState<{ index: number; action: 'overwrite' | 'delete' } | null>(null);
   const date = (value: string) => new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(value));
+  const cards = slots.map(slot => slot ? slotPresentation(slot.state, profile) : null);
+  const recent = autosave ? slotPresentation(autosave, profile) : null;
   return <div className="save-content" onPointerDownCapture={event => {
     if (confirmation && event.target instanceof Element && event.target.closest('.save-slot')?.getAttribute('data-slot') !== String(confirmation.index)) setConfirmation(null);
   }} onBlurCapture={event => {
     if (confirmation && event.relatedTarget instanceof Element && !event.relatedTarget.closest(`[data-slot="${confirmation.index}"]`)) setConfirmation(null);
   }}><div className="tab-bar"><button className={mode === 'save' ? 'selected' : ''} onClick={() => { setMode('save'); setConfirmation(null); }}>留存此刻</button><button className={mode === 'load' ? 'selected' : ''} onClick={() => { setMode('load'); setConfirmation(null); }}>重续旧梦</button><span className="tab-description">{mode === 'save' ? '六处书签，留住六个瞬间。' : '路线记忆与已读记录会继续保留。'}</span></div>
-    {mode === 'load' && autosave && <button className="autosave-row" onClick={() => onLoad(autosave)}><RotateCcw size={18} strokeWidth={1.3} /><span><strong>最近一次 · 自动留存</strong><small>{sceneById(autosave.sceneId).chapter} / {sceneById(autosave.sceneId).title}</small></span><ArrowRight size={18} strokeWidth={1} /></button>}
+    {mode === 'load' && autosave && recent && <button className="autosave-row" onClick={() => onLoad(autosave)}><RotateCcw size={18} strokeWidth={1.3} /><span><strong>最近一次 · 自动留存</strong><small>{recent.chapter} / {recent.title}</small></span><ArrowRight size={18} strokeWidth={1} /></button>}
     <div className="save-grid">{slots.map((slot, index) => <div className={`save-slot ${slot ? 'save-slot--filled' : ''} ${confirmation?.index === index ? 'save-slot--confirm' : ''}`} key={index} data-slot={index}><span className="save-tassel" aria-hidden="true" />
       <button className="save-slot-main" disabled={mode === 'load' ? !slot : !state} onClick={() => { if (mode === 'load' && slot) onLoad(slot.state); else if (slot && !(confirmation?.index === index && confirmation.action === 'overwrite')) setConfirmation({ index, action: 'overwrite' }); else { onSave(index); setConfirmation(null); } }}>
-        <div className="save-slot-image">{slot ? <img src={asset(`${sceneById(slot.state.sceneId).background}-thumb`)} alt="" /> : <><span className="empty-slot-mark">卷</span><span>尚未落笔</span></>}<span className="save-slot-number">{String(index + 1).padStart(2, '0')}</span>{confirmation?.index === index && <span className="save-overwrite" id={`save-confirm-${index}`} role="status">{confirmation.action === 'delete' ? '再点一次叉号，移除这枚书签' : '再点一次，替换这枚书签'}</span>}</div>
-        <div className="save-slot-info"><strong>{slot ? sceneById(slot.state.sceneId).title : '空白书签'}</strong><small>{slot ? `${sceneById(slot.state.sceneId).chapter} · ${date(slot.savedAt)}` : mode === 'save' ? '在这里留下此刻' : '尚无可续的梦'}</small></div>
+        <div className="save-slot-image">{slot ? <img src={asset(`${cards[index]!.background}-thumb`)} alt="" /> : <><span className="empty-slot-mark">卷</span><span>尚未落笔</span></>}<span className="save-slot-number">{String(index + 1).padStart(2, '0')}</span>{confirmation?.index === index && <span className="save-overwrite" id={`save-confirm-${index}`} role="status">{confirmation.action === 'delete' ? '再点一次叉号，移除这枚书签' : '再点一次，替换这枚书签'}</span>}</div>
+        <div className="save-slot-info"><strong>{slot ? cards[index]!.title : '空白书签'}</strong><small>{slot ? `${cards[index]!.chapter} · ${date(slot.savedAt)}` : mode === 'save' ? '在这里留下此刻' : '尚无可续的梦'}</small>{cards[index]?.excerpt && <p className="save-slot-excerpt">{cards[index]!.excerpt}</p>}</div>
       </button>{slot && <button className={`save-delete ${confirmation?.index === index && confirmation.action === 'delete' ? 'save-delete--confirm' : ''}`} onClick={() => {
         if (confirmation?.index === index && confirmation.action === 'delete') { onDelete(index); setConfirmation(null); }
         else setConfirmation({ index, action: 'delete' });

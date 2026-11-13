@@ -10,9 +10,24 @@
   z-index: 2;
   pointer-events: none;
   /* 立绘下沿融进墨雾，而不是被横刀切断 */
-  -webkit-mask-image: linear-gradient(to bottom, #000 52%, rgba(0, 0, 0, 0.72) 68%, rgba(0, 0, 0, 0.18) 84%, transparent 94%);
-  mask-image: linear-gradient(to bottom, #000 52%, rgba(0, 0, 0, 0.72) 68%, rgba(0, 0, 0, 0.18) 84%, transparent 94%);
-  animation: actor-emerge 1s var(--ease-ink) both;
+  -webkit-mask-image: linear-gradient(to bottom, #000 80%, rgba(0, 0, 0, 0.6) 90%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 80%, rgba(0, 0, 0, 0.6) 90%, transparent 98%);
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--actor-duration, 220ms) ease-out, transform var(--actor-duration, 220ms) ease-out;
+}
+.actor--pending {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.actor--cross.actor--pending {
+  transform: none;
+}
+.actor--exit {
+  opacity: 0;
+}
+.actor--idle:not(.actor--pending):not(.actor--exit) {
+  opacity: 0.55;
 }
 .actor > img {
   position: relative;
@@ -20,10 +35,18 @@
   height: 100%;
   object-fit: contain;
   object-position: center bottom;
-  /* 一圈与场景同色的边缘光 */
-  filter: drop-shadow(0 0 1.2px rgba(255, 238, 208, 0.42))
-    drop-shadow(-14px -4px 26px color-mix(in srgb, var(--actor-tint, #c9a46a) 38%, transparent))
+  filter: drop-shadow(-14px -4px 26px color-mix(in srgb, var(--actor-tint, #c9a46a) 15%, transparent))
     drop-shadow(0 10px 30px rgba(2, 12, 16, 0.45));
+  transition: filter 180ms ease-out;
+}
+.actor--warm > img {
+  filter: sepia(.08) saturate(.96) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
+}
+.actor--cold > img {
+  filter: sepia(.06) hue-rotate(155deg) saturate(.94) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
+}
+.actor--idle > img {
+  filter: saturate(.8) brightness(.85) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
 }
 .actor-glow {
   position: absolute;
@@ -34,7 +57,11 @@
   border-radius: 50%;
   background: var(--actor-tint, #c9a46a);
   filter: blur(90px);
-  opacity: 0.16;
+  opacity: 0.06;
+  transition: opacity 180ms ease-out;
+}
+.actor--idle .actor-glow {
+  opacity: 0;
 }
 .actor-vertical-name {
   position: absolute;
@@ -47,19 +74,6 @@
   color: rgba(239, 232, 214, 0.55);
   text-shadow: 0 0 12px rgba(4, 19, 26, 0.9);
 }
-@keyframes actor-emerge {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-}
-
 .dialogue {
   position: absolute;
   z-index: 4;
@@ -355,13 +369,16 @@
 /* ---------- 手机竖屏 ---------- */
 @media (max-width: 760px) {
   .actor {
-    right: -14%;
-    width: 112vw;
-    height: 76dvh;
-    bottom: 12dvh;
+    right: -4vw;
+    width: 86vw;
+    height: min(62dvh, 560px);
+    bottom: 22dvh;
+  }
+  .actor > img {
+    object-position: right bottom;
   }
   .actor-vertical-name {
-    right: 16%;
+    right: 10%;
     top: 18%;
     font-size: 14px;
   }
@@ -371,7 +388,7 @@
   .dialogue-mist {
     background:
       radial-gradient(ellipse 60% 40% at 30% 30%, rgba(3, 14, 19, 0.45), transparent 72%),
-      linear-gradient(to top, rgba(3, 14, 19, 0.96) 0%, rgba(3, 14, 19, 0.88) 42%, rgba(3, 14, 19, 0.55) 70%, transparent 100%);
+      linear-gradient(to top, rgba(3, 14, 19, 0.98) 0%, rgba(3, 14, 19, 0.96) 50%, rgba(3, 14, 19, 0.82) 70%, rgba(3, 14, 19, .32) 86%, transparent 100%);
     background-size:
       160% 100%,
       100% 100%;
@@ -390,6 +407,9 @@
   }
   .dialogue--narration .dialogue-text {
     padding-left: 14px;
+  }
+  .dialogue--inner .dialogue-mist {
+    background: linear-gradient(to top, rgba(5, 17, 26, .98) 0%, rgba(6, 20, 30, .96) 50%, rgba(6, 20, 30, .82) 70%, rgba(6, 20, 30, .32) 86%, transparent 100%);
   }
   .dialogue-footer {
     flex-direction: column-reverse;

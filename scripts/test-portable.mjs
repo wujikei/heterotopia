@@ -110,7 +110,7 @@ try {
   assert.deepEqual(audioIntegrity.brokenAudio, []);
   assert.equal(audioIntegrity.audioAssets, 51);
   await page.getByRole('button', { name: '启程', exact: true }).click();
-  if (await page.getByTestId('chapter-intro').count()) await page.getByTestId('chapter-intro').click();
+  await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
   await page.getByTestId('dialogue-text').waitFor();
   await page.waitForTimeout(200);
   await page.screenshot({ path: artifact('08-offline-opening.png') });

@@ -84,7 +84,7 @@ async function open(fixture, forceMedia = false) {
 const count = (page, file) => page.evaluate(file => window.__audioTest.starts.filter(item => item.file === file).length, file);
 const waitFor = (page, file) => page.waitForFunction(file => window.__audioTest.starts.some(item => item.file === file), file);
 const saved = page => page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')));
-async function closeIntro(page) { if (await page.getByTestId('chapter-intro').count()) await page.getByTestId('chapter-intro').click(); }
+async function closeIntro(page) { await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click()); }
 async function turnPage(page) {
   // Model deliberate reading; repeated inputs within 180ms are now ignored.
   await page.waitForTimeout(200);
