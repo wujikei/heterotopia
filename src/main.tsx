@@ -11,5 +11,6 @@ import './styles/ink-library.css';
 import './styles/ink-music.css';
 import './styles/ink-ending.css';
 import './styles/ink-perf.css';
+import './styles/ink-interaction.css';
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);

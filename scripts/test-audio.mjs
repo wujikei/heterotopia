@@ -85,25 +85,32 @@ const count = (page, file) => page.evaluate(file => window.__audioTest.starts.fi
 const waitFor = (page, file) => page.waitForFunction(file => window.__audioTest.starts.some(item => item.file === file), file);
 const saved = page => page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')));
 async function closeIntro(page) { if (await page.getByTestId('chapter-intro').count()) await page.getByTestId('chapter-intro').click(); }
+async function turnPage(page) {
+  // Model deliberate reading; repeated inputs within 180ms are now ignored.
+  await page.waitForTimeout(200);
+  const before = (await saved(page)).beatId;
+  await page.getByRole('button', { name: '继续', exact: true }).click();
+  await page.waitForFunction(before => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId !== before, before);
+}
 
 try {
   const page = await open();
   assert.equal(await page.evaluate(() => window.__audioTest.requests.length), 0, 'No audio fetch before a user gesture');
-  await page.getByRole('button', { name: '启程 BEGIN THE JOURNEY' }).click();
+  await page.getByRole('button', { name: '启程', exact: true }).click();
   await closeIntro(page);
   const webAudio = await page.evaluate(() => !!(window.AudioContext ?? window.webkitAudioContext));
   if (webAudio) {
     await waitFor(page, 'music-under-current.mp3');
     await waitFor(page, 'sfx-hull.mp3');
     const opening = await count(page, 'sfx-hull.mp3');
-    await page.getByRole('button', { name: '继续', exact: true }).click();
-    await page.getByRole('button', { name: '继续', exact: true }).click();
+    await turnPage(page);
+    await turnPage(page);
     assert.equal(await count(page, 'sfx-hull.mp3'), opening, 'Paragraphs must not replay their sound cue');
-    for (let i = 0; i < 25 && Number((await saved(page)).beatId.split(':')[1]) < 6; i++) await page.getByRole('button', { name: '继续', exact: true }).click();
+    for (let i = 0; i < 25 && Number((await saved(page)).beatId.split(':')[1]) < 6; i++) await turnPage(page);
     await waitFor(page, 'sfx-alarm.mp3');
     await waitFor(page, 'music-paper-note.mp3');
     const alarmCount = await count(page, 'sfx-alarm.mp3');
-    await page.getByRole('button', { name: '继续', exact: true }).click();
+    await turnPage(page);
     await page.waitForTimeout(200);
     assert.equal(await count(page, 'sfx-alarm.mp3'), alarmCount);
     assert.ok(await page.evaluate(() => window.__audioTest.stops.some(item => item.file === 'music-under-current.mp3')));
@@ -126,7 +133,8 @@ try {
     checks.push('Global mute controls music, ambience and effects');
   }
 
-  await page.getByRole('button', { name: '设置', exact: true }).click();
+  await page.getByRole('button', { name: '打开菜单', exact: true }).click();
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
   await page.getByRole('slider', { name: '音效音量', exact: true }).fill('17');
   await page.getByRole('button', { name: '关闭', exact: true }).click();
   const snapshot = await saved(page);
@@ -139,6 +147,7 @@ try {
 
   await page.getByRole('button', { name: '打开菜单' }).click();
   await page.getByRole('button', { name: /回到标题/ }).click();
+  await page.getByRole('button', { name: /再点一次，回到标题/ }).click();
   await page.getByRole('button', { name: '听水集', exact: true }).click();
   await page.getByRole('button', { name: '试听《循水归来》', exact: true }).click();
   if (webAudio) {
@@ -153,8 +162,7 @@ try {
     assert.equal(Number(await page.getByRole('progressbar', { name: '试听进度' }).getAttribute('value')), paused);
     assert.ok(paused >= Number(beforePause));
     await page.getByRole('button', { name: '播放《循水归来》', exact: true }).click();
-    await page.waitForTimeout(500);
-    assert.ok(Number(await page.getByRole('progressbar', { name: '试听进度' }).getAttribute('value')) > paused);
+    await page.waitForFunction(paused => Number(document.querySelector('progress[aria-label="试听进度"]')?.getAttribute('value')) > paused, paused, { timeout: 5000 });
   }
   const downloading = page.waitForEvent('download');
   await page.getByRole('link', { name: '收藏此曲' }).click();
