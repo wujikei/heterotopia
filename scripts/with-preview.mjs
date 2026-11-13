@@ -46,7 +46,9 @@ try {
     if (server?.exitCode !== null && server?.exitCode !== undefined) throw new Error(`预览服务启动失败：${serverOutput.trim()}`);
     if (startupError) throw startupError;
     try {
-      if (!server || /Local:/.test(serverOutput)) {
+      // CI can insert an ANSI reset between "Local" and its colon.
+      const plainOutput = serverOutput.replace(/\u001b\[[0-?]*[ -/]*[@-~]/g, '');
+      if (!server || /Local:/.test(plainOutput)) {
         const response = await fetch(base, { signal: AbortSignal.timeout(1000) });
         if (response.ok) break;
       }
