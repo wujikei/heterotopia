@@ -5,10 +5,13 @@ import { sound } from './audio';
 import { Atmosphere, BoatMark, BoneMark, SceneArt } from './components/Atmosphere';
 import { Modal } from './components/Modal';
 import { Backlog } from './components/Backlog';
+import { ActorLayer } from './components/ActorLayer';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
 import { MusicRoom } from './components/MusicRoom';
 import { AboutView, ChaptersView, CharactersView, GalleryView, JournalView, SaveView, SettingsView } from './components/Library';
-import { asset, BACKGROUNDS, characterFor, ENDINGS, portraitAsset } from './data/world';
+import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, portraitAsset } from './data/world';
+import { actorForBeat } from './actors';
+import { prefetchWhenIdle, preloadImage } from './preload';
 import { advance, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES, sceneById } from './engine';
 import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist, validState } from './storage';
 import { scoreFrame } from './score';
@@ -101,6 +104,7 @@ export default function App() {
 
   const scene = game ? sceneById(game.sceneId) : SCENES[0];
   const beat = useMemo(() => game ? currentBeat(game, profile) : null, [game, profile]);
+  const beats = useMemo(() => game ? compileScene(game.sceneId, profile, game) : [], [game, profile]);
   const text = beat?.kind === 'text' ? beat.text : '';
   const typing = useTypewriter(screen === 'play' ? beat?.id : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? 'hero' : beat?.background ?? 'hero';
@@ -142,12 +146,40 @@ export default function App() {
       const opening = currentBeat(game, currentProfile.current);
       setIntro({ chapter: title.length ? chapter : '终章', title: title.join(' ') || scene.chapter, subtitle: BACKGROUNDS[opening.background]?.subtitle ?? scene.title });
     }
-    const all = compileScene(game.sceneId, currentProfile.current, game);
-    const futureArt = [...new Set(all.map(b => b.background))];
-    const next = SCENES[SCENES.findIndex(item => item.id === game.sceneId) + 1];
-    if (next) futureArt.push(next.background);
-    for (const art of futureArt) { const image = new Image(); image.src = asset(art); }
   }, [game?.sceneId, screen, game?.cycle, scene.chapter, scene.title]);
+
+  useEffect(() => {
+    if (screen !== 'play' || !game) return;
+    const current = compileScene(game.sceneId, currentProfile.current, game);
+    const next = SCENES[SCENES.findIndex(item => item.id === game.sceneId) + 1];
+    const upcoming = next ? compileScene(next.id, currentProfile.current, game) : [];
+    const portraits = new Set<string>();
+    // Some opening scenes omit cast tags: include actual speakers as well.
+    for (const [items, location] of [[current, scene], [upcoming, next]] as const) {
+      if (!location) continue;
+      for (const item of items) {
+        const actor = actorForBeat(item, location, items);
+        if (actor) portraits.add(portraitAsset(actor.character.key));
+        for (const key of item.cast) portraits.add(portraitAsset(key));
+      }
+    }
+    const position = Math.max(0, current.findIndex(item => item.id === game.beatId));
+    const nearest = current.slice(position).map(item => actorForBeat(item, scene, current)).find(Boolean);
+    const urgent = [
+      ...(nearest ? [preloadImage(portraitAsset(nearest.character.key), 'high')] : []),
+      preloadImage(asset(current[position].background)),
+    ];
+    let cancelled = false;
+    let stopIdle: (() => void) | undefined;
+    // The first visible person must not compete with speculative scenery.
+    void Promise.allSettled(urgent).then(async () => {
+      if (cancelled) return;
+      const rest = [...portraits, ...new Set([...current, ...upcoming].map(item => asset(item.background)))];
+      await Promise.allSettled(rest.map(url => preloadImage(url, 'low')));
+      if (!cancelled) stopIdle = prefetchWhenIdle(CHARACTERS.map(character => portraitAsset(character.key)));
+    });
+    return () => { cancelled = true; stopIdle?.(); };
+  }, [game?.sceneId, game?.cycle, screen, scene]);
 
   useEffect(() => {
     if (!intro) return;
@@ -365,18 +397,6 @@ export default function App() {
   };
   const dismissReadingHint = () => { setShowReadingHint(false); persist('readingHint', true); };
 
-  let portrait = beat?.kind === 'text' ? characterFor(beat.speaker) : undefined;
-  let borrowedBody = false;
-  if (portrait?.key === 'shen' && (['royal', 'kunlun', 'common'].includes(scene.route) || scene.id === '终-1')) {
-    const all = game ? compileScene(game.sceneId, profile, game) : [];
-    const returnedIndex = all.findIndex(item => item.kind === 'text' && item.text.includes('虎口白疤却留在戌'));
-    const position = all.findIndex(item => item.id === beat?.id);
-    if (scene.id !== '终-1' || returnedIndex < 0 || position <= returnedIndex) {
-      portrait = characterFor('戌');
-      borrowedBody = true;
-    }
-  }
-  const beats = game ? compileScene(game.sceneId, profile, game) : [];
   const lineKind = beat?.kind !== 'text' ? 'speech' : !beat.speaker ? 'narration' : beat.mood.includes('内心') ? 'inner' : 'speech';
   const position = Math.max(0, beats.findIndex(item => item.id === beat?.id));
   const locationName = BACKGROUNDS[background]?.subtitle ?? scene.title;
@@ -413,8 +433,8 @@ export default function App() {
       <div className="sr-only" aria-live="polite" aria-atomic="true">{!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? `${beat.speaker ? `${beat.speaker}：` : ''}${beat.text}` : ''}</div>
       {showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label="阅读提示"><CircleHelp size={16} aria-hidden="true" /><p>点击画面继续，点「回看」重读。<small>更多操作可在阅读设置中查看。</small></p><button onClick={dismissReadingHint}>知道了</button></aside>}
 
+      {settings.showSprites && !intro && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} />}
       {beat.kind === 'text' && <><button className="advance-surface" onClick={next} aria-label={hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文'} tabIndex={-1} />
-        {portrait && settings.showSprites && !intro && <div key={portrait.key} className={`actor actor--${portrait.key}`} style={{ '--actor-tint': portrait.color } as CSSProperties} aria-hidden="true"><div className="actor-glow" /><img src={portraitAsset(portrait.key)} alt="" /><span className="actor-vertical-name">{borrowedBody ? '戌（沈辞）' : portrait.name}</span></div>}
         <section className={`dialogue dialogue--${lineKind}`} aria-label="故事正文" inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />
           <div className="dialogue-body">
@@ -467,7 +487,7 @@ export default function App() {
       {modal === 'gallery' && <GalleryView profile={profile} />}
       {modal === 'journal' && <JournalView state={game} profile={profile} />}
       {modal === 'settings' && <SettingsView settings={settings} onChange={setSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { setSettings(DEFAULT_SETTINGS); notify('阅读设置已恢复。'); }} />}
-      {modal === 'saves' && <SaveView slots={slots} state={game} autosave={loadAutosave()} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />}
+      {modal === 'saves' && <SaveView slots={slots} state={game} profile={profile} autosave={loadAutosave()} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />}
       {modal === 'history' && <Backlog state={game} profile={profile} onReplay={replay} />}
       {modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>不用急。水也可以慢慢流。</p><div className="pause-buttons">{screen === 'play' && <button className="gold-button" onClick={closeModal}>继续此梦 <Play size={15} /></button>}<div className="pause-grid">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={24} /><span>{item.text}</span><small>{item.note}</small></button>)}</div><div className="pause-rows"><button className="pause-row" onClick={() => openSaves('save')}><InkBookmark />存读档<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><InkDrop />听水集<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><InkWind />阅读设置<ChevronRight size={16} /></button></div>{screen === 'play' && <button className={`pause-row pause-row--home ${confirmHome ? 'is-confirming' : ''}`} onClick={() => { if (confirmHome) toHome(); else setConfirmHome(true); }} aria-live="polite"><InkReturn />{confirmHome ? '再点一次，回到标题' : '回到标题'}<small>{confirmHome ? '此刻已自动留存，可随时续梦' : '此刻已自动留存'}</small></button>}</div></div>}
       {modal === 'about' && <AboutView />}

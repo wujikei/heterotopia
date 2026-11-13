@@ -21,9 +21,14 @@ await page.evaluate(() => document.fonts.ready);
 await page.waitForTimeout(1900);
 await page.screenshot({ path: screenshotPath('01-home-desktop.png'), fullPage: true });
 await page.getByRole('button', { name: '启程', exact: true }).click();
-const intro = page.getByTestId('chapter-intro');
-if (await intro.count()) await intro.click();
-await page.getByRole('button', { name: '立即显示全文' }).click();
+// The card may auto-dismiss between a locator query and actionability checks.
+// Its timing and click behavior are covered by test:interactions.
+await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
+await page.locator('.dialogue-advance').waitFor();
+await page.evaluate(() => {
+  const advance = document.querySelector('.dialogue-advance');
+  if (advance?.getAttribute('aria-label') === '立即显示全文') advance.click();
+});
 await page.waitForTimeout(1000);
 await page.screenshot({ path: screenshotPath('02-story-desktop.png'), fullPage: true });
 await page.getByRole('button', { name: '继续', exact: true }).click();

@@ -9,10 +9,12 @@
     "preview": "vite preview --host 127.0.0.1",
     "portable": "node scripts/build-portable.mjs",
     "test": "tsx --test tests/*.test.ts",
-    "test:browser": "node scripts/test-browser.mjs",
-    "test:interactions": "node --import tsx scripts/test-interactions.mjs",
+    "test:browser": "node scripts/with-preview.mjs scripts/test-browser.mjs",
+    "test:interactions": "node --import tsx scripts/with-preview.mjs scripts/test-interactions.mjs",
+    "test:sprites": "node --import tsx scripts/with-preview.mjs scripts/test-sprites.mjs",
+    "test:perf": "node --import tsx scripts/with-preview.mjs scripts/perf-sprites.mjs",
     "test:portable": "node --import tsx scripts/test-portable.mjs",
-    "test:audio": "node --import tsx scripts/test-audio.mjs",
+    "test:audio": "node --import tsx scripts/with-preview.mjs scripts/test-audio.mjs",
     "import:story": "python scripts/import_story.py"
   },
   "dependencies": {

@@ -1,0 +1,72 @@
+{
+  "measuredAt": "2026-11-13T10:07:25.605Z",
+  "base": "http://127.0.0.1:4179",
+  "batch": "ui-fix-2",
+  "measurements": [
+    {
+      "network": "unlimited",
+      "home": {
+        "loadMs": 58,
+        "fontsReadyMs": 144,
+        "requests": 9,
+        "bytes": 1184572
+      },
+      "cachedBeforeClick": true,
+      "first": {
+        "mountedMs": 17,
+        "imageReadyMs": 17,
+        "halfMs": 247,
+        "fullMs": 436,
+        "decodedAnimationMs": 419
+      }
+    },
+    {
+      "network": "4G",
+      "home": {
+        "loadMs": 453,
+        "fontsReadyMs": 1436,
+        "requests": 9,
+        "bytes": 1184572
+      },
+      "cachedBeforeClick": false,
+      "first": {
+        "mountedMs": 16,
+        "imageReadyMs": 261,
+        "halfMs": 461,
+        "fullMs": 646,
+        "decodedAnimationMs": 385
+      }
+    },
+    {
+      "network": "Fast3G",
+      "home": {
+        "loadMs": 2574,
+        "fontsReadyMs": 8368,
+        "requests": 9,
+        "bytes": 1184572
+      },
+      "cachedBeforeClick": false,
+      "first": {
+        "mountedMs": 18,
+        "imageReadyMs": 1798,
+        "halfMs": 1941,
+        "fullMs": 2049,
+        "decodedAnimationMs": 251
+      }
+    }
+  ],
+  "narration": {
+    "retainedDuringNarration": true,
+    "sameNodeOnReturn": true,
+    "mountedMs": 18,
+    "imageReadyMs": 18,
+    "halfMs": 18,
+    "fullMs": 244,
+    "decodedAnimationMs": 226
+  },
+  "authored": {
+    "portraitLines": 414,
+    "legacyMounts": 376,
+    "retainedOpportunities": 94
+  }
+}

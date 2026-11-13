@@ -40,9 +40,11 @@
 
 已安装 Node.js 时：`npm install`，然后 `npm run dev`。生产构建：`npm run build`；单文件打包：`npm run portable`。
 
-`npm test` 验证分支、四个王裔结局、两种路线顺序、条件记忆、物件重置及安全重读。先运行开发服务器，再执行 `npm run test:browser` 可检查桌面、窄屏、存读档与设置；`npm run test:interactions` 检查弹窗逐层返回、焦点与空格、书签删除确认、回看重读、三连击保护、章节卡打字暂停、已读快进、数字键选择及 320px 至横屏布局。所有浏览器测试使用独立的临时进度。
+`npm test` 验证分支、四个王裔结局、两种路线顺序、条件记忆、物件重置、安全重读、借身立绘和书签地点。先执行 `npm run build`，再执行 `npm run test:browser` 可检查桌面、窄屏、存读档与设置；`npm run test:interactions` 检查弹窗、焦点、删除确认、回看、翻页、章节卡、快进、选择及 320px 至横屏布局。`npm run test:sprites` 检查解码后出场、旁白保留、换人、慢图与缺图、手机按钮对齐及梦船书签。浏览器测试自动启动、关闭预览服务，使用独立的临时进度。
 
-运行 `npm run preview -- --port 4173 --base /heterotopia/` 后，`npm run test:audio` 检查首次手势、场景音效去重、闹钟切断、三个音量通道、试听暂停继续、下载、慢请求取消、快进抑制与播放器窄屏布局。使用独立测试浏览器和明确的临时模拟进度，不修改玩家存档。
+`npm run test:audio` 同样自动启动预览，检查首次手势、场景音效去重、闹钟切断、三个音量通道、试听暂停继续、下载、慢请求取消、快进抑制与播放器窄屏布局。`npm run test:perf -- <标签>` 以 Chromium 测量无限速、4G、Fast3G 的首屏和立绘，结果与对比截图保存在 `artifacts/perf/`。使用 `VN_TEST_URL` 时连接已有服务器。
+
+`test:sprites` 默认在本机 Chromium 检查 250ms 人物恢复、300ms 缓存换人门限。共享 CI 设置 `VN_TEST_TIMINGS=record` 记录实际帧时，并继续检查过渡时长和全部功能，避免共享机器负载影响验收。
 
 生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查全部内嵌美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
 
@@ -52,7 +54,7 @@
 
 ## 网站发布
 
-仓库：[wujikei/heterotopia](https://github.com/wujikei/heterotopia)。推送至 `main` 后，GitHub Actions 会安装依赖、验证剧情分支、构建静态文件并发布至 GitHub Pages。也可在仓库的 Actions 页面手动运行发布工作流。
+仓库：[wujikei/heterotopia](https://github.com/wujikei/heterotopia)。GitHub Actions 在 PR 和 `main` 上验证剧情、构建、Chromium 阅读交互与立绘；检查通过的 `main` 才发布至 GitHub Pages。也可在仓库的 Actions 页面手动运行发布工作流。
 
 网站使用 GitHub 提供的 HTTPS，不依赖本机服务器。所有画面、字体和声音均随网站提供；部署配置位于 `.github/workflows/pages.yml`。发布状态可在仓库的 Actions 与 Environments 页面查看。
 
