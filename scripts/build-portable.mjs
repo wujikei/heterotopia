@@ -1,6 +1,8 @@
 import { readFile, readdir, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { build } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // A real single-file game: all illustrations, transparent sprites, fonts,
 // original screenplay, mastered score, sound effects, engine and UI are embedded.
@@ -9,7 +11,7 @@ const dist = path.join(root, 'dist');
 let html = await readFile(path.join(dist, 'index.html'), 'utf8');
 const assetMap = {};
 for (const name of await readdir(path.join(dist, 'art'))) {
-  if (!name.endsWith('.webp')) continue;
+  if (!name.endsWith('.webp') || name.endsWith('-m.webp')) continue;
   const image = await readFile(path.join(dist, 'art', name));
   assetMap[name.slice(0, -5)] = `data:image/webp;base64,${image.toString('base64')}`;
 }
@@ -40,13 +42,25 @@ for (const match of css.matchAll(/url\(([^)]+)\)/g)) {
 html = html.replace(cssMatch[0], () => `<style>${css}</style>`);
 const scriptMatch = html.match(/<script\b[^>]*src="([^"]+)"[^>]*><\/script>/);
 if (!scriptMatch) throw new Error('Built script was not found');
-const js = (await readFile(path.join(dist, scriptMatch[1]), 'utf8')).replaceAll('</script', '<\\/script');
+// The website keeps a lazy story chunk. The downloadable edition deliberately
+// bundles that same source into one IIFE, including every dynamic import.
+const bundled = await build({
+  configFile: false, root, base: './', plugins: [react()],
+  build: { write: false, cssCodeSplit: false, emptyOutDir: false,
+    rollupOptions: { input: path.join(root, 'src/main.tsx'), output: { format: 'iife', inlineDynamicImports: true } },
+  },
+});
+const entry = bundled.output.find(item => item.type === 'chunk' && item.isEntry);
+if (!entry || entry.imports.length || entry.dynamicImports.length) throw new Error('Portable edition still has external JavaScript chunks');
+const js = entry.code.replaceAll('</script', '<\\/script');
 html = html.replace(scriptMatch[0], () => `${embedded}<script type="module">${js}</script>`);
+html = html.replace(/<link\b[^>]*rel="(?:modulepreload|preload)"[^>]*>/g, '');
 const icon = await readFile(path.join(dist, 'favicon.svg'));
 html = html.replace('./favicon.svg', `data:image/svg+xml;base64,${icon.toString('base64')}`);
-const license = await readFile(path.join(dist, 'fonts', 'NotoSerifSC-OFL.txt'), 'utf8');
+const license = await Promise.all(['NotoSerifSC-OFL.txt', 'LXGWWenKai-OFL.txt'].map(name => readFile(path.join(dist, 'fonts', name), 'utf8'))).then(items => items.join('\n\n').replace(/[\t ]+$/gm, ''));
 html = html.replace('</head>', () => `<!-- Embedded font license: Noto Serif SC\n${license.replaceAll('-->', '-- >')}\n-->\n</head>`);
 const destination = path.join(root, '异托邦.html');
+html = html.replace(/[\t ]+$/gm, '');
 await writeFile(destination, html, 'utf8');
 await writeFile(path.join(root, '字体授权-OFL.txt'), license, 'utf8');
 console.log(`Portable game: ${destination}`);

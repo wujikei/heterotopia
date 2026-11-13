@@ -3,6 +3,9 @@ import test from 'node:test';
 import { actorForBeat, actorInCast } from '../src/actors';
 import { compileScene, currentBeat, enterScene, newGame, newProfile, sceneById } from '../src/engine';
 import { slotPresentation } from '../src/savePresentation';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 const profile = newProfile();
 test('a dream bookmark uses the saved page location instead of the scene default', () => {

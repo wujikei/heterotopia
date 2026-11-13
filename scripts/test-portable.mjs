@@ -4,6 +4,9 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { advance, choose, completeEnding, continueEnding, currentBeat, newGame, newProfile, recordProgress } from '../src/engine.ts';
 import { BACKGROUNDS, CHARACTERS } from '../src/data/world.ts';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 // Isolated, disposable browser contexts and synthetic test journeys only.
 // This never opens or changes the user's browser profile or real saves.
@@ -75,13 +78,16 @@ try {
       try { await img.decode(); } catch { broken.push(name); }
     }
     await document.fonts.load('400 22px StorySerif', '异托邦，魂兮归来。');
+    await document.fonts.load('400 22px StorySerif', '丁');
+    await document.fonts.load('600 22px StorySerif', '启程');
     await document.fonts.load('600 22px StorySerif', '循着水声，回家。');
     await document.fonts.load('400 22px StoryHand', '水声还在，慢慢说。');
+    await Promise.all([...document.fonts].map(font => font.load()));
     return { missing, broken, imageAssets: Object.keys(assets ?? {}).length, fonts: [...document.fonts].map(font => ({ family: font.family, status: font.status })) };
   }, expected);
   assert.deepEqual(integrity.missing, []);
   assert.deepEqual(integrity.broken, []);
-  assert.equal(integrity.fonts.length, 3);
+  assert.equal(integrity.fonts.length, 6);
   assert.ok(integrity.fonts.some(font => font.family === 'StoryHand'));
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
   const expectedAudio = JSON.parse(await readFile(new URL('../public/audio/manifest.json', import.meta.url), 'utf8')).files;
@@ -110,6 +116,7 @@ try {
   assert.deepEqual(audioIntegrity.brokenAudio, []);
   assert.equal(audioIntegrity.audioAssets, 51);
   await page.getByRole('button', { name: '启程', exact: true }).click();
+  await page.locator('.game-screen').waitFor();
   await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
   await page.getByTestId('dialogue-text').waitFor();
   await page.waitForTimeout(200);

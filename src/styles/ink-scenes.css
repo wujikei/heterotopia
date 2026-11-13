@@ -288,3 +288,28 @@
     bottom: 4vh;
   }
 }
+/* Loading remains visible and readable while a cold story/image fetch settles. */
+.reading-load {
+  position: absolute;
+  margin-top: 8px;
+  color: var(--rice-soft);
+  font-size: 13px;
+  letter-spacing: .12em;
+}
+.reading-load button { min-height: 44px; padding-inline: 8px; }
+.update-notice {
+  position: fixed;
+  inset: auto 16px max(16px, env(safe-area-inset-bottom)) auto;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 32px);
+  padding: 6px 12px;
+  border: 1px solid var(--brass-dim);
+  background: var(--ink-1);
+  color: var(--rice);
+  font-size: 14px;
+  box-shadow: 0 8px 30px #0006;
+}
+.update-notice button { min-height: 44px; min-width: 44px; color: var(--brass-bright); }

@@ -1,0 +1,22 @@
+{
+  "story-serif-ui.woff2": {
+    "glyphs": 236,
+    "bytes": 34760
+  },
+  "story-serif-metadata.woff2": {
+    "glyphs": 198,
+    "bytes": 37952
+  },
+  "story-serif-regular.woff2": {
+    "glyphs": 1730,
+    "bytes": 323700
+  },
+  "story-serif-ui-semibold.woff2": {
+    "glyphs": 101,
+    "bytes": 12180
+  },
+  "story-serif-semibold.woff2": {
+    "glyphs": 2063,
+    "bytes": 378092
+  }
+}

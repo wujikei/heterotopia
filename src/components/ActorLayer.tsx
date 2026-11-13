@@ -4,10 +4,12 @@ import { actorForBeat, actorInCast } from '../actors';
 import type { StageActor } from '../actors';
 import { ACTOR_LIGHT } from '../data/actorLight';
 import { portraitAsset } from '../data/world';
+import { portraitName } from '../assets';
+import { ArtImage } from './ArtImage';
 import { isDecoded, preloadImage } from '../preload';
 import type { Beat, Scene } from '../types';
 
-type Layer = { id: number; sceneId: string; actor: StageActor; phase: 'pending' | 'active' | 'exit'; idle: boolean; cross: boolean; instant: boolean };
+type Layer = { id: number; sceneId: string; actor: StageActor; phase: 'pending' | 'active' | 'exit'; idle: boolean; cross: boolean; instant: boolean; returning?: boolean };
 let mountId = 0;
 
 function ActorFigure({ layer, background, onReady, onError }: {
@@ -16,7 +18,7 @@ function ActorFigure({ layer, background, onReady, onError }: {
   const { actor, id } = layer;
   const url = portraitAsset(actor.character.key);
   const figure = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     let cancelled = false;
     const started = performance.now();
     const ready = () => {
@@ -29,12 +31,12 @@ function ActorFigure({ layer, background, onReady, onError }: {
     else void preloadImage(url).then(() => { if (!cancelled) ready(); }, () => { if (!cancelled) onError(id); });
     return () => { cancelled = true; };
   }, [id, url, onReady, onError]);
-  const duration = layer.instant ? '0ms' : layer.phase === 'exit' || layer.cross ? '220ms' : layer.idle ? '180ms' : '400ms';
+  const duration = layer.instant ? '0ms' : layer.returning ? '180ms' : layer.phase === 'exit' || layer.cross ? '220ms' : layer.idle ? '180ms' : '400ms';
   const light = ACTOR_LIGHT[background];
   return <div ref={figure} className={`actor actor--${actor.character.key} actor--${layer.phase} ${layer.idle ? 'actor--idle' : 'actor--speaking'} ${layer.cross ? 'actor--cross' : ''} ${light ? `actor--${light}` : ''}`}
     data-mount-id={id} data-actor-state={layer.phase} data-actor-label={actor.label}
     style={{ '--actor-tint': actor.character.color, '--actor-duration': duration } as CSSProperties} aria-hidden="true">
-    <div className="actor-glow" /><img src={url} alt="" decoding="async" />
+    <div className="actor-glow" /><ArtImage name={portraitName(actor.character.key)} alt="" decoding="async" />
     <span className="actor-vertical-name">{actor.label}</span>
   </div>;
 }
@@ -65,7 +67,7 @@ export const ActorLayer = memo(function ActorLayer({ beat, scene, beats, reduced
       const existing = sameScene.find(layer => layer.actor.character.key === desired.character.key);
       if (existing) {
         return sameScene.flatMap<Layer>(layer => {
-          if (layer.id === existing.id) return [{ ...layer, actor: desired, idle: false, instant, cross: true, phase: layer.phase === 'exit' ? 'active' : layer.phase }];
+          if (layer.id === existing.id) return [{ ...layer, actor: desired, idle: false, returning: layer.idle, instant, cross: true, phase: layer.phase === 'exit' ? 'active' : layer.phase }];
           if (layer.phase === 'exit' || (existing.phase === 'pending' && layer.phase === 'active')) return [layer];
           return existing.phase === 'exit' && !instant ? [{ ...layer, phase: 'exit', idle: false }] : [];
         });

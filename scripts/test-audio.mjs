@@ -3,6 +3,9 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium, firefox, webkit } from 'playwright';
 import { compileScene, newGame, newProfile, SCENES } from '../src/engine.ts';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4173/heterotopia/';
 const name = process.env.VN_TEST_BROWSER || 'chromium';
@@ -15,7 +18,7 @@ const screenshot = file => fileURLToPath(new URL(file, output));
 // Tests use fresh, disposable profiles and explicitly synthetic story progress.
 // Observers are injected only into these test pages, never into the shipped game.
 async function open(fixture, forceMedia = false) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, acceptDownloads: true });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
   contexts.push(context);
   await context.addInitScript(({ fixture: data, forceMedia }) => {
     if (!sessionStorage.getItem('synthetic-audio-test')) {
@@ -97,6 +100,7 @@ try {
   const page = await open();
   assert.equal(await page.evaluate(() => window.__audioTest.requests.length), 0, 'No audio fetch before a user gesture');
   await page.getByRole('button', { name: '启程', exact: true }).click();
+  await page.locator('.game-screen').waitFor();
   await closeIntro(page);
   const webAudio = await page.evaluate(() => !!(window.AudioContext ?? window.webkitAudioContext));
   if (webAudio) {

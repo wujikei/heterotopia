@@ -1,3 +1,5 @@
+import { imageFallback, recordImageFailure } from './assets';
+
 type CachedImage = { promise: Promise<void>; decoded: boolean };
 const images = new Map<string, CachedImage>();
 
@@ -14,7 +16,16 @@ export function preloadImage(url: string, priority: 'high' | 'low' | 'auto' = 'a
   images.set(url, entry);
   const clear = () => { image.onload = null; image.onerror = null; };
   image.onerror = () => {
+    const fallback = imageFallback(image.src) ? imageFallback(url) : undefined;
+    if (fallback) {
+      recordImageFailure(url);
+      images.set(fallback, entry);
+      image.src = fallback;
+      return;
+    }
     clear(); images.delete(url); // a later visit may retry a transient failure
+    const fallbackUrl = imageFallback(url);
+    if (fallbackUrl) images.delete(fallbackUrl);
     reject(new Error(`Image unavailable: ${url.slice(0, 100)}`));
   };
   image.onload = async () => {

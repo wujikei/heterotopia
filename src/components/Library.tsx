@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Download, Headphones, Image as ImageIcon, LockKeyhole, RotateCcw, Upload, X } from 'lucide-react';
-import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitAsset, portraitFace, sourceDocument } from '../data/world';
+import { asset, assetSources, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitFace, sourceDocument } from '../data/world';
+import { portraitName } from '../assets';
+import { ArtImage } from './ArtImage';
 import { canReturn, hasKunlun, hasRoyal, SCENES, sceneById } from '../engine';
 import { BoneMark } from './Atmosphere';
 import { slotPresentation } from '../savePresentation';
@@ -34,7 +36,7 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
     </nav>
     <div className="chapter-content">
       <div className="chapter-banner" key={route}>
-        <img className="chapter-banner-art" src={asset(selected.art)} alt="" />
+        <ArtImage className="chapter-banner-art" name={selected.art} alt="" />
         <div className="chapter-banner-copy"><span className="chapter-banner-numeral" aria-hidden="true">{selected.number}</span><div><span className="eyebrow">{selected.subtitle} · 已读 {visited.length} / {scenes.length} 场</span><h3>{selected.name}</h3><p>{route === 'return' && !canReturn(profile) ? '走过王裔与昆仑，两道裂纹才会相合。' : '循着记忆，回到已经走过的地方。'}</p></div></div>
         <div className="chapter-progress" aria-hidden="true"><i style={{ width: `${scenes.length ? visited.length / scenes.length * 100 : 0}%` }} /></div>
       </div>
@@ -68,7 +70,7 @@ export function CharactersView({ profile }: { profile: Profile }) {
       })}</div>
     </div>
     <article key={selected.key} className="character-scroll" style={{ '--character-color': selected.color } as React.CSSProperties}>
-      <div className="character-portrait-frame"><span className="character-detail-watermark" aria-hidden="true">{selected.name.at(-1)}</span><img className="character-detail-portrait" src={portraitAsset(selected.key)} alt={selected.name} /></div>
+      <div className="character-portrait-frame"><span className="character-detail-watermark" aria-hidden="true">{selected.name.at(-1)}</span><ArtImage className="character-detail-portrait" name={portraitName(selected.key)} alt={selected.name} /></div>
       <div className="character-biography">
         <span className="eyebrow">{selected.subtitle}</span>
         <h3>{selected.name}{selected.reading && <small>{selected.reading}</small>}</h3>
@@ -89,9 +91,9 @@ export function GalleryView({ profile }: { profile: Profile }) {
     setViewing(unlocked[(index + step + unlocked.length) % unlocked.length][0]);
   };
   if (viewing) return <div className={`gallery-viewer ${hideCaption ? 'gallery-viewer--clean' : ''}`}>
-    <img className="gallery-full" src={asset(viewing)} alt={BACKGROUNDS[viewing].name} onClick={() => setHideCaption(!hideCaption)} />
+    <ArtImage className="gallery-full" name={viewing} alt={BACKGROUNDS[viewing].name} onClick={() => setHideCaption(!hideCaption)} />
     <button className="gallery-back icon-button" onClick={() => setViewing(null)} aria-label="返回绘卷"><ArrowLeft size={22} /></button>
-    <div className="gallery-caption"><span className="eyebrow">{BACKGROUNDS[viewing].chapter}</span><h3>{BACKGROUNDS[viewing].name}</h3><p>{BACKGROUNDS[viewing].subtitle}</p><a href={asset(viewing)} download={`异托邦-${BACKGROUNDS[viewing].name}.webp`} className="text-button"><Download size={14} />收藏此景</a></div>
+    <div className="gallery-caption"><span className="eyebrow">{BACKGROUNDS[viewing].chapter}</span><h3>{BACKGROUNDS[viewing].name}</h3><p>{BACKGROUNDS[viewing].subtitle}</p><a href={assetSources(viewing).webp} download={`异托邦-${BACKGROUNDS[viewing].name}.webp`} className="text-button"><Download size={14} />收藏此景</a></div>
     {unlocked.length > 1 && <div className="gallery-arrows"><button className="icon-button" onClick={() => move(-1)} aria-label="上一张"><ArrowLeft size={20} /></button><span>{unlocked.findIndex(([key]) => key === viewing) + 1} / {unlocked.length}</span><button className="icon-button" onClick={() => move(1)} aria-label="下一张"><ArrowRight size={20} /></button></div>}
   </div>;
   return <div className="gallery-content"><div className="library-intro"><p>走过的山河，会在这里留下影子。</p><span>{unlocked.length} <i>/ {entries.length}</i></span></div><div className="gallery-grid">

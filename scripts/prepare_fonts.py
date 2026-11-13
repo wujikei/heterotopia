@@ -1,72 +1,107 @@
-"""Bundle locally served, SIL-OFL Chinese fonts for offline play.
+"""Split the licensed web masters into disjoint UI/body Unicode ranges.
 
-- Noto Serif SC: story text and UI (story-serif-*.woff2)
-- LXGW WenKai (霞鹜文楷): inner monologue and handwritten accents (story-hand-regular.woff2).
-  Subset to WOFF2 solely for web delivery, as allowed by its OFL additional permission.
+Masters retain the exact existing glyph outlines; no synthetic title weights.
+Run after prepare-story.mjs. Both original OFL licenses remain in public/fonts.
 """
 from __future__ import annotations
-import urllib.request
+
+import json
+import shutil
 from pathlib import Path
 
 from fontTools import subset
 from fontTools.ttLib import TTFont
-from fontTools.varLib.instancer import instantiateVariableFont
 
 ROOT = Path(__file__).resolve().parents[1]
-CACHE = ROOT / "resources" / "fonts"
-CACHE.mkdir(parents=True, exist_ok=True)
-DEST = ROOT / "public" / "fonts"
-DEST.mkdir(parents=True, exist_ok=True)
-SOURCE = CACHE / "NotoSerifSC-Variable.ttf"
-URL = "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf"
-if not SOURCE.exists():
-    print("Downloading Noto Serif SC (SIL Open Font License).", flush=True)
-    urllib.request.urlretrieve(URL, SOURCE)
-license_dest = DEST / "NotoSerifSC-OFL.txt"
-if not license_dest.exists():
-    urllib.request.urlretrieve("https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifsc/OFL.txt", license_dest)
+DEST = ROOT / 'public/fonts'
+MASTERS = ROOT / 'resources/fonts/web-masters'
+MASTERS.mkdir(parents=True, exist_ok=True)
 
-HAND_SOURCE = CACHE / "LXGWWenKai-Regular.ttf"
-HAND_URL = "https://github.com/lxgw/LxgwWenKai/releases/download/v1.520/LXGWWenKai-Regular.ttf"
-if not HAND_SOURCE.exists():
-    print("Downloading LXGW WenKai (SIL Open Font License).", flush=True)
-    urllib.request.urlretrieve(HAND_URL, HAND_SOURCE)
-hand_license = DEST / "LXGWWenKai-OFL.txt"
-if not hand_license.exists():
-    urllib.request.urlretrieve("https://raw.githubusercontent.com/lxgw/LxgwWenKai/main/OFL.txt", hand_license)
+app = (ROOT / 'src/App.tsx').read_text(encoding='utf-8')
+home = app.split('<div className="home-screen"')[1].split('</div> : game && beat')[0]
+library = app.split('const LIBRARY:')[1].split('const CHOICE_NUMERALS')[0]
+index = json.loads((ROOT / 'src/data/scene-index.json').read_text(encoding='utf-8'))
+ui = home + library + index['scenes'][0]['chapter'] + index['scenes'][0]['title']
+metadata_codes = set(map(ord, ''.join(scene['chapter'] + scene['title'] for scene in index['scenes'])))
+ui += '正在启程载入旅途新版本已备好刷新稍后网络未能载入请检查后重试'
+ui += ''.join(chr(n) for n in range(32, 127)) + '〇一二三四五六七八九十百千万：。，“”「」·…—'
+ui_codes = set(map(ord, ui))
 
-text = (ROOT / "public" / "原著剧本-V6.txt").read_text(encoding="utf-8")
-for path in (ROOT / "src").rglob("*"):
-    if path.suffix in {".ts", ".tsx", ".css"}:
-        text += path.read_text(encoding="utf-8")
-text += "".join(chr(n) for n in range(32, 127))
-text += "〇一二三四五六七八九十百千万序章启程续梦异托邦绘卷人物志手记存档读档归来回溯设置正在载入魂兮归来阅尽终"
 
-for weight, name in [(400, "regular"), (600, "semibold")]:
-    font = TTFont(SOURCE)
-    font = instantiateVariableFont(font, {"wght": weight}, inplace=True)
+def unicode_range(codes):
+    ranges = []
+    for code in sorted(codes):
+        if ranges and code == ranges[-1][1] + 1:
+            ranges[-1][1] = code
+        else:
+            ranges.append([code, code])
+    return ','.join(f'U+{a:X}' if a == b else f'U+{a:X}-{b:X}' for a, b in ranges)
+
+
+def complement_range(codes):
+    # Describe the complement of UI ranges, rather than listing 1700 body
+    # glyphs twice in the critical CSS. The font's cmap still limits coverage.
+    ranges = []
+    start = 0
+    for code in sorted(codes):
+        if start < code:
+            ranges.append((start, code - 1))
+        start = code + 1
+    ranges.append((start, 0x10FFFF))
+    return ','.join(f'U+{a:X}' if a == b else f'U+{a:X}-{b:X}' for a, b in ranges)
+
+
+def save(master, codes, name):
+    font = TTFont(master)
+    font.recalcTimestamp = False
     options = subset.Options()
-    options.flavor = "woff2"
-    options.desubroutinize = True
+    options.flavor = 'woff2'
     options.hinting = False
+    options.layout_features = ['*']
     worker = subset.Subsetter(options=options)
-    worker.populate(text=text)
+    worker.populate(unicodes=codes)
     worker.subset(font)
-    font.flavor = "woff2"
-    path = DEST / f"story-serif-{name}.woff2"
-    font.save(path)
-    print(f"Saved {path.name}: {path.stat().st_size // 1024} KB", flush=True)
+    font.flavor = 'woff2'
+    font.save(DEST / name)
+    print(name, len(codes), (DEST / name).stat().st_size, flush=True)
 
-hand = TTFont(HAND_SOURCE)
-options = subset.Options()
-options.flavor = "woff2"
-options.desubroutinize = True
-options.hinting = False
-options.layout_features = ["*"]
-worker = subset.Subsetter(options=options)
-worker.populate(text=text)
-worker.subset(hand)
-hand.flavor = "woff2"
-path = DEST / "story-hand-regular.woff2"
-hand.save(path)
-print(f"Saved {path.name}: {path.stat().st_size // 1024} KB", flush=True)
+
+faces = []
+report = {}
+for name, weight in [('regular', '400'), ('semibold', '600 800')]:
+    original = DEST / f'story-serif-{name}.woff2'
+    master = MASTERS / original.name
+    if not master.exists():
+        shutil.copy2(original, master)
+    codes = set(TTFont(master).getBestCmap())
+    # The homepage only uses weight 600 for these two buttons. Other bold
+    # glyphs can load with the library or story instead of costing 70KB here.
+    selected_ui = ui_codes if name == 'regular' else set(map(ord, '启程重新续梦' + ''.join(chr(n) for n in range(32, 127))))
+    metadata = (codes & metadata_codes) - selected_ui if name == 'regular' else set()
+    excluded = (codes & selected_ui) | metadata
+    parts = [('ui' if name == 'regular' else 'ui-semibold', codes & selected_ui)]
+    if metadata:
+        parts.append(('metadata', metadata))
+    parts.append((name, codes - excluded))
+    for part, selected in parts:
+        filename = f'story-serif-{part}.woff2'
+        save(master, selected, filename)
+        faces.append(f'''@font-face {{
+  font-family: StorySerif;
+  src: url("/fonts/{filename}") format("woff2");
+  font-weight: {weight};
+  font-display: swap;
+  unicode-range: {complement_range(excluded) if part == name else unicode_range(selected)};
+}}''')
+        report[filename] = {'glyphs': len(selected), 'bytes': (DEST / filename).stat().st_size}
+
+faces.append('''@font-face {
+  font-family: StoryHand;
+  src: url("/fonts/story-hand-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}''')
+(ROOT / 'src/styles/font-faces.css').write_text('/* Generated by scripts/prepare_fonts.py. UI/body ranges never overlap. */\n' + '\n'.join(faces) + '\n', encoding='utf-8')
+output = ROOT / 'artifacts/perf/fonts.json'
+output.parent.mkdir(parents=True, exist_ok=True)
+output.write_text(json.dumps(report, indent=2), encoding='utf-8')

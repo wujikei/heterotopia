@@ -4,6 +4,9 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { compileScene, enterScene, newGame, newProfile, SCENES } from '../src/engine.ts';
 import { characterFor } from '../src/data/world.ts';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 // Run with node --import tsx. Use the same build server before and after a change.
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4179';
@@ -70,7 +73,7 @@ async function probeClick(page, key) {
 
 try {
   for (const [network, conditions] of Object.entries(networks)) {
-    const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1280, height: 800 } });
     await seed(context, opening);
     const page = await context.newPage();
     const cdp = await context.newCDPSession(page);
@@ -78,25 +81,34 @@ try {
     await cdp.send('Network.emulateNetworkConditions', { offline: false, ...conditions });
     let bytes = 0, requests = 0;
     let measuringHome = true;
-    cdp.on('Network.requestWillBeSent', () => { if (measuringHome) requests++; });
+    cdp.on('Network.requestWillBeSent', event => { if (measuringHome && /^https?:/.test(event.request.url)) requests++; });
     cdp.on('Network.loadingFinished', e => { if (measuringHome) bytes += e.encodedDataLength; });
     const start = performance.now();
     await page.goto(base, { waitUntil: 'load' });
     const loadMs = Math.round(performance.now() - start);
+    await page.getByRole('heading', { name: '异托邦' }).waitFor();
+    const interactiveMs = Math.round(performance.now() - start);
     await page.evaluate(() => document.fonts.ready);
     const fontsReadyMs = Math.round(performance.now() - start);
     measuringHome = false;
+    const resources = await page.evaluate(() => performance.getEntriesByType('resource').filter(entry => /^https?:/.test(entry.name)).map(entry => ({ name: new URL(entry.name).pathname, start: Math.round(entry.startTime), duration: Math.round(entry.duration), bytes: entry.encodedBodySize })));
+    await page.evaluate(() => document.querySelector('.continue-button').addEventListener('click', () => { window.__resumeStarted = performance.now(); }, { once: true }));
     await page.getByRole('button', { name: /^续梦/ }).click();
-    // Deliberately do not wait for prefetch: this measures an immediate cold click.
-    const cachedBeforeClick = await page.evaluate(() => performance.getEntriesByType('resource').some(entry => entry.name.endsWith('/art/portrait-shen.webp') && entry.responseEnd > 0));
+    await page.locator('.dialogue-advance').waitFor();
+    const resumeReadyMs = await page.evaluate(() => Math.round(performance.now() - window.__resumeStarted));
+    // No artificial prefetch wait. Report the new explicit reading preparation
+    // separately so a shorter sprite animation never hides a shifted delay.
+    const cachedBeforeClick = await page.evaluate(() => performance.getEntriesByType('resource').some(entry => /\/art\/portrait-shen(?:-m)?\.(avif|webp)$/.test(entry.name) && entry.responseEnd > 0));
     const first = await probeClick(page, 'shen');
-    measurements.push({ network, home: { loadMs, fontsReadyMs, requests, bytes }, cachedBeforeClick, first });
-    console.log(JSON.stringify(measurements.at(-1)));
+    const resumeToFirstFullMs = await page.evaluate(() => Math.round(performance.now() - window.__resumeStarted));
+    measurements.push({ network, home: { loadMs, interactiveMs, fontsReadyMs, requests, bytes, resources }, resumeReadyMs, resumeToFirstFullMs, cachedBeforeClick, first });
+    const summary = measurements.at(-1);
+    console.log(JSON.stringify({ ...summary, home: { ...summary.home, resources: undefined } }));
     await context.close();
   }
 
   // A real same-speaker/narration/return sequence with an explicit cast list.
-  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1280, height: 800 } });
   await seed(context, stateAt('0-2', '0-2:6:0'));
   const page = await context.newPage();
   await page.goto(base);
@@ -134,7 +146,7 @@ try {
   // Stable before/after compositions. No generated assets or save modifications.
   for (const [name, sceneId, beatId] of [['classroom', '0-4', '0-4:7:0'], ['hut', '1-1', '1-1:4:0'], ['palace', 'A-4', 'A-4:4:0']]) {
     for (const [device, width, height] of [['desktop', 1280, 800], ['mobile', 390, 844]]) {
-      const context = await browser.newContext({ viewport: { width, height } });
+      const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width, height } });
       await seed(context, stateAt(sceneId, beatId));
       const page = await context.newPage();
       await page.goto(base);

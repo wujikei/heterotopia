@@ -41,6 +41,15 @@ jobs:
         run: |
           npm run test:interactions
           npm run test:sprites
+      - name: Verify image fallbacks and persistent website cache
+        run: |
+          npm run assets:check
+          npm run test:assets
+          npm run test:cache
+      - name: Verify the single-file offline edition
+        run: |
+          npm run portable
+          npm run test:portable
       - name: Configure GitHub Pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6

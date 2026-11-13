@@ -32,6 +32,8 @@
 
 主视觉、场景与人物由本机 ComfyUI / Qwen-Image 2.1 制作。人物采用透明背景 WebP；完整提示词与任务记录见 `art-prompts.json`。11 首器乐配乐由本机 ComfyUI / ACE-Step 1.5 Turbo 生成，提示词、种子与任务记录见 `audio-prompts.json`。环境声与音效由本作程序化声音设计制作，源码见 `scripts/produce_audio.py`；没有使用第三方声音采样或角色配音。
 
+网站优先使用 AVIF，并提供 WebP 回退；手机立绘使用 640×960 版本。原始背景、旧立绘和字体母版保存在 `resources/`，不随网站发布。`npm run art:compress` 用 Pillow 重新编码现有画面；`npm run fonts:prepare` 用 fontTools 从字形相同的母版生成互不重叠的首页、场景标题与正文字体。两种命令仅在修改对应资源时执行，CI 使用已提交的编码产物。
+
 网站使用 44.1 kHz 立体声 MP3，配乐为 192 kbps，目标约 -18 LUFS；技术数据与来源见 `public/audio/manifest.json`。游玩和重听均不需要启动 ComfyUI。音频按场景加载，解码缓存设有容量上限，避免一次加载整张原声。
 
 中文字体为 Noto Serif SC，遵循 SIL Open Font License；授权全文见 `字体授权-OFL.txt`。原著剧本由用户提供，保存在 `public/原著剧本-V6.txt`。源稿 SHA-256 记录于 `src/data/story.json`。
@@ -46,6 +48,8 @@
 
 `test:sprites` 默认在本机 Chromium 检查 250ms 人物恢复、300ms 缓存换人门限。共享 CI 设置 `VN_TEST_TIMINGS=record` 记录实际帧时，并继续检查过渡时长和全部功能，避免共享机器负载影响验收。
 
+`npm run assets:check` 审计动态和静态资源引用；`npm run test:assets` 检查手机图、透明边缘、缺失 AVIF 的 WebP 回退及剧情下载失败。普通浏览器回归阻止 Service Worker，独立的 `npm run test:cache` 用真实 `/heterotopia/` 子路径与临时持久化浏览器，验证 HTTP 缓存过期后的重开、断网续读、音频 Range、版本更新和紧急注销。
+
 生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查全部内嵌美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
 
 重新处理声音需要 Python、numpy 与 FFmpeg：将 11 首同名 FLAC 母带放入忽略的 `artifacts/audio-masters/`，执行 `python scripts/produce_audio.py`。母带留在本机；Git 只包含处理后的游戏音频、提示记录与可复现的声音设计脚本。
@@ -57,6 +61,8 @@
 仓库：[wujikei/heterotopia](https://github.com/wujikei/heterotopia)。GitHub Actions 在 PR 和 `main` 上验证剧情、构建、Chromium 阅读交互与立绘；检查通过的 `main` 才发布至 GitHub Pages。也可在仓库的 Actions 页面手动运行发布工作流。
 
 网站使用 GitHub 提供的 HTTPS，不依赖本机服务器。所有画面、字体和声音均随网站提供；部署配置位于 `.github/workflows/pages.yml`。发布状态可在仓库的 Actions 与 Environments 页面查看。
+
+线上版在首屏之后安装版本化缓存：HTML 优先联网，程序、图片、字体和完整音频复用缓存。新版本下载完成后显示“刷新 / 稍后”，由玩家决定何时刷新；不会自动打断阅读。最近一代旧缓存保留给已打开的页面。缓存故障的恢复步骤见 `docs/reviews/perf-1.md`。单文件版不注册 Service Worker。本机遗留的 `public/audio.zip` 不进入发布包。
 
 可通过 `VN_TEST_URL` 指定生产网址，`VN_TEST_BROWSER` 选择 `chromium`、`firefox` 或 `webkit`，再运行 `npm run test:browser` 或 `npm run test:audio`。浏览器未提供 Web Audio 时尝试原生媒体播放；完全不支持音频时仍可静默阅读。
 

@@ -1,6 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { initializeImageFormats } from './assets';
+import { registerSiteCache } from './siteCache';
+import './styles/font-faces.css';
 import './styles.css';
 import './styles/ink-base.css';
 import './styles/ink-scenes.css';
@@ -13,4 +16,7 @@ import './styles/ink-ending.css';
 import './styles/ink-perf.css';
 import './styles/ink-interaction.css';
 
-createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
+void initializeImageFormats().then(() => {
+  createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
+  registerSiteCache();
+});

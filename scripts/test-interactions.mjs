@@ -3,6 +3,9 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium, firefox, webkit } from 'playwright';
 import { advance, compileScene, currentBeat, enterScene, newGame, newProfile } from '../src/engine.ts';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:5173';
 const name = process.env.VN_TEST_BROWSER || 'chromium';
@@ -30,8 +33,9 @@ function fixture(sceneId = '0-1', offset = 3, atChoice = false) {
 }
 
 async function check(label, run, options = {}) {
+  if (process.env.VN_TEST_FILTER && !new RegExp(process.env.VN_TEST_FILTER).test(label)) return;
   const data = { ...fixture(), ...options };
-  const context = await browser.newContext({ viewport: data.viewport ?? { width: 1280, height: 800 } });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: data.viewport ?? { width: 1280, height: 800 } });
   await context.addInitScript(data => {
     if (sessionStorage.getItem('synthetic-interaction-test')) return;
     localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted: true, autoDelay: 10, ...data.settings }));
@@ -52,13 +56,14 @@ async function check(label, run, options = {}) {
     await page.evaluate(() => document.fonts.ready);
     if (data.state) await page.getByRole('button', { name: /^续梦/ }).click();
     const background = data.state ? currentBeat(data.state, data.profile).background : 'hero';
-    await page.waitForFunction(background => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(`/art/${background}.webp`), background);
+    await page.waitForFunction(background => new RegExp(`/art/${background}\\.(avif|webp)`).test(document.querySelector('.scene-image--current')?.style.backgroundImage || ''), background);
     await run(page, data);
     results.push({ label, passed: true });
     console.log(`PASS ${label}`);
   } catch (error) {
     const file = `failure-${results.length + 1}.png`;
     await page.screenshot({ path: screenshot(file), fullPage: true }).catch(() => {});
+    await writeFile(new URL(file.replace('.png', '.json'), output), JSON.stringify({ error: error.stack, state: await stored(page), dialogs: await page.getByRole('dialog').allTextContents() }, null, 2));
     results.push({ label, passed: false, error: String(error), screenshot: file });
     console.error(`FAIL ${label}: ${error}`);
   } finally { await context.close(); }

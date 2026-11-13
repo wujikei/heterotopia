@@ -19,6 +19,8 @@ BASE = "http://127.0.0.1:8188"
 def collect(job: dict) -> bool:
     key = job["key"]
     dest = ART / (key + ".webp")
+    if (ROOT / 'resources/art-src/unused-exports' / dest.name).exists():
+        return True
     if dest.exists():
         return True
     prompt_id = job.get("prompt_id")
@@ -55,8 +57,9 @@ def collect(job: dict) -> bool:
         rgba.putdata(pixels)
         im = rgba
     im.save(dest, "WEBP", quality=91, method=6)
-    thumb = ImageOps.fit(im, (480, 280), method=Image.Resampling.LANCZOS)
-    thumb.save(ART / (key + "-thumb.webp"), "WEBP", quality=82)
+    if not key.startswith('portrait-'):
+        thumb = ImageOps.fit(im, (480, 280), method=Image.Resampling.LANCZOS)
+        thumb.save(ART / (key + "-thumb.webp"), "WEBP", quality=82)
     print(f"SAVED {key}: {im.width}x{im.height}, {dest.stat().st_size // 1024} KB", flush=True)
     return True
 
@@ -75,7 +78,7 @@ def derived() -> None:
 
 
 def main() -> None:
-    hero = ART / "hero.png"
+    hero = ROOT / 'resources/art-src/hero.png'
     if hero.exists() and not (ART / "hero.webp").exists():
         im = Image.open(hero).convert("RGB")
         im.save(ART / "hero.webp", "WEBP", quality=94, method=6)

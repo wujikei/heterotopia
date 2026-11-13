@@ -35,5 +35,12 @@ test('preloading deduplicates URLs, waits for decoding, supports onload fallback
     const retry = preloadImage('test:retry');
     assert.notEqual(retry, failed);
     instances[3].onload!(); finishDecode(); await retry;
+    const avif = preloadImage('./art/test.avif');
+    instances[4].onerror!();
+    assert.equal(instances[4].src, './art/test.webp');
+    assert.equal(preloadImage('./art/test.webp'), avif);
+    instances[4].onload!(); finishDecode(); await avif;
+    assert.equal(isDecoded('./art/test.avif'), true);
+    assert.equal(isDecoded('./art/test.webp'), true);
   } finally { globalThis.Image = original; }
 });

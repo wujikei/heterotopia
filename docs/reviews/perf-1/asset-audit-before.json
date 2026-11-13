@@ -1,0 +1,1127 @@
+{
+  "art": [
+    {
+      "file": "alley-thumb.webp",
+      "role": "runtime",
+      "bytes": 15000
+    },
+    {
+      "file": "alley.avif",
+      "role": "runtime",
+      "bytes": 61207
+    },
+    {
+      "file": "alley.webp",
+      "role": "runtime",
+      "bytes": 194206
+    },
+    {
+      "file": "bamboo-thumb.webp",
+      "role": "runtime",
+      "bytes": 14722
+    },
+    {
+      "file": "bamboo.avif",
+      "role": "runtime",
+      "bytes": 67908
+    },
+    {
+      "file": "bamboo.webp",
+      "role": "runtime",
+      "bytes": 208200
+    },
+    {
+      "file": "bedroom-thumb.webp",
+      "role": "runtime",
+      "bytes": 12678
+    },
+    {
+      "file": "bedroom.avif",
+      "role": "runtime",
+      "bytes": 41748
+    },
+    {
+      "file": "bedroom.webp",
+      "role": "runtime",
+      "bytes": 120308
+    },
+    {
+      "file": "bus-thumb.webp",
+      "role": "runtime",
+      "bytes": 27546
+    },
+    {
+      "file": "bus.avif",
+      "role": "runtime",
+      "bytes": 82227
+    },
+    {
+      "file": "bus.webp",
+      "role": "runtime",
+      "bytes": 259488
+    },
+    {
+      "file": "cave-thumb.webp",
+      "role": "runtime",
+      "bytes": 17860
+    },
+    {
+      "file": "cave.avif",
+      "role": "runtime",
+      "bytes": 77672
+    },
+    {
+      "file": "cave.webp",
+      "role": "runtime",
+      "bytes": 251900
+    },
+    {
+      "file": "classroom-day-thumb.webp",
+      "role": "runtime",
+      "bytes": 19102
+    },
+    {
+      "file": "classroom-day.avif",
+      "role": "runtime",
+      "bytes": 64536
+    },
+    {
+      "file": "classroom-day.webp",
+      "role": "runtime",
+      "bytes": 180618
+    },
+    {
+      "file": "classroom-thumb.webp",
+      "role": "runtime",
+      "bytes": 19092
+    },
+    {
+      "file": "classroom.avif",
+      "role": "runtime",
+      "bytes": 62642
+    },
+    {
+      "file": "classroom.webp",
+      "role": "runtime",
+      "bytes": 194876
+    },
+    {
+      "file": "dream-boat-thumb.webp",
+      "role": "runtime",
+      "bytes": 10238
+    },
+    {
+      "file": "dream-boat.avif",
+      "role": "runtime",
+      "bytes": 47251
+    },
+    {
+      "file": "dream-boat.webp",
+      "role": "runtime",
+      "bytes": 144250
+    },
+    {
+      "file": "hero-thumb.webp",
+      "role": "runtime",
+      "bytes": 12290
+    },
+    {
+      "file": "hero.avif",
+      "role": "runtime",
+      "bytes": 39224
+    },
+    {
+      "file": "hero.png",
+      "role": "unreferenced",
+      "bytes": 1563655
+    },
+    {
+      "file": "hero.webp",
+      "role": "runtime",
+      "bytes": 159726
+    },
+    {
+      "file": "home-thumb.webp",
+      "role": "runtime",
+      "bytes": 16026
+    },
+    {
+      "file": "home.avif",
+      "role": "runtime",
+      "bytes": 57500
+    },
+    {
+      "file": "home.webp",
+      "role": "runtime",
+      "bytes": 176514
+    },
+    {
+      "file": "hut-thumb.webp",
+      "role": "runtime",
+      "bytes": 14084
+    },
+    {
+      "file": "hut.avif",
+      "role": "runtime",
+      "bytes": 57075
+    },
+    {
+      "file": "hut.webp",
+      "role": "runtime",
+      "bytes": 185422
+    },
+    {
+      "file": "light-river-thumb.webp",
+      "role": "runtime",
+      "bytes": 19858
+    },
+    {
+      "file": "light-river.avif",
+      "role": "runtime",
+      "bytes": 77413
+    },
+    {
+      "file": "light-river.webp",
+      "role": "runtime",
+      "bytes": 242494
+    },
+    {
+      "file": "marsh-thumb.webp",
+      "role": "runtime",
+      "bytes": 15034
+    },
+    {
+      "file": "marsh.avif",
+      "role": "runtime",
+      "bytes": 56745
+    },
+    {
+      "file": "marsh.webp",
+      "role": "runtime",
+      "bytes": 172336
+    },
+    {
+      "file": "mountain-thumb.webp",
+      "role": "runtime",
+      "bytes": 30382
+    },
+    {
+      "file": "mountain.avif",
+      "role": "runtime",
+      "bytes": 112923
+    },
+    {
+      "file": "mountain.webp",
+      "role": "runtime",
+      "bytes": 363766
+    },
+    {
+      "file": "nightmare-thumb.webp",
+      "role": "runtime",
+      "bytes": 12718
+    },
+    {
+      "file": "nightmare.avif",
+      "role": "runtime",
+      "bytes": 49261
+    },
+    {
+      "file": "nightmare.webp",
+      "role": "runtime",
+      "bytes": 154114
+    },
+    {
+      "file": "palace-thumb.webp",
+      "role": "runtime",
+      "bytes": 14142
+    },
+    {
+      "file": "palace.avif",
+      "role": "runtime",
+      "bytes": 60110
+    },
+    {
+      "file": "palace.webp",
+      "role": "runtime",
+      "bytes": 196848
+    },
+    {
+      "file": "portrait-amao-face.webp",
+      "role": "runtime",
+      "bytes": 7564
+    },
+    {
+      "file": "portrait-amao-m.avif",
+      "role": "runtime",
+      "bytes": 27115
+    },
+    {
+      "file": "portrait-amao-m.webp",
+      "role": "runtime",
+      "bytes": 45578
+    },
+    {
+      "file": "portrait-amao-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 18526
+    },
+    {
+      "file": "portrait-amao.avif",
+      "role": "runtime",
+      "bytes": 48656
+    },
+    {
+      "file": "portrait-amao.webp",
+      "role": "runtime",
+      "bytes": 112898
+    },
+    {
+      "file": "portrait-chang-face.webp",
+      "role": "runtime",
+      "bytes": 8992
+    },
+    {
+      "file": "portrait-chang-m.avif",
+      "role": "runtime",
+      "bytes": 25919
+    },
+    {
+      "file": "portrait-chang-m.webp",
+      "role": "runtime",
+      "bytes": 41352
+    },
+    {
+      "file": "portrait-chang-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 18126
+    },
+    {
+      "file": "portrait-chang.avif",
+      "role": "runtime",
+      "bytes": 46671
+    },
+    {
+      "file": "portrait-chang.webp",
+      "role": "runtime",
+      "bytes": 105726
+    },
+    {
+      "file": "portrait-elder-face.webp",
+      "role": "runtime",
+      "bytes": 8680
+    },
+    {
+      "file": "portrait-elder-m.avif",
+      "role": "runtime",
+      "bytes": 27704
+    },
+    {
+      "file": "portrait-elder-m.webp",
+      "role": "runtime",
+      "bytes": 44736
+    },
+    {
+      "file": "portrait-elder-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 21740
+    },
+    {
+      "file": "portrait-elder.avif",
+      "role": "runtime",
+      "bytes": 49714
+    },
+    {
+      "file": "portrait-elder.webp",
+      "role": "runtime",
+      "bytes": 127906
+    },
+    {
+      "file": "portrait-mi-face.webp",
+      "role": "runtime",
+      "bytes": 9406
+    },
+    {
+      "file": "portrait-mi-m.avif",
+      "role": "runtime",
+      "bytes": 31518
+    },
+    {
+      "file": "portrait-mi-m.webp",
+      "role": "runtime",
+      "bytes": 42528
+    },
+    {
+      "file": "portrait-mi-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 24064
+    },
+    {
+      "file": "portrait-mi.avif",
+      "role": "runtime",
+      "bytes": 50327
+    },
+    {
+      "file": "portrait-mi.webp",
+      "role": "runtime",
+      "bytes": 117378
+    },
+    {
+      "file": "portrait-quheng-face.webp",
+      "role": "runtime",
+      "bytes": 7044
+    },
+    {
+      "file": "portrait-quheng-m.avif",
+      "role": "runtime",
+      "bytes": 21299
+    },
+    {
+      "file": "portrait-quheng-m.webp",
+      "role": "runtime",
+      "bytes": 38216
+    },
+    {
+      "file": "portrait-quheng-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 13802
+    },
+    {
+      "file": "portrait-quheng.avif",
+      "role": "runtime",
+      "bytes": 37419
+    },
+    {
+      "file": "portrait-quheng.webp",
+      "role": "runtime",
+      "bytes": 89498
+    },
+    {
+      "file": "portrait-shen-face.webp",
+      "role": "runtime",
+      "bytes": 7140
+    },
+    {
+      "file": "portrait-shen-m.avif",
+      "role": "runtime",
+      "bytes": 21270
+    },
+    {
+      "file": "portrait-shen-m.webp",
+      "role": "runtime",
+      "bytes": 37862
+    },
+    {
+      "file": "portrait-shen-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 17390
+    },
+    {
+      "file": "portrait-shen.avif",
+      "role": "runtime",
+      "bytes": 36741
+    },
+    {
+      "file": "portrait-shen.webp",
+      "role": "runtime",
+      "bytes": 76894
+    },
+    {
+      "file": "portrait-song-face.webp",
+      "role": "runtime",
+      "bytes": 7382
+    },
+    {
+      "file": "portrait-song-m.avif",
+      "role": "runtime",
+      "bytes": 23887
+    },
+    {
+      "file": "portrait-song-m.webp",
+      "role": "runtime",
+      "bytes": 44478
+    },
+    {
+      "file": "portrait-song-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 21944
+    },
+    {
+      "file": "portrait-song.avif",
+      "role": "runtime",
+      "bytes": 40174
+    },
+    {
+      "file": "portrait-song.webp",
+      "role": "runtime",
+      "bytes": 87622
+    },
+    {
+      "file": "portrait-tang-face.webp",
+      "role": "runtime",
+      "bytes": 8284
+    },
+    {
+      "file": "portrait-tang-m.avif",
+      "role": "runtime",
+      "bytes": 21901
+    },
+    {
+      "file": "portrait-tang-m.webp",
+      "role": "runtime",
+      "bytes": 39424
+    },
+    {
+      "file": "portrait-tang-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 16772
+    },
+    {
+      "file": "portrait-tang.avif",
+      "role": "runtime",
+      "bytes": 38584
+    },
+    {
+      "file": "portrait-tang.webp",
+      "role": "runtime",
+      "bytes": 79446
+    },
+    {
+      "file": "portrait-tu-face.webp",
+      "role": "runtime",
+      "bytes": 9302
+    },
+    {
+      "file": "portrait-tu-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 15640
+    },
+    {
+      "file": "portrait-tu-v2-m.avif",
+      "role": "runtime",
+      "bytes": 25094
+    },
+    {
+      "file": "portrait-tu-v2-m.webp",
+      "role": "runtime",
+      "bytes": 42830
+    },
+    {
+      "file": "portrait-tu-v2-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 17358
+    },
+    {
+      "file": "portrait-tu-v2.avif",
+      "role": "runtime",
+      "bytes": 42919
+    },
+    {
+      "file": "portrait-tu-v2.webp",
+      "role": "runtime",
+      "bytes": 91540
+    },
+    {
+      "file": "portrait-tu.webp",
+      "role": "unreferenced",
+      "bytes": 87684
+    },
+    {
+      "file": "portrait-wuyang-face.webp",
+      "role": "runtime",
+      "bytes": 10066
+    },
+    {
+      "file": "portrait-wuyang-m.avif",
+      "role": "runtime",
+      "bytes": 21243
+    },
+    {
+      "file": "portrait-wuyang-m.webp",
+      "role": "runtime",
+      "bytes": 38366
+    },
+    {
+      "file": "portrait-wuyang-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 13638
+    },
+    {
+      "file": "portrait-wuyang.avif",
+      "role": "runtime",
+      "bytes": 36024
+    },
+    {
+      "file": "portrait-wuyang.webp",
+      "role": "runtime",
+      "bytes": 81984
+    },
+    {
+      "file": "portrait-xu-face.webp",
+      "role": "runtime",
+      "bytes": 7648
+    },
+    {
+      "file": "portrait-xu-m.avif",
+      "role": "runtime",
+      "bytes": 26309
+    },
+    {
+      "file": "portrait-xu-m.webp",
+      "role": "runtime",
+      "bytes": 45482
+    },
+    {
+      "file": "portrait-xu-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 16066
+    },
+    {
+      "file": "portrait-xu.avif",
+      "role": "runtime",
+      "bytes": 46091
+    },
+    {
+      "file": "portrait-xu.webp",
+      "role": "runtime",
+      "bytes": 99026
+    },
+    {
+      "file": "portrait-xua-face.webp",
+      "role": "runtime",
+      "bytes": 6284
+    },
+    {
+      "file": "portrait-xua-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 12402
+    },
+    {
+      "file": "portrait-xua-v2-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 12720
+    },
+    {
+      "file": "portrait-xua-v2.webp",
+      "role": "unreferenced",
+      "bytes": 66280
+    },
+    {
+      "file": "portrait-xua-v3-m.avif",
+      "role": "runtime",
+      "bytes": 17586
+    },
+    {
+      "file": "portrait-xua-v3-m.webp",
+      "role": "runtime",
+      "bytes": 30284
+    },
+    {
+      "file": "portrait-xua-v3-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 12256
+    },
+    {
+      "file": "portrait-xua-v3.avif",
+      "role": "runtime",
+      "bytes": 30927
+    },
+    {
+      "file": "portrait-xua-v3.webp",
+      "role": "runtime",
+      "bytes": 66712
+    },
+    {
+      "file": "portrait-xua.webp",
+      "role": "unreferenced",
+      "bytes": 65712
+    },
+    {
+      "file": "portrait-yu-face.webp",
+      "role": "runtime",
+      "bytes": 8000
+    },
+    {
+      "file": "portrait-yu-m.avif",
+      "role": "runtime",
+      "bytes": 22388
+    },
+    {
+      "file": "portrait-yu-m.webp",
+      "role": "runtime",
+      "bytes": 39476
+    },
+    {
+      "file": "portrait-yu-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 14822
+    },
+    {
+      "file": "portrait-yu.avif",
+      "role": "runtime",
+      "bytes": 38475
+    },
+    {
+      "file": "portrait-yu.webp",
+      "role": "runtime",
+      "bytes": 83742
+    },
+    {
+      "file": "portrait-yuan-face.webp",
+      "role": "runtime",
+      "bytes": 8508
+    },
+    {
+      "file": "portrait-yuan-m.avif",
+      "role": "runtime",
+      "bytes": 24169
+    },
+    {
+      "file": "portrait-yuan-m.webp",
+      "role": "runtime",
+      "bytes": 42266
+    },
+    {
+      "file": "portrait-yuan-thumb.webp",
+      "role": "unreferenced",
+      "bytes": 16196
+    },
+    {
+      "file": "portrait-yuan.avif",
+      "role": "runtime",
+      "bytes": 43573
+    },
+    {
+      "file": "portrait-yuan.webp",
+      "role": "runtime",
+      "bytes": 96756
+    },
+    {
+      "file": "ritual-thumb.webp",
+      "role": "runtime",
+      "bytes": 18072
+    },
+    {
+      "file": "ritual.avif",
+      "role": "runtime",
+      "bytes": 69505
+    },
+    {
+      "file": "ritual.webp",
+      "role": "runtime",
+      "bytes": 226980
+    },
+    {
+      "file": "river-thumb.webp",
+      "role": "runtime",
+      "bytes": 24452
+    },
+    {
+      "file": "river.avif",
+      "role": "runtime",
+      "bytes": 88627
+    },
+    {
+      "file": "river.webp",
+      "role": "runtime",
+      "bytes": 278860
+    },
+    {
+      "file": "ruins-thumb.webp",
+      "role": "runtime",
+      "bytes": 20760
+    },
+    {
+      "file": "ruins.avif",
+      "role": "runtime",
+      "bytes": 82321
+    },
+    {
+      "file": "ruins.webp",
+      "role": "runtime",
+      "bytes": 270910
+    },
+    {
+      "file": "school-thumb.webp",
+      "role": "runtime",
+      "bytes": 23096
+    },
+    {
+      "file": "school.avif",
+      "role": "runtime",
+      "bytes": 80271
+    },
+    {
+      "file": "school.webp",
+      "role": "runtime",
+      "bytes": 253708
+    },
+    {
+      "file": "shrine-thumb.webp",
+      "role": "runtime",
+      "bytes": 18944
+    },
+    {
+      "file": "shrine.avif",
+      "role": "runtime",
+      "bytes": 72881
+    },
+    {
+      "file": "shrine.webp",
+      "role": "runtime",
+      "bytes": 229974
+    },
+    {
+      "file": "snow-thumb.webp",
+      "role": "runtime",
+      "bytes": 20236
+    },
+    {
+      "file": "snow.avif",
+      "role": "runtime",
+      "bytes": 85797
+    },
+    {
+      "file": "snow.webp",
+      "role": "runtime",
+      "bytes": 283420
+    },
+    {
+      "file": "study-thumb.webp",
+      "role": "runtime",
+      "bytes": 11208
+    },
+    {
+      "file": "study.avif",
+      "role": "runtime",
+      "bytes": 44419
+    },
+    {
+      "file": "study.webp",
+      "role": "runtime",
+      "bytes": 140428
+    },
+    {
+      "file": "tomb-thumb.webp",
+      "role": "runtime",
+      "bytes": 13572
+    },
+    {
+      "file": "tomb.avif",
+      "role": "runtime",
+      "bytes": 57112
+    },
+    {
+      "file": "tomb.webp",
+      "role": "runtime",
+      "bytes": 180828
+    },
+    {
+      "file": "underwater-thumb.webp",
+      "role": "runtime",
+      "bytes": 17570
+    },
+    {
+      "file": "underwater.avif",
+      "role": "runtime",
+      "bytes": 71272
+    },
+    {
+      "file": "underwater.webp",
+      "role": "runtime",
+      "bytes": 224150
+    },
+    {
+      "file": "valley-thumb.webp",
+      "role": "runtime",
+      "bytes": 36194
+    },
+    {
+      "file": "valley.avif",
+      "role": "runtime",
+      "bytes": 117462
+    },
+    {
+      "file": "valley.webp",
+      "role": "runtime",
+      "bytes": 386664
+    },
+    {
+      "file": "village-thumb.webp",
+      "role": "runtime",
+      "bytes": 28440
+    },
+    {
+      "file": "village.avif",
+      "role": "runtime",
+      "bytes": 103653
+    },
+    {
+      "file": "village.webp",
+      "role": "runtime",
+      "bytes": 339840
+    }
+  ],
+  "audio": [
+    {
+      "file": "amb-cave.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-hearth.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-marsh.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-night.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-palace.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-rain.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-river.mp3",
+      "role": "runtime",
+      "bytes": 385146
+    },
+    {
+      "file": "amb-room.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-street.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-underwater.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-wind.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "amb-winter.mp3",
+      "role": "runtime",
+      "bytes": 385143
+    },
+    {
+      "file": "manifest.json",
+      "role": "metadata",
+      "bytes": 15358
+    },
+    {
+      "file": "music-hearth.mp3",
+      "role": "runtime",
+      "bytes": 1351862
+    },
+    {
+      "file": "music-last-flute.mp3",
+      "role": "runtime",
+      "bytes": 1345601
+    },
+    {
+      "file": "music-light-in-kitchen.mp3",
+      "role": "runtime",
+      "bytes": 1361896
+    },
+    {
+      "file": "music-old-jade.mp3",
+      "role": "runtime",
+      "bytes": 1351865
+    },
+    {
+      "file": "music-paper-note.mp3",
+      "role": "runtime",
+      "bytes": 1373190
+    },
+    {
+      "file": "music-ritual.mp3",
+      "role": "runtime",
+      "bytes": 1373178
+    },
+    {
+      "file": "music-river-home.mp3",
+      "role": "runtime",
+      "bytes": 1356877
+    },
+    {
+      "file": "music-river-journey.mp3",
+      "role": "runtime",
+      "bytes": 1365660
+    },
+    {
+      "file": "music-river-of-names.mp3",
+      "role": "runtime",
+      "bytes": 1356883
+    },
+    {
+      "file": "music-small-goodbyes.mp3",
+      "role": "runtime",
+      "bytes": 1338699
+    },
+    {
+      "file": "music-under-current.mp3",
+      "role": "runtime",
+      "bytes": 1345598
+    },
+    {
+      "file": "sfx-alarm.mp3",
+      "role": "runtime",
+      "bytes": 51404
+    },
+    {
+      "file": "sfx-ball.mp3",
+      "role": "runtime",
+      "bytes": 35730
+    },
+    {
+      "file": "sfx-bamboo.mp3",
+      "role": "runtime",
+      "bytes": 31554
+    },
+    {
+      "file": "sfx-bike-bell.mp3",
+      "role": "runtime",
+      "bytes": 47746
+    },
+    {
+      "file": "sfx-bookmark.mp3",
+      "role": "runtime",
+      "bytes": 37297
+    },
+    {
+      "file": "sfx-bronze.mp3",
+      "role": "runtime",
+      "bytes": 117755
+    },
+    {
+      "file": "sfx-ceramic.mp3",
+      "role": "runtime",
+      "bytes": 33640
+    },
+    {
+      "file": "sfx-chair.mp3",
+      "role": "runtime",
+      "bytes": 27371
+    },
+    {
+      "file": "sfx-choice.mp3",
+      "role": "runtime",
+      "bytes": 9082
+    },
+    {
+      "file": "sfx-cloth.mp3",
+      "role": "runtime",
+      "bytes": 23714
+    },
+    {
+      "file": "sfx-crow.mp3",
+      "role": "runtime",
+      "bytes": 27365
+    },
+    {
+      "file": "sfx-door.mp3",
+      "role": "runtime",
+      "bytes": 31551
+    },
+    {
+      "file": "sfx-drop.mp3",
+      "role": "runtime",
+      "bytes": 35733
+    },
+    {
+      "file": "sfx-electric.mp3",
+      "role": "runtime",
+      "bytes": 75439
+    },
+    {
+      "file": "sfx-flute.mp3",
+      "role": "runtime",
+      "bytes": 97379
+    },
+    {
+      "file": "sfx-heartbeat.mp3",
+      "role": "runtime",
+      "bytes": 67600
+    },
+    {
+      "file": "sfx-hull.mp3",
+      "role": "runtime",
+      "bytes": 77526
+    },
+    {
+      "file": "sfx-oar.mp3",
+      "role": "runtime",
+      "bytes": 53493
+    },
+    {
+      "file": "sfx-page.mp3",
+      "role": "runtime",
+      "bytes": 6473
+    },
+    {
+      "file": "sfx-pottery.mp3",
+      "role": "runtime",
+      "bytes": 91638
+    },
+    {
+      "file": "sfx-ritual-drum.mp3",
+      "role": "runtime",
+      "bytes": 107306
+    },
+    {
+      "file": "sfx-school-bell.mp3",
+      "role": "runtime",
+      "bytes": 63417
+    },
+    {
+      "file": "sfx-splash.mp3",
+      "role": "runtime",
+      "bytes": 47740
+    },
+    {
+      "file": "sfx-steps.mp3",
+      "role": "runtime",
+      "bytes": 57673
+    },
+    {
+      "file": "sfx-stone.mp3",
+      "role": "runtime",
+      "bytes": 93722
+    },
+    {
+      "file": "sfx-string-snap.mp3",
+      "role": "runtime",
+      "bytes": 37297
+    },
+    {
+      "file": "sfx-triple-bell.mp3",
+      "role": "runtime",
+      "bytes": 171567
+    },
+    {
+      "file": "sfx-wood-latch.mp3",
+      "role": "runtime",
+      "bytes": 17444
+    }
+  ],
+  "missing": []
+}

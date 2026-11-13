@@ -4,7 +4,7 @@ import { sound } from '../audio';
 import { audioAsset, MUSIC_BY_SCENE, SOUNDTRACK, TRACK_ART, trackById, unlockedTracks } from '../score';
 import { SCENES } from '../engine';
 import type { MusicId } from '../score';
-import { asset } from '../data/world';
+import { ArtImage } from './ArtImage';
 import type { Profile, Settings } from '../types';
 import { BoatMark } from './Atmosphere';
 
@@ -56,7 +56,7 @@ export function MusicRoom({ profile, settings, onChange }: { profile: Profile; s
   return <div className="music-room">
     <div className="music-room-grid">
       <section className={`music-cover ${playing ? 'music-cover--playing' : ''}`} aria-label="所选曲目">
-        <img key={selected} className="music-cover-art" src={asset(TRACK_ART[selected])} alt="" />
+        <ArtImage key={selected} className="music-cover-art" name={TRACK_ART[selected]} alt="" />
         <div className="music-cover-shade" />
         <div className="music-cover-top"><span>循水归来 · 原声</span><span>第 {String(index + 1).padStart(2, '0')} 支</span></div>
         <div className="music-orbit" aria-hidden="true"><span /><span /><BoatMark /></div>

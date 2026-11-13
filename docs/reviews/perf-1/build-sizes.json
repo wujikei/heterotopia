@@ -1,0 +1,10 @@
+{
+  "distBytes": 31744102,
+  "portableBytes": 37059933,
+  "untrackedAudioZipBytes": 20841745,
+  "audioZipPublished": false,
+  "criticalJsGzipBytes": 107369,
+  "baselinePortableBytes": 42345503,
+  "gzipCompressionLevel": 6,
+  "gzipRuntime": "Node.js node:zlib, same as Vite"
+}

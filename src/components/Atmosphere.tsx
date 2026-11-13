@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { asset } from '../data/world';
+import { backgroundImage } from '../assets';
 import { preloadImage } from '../preload';
 
 export function SceneArt({ name, motion = true }: { name: string; motion?: boolean }) {
   const [loaded, setLoaded] = useState(name);
   const [previous, setPrevious] = useState<string | null>(null);
+  const [, redraw] = useState(0);
   useEffect(() => {
     let cancelled = false;
     void preloadImage(asset(name)).then(() => {
       if (cancelled) return;
       setLoaded(current => { if (current !== name) setPrevious(current); return name; });
+      redraw(value => value + 1);
     }).catch(() => {});
     return () => { cancelled = true; };
   }, [name]);
@@ -19,8 +22,8 @@ export function SceneArt({ name, motion = true }: { name: string; motion?: boole
     return () => clearTimeout(timer);
   }, [previous, loaded]);
   return <div className={`scene-art ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
-    {previous && <div className="scene-image scene-image--previous" style={{ backgroundImage: `url("${asset(previous)}")` }} />}
-    <div key={loaded} className="scene-image scene-image--current" style={{ backgroundImage: `url("${asset(loaded)}")` }} />
+    {previous && <div className="scene-image scene-image--previous" style={{ backgroundImage: backgroundImage(previous) }} />}
+    <div key={loaded} className="scene-image scene-image--current" style={{ backgroundImage: backgroundImage(loaded) }} />
     <div className="scene-shade" />
     <div className="scene-grain" />
   </div>;

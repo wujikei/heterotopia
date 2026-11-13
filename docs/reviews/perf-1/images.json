@@ -1,0 +1,276 @@
+[
+  {
+    "name": "alley",
+    "source_webp": 194206,
+    "webp": 73046,
+    "avif": 61207
+  },
+  {
+    "name": "bamboo",
+    "source_webp": 208200,
+    "webp": 74600,
+    "avif": 67908
+  },
+  {
+    "name": "bedroom",
+    "source_webp": 120308,
+    "webp": 51488,
+    "avif": 41748
+  },
+  {
+    "name": "bus",
+    "source_webp": 259488,
+    "webp": 130146,
+    "avif": 82227
+  },
+  {
+    "name": "cave",
+    "source_webp": 251900,
+    "webp": 95924,
+    "avif": 77672
+  },
+  {
+    "name": "classroom",
+    "source_webp": 194876,
+    "webp": 82794,
+    "avif": 62642
+  },
+  {
+    "name": "classroom-day",
+    "source_webp": 180618,
+    "webp": 85366,
+    "avif": 64536
+  },
+  {
+    "name": "dream-boat",
+    "source_webp": 144250,
+    "webp": 48810,
+    "avif": 47251
+  },
+  {
+    "name": "hero",
+    "source_webp": 159726,
+    "webp": 44992,
+    "avif": 39224
+  },
+  {
+    "name": "home",
+    "source_webp": 176514,
+    "webp": 68770,
+    "avif": 57500
+  },
+  {
+    "name": "hut",
+    "source_webp": 185422,
+    "webp": 70762,
+    "avif": 57075
+  },
+  {
+    "name": "light-river",
+    "source_webp": 242494,
+    "webp": 104106,
+    "avif": 77413
+  },
+  {
+    "name": "marsh",
+    "source_webp": 172336,
+    "webp": 68282,
+    "avif": 56745
+  },
+  {
+    "name": "mountain",
+    "source_webp": 363766,
+    "webp": 168554,
+    "avif": 112923
+  },
+  {
+    "name": "nightmare",
+    "source_webp": 154114,
+    "webp": 57182,
+    "avif": 49261
+  },
+  {
+    "name": "palace",
+    "source_webp": 196848,
+    "webp": 74274,
+    "avif": 60110
+  },
+  {
+    "name": "ritual",
+    "source_webp": 226980,
+    "webp": 93228,
+    "avif": 69505
+  },
+  {
+    "name": "river",
+    "source_webp": 278860,
+    "webp": 127872,
+    "avif": 88627
+  },
+  {
+    "name": "ruins",
+    "source_webp": 270910,
+    "webp": 109276,
+    "avif": 82321
+  },
+  {
+    "name": "school",
+    "source_webp": 253708,
+    "webp": 121396,
+    "avif": 80271
+  },
+  {
+    "name": "shrine",
+    "source_webp": 229974,
+    "webp": 96064,
+    "avif": 72881
+  },
+  {
+    "name": "snow",
+    "source_webp": 283420,
+    "webp": 111006,
+    "avif": 85797
+  },
+  {
+    "name": "study",
+    "source_webp": 140428,
+    "webp": 50276,
+    "avif": 44419
+  },
+  {
+    "name": "tomb",
+    "source_webp": 180828,
+    "webp": 68854,
+    "avif": 57112
+  },
+  {
+    "name": "underwater",
+    "source_webp": 224150,
+    "webp": 89142,
+    "avif": 71272
+  },
+  {
+    "name": "valley",
+    "source_webp": 386664,
+    "webp": 197836,
+    "avif": 117462
+  },
+  {
+    "name": "village",
+    "source_webp": 339840,
+    "webp": 160684,
+    "avif": 103653
+  },
+  {
+    "name": "portrait-shen",
+    "source_webp": 76894,
+    "webp": 76894,
+    "avif": 36741,
+    "mobile_avif": 29188,
+    "mobile_webp": 50618
+  },
+  {
+    "name": "portrait-tang",
+    "source_webp": 79446,
+    "webp": 79446,
+    "avif": 38584,
+    "mobile_avif": 29891,
+    "mobile_webp": 53206
+  },
+  {
+    "name": "portrait-song",
+    "source_webp": 87622,
+    "webp": 87622,
+    "avif": 40174,
+    "mobile_avif": 32182,
+    "mobile_webp": 59188
+  },
+  {
+    "name": "portrait-xu",
+    "source_webp": 99026,
+    "webp": 99026,
+    "avif": 46091,
+    "mobile_avif": 36533,
+    "mobile_webp": 55984
+  },
+  {
+    "name": "portrait-amao",
+    "source_webp": 112898,
+    "webp": 112898,
+    "avif": 48656,
+    "mobile_avif": 38213,
+    "mobile_webp": 56464
+  },
+  {
+    "name": "portrait-elder",
+    "source_webp": 127906,
+    "webp": 127906,
+    "avif": 49714,
+    "mobile_avif": 39224,
+    "mobile_webp": 56484
+  },
+  {
+    "name": "portrait-quheng",
+    "source_webp": 89498,
+    "webp": 89498,
+    "avif": 37419,
+    "mobile_avif": 29596,
+    "mobile_webp": 51548
+  },
+  {
+    "name": "portrait-chang",
+    "source_webp": 105726,
+    "webp": 105726,
+    "avif": 46671,
+    "mobile_avif": 36675,
+    "mobile_webp": 56648
+  },
+  {
+    "name": "portrait-yu",
+    "source_webp": 83742,
+    "webp": 83742,
+    "avif": 38475,
+    "mobile_avif": 30627,
+    "mobile_webp": 53922
+  },
+  {
+    "name": "portrait-mi",
+    "source_webp": 117378,
+    "webp": 117378,
+    "avif": 50327,
+    "mobile_avif": 39526,
+    "mobile_webp": 58028
+  },
+  {
+    "name": "portrait-xua-v3",
+    "source_webp": 66712,
+    "webp": 66712,
+    "avif": 30927,
+    "mobile_avif": 23246,
+    "mobile_webp": 39716
+  },
+  {
+    "name": "portrait-yuan",
+    "source_webp": 96756,
+    "webp": 96756,
+    "avif": 43573,
+    "mobile_avif": 34260,
+    "mobile_webp": 58122
+  },
+  {
+    "name": "portrait-tu-v2",
+    "source_webp": 91540,
+    "webp": 91540,
+    "avif": 42919,
+    "mobile_avif": 34797,
+    "mobile_webp": 58092
+  },
+  {
+    "name": "portrait-wuyang",
+    "source_webp": 81984,
+    "webp": 81984,
+    "avif": 36024,
+    "mobile_avif": 29235,
+    "mobile_webp": 52226
+  }
+]
