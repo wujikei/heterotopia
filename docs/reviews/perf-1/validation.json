@@ -1,0 +1,794 @@
+{
+  "preparedAt": "2026-11-13T12:53:26.961455+00:00",
+  "baseCommit": "e0fbe9bf612373f9dc3fc0b0dd7e621384f85504",
+  "branch": "perf-1",
+  "environment": "Windows; Playwright desktop and DPR3 mobile emulation; no iOS device",
+  "unitTests": 26,
+  "browsers": {
+    "chromium": {
+      "interactions": {
+        "testedAt": "2026-11-13T12:26:58.163Z",
+        "browser": "chromium",
+        "url": "http://127.0.0.1:4179",
+        "results": [
+          {
+            "label": "Escape returns through nested pages; focus stays in the modal",
+            "passed": true
+          },
+          {
+            "label": "Mouse controls do not steal Space or Enter from reading",
+            "passed": true
+          },
+          {
+            "label": "Deleting a bookmark requires a second click and confirmation resets",
+            "passed": true
+          },
+          {
+            "label": "Wheel and PageUp open history; re-reading preserves choices and items",
+            "passed": true
+          },
+          {
+            "label": "Three rapid clicks reveal a sentence or advance at most one page",
+            "passed": true
+          },
+          {
+            "label": "The chapter card pauses typing and names the opening background",
+            "passed": true
+          },
+          {
+            "label": "Skip renders whole sentences and releasing Ctrl stops held skip",
+            "passed": true
+          },
+          {
+            "label": "Choices show hover feedback and accept number keys",
+            "passed": true
+          },
+          {
+            "label": "Number keys respect locked choices",
+            "passed": true
+          },
+          {
+            "label": "Opening a menu cancels an unfinished choice stamp",
+            "passed": true
+          },
+          {
+            "label": "Phone targets, hidden mode and narrow layouts stay usable",
+            "passed": true
+          },
+          {
+            "label": "First-play guidance dismisses persistently and screen readers receive full lines",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "sprites": {
+        "testedAt": "2026-11-13T12:50:50.447Z",
+        "browser": "chromium",
+        "results": [
+          {
+            "label": "The title screen requests no portraits; Save-Data skips unrelated idle art",
+            "passed": true
+          },
+          {
+            "metric": "narrationReturnMs",
+            "value": 205
+          },
+          {
+            "label": "Narration retains the exact actor node with a short speaking transition",
+            "passed": true
+          },
+          {
+            "metric": "cachedSwitchMs",
+            "value": 254
+          },
+          {
+            "label": "Cached speaker changes crossfade with at most two layers",
+            "passed": true
+          },
+          {
+            "label": "A delayed image stays invisible until decoded, then fades in",
+            "passed": true
+          },
+          {
+            "label": "Late decoding cannot revive an old speaker after advancing",
+            "passed": true
+          },
+          {
+            "label": "A failed portrait leaves the story readable and later speakers working",
+            "passed": true
+          },
+          {
+            "label": "A scene change clears the previous actor; choices do not retain it",
+            "passed": true
+          },
+          {
+            "label": "A choice finishes the actor departure with reduced motion",
+            "passed": true
+          },
+          {
+            "label": "Fast-forward uses decoded, opaque replacements without accumulating layers",
+            "passed": true
+          },
+          {
+            "label": "Mobile composition and both control rows fit 360/390/430px screens",
+            "passed": true
+          },
+          {
+            "label": "A dream bookmark thumbnail, location, excerpt and reload agree",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "browser": {
+        "testedAt": "2026-11-13T12:36:15.713Z",
+        "browser": "chromium",
+        "url": "http://127.0.0.1:4179",
+        "errors": []
+      },
+      "audio": {
+        "testedAt": "2026-11-13T12:36:38.281Z",
+        "browser": "chromium",
+        "url": "http://127.0.0.1:4179",
+        "checks": [
+          "Gesture unlock, stable paragraph cues, alarm cutoff and score change",
+          "Global mute controls music, ambience and effects",
+          "Separate SFX volume persists; save loading suppresses action sounds",
+          "Listening room play/pause/resume, MP3 download and responsive controls",
+          "Delayed-load cancellation, fast-forward silence and retired-loop cleanup",
+          "Native media fallback actually plays, pauses, resumes and mutes when Web Audio is absent"
+        ],
+        "errors": []
+      },
+      "assets": {
+        "browser": "chromium",
+        "results": [
+          {
+            "check": "desktop",
+            "source": "http://127.0.0.1:4179/art/portrait-shen.avif",
+            "noDuplicateFormat": true
+          },
+          {
+            "check": "desktop to mobile responsive source",
+            "source": "http://127.0.0.1:4179/art/portrait-shen-m.avif",
+            "passed": true
+          },
+          {
+            "check": "all desktop AVIF files decode; transparent portrait edges survive",
+            "count": 41,
+            "alpha": {
+              "transparent": 409236,
+              "opaque": 456081,
+              "edge": 19419
+            }
+          },
+          {
+            "check": "mobile, DPR3",
+            "source": "http://127.0.0.1:4179/art/portrait-shen-m.avif",
+            "noDuplicateFormat": true
+          },
+          {
+            "check": "mobile to desktop responsive source",
+            "source": "http://127.0.0.1:4179/art/portrait-shen.avif",
+            "passed": true
+          },
+          {
+            "check": "missing AVIF falls back to WebP for backgrounds and portraits",
+            "passed": true
+          },
+          {
+            "check": "failed story chunk leaves settings usable and prior save intact",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "cache": {
+        "browser": "chromium",
+        "base": "http://127.0.0.1:64388/heterotopia/",
+        "results": [
+          {
+            "check": "persistent cold restart, expired HTTP cache, Fast3G on Chromium",
+            "networkRequests": 1,
+            "fontsReadyMs": 746,
+            "responses": [
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/assets/index-M7HwMp_V.css",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/assets/icons-CSmCmJPf.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/assets/index-DUP-bcqn.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/assets/vendor-CI6SGl1L.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/art/hero.avif",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/fonts/story-serif-ui.woff2",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:64388/heterotopia/fonts/story-serif-ui-semibold.woff2",
+                "serviceWorker": true,
+                "status": 200
+              }
+            ]
+          },
+          {
+            "check": "offline navigation, lazy story, portrait and previous save",
+            "passed": true
+          },
+          {
+            "check": "cached audio: byte range, suffix range, invalid range; offline",
+            "passed": true
+          },
+          {
+            "check": "two explicit updates, no forced reload, save preserved, old cache cleanup",
+            "passed": true
+          },
+          {
+            "check": "emergency worker unregisters only this game; save and other caches survive",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    },
+    "firefox": {
+      "interactions": {
+        "testedAt": "2026-11-13T12:29:43.968Z",
+        "browser": "firefox",
+        "url": "http://127.0.0.1:4179",
+        "results": [
+          {
+            "label": "Escape returns through nested pages; focus stays in the modal",
+            "passed": true
+          },
+          {
+            "label": "Mouse controls do not steal Space or Enter from reading",
+            "passed": true
+          },
+          {
+            "label": "Deleting a bookmark requires a second click and confirmation resets",
+            "passed": true
+          },
+          {
+            "label": "Wheel and PageUp open history; re-reading preserves choices and items",
+            "passed": true
+          },
+          {
+            "label": "Three rapid clicks reveal a sentence or advance at most one page",
+            "passed": true
+          },
+          {
+            "label": "The chapter card pauses typing and names the opening background",
+            "passed": true
+          },
+          {
+            "label": "Skip renders whole sentences and releasing Ctrl stops held skip",
+            "passed": true
+          },
+          {
+            "label": "Choices show hover feedback and accept number keys",
+            "passed": true
+          },
+          {
+            "label": "Number keys respect locked choices",
+            "passed": true
+          },
+          {
+            "label": "Opening a menu cancels an unfinished choice stamp",
+            "passed": true
+          },
+          {
+            "label": "Phone targets, hidden mode and narrow layouts stay usable",
+            "passed": true
+          },
+          {
+            "label": "First-play guidance dismisses persistently and screen readers receive full lines",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "sprites": {
+        "testedAt": "2026-11-13T12:46:25.887Z",
+        "browser": "firefox",
+        "results": [
+          {
+            "label": "The title screen requests no portraits; Save-Data skips unrelated idle art",
+            "passed": true
+          },
+          {
+            "metric": "narrationReturnMs",
+            "value": 283
+          },
+          {
+            "label": "Narration retains the exact actor node with a short speaking transition",
+            "passed": true
+          },
+          {
+            "metric": "cachedSwitchMs",
+            "value": 304
+          },
+          {
+            "label": "Cached speaker changes crossfade with at most two layers",
+            "passed": true
+          },
+          {
+            "label": "A delayed image stays invisible until decoded, then fades in",
+            "passed": true
+          },
+          {
+            "label": "Late decoding cannot revive an old speaker after advancing",
+            "passed": true
+          },
+          {
+            "label": "A failed portrait leaves the story readable and later speakers working",
+            "passed": true
+          },
+          {
+            "label": "A scene change clears the previous actor; choices do not retain it",
+            "passed": true
+          },
+          {
+            "label": "A choice finishes the actor departure with reduced motion",
+            "passed": true
+          },
+          {
+            "label": "Fast-forward uses decoded, opaque replacements without accumulating layers",
+            "passed": true
+          },
+          {
+            "label": "Mobile composition and both control rows fit 360/390/430px screens",
+            "passed": true
+          },
+          {
+            "label": "A dream bookmark thumbnail, location, excerpt and reload agree",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "browser": {
+        "testedAt": "2026-11-13T12:30:55.661Z",
+        "browser": "firefox",
+        "url": "http://127.0.0.1:4179",
+        "errors": []
+      },
+      "audio": {
+        "testedAt": "2026-11-13T12:31:21.042Z",
+        "browser": "firefox",
+        "url": "http://127.0.0.1:4179",
+        "checks": [
+          "Gesture unlock, stable paragraph cues, alarm cutoff and score change",
+          "Global mute controls music, ambience and effects",
+          "Separate SFX volume persists; save loading suppresses action sounds",
+          "Listening room play/pause/resume, MP3 download and responsive controls",
+          "Delayed-load cancellation, fast-forward silence and retired-loop cleanup"
+        ],
+        "errors": []
+      },
+      "assets": {
+        "browser": "firefox",
+        "results": [
+          {
+            "check": "desktop",
+            "source": "http://127.0.0.1:4179/art/portrait-shen.avif",
+            "noDuplicateFormat": true
+          },
+          {
+            "check": "desktop to mobile responsive source",
+            "source": "http://127.0.0.1:4179/art/portrait-shen-m.avif",
+            "passed": true
+          },
+          {
+            "check": "all desktop AVIF files decode; transparent portrait edges survive",
+            "count": 41,
+            "alpha": {
+              "transparent": 409236,
+              "opaque": 456081,
+              "edge": 19419
+            }
+          },
+          {
+            "check": "mobile, DPR3",
+            "source": "http://127.0.0.1:4179/art/portrait-shen-m.avif",
+            "noDuplicateFormat": true
+          },
+          {
+            "check": "mobile to desktop responsive source",
+            "source": "http://127.0.0.1:4179/art/portrait-shen.avif",
+            "passed": true
+          },
+          {
+            "check": "missing AVIF falls back to WebP for backgrounds and portraits",
+            "passed": true
+          },
+          {
+            "check": "failed story chunk leaves settings usable and prior save intact",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "cache": {
+        "browser": "firefox",
+        "base": "http://127.0.0.1:65271/heterotopia/",
+        "results": [
+          {
+            "check": "persistent cold restart, expired HTTP cache, Fast3G on Chromium",
+            "networkRequests": 1,
+            "fontsReadyMs": 324,
+            "responses": [
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/assets/index-DUP-bcqn.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/assets/vendor-CI6SGl1L.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/assets/icons-CSmCmJPf.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/assets/index-M7HwMp_V.css",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/fonts/story-serif-ui.woff2",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/favicon.svg",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/art/hero.avif",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:65271/heterotopia/fonts/story-serif-ui-semibold.woff2",
+                "serviceWorker": true,
+                "status": 200
+              }
+            ]
+          },
+          {
+            "check": "offline navigation, lazy story, portrait and previous save",
+            "passed": true
+          },
+          {
+            "check": "cached audio: byte range, suffix range, invalid range; offline",
+            "passed": true
+          },
+          {
+            "check": "two explicit updates, no forced reload, save preserved, old cache cleanup",
+            "passed": true
+          },
+          {
+            "check": "emergency worker unregisters only this game; save and other caches survive",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    },
+    "webkit": {
+      "interactions": {
+        "testedAt": "2026-11-13T12:40:11.118Z",
+        "browser": "webkit",
+        "url": "http://127.0.0.1:4179",
+        "results": [
+          {
+            "label": "Escape returns through nested pages; focus stays in the modal",
+            "passed": true
+          },
+          {
+            "label": "Mouse controls do not steal Space or Enter from reading",
+            "passed": true
+          },
+          {
+            "label": "Deleting a bookmark requires a second click and confirmation resets",
+            "passed": true
+          },
+          {
+            "label": "Wheel and PageUp open history; re-reading preserves choices and items",
+            "passed": true
+          },
+          {
+            "label": "Three rapid clicks reveal a sentence or advance at most one page",
+            "passed": true
+          },
+          {
+            "label": "The chapter card pauses typing and names the opening background",
+            "passed": true
+          },
+          {
+            "label": "Skip renders whole sentences and releasing Ctrl stops held skip",
+            "passed": true
+          },
+          {
+            "label": "Choices show hover feedback and accept number keys",
+            "passed": true
+          },
+          {
+            "label": "Number keys respect locked choices",
+            "passed": true
+          },
+          {
+            "label": "Opening a menu cancels an unfinished choice stamp",
+            "passed": true
+          },
+          {
+            "label": "Phone targets, hidden mode and narrow layouts stay usable",
+            "passed": true
+          },
+          {
+            "label": "First-play guidance dismisses persistently and screen readers receive full lines",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "sprites": {
+        "testedAt": "2026-11-13T12:42:11.065Z",
+        "browser": "webkit",
+        "results": [
+          {
+            "label": "The title screen requests no portraits; Save-Data skips unrelated idle art",
+            "passed": true
+          },
+          {
+            "metric": "narrationReturnMs",
+            "value": 334
+          },
+          {
+            "label": "Narration retains the exact actor node with a short speaking transition",
+            "passed": true
+          },
+          {
+            "metric": "cachedSwitchMs",
+            "value": 482
+          },
+          {
+            "label": "Cached speaker changes crossfade with at most two layers",
+            "passed": true
+          },
+          {
+            "label": "A delayed image stays invisible until decoded, then fades in",
+            "passed": true
+          },
+          {
+            "label": "Late decoding cannot revive an old speaker after advancing",
+            "passed": true
+          },
+          {
+            "label": "A failed portrait leaves the story readable and later speakers working",
+            "passed": true
+          },
+          {
+            "label": "A scene change clears the previous actor; choices do not retain it",
+            "passed": true
+          },
+          {
+            "label": "A choice finishes the actor departure with reduced motion",
+            "passed": true
+          },
+          {
+            "label": "Fast-forward uses decoded, opaque replacements without accumulating layers",
+            "passed": true
+          },
+          {
+            "label": "Mobile composition and both control rows fit 360/390/430px screens",
+            "passed": true
+          },
+          {
+            "label": "A dream bookmark thumbnail, location, excerpt and reload agree",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "browser": {
+        "testedAt": "2026-11-13T12:42:33.396Z",
+        "browser": "webkit",
+        "url": "http://127.0.0.1:4179",
+        "errors": []
+      },
+      "audio": {
+        "testedAt": "2026-11-13T12:42:47.263Z",
+        "browser": "webkit",
+        "url": "http://127.0.0.1:4179",
+        "checks": [
+          "Separate SFX volume persists; save loading suppresses action sounds",
+          "Listening room play/pause/resume, MP3 download and responsive controls",
+          "No Web Audio: media fallback or graceful silent reading, with functional settings and listening-room download"
+        ],
+        "errors": []
+      },
+      "assets": {
+        "browser": "webkit",
+        "results": [
+          {
+            "check": "desktop",
+            "source": "http://127.0.0.1:4179/art/portrait-shen.webp",
+            "noDuplicateFormat": true
+          },
+          {
+            "check": "desktop to mobile responsive source",
+            "source": "http://127.0.0.1:4179/art/portrait-shen-m.webp",
+            "passed": true
+          },
+          {
+            "check": "mobile, DPR3",
+            "source": "http://127.0.0.1:4179/art/portrait-shen-m.webp",
+            "noDuplicateFormat": true
+          },
+          {
+            "check": "mobile to desktop responsive source",
+            "source": "http://127.0.0.1:4179/art/portrait-shen.webp",
+            "passed": true
+          },
+          {
+            "check": "missing AVIF falls back to WebP for backgrounds and portraits",
+            "passed": true
+          },
+          {
+            "check": "failed story chunk leaves settings usable and prior save intact",
+            "passed": true
+          }
+        ],
+        "errors": []
+      },
+      "cache": {
+        "browser": "webkit",
+        "base": "http://127.0.0.1:60939/heterotopia/",
+        "results": [
+          {
+            "check": "persistent cold restart, expired HTTP cache, Fast3G on Chromium",
+            "networkRequests": 2,
+            "fontsReadyMs": 11376,
+            "responses": [
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/assets/index-DUP-bcqn.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/assets/vendor-CI6SGl1L.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/assets/icons-CSmCmJPf.js",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/assets/index-M7HwMp_V.css",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/fonts/story-serif-ui.woff2",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/art/hero.webp",
+                "serviceWorker": true,
+                "status": 200
+              },
+              {
+                "url": "http://127.0.0.1:60939/heterotopia/fonts/story-serif-ui-semibold.woff2",
+                "serviceWorker": true,
+                "status": 200
+              }
+            ]
+          },
+          {
+            "check": "offline navigation, lazy story, portrait and previous save",
+            "passed": true
+          },
+          {
+            "check": "cached audio: byte range, suffix range, invalid range; offline",
+            "passed": true
+          },
+          {
+            "check": "two explicit updates, no forced reload, save preserved, old cache cleanup",
+            "passed": true
+          },
+          {
+            "check": "emergency worker unregisters only this game; save and other caches survive",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    }
+  },
+  "portable": {
+    "testedAt": "2026-11-13T12:48:23.747Z",
+    "mode": "file:// with networking disabled; isolated synthetic test journeys",
+    "missing": [],
+    "broken": [],
+    "imageAssets": 82,
+    "fonts": [
+      {
+        "family": "StorySerif",
+        "status": "loaded"
+      },
+      {
+        "family": "StorySerif",
+        "status": "loaded"
+      },
+      {
+        "family": "StorySerif",
+        "status": "loaded"
+      },
+      {
+        "family": "StorySerif",
+        "status": "loaded"
+      },
+      {
+        "family": "StorySerif",
+        "status": "loaded"
+      },
+      {
+        "family": "StoryHand",
+        "status": "loaded"
+      }
+    ],
+    "missingAudio": [],
+    "brokenAudio": [],
+    "audioAssets": 51,
+    "errors": []
+  },
+  "limitations": [
+    "Fast3G cold load exceeds 1800ms; fonts exceed 3000ms; see performance-after.json.",
+    "Windows WebKit has no AVIF support; WebP fallback verified. No physical iOS Safari verification.",
+    "Windows WebKit persistent restart makes 2 HTML requests and takes 11376ms for fonts; Chromium/Firefox make 1 HTML request.",
+    "Firefox/WebKit timings are recorded on a shared Windows software renderer, not used as latency acceptance gates."
+  ]
+}

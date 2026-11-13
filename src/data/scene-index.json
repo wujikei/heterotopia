@@ -1,0 +1,577 @@
+{
+  "title": "异托邦",
+  "edition": "V6",
+  "sceneCount": 81,
+  "pageCount": 1603,
+  "characterCount": 56181,
+  "sourceSha256": "fe3ab79eeae2e0f3099c1ea3057d750c6afeb5d3f1cd2c82b003759eb3bbd6dc",
+  "scenes": [
+    {
+      "id": "0-1",
+      "title": "清晨·沈家卧室",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "bedroom"
+    },
+    {
+      "id": "0-2",
+      "title": "餐桌·唐瑾在场",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "home"
+    },
+    {
+      "id": "0-3",
+      "title": "上学路·公交",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "bus"
+    },
+    {
+      "id": "0-4",
+      "title": "校园日常·倒霉的一天",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "classroom-day"
+    },
+    {
+      "id": "0-5",
+      "title": "傍晚操场·篮球",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "school"
+    },
+    {
+      "id": "0-6",
+      "title": "校门外·第一次遇道士",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "alley"
+    },
+    {
+      "id": "0-7",
+      "title": "夜梦·傩面老巫",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "shrine"
+    },
+    {
+      "id": "0-8",
+      "title": "数日·日常与裂缝",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "classroom-day"
+    },
+    {
+      "id": "0-9",
+      "title": "操场·夕阳与古图",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "school"
+    },
+    {
+      "id": "0-10",
+      "title": "晚自习·离骚与墨痕",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "classroom"
+    },
+    {
+      "id": "0-11",
+      "title": "教室异变·坠入血沼",
+      "chapter": "序章 水声之前",
+      "route": "prologue",
+      "background": "nightmare"
+    },
+    {
+      "id": "1-1",
+      "title": "清晨·戌的屋",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "hut"
+    },
+    {
+      "id": "1-2",
+      "title": "稍后·灶火与壁画",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "hut"
+    },
+    {
+      "id": "1-3",
+      "title": "上午·巫村河滩",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "village"
+    },
+    {
+      "id": "1-4",
+      "title": "午后·陆祭",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "shrine"
+    },
+    {
+      "id": "1-5",
+      "title": "当夜·木匣里的月亮",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "hut"
+    },
+    {
+      "id": "1-6",
+      "title": "夜雨·壁画中的人",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "hut"
+    },
+    {
+      "id": "1-7",
+      "title": "三日后朔夜·村中招魂",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "ritual"
+    },
+    {
+      "id": "1-8",
+      "title": "村后竹林·未归的孩子",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "bamboo"
+    },
+    {
+      "id": "1-9",
+      "title": "夜深·老觋问名",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "hut"
+    },
+    {
+      "id": "1-10",
+      "title": "又七日午后·远方的消息",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "village"
+    },
+    {
+      "id": "1-11",
+      "title": "傍晚·村祠中的两位来客",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "hut"
+    },
+    {
+      "id": "1-12",
+      "title": "夜至破晓·灯下分路",
+      "chapter": "共通线 借来的一口气",
+      "route": "common",
+      "background": "hut"
+    },
+    {
+      "id": "A-1",
+      "title": "五日行程·官道与渡口",
+      "chapter": "王裔线 旧玉与故人",
+      "route": "royal",
+      "background": "village"
+    },
+    {
+      "id": "A-2",
+      "title": "抵达当夜·寿春屈宅",
+      "chapter": "王裔线 旧玉与故人",
+      "route": "royal",
+      "background": "study"
+    },
+    {
+      "id": "A-3",
+      "title": "翌晨·试衣与饴糖",
+      "chapter": "王裔线 旧玉与故人",
+      "route": "royal",
+      "background": "study"
+    },
+    {
+      "id": "A-4",
+      "title": "白天·楚宫偏殿",
+      "chapter": "王裔线 旧玉与故人",
+      "route": "royal",
+      "background": "palace"
+    },
+    {
+      "id": "A-5",
+      "title": "大祭前十二日·屈衡的旧箱",
+      "chapter": "王裔线 旧玉与故人",
+      "route": "royal",
+      "background": "study"
+    },
+    {
+      "id": "A-6",
+      "title": "大祭前三夜·宗庙地宫",
+      "chapter": "王裔线 旧玉与故人",
+      "route": "royal",
+      "background": "tomb"
+    },
+    {
+      "id": "A-6a",
+      "title": "大祭前夜·请止西行",
+      "chapter": "王裔线 旧玉与故人",
+      "route": "royal",
+      "background": "study"
+    },
+    {
+      "id": "A-7",
+      "title": "大祭之夜·宗庙高台",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "ritual"
+    },
+    {
+      "id": "A-8",
+      "title": "夜续·归来的声音",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "ritual"
+    },
+    {
+      "id": "A-9",
+      "title": "兵乱初起·仍活着的人",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "ritual"
+    },
+    {
+      "id": "A-E1-1",
+      "title": "宗庙·举刃",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "ritual"
+    },
+    {
+      "id": "A-E1-2",
+      "title": "寿春城内·长夜与第七日",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "alley"
+    },
+    {
+      "id": "A-E2-1",
+      "title": "宗庙·留人",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "ritual"
+    },
+    {
+      "id": "A-E2-2",
+      "title": "宗庙柴屋·三日后",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "tomb"
+    },
+    {
+      "id": "A-E2-3",
+      "title": "南门旧渡·黄昏",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "river"
+    },
+    {
+      "id": "A-E2-4",
+      "title": "荒野废亭·次日夜",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "ruins"
+    },
+    {
+      "id": "A-E3-1",
+      "title": "宗庙后巷·离席",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "alley"
+    },
+    {
+      "id": "A-E3-2",
+      "title": "寿春城门·黎明",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "palace"
+    },
+    {
+      "id": "A-E3-3",
+      "title": "护城河边·早晨",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "river"
+    },
+    {
+      "id": "A-H-1",
+      "title": "宗庙与静河·问名",
+      "chapter": "王裔线 招魂之夜",
+      "route": "royal",
+      "background": "light-river"
+    },
+    {
+      "id": "B-1",
+      "title": "巫村河岸·破晓",
+      "chapter": "昆仑线 发舟",
+      "route": "kunlun",
+      "background": "river"
+    },
+    {
+      "id": "B-2",
+      "title": "河舟与宿岸·前三日",
+      "chapter": "昆仑线 发舟",
+      "route": "kunlun",
+      "background": "river"
+    },
+    {
+      "id": "B-3-1",
+      "title": "旧祭泽边·第五日",
+      "chapter": "昆仑线 发舟",
+      "route": "kunlun",
+      "background": "marsh"
+    },
+    {
+      "id": "B-3-2",
+      "title": "淤泽中·午后",
+      "chapter": "昆仑线 发舟",
+      "route": "kunlun",
+      "background": "marsh"
+    },
+    {
+      "id": "B-3-3",
+      "title": "旧祭泽·紧接",
+      "chapter": "昆仑线 发舟",
+      "route": "kunlun",
+      "background": "marsh"
+    },
+    {
+      "id": "B-4",
+      "title": "烧毁的村落·第五日傍晚",
+      "chapter": "昆仑线 破屋喜事",
+      "route": "kunlun",
+      "background": "ruins"
+    },
+    {
+      "id": "B-5-1",
+      "title": "山坳村落·第八日",
+      "chapter": "昆仑线 破屋喜事",
+      "route": "kunlun",
+      "background": "village"
+    },
+    {
+      "id": "B-5-2",
+      "title": "村屋与水井·当天",
+      "chapter": "昆仑线 破屋喜事",
+      "route": "kunlun",
+      "background": "village"
+    },
+    {
+      "id": "B-5-3",
+      "title": "晒谷场草棚·当夜",
+      "chapter": "昆仑线 破屋喜事",
+      "route": "kunlun",
+      "background": "hut"
+    },
+    {
+      "id": "B-5-4",
+      "title": "村中与草棚·次日",
+      "chapter": "昆仑线 破屋喜事",
+      "route": "kunlun",
+      "background": "village"
+    },
+    {
+      "id": "B-5-5",
+      "title": "草棚·第三日清晨",
+      "chapter": "昆仑线 破屋喜事",
+      "route": "kunlun",
+      "background": "hut"
+    },
+    {
+      "id": "B-5-6",
+      "title": "村后山坡·第十二日",
+      "chapter": "昆仑线 破屋喜事",
+      "route": "kunlun",
+      "background": "mountain"
+    },
+    {
+      "id": "B-6",
+      "title": "废渡口·第十五日黄昏",
+      "chapter": "昆仑线 沉江",
+      "route": "kunlun",
+      "background": "river"
+    },
+    {
+      "id": "B-7-1",
+      "title": "沉江祠·第十七日",
+      "chapter": "昆仑线 沉江",
+      "route": "kunlun",
+      "background": "shrine"
+    },
+    {
+      "id": "B-7-2",
+      "title": "沉江祠·午后",
+      "chapter": "昆仑线 沉江",
+      "route": "kunlun",
+      "background": "shrine"
+    },
+    {
+      "id": "B-7-3",
+      "title": "沉江祠水阶·黄昏",
+      "chapter": "昆仑线 沉江",
+      "route": "kunlun",
+      "background": "river"
+    },
+    {
+      "id": "B-7-4",
+      "title": "水下·片刻",
+      "chapter": "昆仑线 沉江",
+      "route": "kunlun",
+      "background": "underwater"
+    },
+    {
+      "id": "B-7-5",
+      "title": "江边与祠内·入夜",
+      "chapter": "昆仑线 沉江",
+      "route": "kunlun",
+      "background": "shrine"
+    },
+    {
+      "id": "B-8",
+      "title": "东返山道与雾林·第二十日至二十三日",
+      "chapter": "昆仑线 雾中问路",
+      "route": "kunlun",
+      "background": "bamboo"
+    },
+    {
+      "id": "B-9-1",
+      "title": "谷口田地·第二十五日",
+      "chapter": "昆仑线 雾中问路",
+      "route": "kunlun",
+      "background": "valley"
+    },
+    {
+      "id": "B-9-2",
+      "title": "谷地·午后",
+      "chapter": "昆仑线 雾中问路",
+      "route": "kunlun",
+      "background": "valley"
+    },
+    {
+      "id": "B-9-3",
+      "title": "谷地·午后至黄昏",
+      "chapter": "昆仑线 雾中问路",
+      "route": "kunlun",
+      "background": "valley"
+    },
+    {
+      "id": "B-9-4",
+      "title": "谷底陶缸旁·黄昏",
+      "chapter": "昆仑线 雾中问路",
+      "route": "kunlun",
+      "background": "valley"
+    },
+    {
+      "id": "B-9-5",
+      "title": "谷口·入夜",
+      "chapter": "昆仑线 雾中问路",
+      "route": "kunlun",
+      "background": "valley"
+    },
+    {
+      "id": "B-9-6",
+      "title": "田屋·其后三日",
+      "chapter": "昆仑线 雾中问路",
+      "route": "kunlun",
+      "background": "hut"
+    },
+    {
+      "id": "B-10-1",
+      "title": "谷后旧洞·第三十一日",
+      "chapter": "昆仑线 山中余日",
+      "route": "kunlun",
+      "background": "cave"
+    },
+    {
+      "id": "B-10-2",
+      "title": "子母洞·白天",
+      "chapter": "昆仑线 山中余日",
+      "route": "kunlun",
+      "background": "cave"
+    },
+    {
+      "id": "B-10-3",
+      "title": "夹壁道·片刻后",
+      "chapter": "昆仑线 山中余日",
+      "route": "kunlun",
+      "background": "cave"
+    },
+    {
+      "id": "B-10-4",
+      "title": "旧洞出口·夜至翌晨",
+      "chapter": "昆仑线 山中余日",
+      "route": "kunlun",
+      "background": "cave"
+    },
+    {
+      "id": "B-11",
+      "title": "山中村路·第三十三日至四十二日",
+      "chapter": "昆仑线 山中余日",
+      "route": "kunlun",
+      "background": "mountain"
+    },
+    {
+      "id": "B-12-1",
+      "title": "盐客旧洞·第四十三日",
+      "chapter": "昆仑线 山中余日",
+      "route": "kunlun",
+      "background": "snow"
+    },
+    {
+      "id": "B-12-2",
+      "title": "盐客旧洞·夜深",
+      "chapter": "昆仑线 山中余日",
+      "route": "kunlun",
+      "background": "snow"
+    },
+    {
+      "id": "B-13",
+      "title": "光河之岸·无时",
+      "chapter": "光河与归来",
+      "route": "kunlun",
+      "background": "light-river"
+    },
+    {
+      "id": "终-1",
+      "title": "光河之岸·同刻",
+      "chapter": "光河与归来",
+      "route": "return",
+      "background": "light-river"
+    },
+    {
+      "id": "终-2",
+      "title": "高一七班·19:37",
+      "chapter": "光河与归来",
+      "route": "return",
+      "background": "classroom"
+    },
+    {
+      "id": "终-3",
+      "title": "走廊与教室·晚自习课间",
+      "chapter": "光河与归来",
+      "route": "return",
+      "background": "classroom"
+    },
+    {
+      "id": "终-4",
+      "title": "老城巷口与沈家卧室·数日后傍晚",
+      "chapter": "光河与归来",
+      "route": "return",
+      "background": "alley"
+    },
+    {
+      "id": "终-5",
+      "title": "沈家厨房与餐桌·夜",
+      "chapter": "光河与归来",
+      "route": "return",
+      "background": "home"
+    }
+  ]
+}

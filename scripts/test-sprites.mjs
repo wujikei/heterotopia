@@ -3,6 +3,9 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium, firefox, webkit } from 'playwright';
 import { advance, compileScene, currentBeat, enterScene, newGame, newProfile } from '../src/engine.ts';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4179';
 const name = process.env.VN_TEST_BROWSER || 'chromium';
@@ -47,7 +50,7 @@ async function armTiming(page, key) {
 }
 
 async function check(label, state, run, options = {}) {
-  const context = await browser.newContext({ viewport: options.viewport ?? { width: 1280, height: 800 } });
+  const context = await browser.newContext({ serviceWorkers: 'block', viewport: options.viewport ?? { width: 1280, height: 800 } });
   await context.addInitScript(({ state, profile, reduced, saveData }) => {
     if (!sessionStorage.getItem('synthetic-sprite-test')) {
       localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(state));
@@ -67,6 +70,7 @@ async function check(label, state, run, options = {}) {
     await page.evaluate(() => document.fonts.ready);
     await options.home?.(page);
     await page.getByRole('button', { name: /^续梦/ }).click();
+    await page.locator('.game-screen').waitFor();
     await run(page);
     results.push({ label, passed: true }); console.log(`PASS ${label}`);
   } catch (error) {
@@ -82,7 +86,7 @@ try {
     await page.waitForTimeout(500);
     const portraits = await page.evaluate(() => performance.getEntriesByType('resource').map(e => e.name).filter(url => /\/portrait-/.test(url)));
     assert.ok(portraits.length > 0);
-    assert.ok(portraits.every(url => /portrait-(shen|tang)\.webp/.test(url)), portraits.join('\n'));
+    assert.ok(portraits.every(url => /portrait-(shen|tang)(?:-m)?\.(avif|webp)/.test(url)), portraits.join('\n'));
   }, { saveData: true, home: async page => {
     assert.equal(await page.evaluate(() => performance.getEntriesByType('resource').filter(e => /\/portrait-/.test(e.name)).length), 0);
   } });
@@ -109,7 +113,7 @@ try {
 
   await check('Cached speaker changes crossfade with at most two layers', at('0-4', '0-4:7:0'), async page => {
     await full(page, 'shen');
-    await page.evaluate(async () => { const img = new Image(); img.src = './art/portrait-song.webp'; await img.decode(); });
+    await page.evaluate(async () => { const img = new Image(); img.src = document.querySelector('.actor img').currentSrc.replace('portrait-shen', 'portrait-song'); await img.decode(); });
     const old = await active(page, 'shen').elementHandle();
     await armTiming(page, 'song'); await page.locator('.dialogue-advance').click();
     await page.locator('.actor--song.actor--active').waitFor();
@@ -135,7 +139,7 @@ try {
     await full(page, 'shen');
   }, { setup: async page => {
     const gate = new Promise(resolve => { releaseSlow = resolve; });
-    await page.route('**/art/portrait-shen.webp', async route => { await gate; await route.continue().catch(() => {}); });
+    await page.route(/\/art\/portrait-shen(?:-m)?\.(avif|webp)$/, async route => { await gate; await route.continue().catch(() => {}); });
   } });
 
   let releaseStale;
@@ -147,7 +151,7 @@ try {
     assert.equal(await active(page, 'song').count(), 1);
   }, { setup: async page => {
     const gate = new Promise(resolve => { releaseStale = resolve; });
-    await page.route('**/art/portrait-shen.webp', async route => { await gate; await route.continue().catch(() => {}); });
+    await page.route(/\/art\/portrait-shen(?:-m)?\.(avif|webp)$/, async route => { await gate; await route.continue().catch(() => {}); });
   } });
 
   await check('A failed portrait leaves the story readable and later speakers working', at('0-4', '0-4:7:0'), async page => {
@@ -155,7 +159,7 @@ try {
     assert.equal(await page.locator('.actor--shen').count(), 0);
     assert.equal(await page.getByTestId('dialogue-text').getAttribute('aria-label'), currentBeat(at('0-4', '0-4:7:0'), profile).text);
     await turn(page, '0-4:8:0'); await full(page, 'song');
-  }, { setup: page => page.route('**/art/portrait-shen.webp', route => route.abort()) });
+  }, { setup: page => page.route(/\/art\/portrait-shen(?:-m)?\.(avif|webp)$/, route => route.abort()) });
 
   await check('A scene change clears the previous actor; choices do not retain it', at('0-4', '0-4:24:1'), async page => {
     await full(page, 'shen'); const old = await active(page, 'shen').elementHandle();
@@ -176,7 +180,8 @@ try {
   await check('Fast-forward uses decoded, opaque replacements without accumulating layers', at('0-4', '0-4:7:0'), async page => {
     await full(page, 'shen');
     await page.evaluate(async () => {
-      await Promise.all(['shen', 'song', 'tang'].map(async key => { const img = new Image(); img.src = `./art/portrait-${key}.webp`; await img.decode(); }));
+      const current = document.querySelector('.actor img').currentSrc;
+      await Promise.all(['shen', 'song', 'tang'].map(async key => { const img = new Image(); img.src = current.replace('portrait-shen', `portrait-${key}`); await img.decode(); }));
       window.__skipSamples = [];
       window.__skipTimer = setInterval(() => {
         const button = document.querySelector('.reading-controls button[title^="仅跳过"]');

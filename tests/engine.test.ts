@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { advance, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, enterScene, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES } from '../src/engine';
 import type { EndingId, Profile } from '../src/types';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 // These are isolated synthetic engine fixtures. They never touch player saves.
 function journey(choices: Record<string, string>, state = newGame(newProfile()), profile = newProfile()) {

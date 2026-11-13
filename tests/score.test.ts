@@ -3,6 +3,9 @@ import { readFileSync, existsSync } from 'node:fs';
 import test from 'node:test';
 import { compileScene, newGame, newProfile, SCENES } from '../src/engine';
 import { AMBIENCE_IDS, CUE_EFFECTS, EFFECT_IDS, MUSIC_BY_SCENE, MUSIC_IDS, scoreFrame, SOUNDTRACK, unlockedTracks } from '../src/score';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 const profile = { ...newProfile(), oldNames: true, endings: ['mercy', 'names', 'kunlun'] as const };
 const progress = { ...profile, endings: [...profile.endings] };

@@ -11,7 +11,7 @@ const screenshotPath = name => fileURLToPath(new URL(name, folder));
 await mkdir(folder, { recursive: true });
 const browser = await browserType.launch({ headless: true });
 const errors = [];
-const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
 const page = await context.newPage();
 page.on('pageerror', error => errors.push(error.message));
 page.on('response', response => { if (response.status() >= 400 && !response.url().includes('favicon.ico')) errors.push(`${response.status()} ${response.url()}`); });
@@ -21,6 +21,7 @@ await page.evaluate(() => document.fonts.ready);
 await page.waitForTimeout(1900);
 await page.screenshot({ path: screenshotPath('01-home-desktop.png'), fullPage: true });
 await page.getByRole('button', { name: '启程', exact: true }).click();
+await page.locator('.game-screen').waitFor();
 // The card may auto-dismiss between a locator query and actionability checks.
 // Its timing and click behavior are covered by test:interactions.
 await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());

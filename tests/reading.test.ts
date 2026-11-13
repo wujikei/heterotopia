@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { advance, choose, compileScene, currentBeat, enterScene, newGame, newProfile } from '../src/engine';
 import { historyTargets, replayHistory } from '../src/reading';
+import { loadStory } from '../src/story.ts';
+
+await loadStory();
 
 test('re-reading a sentence keeps this run and logs it once when advancing again', () => {
   const profile = newProfile();

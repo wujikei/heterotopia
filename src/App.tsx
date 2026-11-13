@@ -1,25 +1,43 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, Check, ChevronDown, ChevronRight, CircleHelp, Feather, Pause, Play, SkipForward, X } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { sound } from './audio';
 import { Atmosphere, BoatMark, BoneMark, SceneArt } from './components/Atmosphere';
 import { Modal } from './components/Modal';
-import { Backlog } from './components/Backlog';
 import { ActorLayer } from './components/ActorLayer';
+import { UpdateNotice } from './components/UpdateNotice';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
-import { MusicRoom } from './components/MusicRoom';
-import { AboutView, ChaptersView, CharactersView, GalleryView, JournalView, SaveView, SettingsView } from './components/Library';
 import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, portraitAsset } from './data/world';
 import { actorForBeat } from './actors';
 import { prefetchWhenIdle, preloadImage } from './preload';
+import { afterFirstScreen } from './idle';
+import { warmReadingFonts } from './fonts';
+import { isStoryReady, loadStory } from './story';
 import { advance, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES, sceneById } from './engine';
 import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist, validState } from './storage';
 import { scoreFrame } from './score';
 import { replayHistory } from './reading';
 import type { GameState, Profile, SaveSlot, Settings } from './types';
 
+const Backlog = lazy(() => import('./components/Backlog').then(module => ({ default: module.Backlog })));
+const MusicRoom = lazy(() => import('./components/MusicRoom').then(module => ({ default: module.MusicRoom })));
+const AboutView = lazy(() => import('./components/Library').then(module => ({ default: module.AboutView })));
+const ChaptersView = lazy(() => import('./components/Library').then(module => ({ default: module.ChaptersView })));
+const CharactersView = lazy(() => import('./components/Library').then(module => ({ default: module.CharactersView })));
+const GalleryView = lazy(() => import('./components/Library').then(module => ({ default: module.GalleryView })));
+const JournalView = lazy(() => import('./components/Library').then(module => ({ default: module.JournalView })));
+const SaveView = lazy(() => import('./components/Library').then(module => ({ default: module.SaveView })));
+const SettingsView = lazy(() => import('./components/Library').then(module => ({ default: module.SettingsView })));
+
 type ModalName = 'chapters' | 'characters' | 'gallery' | 'journal' | 'settings' | 'saves' | 'history' | 'menu' | 'about' | 'music';
 type Intro = { chapter: string; title: string; subtitle: string };
+function openingIntro(state: GameState, profile: Profile): Intro {
+  const scene = sceneById(state.sceneId);
+  const [chapter, ...title] = scene.chapter.split(' ');
+  const opening = currentBeat(state, profile);
+  return { chapter: title.length ? chapter : '终章', title: title.join(' ') || scene.chapter,
+    subtitle: BACKGROUNDS[opening.background]?.subtitle ?? scene.title };
+}
 
 const LIBRARY: { name: ModalName; text: string; note: string; icon: typeof InkPath }[] = [
   { name: 'chapters', text: '行迹', note: '走过的水路', icon: InkPath },
@@ -64,6 +82,10 @@ export default function App() {
   const [game, setGame] = useState<GameState | null>(loadAutosave);
   const [slots, setSlots] = useState<(SaveSlot | null)[]>(loadSlots);
   const [screen, setScreen] = useState<'home' | 'play'>('home');
+  const [storyReady, setStoryReady] = useState(isStoryReady);
+  const [loadingReading, setLoadingReading] = useState(false);
+  const [readingError, setReadingError] = useState(false);
+  const readingLoad = useRef(false);
   const [modalPath, setModalPath] = useState<ModalName[]>([]);
   const modal = modalPath.at(-1) ?? null;
   const modalParent = modalPath.at(-2);
@@ -103,11 +125,16 @@ export default function App() {
   const backModal = useCallback(() => setModalPath(path => path.slice(0, -1)), []);
 
   const scene = game ? sceneById(game.sceneId) : SCENES[0];
-  const beat = useMemo(() => game ? currentBeat(game, profile) : null, [game, profile]);
-  const beats = useMemo(() => game ? compileScene(game.sceneId, profile, game) : [], [game, profile]);
+  const beat = useMemo(() => game && storyReady ? currentBeat(game, profile) : null, [game, profile, storyReady]);
+  const beats = useMemo(() => game && storyReady ? compileScene(game.sceneId, profile, game) : [], [game, profile, storyReady]);
   const text = beat?.kind === 'text' ? beat.text : '';
   const typing = useTypewriter(screen === 'play' ? beat?.id : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? 'hero' : beat?.background ?? 'hero';
+
+  useEffect(() => {
+    if (screen !== 'home' || storyReady || (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
+    return afterFirstScreen(() => { void loadStory().then(() => setStoryReady(true)).catch(() => {}); });
+  }, [screen, storyReady]);
 
   useEffect(() => {
     persist('settings', settings); sound.update(settings);
@@ -142,9 +169,7 @@ export default function App() {
     previousScene.current = game.sceneId;
     const sameChapter = old && sceneById(old).chapter === scene.chapter;
     if (!sameChapter && !(game.sceneId === '1-12' && game.cycle > 1)) {
-      const [chapter, ...title] = scene.chapter.split(' ');
-      const opening = currentBeat(game, currentProfile.current);
-      setIntro({ chapter: title.length ? chapter : '终章', title: title.join(' ') || scene.chapter, subtitle: BACKGROUNDS[opening.background]?.subtitle ?? scene.title });
+      setIntro(openingIntro(game, currentProfile.current));
     }
   }, [game?.sceneId, screen, game?.cycle, scene.chapter, scene.title]);
 
@@ -212,6 +237,7 @@ export default function App() {
   }, [auto, isSkipping, modal, intro, screen, beat, typing.done, settings.autoDelay, text.length, notify, stopSkipping]);
 
   const openModal = useCallback((name: ModalName) => {
+    if (name === 'saves' && !isStoryReady()) void loadStory().then(() => setStoryReady(true)).catch(() => {});
     if (!document.querySelector('[role="dialog"]')) modalOpener.current = document.activeElement as HTMLElement | null;
     setModalPath(path => path.at(-1) === name ? path : [...path, name]);
     setHidden(false); setHoldingSkip(false);
@@ -241,15 +267,43 @@ export default function App() {
   }, [beat?.id, screen]);
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
-  const start = () => {
-    void sound.unlock(settings); sound.click('bell');
-    previousScene.current = ''; setGame(newGame(profile)); setScreen('play'); closeModal(); setAuto(false); stopSkipping(); setHidden(false);
+  const prepareReading = async (stateForReading: () => GameState): Promise<GameState | null> => {
+    if (readingLoad.current) return null;
+    readingLoad.current = true; setLoadingReading(true); setReadingError(false);
+    try {
+      await loadStory(); setStoryReady(true);
+      const state = stateForReading();
+      const location = sceneById(state.sceneId);
+      const items = compileScene(state.sceneId, currentProfile.current, state);
+      const position = Math.max(0, items.findIndex(item => item.id === state.beatId));
+      const nearest = items.slice(position).map(item => actorForBeat(item, location, items)).find(Boolean);
+      const critical = [preloadImage(asset(items[position].background), 'high')];
+      if (nearest) critical.push(preloadImage(portraitAsset(nearest.character.key), 'high'));
+      let timer = 0;
+      // Keep a stalled image from blocking the story; loading failures stay retryable.
+      await Promise.race([Promise.allSettled(critical), new Promise(resolve => { timer = window.setTimeout(resolve, 4000); })]);
+      clearTimeout(timer);
+      warmReadingFonts();
+      return state;
+    } catch { setReadingError(true); notify('旅途未能载入，请检查网络后刷新重试。'); return null; }
+    finally { readingLoad.current = false; setLoadingReading(false); }
   };
 
-  const resume = (state = game) => {
+  const start = async () => {
+    void sound.unlock(settings); sound.click('bell');
+    const state = await prepareReading(() => newGame(currentProfile.current));
+    if (!state) return;
+    previousScene.current = state.sceneId; setIntro(openingIntro(state, currentProfile.current));
+    setGame(state); setScreen('play'); closeModal(); setAuto(false); stopSkipping(); setHidden(false);
+  };
+
+  const resume = async (state = game) => {
+    if (!state) return;
+    void sound.unlock(settings);
+    state = await prepareReading(() => state!);
     if (!state) return;
     audioJump.current = true;
-    void sound.unlock(settings); previousScene.current = state.sceneId;
+    previousScene.current = state.sceneId;
     setGame(state); setScreen('play'); closeModal(); setIntro(null); setAuto(false); stopSkipping(); setHidden(false);
   };
 
@@ -287,10 +341,11 @@ export default function App() {
   };
   const toggleAuto = () => { setAuto(value => !value); stopSkipping(); };
 
-  const jump = (id: string) => {
+  const jump = async (id: string) => {
     if (id === '0-1' && !profile.visited.includes(id)) { start(); return; }
-    const state = game ?? newGame(profile);
-    const jumped = revisitScene(state, profile, id);
+    void sound.unlock(settings);
+    const jumped = await prepareReading(() => revisitScene(game ?? newGame(currentProfile.current), currentProfile.current, id));
+    if (!jumped) return;
     audioJump.current = true;
     previousScene.current = ''; setGame(jumped); setScreen('play'); closeModal(); setAuto(false); stopSkipping(); setHidden(false);
     void sound.unlock(settings);
@@ -418,9 +473,11 @@ export default function App() {
         <div className="home-english"><span />H E T E R O T O P I A<span /></div>
         <div className="home-verse"><span>魂兮归来。</span><p>看路，也看看走路的人。</p></div>
         <nav className={`home-main-menu ${game ? 'home-main-menu--resume' : ''}`} aria-label="启程菜单">
-          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'}`} onClick={start}><span className="cta-glow" aria-hidden="true" /><strong>{game ? '重新启程' : '启程'}</strong><BoatMark className="cta-boat" /></button>
-          <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game} onClick={() => resume()}><span className="cta-glow" aria-hidden="true" /><strong>续梦</strong><small>{game ? `${sceneById(game.sceneId).chapter} · ${sceneById(game.sceneId).title.split('·').at(-1)}` : '此刻尚无未尽的梦'}</small></button>
+          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'}`} disabled={loadingReading} onClick={() => void start()}><span className="cta-glow" aria-hidden="true" /><strong>{game ? '重新启程' : '启程'}</strong><BoatMark className="cta-boat" /></button>
+          <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game || loadingReading} onClick={() => void resume()}><span className="cta-glow" aria-hidden="true" /><strong>续梦</strong><small>{game ? `${sceneById(game.sceneId).chapter} · ${sceneById(game.sceneId).title.split('·').at(-1)}` : '此刻尚无未尽的梦'}</small></button>
         </nav>
+        {loadingReading && <p className="reading-load" role="status">正在载入旅途…</p>}
+        {readingError && <p className="reading-load" role="alert"><button onClick={() => location.reload()}>刷新重试</button></p>}
         <div className="home-library">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={18} /><span>{item.text}</span></button>)}</div>
       </div>
       <div className="home-side-poem" aria-hidden="true"><span>一条河，两片夜。</span><i /><span>循着水声，回家。</span></div>
@@ -482,6 +539,7 @@ export default function App() {
     </div> : null}
 
     {modal && <Modal title={modalInfo[modal][0]} eyebrow={modalInfo[modal][1]} seal={modalSeals[modal]} onClose={closeModal} onBack={modalParent ? backModal : undefined} backLabel={modalParent === 'menu' ? '返回小憩' : modalParent ? `返回${modalInfo[modalParent][0]}` : undefined} restoreFocus={restoreModalFocus} notice={toastNotice} className={`modal--${modal}`}>
+      <Suspense fallback={<p role="status">正在展开书页…</p>}>
       {modal === 'chapters' && <ChaptersView profile={profile} currentScene={screen === 'play' ? game?.sceneId : undefined} onJump={jump} />}
       {modal === 'characters' && <CharactersView profile={profile} />}
       {modal === 'gallery' && <GalleryView profile={profile} />}
@@ -492,8 +550,10 @@ export default function App() {
       {modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>不用急。水也可以慢慢流。</p><div className="pause-buttons">{screen === 'play' && <button className="gold-button" onClick={closeModal}>继续此梦 <Play size={15} /></button>}<div className="pause-grid">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={24} /><span>{item.text}</span><small>{item.note}</small></button>)}</div><div className="pause-rows"><button className="pause-row" onClick={() => openSaves('save')}><InkBookmark />存读档<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><InkDrop />听水集<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><InkWind />阅读设置<ChevronRight size={16} /></button></div>{screen === 'play' && <button className={`pause-row pause-row--home ${confirmHome ? 'is-confirming' : ''}`} onClick={() => { if (confirmHome) toHome(); else setConfirmHome(true); }} aria-live="polite"><InkReturn />{confirmHome ? '再点一次，回到标题' : '回到标题'}<small>{confirmHome ? '此刻已自动留存，可随时续梦' : '此刻已自动留存'}</small></button>}</div></div>}
       {modal === 'about' && <AboutView />}
       {modal === 'music' && <MusicRoom profile={profile} settings={settings} onChange={setSettings} />}
+      </Suspense>
     </Modal>}
     {!modal && toastNotice}
+    <UpdateNotice />
     {auto && screen === 'play' && !modal && !intro && beat?.kind === 'text' && <button className="reading-mode-indicator" onClick={() => setAuto(false)}><span />自动阅读中 <Pause size={11} /></button>}
     {isSkipping && screen === 'play' && !modal && <button className="reading-mode-indicator" onClick={stopSkipping}><SkipForward size={12} />已读快进中</button>}
   </main>;

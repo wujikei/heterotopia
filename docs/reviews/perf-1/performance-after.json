@@ -1,0 +1,213 @@
+{
+  "measuredAt": "2026-11-13T12:51:53.779Z",
+  "base": "http://127.0.0.1:4179",
+  "batch": "perf-1",
+  "measurements": [
+    {
+      "network": "unlimited",
+      "home": {
+        "loadMs": 54,
+        "interactiveMs": 178,
+        "fontsReadyMs": 181,
+        "requests": 8,
+        "bytes": 223706,
+        "resources": [
+          {
+            "name": "/assets/index-DUP-bcqn.js",
+            "start": 11,
+            "duration": 11,
+            "bytes": 36128
+          },
+          {
+            "name": "/assets/vendor-CI6SGl1L.js",
+            "start": 11,
+            "duration": 17,
+            "bytes": 69169
+          },
+          {
+            "name": "/assets/icons-CSmCmJPf.js",
+            "start": 12,
+            "duration": 10,
+            "bytes": 2072
+          },
+          {
+            "name": "/assets/index-M7HwMp_V.css",
+            "start": 12,
+            "duration": 12,
+            "bytes": 26604
+          },
+          {
+            "name": "/art/hero.avif",
+            "start": 106,
+            "duration": 2,
+            "bytes": 39224
+          },
+          {
+            "name": "/fonts/story-serif-ui.woff2",
+            "start": 111,
+            "duration": 36,
+            "bytes": 34760
+          },
+          {
+            "name": "/fonts/story-serif-ui-semibold.woff2",
+            "start": 111,
+            "duration": 36,
+            "bytes": 12180
+          }
+        ]
+      },
+      "resumeReadyMs": 147,
+      "resumeToFirstFullMs": 634,
+      "cachedBeforeClick": true,
+      "first": {
+        "mountedMs": 31,
+        "imageReadyMs": 31,
+        "halfMs": 250,
+        "fullMs": 421,
+        "decodedAnimationMs": 390
+      }
+    },
+    {
+      "network": "4G",
+      "home": {
+        "loadMs": 334,
+        "interactiveMs": 403,
+        "fontsReadyMs": 542,
+        "requests": 8,
+        "bytes": 223706,
+        "resources": [
+          {
+            "name": "/assets/index-DUP-bcqn.js",
+            "start": 94,
+            "duration": 192,
+            "bytes": 36128
+          },
+          {
+            "name": "/assets/icons-CSmCmJPf.js",
+            "start": 94,
+            "duration": 107,
+            "bytes": 2072
+          },
+          {
+            "name": "/assets/index-M7HwMp_V.css",
+            "start": 94,
+            "duration": 173,
+            "bytes": 26604
+          },
+          {
+            "name": "/assets/vendor-CI6SGl1L.js",
+            "start": 94,
+            "duration": 222,
+            "bytes": 69169
+          },
+          {
+            "name": "/art/hero.avif",
+            "start": 350,
+            "duration": 130,
+            "bytes": 39224
+          },
+          {
+            "name": "/fonts/story-serif-ui.woff2",
+            "start": 354,
+            "duration": 174,
+            "bytes": 34760
+          },
+          {
+            "name": "/fonts/story-serif-ui-semibold.woff2",
+            "start": 354,
+            "duration": 156,
+            "bytes": 12180
+          }
+        ]
+      },
+      "resumeReadyMs": 813,
+      "resumeToFirstFullMs": 1263,
+      "cachedBeforeClick": true,
+      "first": {
+        "mountedMs": 17,
+        "imageReadyMs": 17,
+        "halfMs": 216,
+        "fullMs": 394,
+        "decodedAnimationMs": 377
+      }
+    },
+    {
+      "network": "Fast3G",
+      "home": {
+        "loadMs": 1926,
+        "interactiveMs": 1993,
+        "fontsReadyMs": 3015,
+        "requests": 8,
+        "bytes": 223706,
+        "resources": [
+          {
+            "name": "/assets/index-DUP-bcqn.js",
+            "start": 578,
+            "duration": 1140,
+            "bytes": 36128
+          },
+          {
+            "name": "/assets/icons-CSmCmJPf.js",
+            "start": 578,
+            "duration": 615,
+            "bytes": 2072
+          },
+          {
+            "name": "/assets/vendor-CI6SGl1L.js",
+            "start": 578,
+            "duration": 1332,
+            "bytes": 69169
+          },
+          {
+            "name": "/assets/index-M7HwMp_V.css",
+            "start": 578,
+            "duration": 1022,
+            "bytes": 26604
+          },
+          {
+            "name": "/art/hero.avif",
+            "start": 1942,
+            "duration": 1049,
+            "bytes": 39224
+          },
+          {
+            "name": "/fonts/story-serif-ui.woff2",
+            "start": 1945,
+            "duration": 1058,
+            "bytes": 34760
+          },
+          {
+            "name": "/fonts/story-serif-ui-semibold.woff2",
+            "start": 1945,
+            "duration": 815,
+            "bytes": 12180
+          }
+        ]
+      },
+      "resumeReadyMs": 2349,
+      "resumeToFirstFullMs": 2817,
+      "cachedBeforeClick": true,
+      "first": {
+        "mountedMs": 17,
+        "imageReadyMs": 17,
+        "halfMs": 238,
+        "fullMs": 417,
+        "decodedAnimationMs": 400
+      }
+    }
+  ],
+  "narration": {
+    "retainedDuringNarration": true,
+    "sameNodeOnReturn": true,
+    "mountedMs": 17,
+    "imageReadyMs": 17,
+    "halfMs": 17,
+    "fullMs": 210,
+    "decodedAnimationMs": 193
+  },
+  "authored": {
+    "portraitLines": 414,
+    "legacyMounts": 376,
+    "retainedOpportunities": 94
+  }
+}

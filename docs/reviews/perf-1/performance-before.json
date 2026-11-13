@@ -1,0 +1,72 @@
+{
+  "measuredAt": "2026-11-13T11:36:39.924Z",
+  "base": "http://127.0.0.1:4179",
+  "batch": "before-perf-1",
+  "measurements": [
+    {
+      "network": "unlimited",
+      "home": {
+        "loadMs": 63,
+        "fontsReadyMs": 157,
+        "requests": 9,
+        "bytes": 1184572
+      },
+      "cachedBeforeClick": true,
+      "first": {
+        "mountedMs": 15,
+        "imageReadyMs": 15,
+        "halfMs": 205,
+        "fullMs": 399,
+        "decodedAnimationMs": 384
+      }
+    },
+    {
+      "network": "4G",
+      "home": {
+        "loadMs": 455,
+        "fontsReadyMs": 1432,
+        "requests": 9,
+        "bytes": 1184572
+      },
+      "cachedBeforeClick": false,
+      "first": {
+        "mountedMs": 12,
+        "imageReadyMs": 262,
+        "halfMs": 465,
+        "fullMs": 662,
+        "decodedAnimationMs": 400
+      }
+    },
+    {
+      "network": "Fast3G",
+      "home": {
+        "loadMs": 2566,
+        "fontsReadyMs": 8367,
+        "requests": 9,
+        "bytes": 1184572
+      },
+      "cachedBeforeClick": false,
+      "first": {
+        "mountedMs": 13,
+        "imageReadyMs": 1814,
+        "halfMs": 1942,
+        "fullMs": 2052,
+        "decodedAnimationMs": 238
+      }
+    }
+  ],
+  "narration": {
+    "retainedDuringNarration": true,
+    "sameNodeOnReturn": true,
+    "mountedMs": 18,
+    "imageReadyMs": 18,
+    "halfMs": 18,
+    "fullMs": 239,
+    "decodedAnimationMs": 221
+  },
+  "authored": {
+    "portraitLines": 414,
+    "legacyMounts": 376,
+    "retainedOpportunities": 94
+  }
+}

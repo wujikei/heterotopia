@@ -1,9 +1,8 @@
-import rawStory from './data/story.json';
+import { SCENES, isStoryReady } from './story';
 import { CHARACTERS } from './data/world';
 import type { Beat, ChoiceBeat, EndingId, GameState, Profile, Scene, TextBeat } from './types';
 
-export const STORY = rawStory;
-export const SCENES = rawStory.scenes as Scene[];
+export { STORY, SCENES, loadStory, isStoryReady } from './story';
 export const sceneById = (id: string) => SCENES.find(scene => scene.id === id) ?? SCENES[0];
 export const hasRoyal = (profile: Profile) => profile.endings.some(e => ['blade', 'mercy', 'leave', 'names'].includes(e));
 export const hasKunlun = (profile: Profile) => profile.endings.includes('kunlun');
@@ -71,6 +70,7 @@ function makeChoices(scene: Scene, base: Omit<ChoiceBeat, 'kind' | 'prompt' | 'c
 }
 
 export function compileScene(sceneId: string, profile: Profile, state: Pick<GameState, 'choices' | 'inventory'>): Beat[] {
+  if (!isStoryReady()) throw new Error('剧情尚未载入，请先 await loadStory()。');
   const scene = sceneById(sceneId);
   const beats: Beat[] = [];
   let background = scene.background;

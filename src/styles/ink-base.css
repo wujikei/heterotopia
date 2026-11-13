@@ -26,12 +26,6 @@
   color: var(--rice);
 }
 
-@font-face {
-  font-family: StoryHand;
-  src: url("/fonts/story-hand-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
 
 /* ---------- 焦点：一圈旧铜色的灯晕，取代浏览器白框 ---------- */
 :focus {
