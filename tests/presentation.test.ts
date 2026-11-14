@@ -17,7 +17,7 @@ test('a dream bookmark uses the saved page location instead of the scene default
   assert.equal(card.title, '夜梦 · 船底的敲击');
   assert.ok(beat.kind === 'text' && beat.text.startsWith(card.excerpt.replace(/…$/, '')));
   const awake = { ...state, beatId: '0-1:11:0' };
-  assert.equal(slotPresentation(awake, profile).background, 'bedroom');
+  assert.equal(slotPresentation(awake, profile).background, 'bedroom-morning');
   assert.equal(slotPresentation({ ...state, beatId: 'obsolete' }, profile).background, sceneById(state.sceneId).background);
   assert.equal(slotPresentation({ ...state, beatId: 'obsolete' }, profile).excerpt, '');
 });

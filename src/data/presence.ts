@@ -2,6 +2,15 @@
 // dialogue never create a person on stage automatically.
 export const PRESENCE: Record<string, string[]> = {
   '0-1:8:0': ['shen'],
+  '0-1:8:1': ['shen'],
+  'B-1:17:0': ['xu'],
+  'B-1:20:2': ['amao'],
+  'B-1:22:4': ['xu'],
+  'B-12-1:3:1': ['yu'],
+  'B-12-1:18:1': ['xu'],
+  '终-1:8:2': ['xu'],
+  '终-1:22:4': ['yu'],
+  '终-1:27:0': ['yu'],
   '终-4:12:4': ['shen'],
   'B-2:12:2': ['mi'],
   'B-2:12:4': ['mi'],

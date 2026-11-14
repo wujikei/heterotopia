@@ -33,7 +33,7 @@
     "bpm": 76,
     "keyscale": "G major",
     "file": "music-river-journey.mp3",
-    "seconds": 56.84211
+    "seconds": 146.84211
   },
   {
     "id": "old-jade",
@@ -78,7 +78,7 @@
     "bpm": 60,
     "keyscale": "A minor",
     "file": "music-last-flute.mp3",
-    "seconds": 56.0
+    "seconds": 146.0
   },
   {
     "id": "river-of-names",
@@ -87,7 +87,7 @@
     "bpm": 68,
     "keyscale": "D major",
     "file": "music-river-of-names.mp3",
-    "seconds": 56.47059
+    "seconds": 146.47059
   },
   {
     "id": "light-in-kitchen",

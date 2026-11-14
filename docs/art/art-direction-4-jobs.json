@@ -1,0 +1,227 @@
+[
+  {
+    "name": "classroom-day",
+    "workflow": "edit",
+    "references": [
+      "codex-reference-d6b603170a614f59af243b5aaa60177f.webp"
+    ],
+    "prompt": "Use case: lighting-weather, painterly visual novel background. Edit the reference into an unmistakable ordinary late-morning classroom in a modest Chinese riverside high school. Preserve exactly this room, camera, rows of wooden desks, chalkboard, right-hand windows, books, perspective and architectural layout. Replace the deep blue night beyond the windows with pale daytime sky and softly lit green school trees. Broad neutral daylight from the windows gently illuminates the desks, pale ivory highlights and warm natural wood, soft short shadows; fluorescent ceiling lamps are OFF. The whole classroom is readable in daylight, with delicate watercolor/gouache brushwork and warm restrained realistic color, never orange, neon or teal-washed. No people, no characters, no readable writing, no fire outside, no new furniture, no extra windows, no vignette or baked dark overlay. The front and lower center remain relatively simple for dialogue and actors. Keep the existing illustrative style.",
+    "seed": 11144001,
+    "steps": 20,
+    "cfg": 4,
+    "promptId": "0ed6d5c6-390d-4696-a6dd-084e9eb92069",
+    "accepted": true,
+    "output": {
+      "filename": "edit_00030_.png",
+      "subfolder": "Qwen2.1\\Codex",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 1344,
+        "height": 768
+      },
+      "id": "532781b8-4d48-4b86-a788-58b39b5c635e"
+    },
+    "source": "resources/art-src/backgrounds/time-of-day/classroom-day-11144001.png",
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sha256": "140e9a1cf5a0b6daa6744e45aefe4db03ac7f4561b29a918de0c42800d088c77",
+    "models": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "referenceSources": [
+      "resources/art-src/references/art-direction-4/classroom-reference.webp"
+    ]
+  },
+  {
+    "name": "bedroom-morning",
+    "workflow": "edit",
+    "references": [
+      "codex-reference-d7b306f2f5df4c988789933875465164.webp"
+    ],
+    "prompt": "Use case: lighting-weather. A new time-of-day version of the EXACT small teenage boy's bedroom in the reference, painterly watercolor/gouache background for a literary visual novel. Preserve the camera, left desk, open sketchbook and papers, right unmade bed and metal headboard, single back window, curtain folds and neighboring modest Chinese apartment blocks. It is now 7:12 AM in a normal lived-in home, sunrise has risen above the rooftops. Replace cold predawn blue with clear soft neutral morning daylight, pale warm sunlight touching the paper and rumpled bedding, natural beige plaster, muted teal curtains and warm wooden desk. Desk lamp OFF, outside windows softly lit, no visible stars or moon, no unnatural orange color grading. Same restrained brushwork, believable material texture, all room geometry intact. No person, text, clocks or readable screen, no new furniture, no baked vignette. A quiet recognizably ordinary morning after a frightening dream.",
+    "seed": 11144002,
+    "steps": 20,
+    "cfg": 4,
+    "promptId": "cc20f271-df13-4cfd-b2c9-e9590307c50f",
+    "accepted": true,
+    "output": {
+      "filename": "edit_00031_.png",
+      "subfolder": "Qwen2.1\\Codex",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 1344,
+        "height": 768
+      },
+      "id": "2eec0f50-87d6-44d8-8ffe-dc9327574756"
+    },
+    "source": "resources/art-src/backgrounds/time-of-day/bedroom-morning-11144002.png",
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sha256": "89feedc642b185f4d62f7e64d30621b0a5538afd22a94a16388f2a15f62feaa7",
+    "models": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "referenceSources": [
+      "resources/art-src/references/art-direction-4/bedroom-reference.webp"
+    ]
+  },
+  {
+    "name": "bedroom-evening",
+    "workflow": "edit",
+    "references": [
+      "codex-reference-d7b306f2f5df4c988789933875465164.webp"
+    ],
+    "prompt": "Use case: lighting-weather. Edit the exact bedroom from the reference into a quiet early evening several days after the teenager has returned home. Keep the identical room architecture, left desk with open sketchbook and drawing papers, right unmade narrow bed, single back window, curtains, camera and neighboring modest Chinese apartment buildings. Outside the sky is soft late-evening apricot fading into lilac blue, daylight gently lingering, a few neighboring windows have warm lights. Desk lamp casts a small intimate honey-colored pool on the sketchbook; remaining room has neutral, natural shadows and faded teal curtains. Painterly watercolor/gouache, muted natural colors, small everyday comfort, no moon, no stars, no orange wash across the whole image. No characters or readable text or extra furniture. Keep perspective and room proportions perfectly continuous with the reference. Do not add a dark graphic overlay or vignette.",
+    "seed": 11144003,
+    "steps": 20,
+    "cfg": 4,
+    "promptId": "0636fa9d-c1c6-4aa0-a573-d3af0b4477ac",
+    "accepted": true,
+    "output": {
+      "filename": "edit_00032_.png",
+      "subfolder": "Qwen2.1\\Codex",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 1344,
+        "height": 768
+      },
+      "id": "6112fe5c-2a79-4759-952a-49b08e7bd897"
+    },
+    "source": "resources/art-src/backgrounds/time-of-day/bedroom-evening-11144003.png",
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sha256": "b4d59d58c1bbefe22914ae49f0e4a3e55b876341c392689a4f1bc16878c5c88a",
+    "models": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "referenceSources": [
+      "resources/art-src/references/art-direction-4/bedroom-reference.webp"
+    ]
+  },
+  {
+    "name": "home-morning",
+    "workflow": "edit",
+    "references": [
+      "codex-reference-bbd7318d6e824a379a879ed381414d49.webp"
+    ],
+    "prompt": "Use case: lighting-weather. Relight the exact modest Chinese family kitchen and dining room in the reference for an ordinary weekday BREAKFAST shortly after seven in the morning. Keep the exact room geometry, large left window, right kitchen counter and extractor, front wooden dining table with bowls and chopsticks, camera and neighboring old apartment building. It is clearly morning: soft neutral daylight through the left window, pale blue-grey morning sky, sunlit roof edges, natural warm wood and white bowls, gently visible cooking steam. Ceiling pendant is OFF, surfaces evenly readable in clean daylight, shadows are soft. Retain the original watercolor/gouache illustrative brushwork, restrained natural skinless household palette. No people, no new decor, no readable writing, no night blue outside, no intense amber night-lamp color, no baked dark dialogue overlay. A humble real home where breakfast is still hot.",
+    "seed": 11144004,
+    "steps": 20,
+    "cfg": 4,
+    "promptId": "64dce34e-9d82-49cb-b902-41634cbefb03",
+    "accepted": true,
+    "output": {
+      "filename": "edit_00033_.png",
+      "subfolder": "Qwen2.1\\Codex",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 1344,
+        "height": 768
+      },
+      "id": "2a11cfc1-9477-4fed-aca6-54021530e238"
+    },
+    "source": "resources/art-src/backgrounds/time-of-day/home-morning-11144004.png",
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sha256": "681de077c1fc9bc2ac785952359660b1dac4eb2559e9f0ee0e91bee8a8486acd",
+    "models": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "referenceSources": [
+      "resources/art-src/references/art-direction-4/home-reference.webp"
+    ]
+  },
+  {
+    "name": "snow-night",
+    "workflow": "edit",
+    "references": [
+      "codex-reference-ed3afe8acce34b73937d794a626c44e7.webp"
+    ],
+    "prompt": "Use case: lighting-weather. Edit the EXACT old salt-carrier cave in the reference into very late night, keeping the cave arch, camera, rock shapes, flat ground, worn basin and spatial layout absolutely unchanged. Outside the arch the mountains and snowy trees are dim indigo night silhouettes, snow is faint and blue-grey rather than bright cyan daylight; no moon, no stars indoors. The fire has almost burned out: only a small coal bed and ONE tiny low flame softly warm a narrow patch of nearby rock and the floor. Keep remaining interior dark but legible, quiet earthen brown close to the ember and cool restrained graphite beyond, no big bonfire, no daylight beam. Painterly watercolor/gouache with natural textured brushwork, no artificial global hue rotation. On the foreground floor only a few faint irregular charcoal lines suggest a handmade route drawing, not legible words. No people, no extra belongings, no skulls, no horror face, no graphic vignette. Utter stillness and a little remaining warmth.",
+    "seed": 11144005,
+    "steps": 20,
+    "cfg": 4,
+    "promptId": "a8285c4b-978f-4d39-816a-25de9a6fcb7d",
+    "accepted": true,
+    "output": {
+      "filename": "edit_00034_.png",
+      "subfolder": "Qwen2.1\\Codex",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 1344,
+        "height": 768
+      },
+      "id": "47287ba8-24a0-4d34-85a2-a1e57f21dae0"
+    },
+    "source": "resources/art-src/backgrounds/time-of-day/snow-night-11144005.png",
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sha256": "074c88f13f63ae56f824b2376707f9ef6a4c7314f4698731c39c2879a7ed140d",
+    "models": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "referenceSources": [
+      "resources/art-src/references/art-direction-4/snow-reference.webp"
+    ]
+  },
+  {
+    "name": "canteen-day",
+    "workflow": "txt2img",
+    "width": 1376,
+    "height": 768,
+    "prompt": "Use case: illustration-story. A painterly watercolor and gouache environmental background for a modern Chinese coming-of-age visual novel, a modest ordinary high school cafeteria at lunch in a riverside inland Chinese town, early 2010s. Human-height camera from beside a near dining table, repeated simple stainless-steel rectangular tables and low wooden stools receding toward a clean tiled serving counter in the back; tall left-hand windows bring neutral white midday daylight and glimpses of softly green campus trees. A single stainless meal tray with rice, two simple vegetable portions and chopsticks sits near the front corner, a plain white bowl beside it. Visible humble daily use, pale ivory ceramic wall tiles, worn natural grey floor, muted pale green lower walls, natural grey metal. Windows are sunlit with soft shadows; no blue night, no fluorescent lamps glowing. Quiet empty room ready for lunch, no people, no figures, no posters, no menu writing, no signs, no readable text, no watermarks. Delicate hand-painted brushwork matching a literary game, believable perspective, restrained warm neutral color, subtle paper texture, atmospheric depth and clear daylight. Cinematic 16:9 composition with relatively simple foreground and empty center for text and a character, no dark overlay, no luxury architecture, no glossy 3D render.",
+    "seed": 11144006,
+    "steps": 20,
+    "cfg": 4,
+    "promptId": "6fc50855-168d-4f4b-a895-01cf7e4f9ac9",
+    "accepted": true,
+    "output": {
+      "filename": "txt2img_00055_.png",
+      "subfolder": "Qwen2.1\\Codex",
+      "type": "output",
+      "metadata": {
+        "kind": "image",
+        "width": 1376,
+        "height": 768
+      },
+      "id": "23c9acc7-336a-4f7d-8dab-0902d715289f"
+    },
+    "source": "resources/art-src/backgrounds/time-of-day/canteen-day-11144006.png",
+    "dimensions": [
+      1376,
+      768
+    ],
+    "sha256": "2170fdba6a723148de7427f8d5af141401c0e055a77f9797c0be4a74dc67f6d4",
+    "models": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "referenceSources": []
+  }
+]

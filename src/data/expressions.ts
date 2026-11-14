@@ -29,6 +29,8 @@ export const MOOD_RULES: readonly [RegExp, Expression][] = [
 // Presentation annotations only. These IDs and their original words remain
 // unchanged in story.json; explicit annotations take precedence over mood tags.
 export const BEAT_OVERRIDES: Record<string, Expression> = {
+  '0-1:8:0': 'surprised',
+  '0-1:8:1': 'surprised',
   '0-1:15:0': 'surprised',
   '0-6:9:0': 'surprised',
   '0-8:24:0': 'angry',
@@ -40,6 +42,11 @@ export const BEAT_OVERRIDES: Record<string, Expression> = {
   'A-5:22:0': 'sad',
   'A-6a:9:0': 'sad',
   'A-E2-4:6:0': 'sad',
+  'B-1:17:0': 'smile',
+  'B-1:22:4': 'sad',
+  'B-12-1:3:1': 'smile',
+  'B-12-1:18:1': 'sad',
+  'B-12-2:3:0': 'sad',
   'B-3-2:4:0': 'surprised',
   'B-4:13:0': 'smile',
   'B-7-5:12:0': 'smile',
@@ -50,7 +57,10 @@ export const BEAT_OVERRIDES: Record<string, Expression> = {
   'B-13:4:0': 'surprised',
   'B-13:29:0': 'surprised',
   '终-1:9:0': 'smile',
+  '终-1:5:0': 'sad',
+  '终-1:8:2': 'smile',
   '终-1:26:0': 'smile',
+  '终-1:27:0': 'smile',
   '终-3:4:0': 'sad',
   '终-3:16:0': 'smile',
   '终-4:13:0': 'smile',

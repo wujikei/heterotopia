@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
 import { compileScene, enterScene, loadStory, newGame, newProfile } from '../src/engine.ts';
+import { autoDelayFor } from '../src/autoReading.ts';
 
 await loadStory();
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4179';
@@ -67,7 +68,9 @@ try {
     await auto.click();
     await page.waitForFunction(id => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId !== id, short.beatId);
     const elapsed = await page.evaluate(() => performance.now() - window.__autoReadingStarted);
-    if (!recordTimings) assert.ok(elapsed >= 1600 && elapsed <= 2200, `Short line auto delay ${elapsed}ms`);
+    const shortBeat = compileScene(short.sceneId, profile, short).find(beat => beat.id === short.beatId);
+    const expected = autoDelayFor(shortBeat.text, 4, short.beatId);
+    if (!recordTimings) assert.ok(elapsed >= expected - 220 && elapsed <= expected + 650, `Short line auto delay ${elapsed}ms; expected ${expected}ms`);
     results.push({ check: 'short sentence advances after its reading pause', elapsedMs: Math.round(elapsed), timingGate: !recordTimings });
     await context.close();
   }

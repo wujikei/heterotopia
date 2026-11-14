@@ -8,6 +8,7 @@
     "build": "node scripts/prepare-story.mjs && tsc -b && vite build && node scripts/write-sw-manifest.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "portable": "node scripts/build-portable.mjs",
+    "portable:single": "node scripts/build-portable.mjs --standalone",
     "test": "tsx --test tests/*.test.ts",
     "test:browser": "node scripts/with-preview.mjs scripts/test-browser.mjs",
     "test:interactions": "node --import tsx scripts/with-preview.mjs scripts/test-interactions.mjs",
@@ -25,6 +26,7 @@
     "test:cgs": "node --import tsx scripts/with-preview.mjs scripts/test-cg-layouts.mjs",
     "test:actor-variants": "node --import tsx scripts/with-preview.mjs scripts/test-actor-variants.mjs",
     "test:relics": "node --import tsx scripts/with-preview.mjs scripts/test-relics.mjs",
+    "test:scene-direction": "node --import tsx scripts/with-preview.mjs scripts/test-scene-direction.mjs",
     "art:originals": "python scripts/encode-originals.py",
     "import:story": "python scripts/import_story.py"
   },

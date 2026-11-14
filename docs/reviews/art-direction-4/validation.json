@@ -1,0 +1,114 @@
+{
+  "checkedAt": "2026-11-14T11:46:46.924830+00:00",
+  "unitTests": {
+    "passed": 62,
+    "failed": 0
+  },
+  "productionBuild": true,
+  "sourceScriptAndPageIDsUnchanged": true,
+  "chromium": {
+    "compositions": 24,
+    "automatic": {
+      "elapsed": 2118.3000000044703,
+      "expected": 2100
+    },
+    "manualAdvanceMS": 61,
+    "passedSuites": [
+      "scene-direction",
+      "actor-variants",
+      "sprites",
+      "reading-audio",
+      "ui-polish",
+      "interactions",
+      "relics",
+      "audio",
+      "assets",
+      "cgs",
+      "cache"
+    ]
+  },
+  "offline": [
+    {
+      "edition": "sharded",
+      "imageAssets": 191,
+      "originalAssets": 32,
+      "audioAssets": 51,
+      "qualitySwitch": true,
+      "errors": []
+    },
+    {
+      "edition": "single",
+      "imageAssets": 191,
+      "originalAssets": 32,
+      "audioAssets": 51,
+      "qualitySwitch": true,
+      "errors": []
+    }
+  ],
+  "packaging": {
+    "repositoryHTMLBytes": 20919486,
+    "singleHTMLBytes": 113550886,
+    "dataShards": [
+      {
+        "file": "resources-01-ecc89a14e40c.js",
+        "bytes": 24390200,
+        "sha256": "ecc89a14e40ccff908c661a48b724eced623ad85eeec4758cc0e90c78e491579"
+      },
+      {
+        "file": "resources-02-d95042748fb3.js",
+        "bytes": 24444631,
+        "sha256": "d95042748fb34b261ecce71914743ca36c5af3f879fc3ba38076ea4a0d3b9b0e"
+      },
+      {
+        "file": "resources-03-75af079cfacc.js",
+        "bytes": 25082876,
+        "sha256": "75af079cfacca022467b385b9e9e2ffd929d9f24e5cccfcbfbbc566d6737f82c"
+      },
+      {
+        "file": "resources-04-a41b7e1792e7.js",
+        "bytes": 18713973,
+        "sha256": "a41b7e1792e7ccc86703f082dd6f0cac9bc0ea60a82570afdca90ed8af9f5948"
+      }
+    ]
+  },
+  "pixelIdenticalBackgrounds": 6,
+  "thirdBatchPublished": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 855,
+      "sha256": "5dd6535a570b927711f55e4489d222d10aeaffd23b5f19824b538f8dda57de92",
+      "scripts": [
+        "./assets/index-CYKfrFRD.js"
+      ]
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "bytes": 6755,
+      "sha256": "60d8d6f46e79ba893d16ec8fd7bac61af49a7cffc4219feb031f26d9e1a92773",
+      "version": "ba2255a49edd0d35"
+    },
+    {
+      "path": "art/prop-jade-joined.webp",
+      "status": 200,
+      "bytes": 49556,
+      "sha256": "12ce1644c4bb6df7b6736d9c132ac6958822718fda1654248127f1d7d0149273",
+      "matchesLocalThirdBatchAsset": true
+    }
+  ],
+  "webkit": {
+    "compositions": 24,
+    "automatic": {
+      "elapsed": 2145,
+      "expected": 2100
+    },
+    "manualAdvanceMS": 345,
+    "audioChecks": [
+      "Separate SFX volume persists; save loading suppresses action sounds",
+      "Listening room play/pause/resume, MP3 download and responsive controls",
+      "No Web Audio: media fallback or graceful silent reading, with functional settings and listening-room download"
+    ],
+    "errors": []
+  }
+}

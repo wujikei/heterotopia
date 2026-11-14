@@ -285,7 +285,7 @@ export default function App() {
     if ((!auto && !isSkipping) || modal || intro || hidden || !pageVisible || screen !== 'play' || !beat || beat.kind !== 'text') return;
     if (isSkipping && !skipPool.current.has(beat.id)) { stopSkipping(); notify('已到达未读的故事。'); return; }
     if (!typing.done && !isSkipping) return;
-    const delay = isSkipping ? 90 : autoDelayFor(text, settings.autoDelay);
+    const delay = isSkipping ? 90 : autoDelayFor(text, settings.autoDelay, beat.id);
     const timer = setTimeout(() => {
       setGame(previous => previous ? advance(previous, currentProfile.current) : previous);
     }, delay);
@@ -601,7 +601,7 @@ export default function App() {
               </nav>
             </footer>
           </div>
-          {auto && typing.done && !modal && !intro && !hidden && pageVisible && !settings.reducedMotion && <span className="auto-reading-countdown" key={`${beat.id}:${settings.autoDelay}`} aria-hidden="true" style={{ animationDuration: `${autoDelayFor(text, settings.autoDelay)}ms` }} />}
+          {auto && typing.done && !modal && !intro && !hidden && pageVisible && !settings.reducedMotion && <span className="auto-reading-countdown" key={`${beat.id}:${settings.autoDelay}`} aria-hidden="true" style={{ animationDuration: `${autoDelayFor(text, settings.autoDelay, beat.id)}ms` }} />}
         </section>
         {hidden && <div className="hidden-hint">点击画面，或按 H，继续听故事。</div>}
       </>}

@@ -32,7 +32,7 @@ test('delivered expressions resolve while undelivered names fall back to real po
   assert.equal(portraitNameFor('xua', 'angry'), 'portrait-xua-v3');
 });
 
-test('every expression override reaches a compiled speaking page with a delivered visible expression', () => {
+test('every expression override reaches a speaking or explicitly staged page with a delivered visible expression', () => {
   const found = new Set<string>();
   const visible = new Map<string, Set<string>>();
   for (const endings of [[], ['mercy', 'kunlun'], ['blade', 'names', 'kunlun']] as const) {

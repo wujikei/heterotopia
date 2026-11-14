@@ -74,7 +74,7 @@ try {
         const actor = await visible(page, portrait);
         assert.equal(await actor.locator('.actor-vertical-name').innerText(), actorLabel);
         if (sceneId === '终-4') {
-          assert.equal(await page.locator('.scene-image--current').getAttribute('data-art'), 'bedroom');
+          assert.equal(await page.locator('.scene-image--current').getAttribute('data-art'), 'bedroom-evening');
           assert.equal(await page.locator('.location-name').innerText(), '沈家卧室 · 数日后傍晚');
         }
         const geometry = await actor.evaluate(el => {

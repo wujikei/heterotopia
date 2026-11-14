@@ -53,7 +53,7 @@ export function Atmosphere({ scene, reduced = false }: { scene: string; reduced?
     const context = canvas.getContext('2d');
     if (!context) return;
     let width = 0, height = 0, frame = 0, animation = 0;
-    const snow = scene === 'snow' || scene === 'mountain';
+    const snow = scene === 'snow' || scene === 'snow-night' || scene === 'mountain';
     const fire = ['hut', 'ritual', 'ruins', 'cave'].includes(scene);
     const particles = Array.from({ length: snow ? 65 : 32 }, () => ({
       x: Math.random(), y: Math.random(), radius: Math.random() * (snow ? 1.7 : 1.3) + 0.5,

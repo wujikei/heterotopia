@@ -1,5 +1,6 @@
 import { SCENES, isStoryReady } from './story';
 import { CHARACTERS } from './data/world';
+import { timeOfDayBackground } from './data/timeOfDay';
 import type { Beat, ChoiceBeat, EndingId, GameState, Profile, Scene, TextBeat } from './types';
 
 export { STORY, SCENES, loadStory, isStoryReady } from './story';
@@ -110,7 +111,7 @@ export function compileScene(sceneId: string, profile: Profile, state: Pick<Game
     direction = '';
   });
   if (sceneId === '终-5') beats.push({ id: '终-5:ending', kind: 'ending', ending: 'home', background, atmosphere, audioCueId, cast, direction: '' });
-  return beats;
+  return beats.map(beat => ({ ...beat, background: timeOfDayBackground(sceneId, beat) }));
 }
 
 export function currentBeat(state: GameState, profile: Profile): Beat {
