@@ -173,29 +173,6 @@ try {
     // Idle Web Audio nodes can expose the last processed AudioParam value.
     // A tiny, isolated DC probe keeps all buses rendering during this assertion.
     await page.evaluate(() => {
-      // CI Chromium permits Web Audio on loopback even with the strict flag.
-    // Add a *more restrictive* test-only policy: real contexts are suspended,
-    // and resume/play are rejected until a trusted pointer/key gesture.
-    // The permitted-autoplay device below does not install this boundary.
-    if (gateAutoplay) {
-      let activated = false;
-      for (const event of ['pointerdown', 'keydown']) document.addEventListener(event, input => {
-        if (input.isTrusted) activated = true;
-      }, true);
-      const Original = window.AudioContext ?? window.webkitAudioContext;
-      if (Original) {
-        class GestureContext extends Original {
-          constructor(...args) { super(...args); void super.suspend(); }
-          get state() { return activated ? super.state : 'suspended'; }
-          resume() { return activated ? super.resume() : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError')); }
-        }
-        Object.defineProperty(window, 'AudioContext', { configurable: true, value: GestureContext });
-      }
-      const play = HTMLMediaElement.prototype.play;
-      HTMLMediaElement.prototype.play = function(...args) {
-        return activated ? play.apply(this, args) : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError'));
-      };
-    }
     const trace = window.__audioTest, probe = trace.contexts[0].createConstantSource();
       probe.offset.value = .00001;
       trace.gains.slice(0, 3).forEach(gain => probe.connect(gain));
