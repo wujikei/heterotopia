@@ -78,8 +78,8 @@ function useTypewriter(id: string | undefined, text: string, speed: number, paus
   return { count, done: !paused && count >= text.length, reveal };
 }
 
-function IconButton({ label, children, onClick, className = '', active = false }: { label: string; children: ReactNode; onClick: () => void; className?: string; active?: boolean }) {
-  return <button className={`icon-button ${className} ${active ? 'active' : ''}`} onClick={onClick} aria-label={label} title={label}>{children}</button>;
+function IconButton({ label, children, onClick, className = '', active = false, audioControl = false }: { label: string; children: ReactNode; onClick: () => void; className?: string; active?: boolean; audioControl?: boolean }) {
+  return <button className={`icon-button ${className} ${active ? 'active' : ''}`} onClick={onClick} data-audio-control={audioControl ? '' : undefined} aria-label={label} title={label}>{children}</button>;
 }
 
 export default function App() {
@@ -181,7 +181,10 @@ export default function App() {
   }, [screen, scene.id, beat, modal, intro, isSkipping]);
 
   useEffect(() => {
-    const activate = () => {
+    const activate = (event?: Event) => {
+      // Audio controls own this gesture: a capture-phase unlock can rerender a
+      // blocked 'enable' into 'mute' before the same pointer/Space click arrives.
+      if (event?.target instanceof Element && event.target.closest('[data-audio-control]')) return;
       if (!currentSettings.current.muted && !sound.getSnapshot().unlocked) void sound.unlock(currentSettings.current);
     };
     activate();
@@ -541,7 +544,7 @@ export default function App() {
     <Atmosphere scene={background} reduced={settings.reducedMotion} />
 
     {screen === 'home' ? <div className="home-screen" inert={!!modal}>
-      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label="关于异托邦"><BoatMark /><span>异托邦<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />一场未尽的楚地远行<span className="tiny-line" /></div><div className="header-tools"><IconButton label={settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音'} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={fullscreen ? '退出全屏' : '全屏'} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label="阅读设置" onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
+      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label="关于异托邦"><BoatMark /><span>异托邦<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />一场未尽的楚地远行<span className="tiny-line" /></div><div className="header-tools"><IconButton audioControl label={settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音'} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={fullscreen ? '退出全屏' : '全屏'} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label="阅读设置" onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
       <div className="home-body">
         <div className="home-eyebrow"><span className="vermillion-seal">归</span><span>东方奇幻 · 叙事视觉小说</span></div>
         <h1 className="home-title">异托邦<span className="title-dust">·</span></h1>
@@ -561,7 +564,7 @@ export default function App() {
     </div> : game && beat ? <div className="game-screen" ref={readingRef} tabIndex={-1} inert={!!modal} onClickCapture={event => {
       if (event.detail > 0 && event.target instanceof Element && event.target.closest('button') && !event.target.closest('.dialogue-advance')) readingRef.current?.focus({ preventScroll: true });
     }} onWheel={event => { if (event.deltaY < -8 && !modal && !intro && !hidden && beat.kind === 'text') openModal('history'); }}>
-      {beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label="查看行迹"><span className="location-copy"><span className="location-chapter">{scene.chapter}</span><span className="location-name">{locationName}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label="打开旅人手记"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /></button><IconButton label={settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音'} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">点击开启声音</span>}<IconButton label="打开菜单" onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>}
+      {beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label="查看行迹"><span className="location-copy"><span className="location-chapter">{scene.chapter}</span><span className="location-name">{locationName}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label="打开旅人手记"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /></button><IconButton audioControl label={settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音'} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">点击开启声音</span>}<IconButton label="打开菜单" onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>}
       <div className="sr-only" aria-live="polite" aria-atomic="true">{!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? `${beat.speaker ? `${beat.speaker}：` : ''}${beat.text}` : ''}</div>
       {showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label="阅读提示"><CircleHelp size={16} aria-hidden="true" /><p>点击画面继续，点「回看」重读。<small>更多操作可在阅读设置中查看。</small></p><button onClick={dismissReadingHint}>知道了</button></aside>}
 

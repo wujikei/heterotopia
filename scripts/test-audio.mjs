@@ -141,6 +141,7 @@ try {
       await enable.waitFor();
       await deliberateActivate(cold, enable, keyboard);
       await waitFor(cold, 'music-river-home.mp3');
+      await cold.waitForTimeout(400);
       const state = await cold.evaluate(() => ({ settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')), contexts: window.__audioTest.contexts.map(context => context.state), gains: window.__audioTest.gains.slice(0, 3).map(gain => gain.gain.value), label: document.querySelector('.header-tools button')?.getAttribute('aria-label') }));
       await writeFile(new URL(`cold-first-${keyboard ? 'keyboard' : 'pointer'}.json`, output), JSON.stringify(state, null, 2));
       assert.equal(state.settings.muted, false, 'First enable gesture must not turn into mute between pointer/key down and click');
