@@ -41,13 +41,14 @@ async function open(fixture, viewport = { width: 1440, height: 900 }) {
   const context = await browser.newContext({ offline: true, viewport, deviceScaleFactor: 1, acceptDownloads: true });
   contexts.push(context);
   await context.addInitScript(data => {
-    if (sessionStorage.getItem('synthetic-test-seeded')) return;
+    // The persisted settings themselves guard the fixture. file:// session
+    // storage is browser-dependent and must not reset a real reload assertion.
+    if (localStorage.getItem('heterotopia.v1.settings')) return;
     localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted: true, showSprites: true }));
     if (data) {
       localStorage.setItem('heterotopia.v1.profile', JSON.stringify(data.profile));
       localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(data.state));
     }
-    sessionStorage.setItem('synthetic-test-seeded', 'true');
   }, fixture);
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
@@ -146,6 +147,7 @@ try {
   const quality = page.getByRole('switch', { name: '轻量模式', exact: true });
   assert.equal(await quality.getAttribute('aria-checked'), 'false');
   await quality.click();
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? '{}').lightweight === true);
   await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
   await page.reload();
   await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
@@ -263,7 +265,16 @@ try {
   await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, ...audioIntegrity, errors }, null, 2));
   console.log('Offline checks passed: original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
 } catch (error) {
-  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), errors, failure: String(error) }, null, 2));
+  const diagnostics = await Promise.all(contexts.flatMap(context => context.pages()).map(async page => {
+    try {
+      return await page.evaluate(() => ({ url: location.href, settings: localStorage.getItem('heterotopia.v1.settings'),
+        stage: [...document.querySelectorAll('.scene-image')].map(stage => ({ art: stage.getAttribute('data-art'),
+          current: stage.classList.contains('scene-image--current'),
+          lightweight: stage.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__?.hero),
+          original: stage.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ORIGINALS__?.hero) })) }));
+    } catch { return { url: page.url(), closed: true }; }
+  }));
+  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), errors, failure: String(error), diagnostics }, null, 2));
   if (errors.length) console.error(errors);
   throw error;
 } finally {

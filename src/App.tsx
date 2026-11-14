@@ -151,6 +151,8 @@ export default function App() {
   const changeSettings = useCallback((next: Settings) => {
     const wasMuted = currentSettings.current.muted;
     currentSettings.current = next;
+    // Commit the gesture before a reload can interrupt React's passive effects.
+    persist('settings', next);
     sound.update(next); setSettings(next);
     // Resume synchronously inside this setting gesture, then acknowledge it.
     if (wasMuted && !next.muted) void sound.unlock(next).then(() => sound.click('toggle'));
