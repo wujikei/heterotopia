@@ -43,6 +43,7 @@ jobs:
           npm run test:sprites
           npm run test:ui-polish
           npm run test:reading-audio
+          npm run test:audio
       - name: Verify image fallbacks and persistent website cache
         run: |
           npm run assets:check

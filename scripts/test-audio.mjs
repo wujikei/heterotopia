@@ -9,7 +9,7 @@ await loadStory();
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4173/heterotopia/';
 const name = process.env.VN_TEST_BROWSER || 'chromium';
-const browser = await ({ chromium, firefox, webkit }[name]).launch({ headless: true, ...(name === 'chromium' && /^https:/.test(base) ? { args: ['--no-proxy-server'] } : {}) });
+const browser = await ({ chromium, firefox, webkit }[name]).launch({ headless: true, ...(name === 'chromium' ? { args: ['--autoplay-policy=user-gesture-required', ...(/^https:/.test(base) ? ['--no-proxy-server'] : [])] } : {}) });
 const output = new URL(`../artifacts/audio-${name}/`, import.meta.url);
 await mkdir(output, { recursive: true });
 const contexts = [], errors = [], checks = [];
@@ -17,12 +17,12 @@ const screenshot = file => fileURLToPath(new URL(file, output));
 
 // Tests use fresh, disposable profiles and explicitly synthetic story progress.
 // Observers are injected only into these test pages, never into the shipped game.
-async function open(fixture, forceMedia = false) {
+async function open(fixture, forceMedia = false, muted = false) {
   const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
   contexts.push(context);
-  await context.addInitScript(({ fixture: data, forceMedia }) => {
+  await context.addInitScript(({ fixture: data, forceMedia, muted }) => {
     if (!sessionStorage.getItem('synthetic-audio-test')) {
-      localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted: false, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
+      localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
       if (data) {
         localStorage.setItem('heterotopia.v1.profile', JSON.stringify(data.profile));
         localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(data.state));
@@ -46,6 +46,11 @@ async function open(fixture, forceMedia = false) {
     const Context = window.AudioContext ?? window.webkitAudioContext;
     if (Context) {
       const proto = Context.prototype;
+      const resume = proto.resume;
+      proto.resume = function(...args) {
+        if (!trace.contexts.includes(this)) trace.contexts.push(this);
+        return resume.apply(this, args);
+      };
       const decode = proto.decodeAudioData, createSource = proto.createBufferSource, createGain = proto.createGain;
       proto.decodeAudioData = function(bytes) {
         if (!trace.contexts.includes(this)) trace.contexts.push(this);
@@ -75,7 +80,7 @@ async function open(fixture, forceMedia = false) {
       if (!trace.mediaElements.includes(this)) trace.mediaElements.push(this);
       return play.call(this);
     };
-  }, { fixture, forceMedia });
+  }, { fixture, forceMedia, muted });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
   page.on('response', response => { if (response.status() >= 400 && !response.url().includes('favicon.ico')) errors.push(`${response.status()} ${response.url()}`); });
@@ -98,7 +103,25 @@ async function turnPage(page) {
 
 try {
   const page = await open();
-  assert.equal(await page.evaluate(() => window.__audioTest.requests.length), 0, 'No audio fetch before a user gesture');
+  if (name === 'chromium') {
+    assert.equal(await page.evaluate(() => window.__audioTest.starts.length), 0, 'Strict autoplay must not report/start a Web Audio source');
+    await page.locator('.sound-unlock-hint').getByText('点击开启声音', { exact: true }).waitFor();
+    const blocked = await page.evaluate(() => window.__audioTest.contexts.map(context => context.state));
+    assert.ok(blocked.length > 0 && blocked.every(state => state !== 'running'), JSON.stringify(blocked));
+    // A keyboard event targeted at body must also unlock; it does not bubble through <main>.
+    await page.keyboard.press('Shift');
+    await waitFor(page, 'music-river-home.mp3');
+    assert.equal(await count(page, 'music-river-home.mp3'), 1);
+    checks.push('Strict no-gesture startup is blocked honestly; first body key unlocks the current title exactly once');
+    const muted = await open(undefined, false, true);
+    await muted.keyboard.press('Shift');
+    assert.equal(await muted.evaluate(() => window.__audioTest.starts.length), 0);
+    assert.equal(await muted.locator('.sound-unlock-hint').count(), 0);
+    await muted.reload();
+    assert.equal(await muted.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings')).muted), true);
+    await muted.close();
+    checks.push('Persisted mute survives startup, first gesture and reload');
+  }
   await page.getByRole('button', { name: '启程', exact: true }).click();
   await page.locator('.game-screen').waitFor();
   await closeIntro(page);
@@ -153,10 +176,15 @@ try {
   await page.getByRole('button', { name: /回到标题/ }).click();
   await page.getByRole('button', { name: /再点一次，回到标题/ }).click();
   await page.getByRole('button', { name: '听水集', exact: true }).click();
-  await page.getByRole('button', { name: '试听《循水归来》', exact: true }).click();
   if (webAudio) {
     await waitFor(page, 'music-river-home.mp3');
     await page.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+    assert.equal(await page.locator('.music-track--selected .lucide-pause').count(), 1, 'Row and main player must immediately reflect scene playback');
+    const startsBeforeRoom = await count(page, 'music-river-home.mp3');
+    await page.getByRole('button', { name: '关闭', exact: true }).click();
+    await page.getByRole('button', { name: '听水集', exact: true }).click();
+    await page.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+    assert.equal(await count(page, 'music-river-home.mp3'), startsBeforeRoom, 'Opening/closing the room must not restart the scene score');
     await page.waitForTimeout(800);
     const beforePause = await page.getByRole('progressbar', { name: '试听进度' }).getAttribute('value');
     await page.getByRole('button', { name: '暂停试听', exact: true }).click();
@@ -165,6 +193,8 @@ try {
     await page.waitForTimeout(400);
     assert.equal(Number(await page.getByRole('progressbar', { name: '试听进度' }).getAttribute('value')), paused);
     assert.ok(paused >= Number(beforePause));
+    await page.getByRole('slider', { name: '试听位置', exact: true }).fill('20');
+    await page.waitForFunction(() => Number(document.querySelector('progress[aria-label="试听进度"]')?.getAttribute('value')) === 20);
     await page.getByRole('button', { name: '播放《循水归来》', exact: true }).click();
     await page.waitForFunction(paused => Number(document.querySelector('progress[aria-label="试听进度"]')?.getAttribute('value')) > paused, paused, { timeout: 5000 });
   }
@@ -229,7 +259,7 @@ try {
         };
       });
       await media.getByRole('button', { name: '听水集', exact: true }).click();
-      await media.getByText('点击播放，开启声音。', { exact: true }).waitFor();
+      await media.locator('.music-player-note').getByText('点击开启声音', { exact: true }).waitFor();
       await media.evaluate(() => { window.__syntheticMediaBlocked = false; });
       await media.getByRole('button', { name: '试听《循水归来》', exact: true }).click();
       await media.waitForFunction(() => window.__audioTest.mediaElements.some(element => element.src.includes('music-river-home.mp3') && !element.paused && element.currentTime > .2 && element.volume > 0));

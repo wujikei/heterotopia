@@ -67,7 +67,7 @@ const icon = await readFile(path.join(dist, 'favicon.svg'));
 html = html.replace('./favicon.svg', `data:image/svg+xml;base64,${icon.toString('base64')}`);
 const license = await Promise.all(['NotoSerifSC-OFL.txt', 'LXGWWenKai-OFL.txt'].map(name => readFile(path.join(dist, 'fonts', name), 'utf8'))).then(items => items.join('\n\n').replace(/[\t ]+$/gm, ''));
 html = html.replace('</head>', () => `<!-- Embedded font license: Noto Serif SC\n${license.replaceAll('-->', '-- >')}\n-->\n</head>`);
-const destination = path.join(root, '异托邦.html');
+const destination = process.env.VN_PORTABLE_OUTPUT || path.join(root, '异托邦.html');
 html = html.replace(/[\t ]+$/gm, '');
 await writeFile(destination, html, 'utf8');
 await writeFile(path.join(root, '字体授权-OFL.txt'), license, 'utf8');

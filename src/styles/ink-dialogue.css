@@ -60,7 +60,7 @@
   filter: sepia(.08) saturate(.96) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
 }
 .actor--cold img {
-  filter: sepia(.06) hue-rotate(155deg) saturate(.94) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
+  filter: saturate(.94) brightness(.97) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
 }
 .actor--idle img {
   filter: saturate(.8) brightness(.85) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));

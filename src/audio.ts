@@ -6,11 +6,11 @@ type Bus = 'music' | 'ambience' | 'sfx';
 interface Voice {
   file: string; bus: Bus; key: string; level: number; startedAt: number; offset: number; seconds: number;
   source?: AudioBufferSourceNode; node?: GainNode; pan?: StereoPannerNode; media?: HTMLAudioElement;
-  timer?: number; startTimer?: number; fadeTimer?: number; stopped?: boolean; event?: string;
+  timer?: number; startTimer?: number; fadeTimer?: number; stopped?: boolean; mediaPlaying?: boolean; event?: string;
 }
 export interface AudioState {
-  unlocked: boolean; available: boolean; track: MusicId | null; preview: MusicId | null;
-  previewPaused: boolean; playing: boolean; loading: boolean; error: string | null;
+  unlocked: boolean; needsGesture: boolean; available: boolean; track: MusicId | null; preview: MusicId | null;
+  previewPaused: boolean; playing: boolean; loading: boolean; loadingTrack: MusicId | null; error: string | null;
 }
 interface DirectOptions { suppressEffects?: boolean; discontinuous?: boolean; blocked?: boolean; dimmed?: boolean; skipping?: boolean }
 
@@ -42,10 +42,11 @@ export class Soundscape {
   private previewId: MusicId | null = null;
   private previewPaused = false;
   private previewOffset = 0;
+  private resumePosition: { id: MusicId; offset: number } | null = null;
   private lastPageClick = 0;
   private uiRequest = 0;
   private listeners = new Set<() => void>();
-  private state: AudioState = { unlocked: false, available: true, track: null, preview: null, previewPaused: false, playing: false, loading: false, error: null };
+  private state: AudioState = { unlocked: false, needsGesture: false, available: true, track: null, preview: null, previewPaused: false, playing: false, loading: false, loadingTrack: null, error: null };
 
   readonly subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   readonly getSnapshot = () => this.state;
@@ -58,13 +59,33 @@ export class Soundscape {
 
   private clock(): number { return this.context?.currentTime ?? performance.now() / 1000; }
 
+  private publishPlayback(): void {
+    const voice = this.musicVoice;
+    const running = this.context ? this.context.state === 'running' : !!voice?.mediaPlaying && !!voice.media && !voice.media.paused && !voice.media.ended;
+    const unlocked = this.context ? this.context.state === 'running' : this.state.unlocked;
+    this.publish({
+      unlocked,
+      needsGesture: this.activated && this.state.available && !this.settings?.muted && !unlocked && !document.hidden,
+      playing: !!voice && !voice.stopped && running && !this.settings?.muted && !!this.settings?.musicVolume && !document.hidden,
+    });
+  }
+
+  private contextChanged = (): void => {
+    this.publishPlayback();
+    if (this.context?.state === 'running' && !document.hidden) this.sync();
+  };
+
+  /** Also safe on page load: a blocked resume is left to the next real gesture. */
   async unlock(settings: Settings): Promise<void> {
+    this.update(settings);
+    if (settings.muted) return;
     if (!this.activated) {
       this.activated = true;
       const Context = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
       if (Context) {
         try {
           this.context = new Context();
+          this.context.addEventListener('statechange', this.contextChanged);
           this.buses = { music: this.context.createGain(), ambience: this.context.createGain(), sfx: this.context.createGain() };
           const limiter = this.context.createDynamicsCompressor();
           limiter.threshold.value = -6; limiter.knee.value = 5; limiter.ratio.value = 6;
@@ -80,13 +101,21 @@ export class Soundscape {
         if (!this.mediaSupported) this.publish({ available: false, error: '当前浏览器暂时无法播放音频，仍可继续阅读。' });
       }
     }
-    // Resume inside the gesture, before fetching or decoding assets.
+    // Call resume/play synchronously in this event, before any fetch/decode.
     const resume = this.context && this.context.state !== 'running' && this.context.state !== 'closed'
       ? this.context.resume().catch(() => {}) : Promise.resolve();
+    if (!this.context) {
+      for (const voice of this.active) if (voice.media && !voice.stopped && !voice.startTimer) {
+        void voice.media.play().then(() => { voice.mediaPlaying = true; this.publish({ unlocked: true }); this.publishPlayback(); }, () => {
+          this.publish({ unlocked: false }); this.publishPlayback();
+        });
+      }
+    }
     this.update(settings);
+    this.publishPlayback();
     await resume;
-    this.publish({ unlocked: this.context ? this.context.state === 'running' : this.mediaSupported });
-    if (this.context?.state === 'running') this.publish({ available: true, playing: !!this.musicVoice && !settings.muted && !document.hidden });
+    this.publishPlayback();
+    this.sync();
   }
 
   update(settings: Settings): void {
@@ -101,7 +130,7 @@ export class Soundscape {
       this.frame.events.forEach(event => this.seen.add(event.id));
     }
     if (this.activated && (!settings.muted || wasMuted !== settings.muted)) this.sync();
-    this.publish({ playing: !!this.musicVoice && this.state.available && !settings.muted && !document.hidden });
+    this.publishPlayback();
   }
 
   direct(frame: ScoreFrame, options: DirectOptions = {}): void {
@@ -115,7 +144,8 @@ export class Soundscape {
   }
 
   private sync(): void {
-    if (!this.settings || !this.activated || !this.context && !this.mediaSupported) return;
+    if (!this.settings || !this.activated || document.hidden || !this.context && !this.mediaSupported) return;
+    if (this.context && this.context.state !== 'running') { this.publishPlayback(); return; }
     // Fast-forward keeps one bed and does not fetch every passing cue.
     if (!this.options.skipping || this.previewId) { this.syncMusic(); this.syncAmbience(); }
     if (this.settings.muted || this.options.blocked || this.options.skipping || this.previewId || document.hidden) return;
@@ -151,7 +181,8 @@ export class Soundscape {
       if (this.musicTarget !== desired) ++this.musicRequest;
       this.musicTarget = desired;
       if (this.musicVoice.level !== gain) this.fade(this.musicVoice, gain, Math.max(1, transition));
-      this.publish({ loading: false, track: desired, error: null });
+      this.publish({ loading: false, loadingTrack: null, track: desired, error: null });
+      this.publishPlayback();
       return;
     }
     if (this.musicTarget === desired) return;
@@ -160,32 +191,36 @@ export class Soundscape {
     if (!desired) {
       if (this.musicVoice) this.retire(this.musicVoice, this.previewId ? .45 : transition);
       this.musicVoice = undefined;
-      this.publish({ playing: false, loading: false, track: null });
+      this.publish({ playing: false, loading: false, loadingTrack: null, track: null });
       return;
     }
     if (this.settings?.muted) { this.musicTarget = undefined; return; }
     // The alarm cuts the dream immediately. Other transitions wait for decoding.
     if (transition < .3 && this.musicVoice) { this.retire(this.musicVoice, transition); this.musicVoice = undefined; }
-    this.publish({ loading: true, error: null });
+    this.publish({ loading: true, loadingTrack: desired, error: null });
     const track = trackById(desired);
-    const offset = this.previewId === desired ? this.previewOffset : 0;
+    const offset = this.previewId === desired ? this.previewOffset : this.resumePosition?.id === desired ? this.resumePosition.offset : 0;
+    this.resumePosition = null;
     void this.makeVoice(track.file, 'music', desired, true, offset, () => token === this.musicRequest, undefined, track.seconds)
       .then(voice => {
         if (!voice) {
-          if (token === this.musicRequest) { this.musicTarget = undefined; this.publish({ loading: false }); }
+          if (token === this.musicRequest) { this.musicTarget = undefined; this.publish({ loading: false, loadingTrack: null }); this.publishPlayback(); }
           return;
         }
+        if (token !== this.musicRequest) { this.cleanup(voice); return; }
         const previous = this.musicVoice;
         this.musicVoice = voice;
         this.fade(voice, this.previewId ? 1 : this.frame.musicGain * (this.options.dimmed ? .68 : 1), transition < .3 ? 2.8 : Math.max(1.2, transition));
         if (previous) this.retire(previous, transition);
         for (const old of this.active) if (old.bus === 'music' && old !== voice && old !== previous) this.retire(old, .12, true);
-        this.publish({ loading: false, track: desired, playing: !this.settings?.muted && !document.hidden, available: true, error: null });
+        this.publish({ loading: false, loadingTrack: null, track: desired, available: true, error: null });
+        this.publishPlayback();
         this.trimCache();
       }).catch(() => {
         if (token !== this.musicRequest) return;
         this.musicTarget = undefined;
-        this.publish({ loading: false, error: '这首曲子暂时未能载入，点击播放可重试。' });
+        this.publish({ loading: false, loadingTrack: null, error: '这首曲子暂时未能载入，点击播放可重试。' });
+        this.publishPlayback();
       });
   }
 
@@ -276,6 +311,8 @@ export class Soundscape {
       voice.seconds = loopSeconds ?? media.duration;
       if (offset && Number.isFinite(media.duration)) media.currentTime = offset % media.duration;
     }, { once: true });
+    media.addEventListener('playing', () => { voice.mediaPlaying = true; this.publish({ unlocked: true }); this.publishPlayback(); });
+    for (const event of ['pause', 'waiting', 'ended']) media.addEventListener(event, () => { voice.mediaPlaying = false; this.publishPlayback(); });
     media.addEventListener('ended', () => this.cleanup(voice), { once: true });
     media.addEventListener('error', () => {
       this.cleanup(voice);
@@ -288,9 +325,14 @@ export class Soundscape {
       try {
         await media.play();
         if (!guard() || voice.stopped) this.cleanup(voice);
-      } catch {
+        else { voice.mediaPlaying = true; this.publish({ unlocked: true }); this.publishPlayback(); }
+      } catch (error) {
         this.cleanup(voice);
-        if (bus === 'music') this.publish({ available: false, playing: false, loading: false, error: '点击播放，开启声音。' });
+        if (bus === 'music') {
+          const blocked = error instanceof Error && error.name === 'NotAllowedError';
+          this.publish({ unlocked: false, available: blocked || this.state.available, needsGesture: blocked, playing: false, loading: false,
+            error: blocked ? '点击开启声音' : '这首曲子暂时未能播放，点击播放可重试。' });
+        }
       }
     };
     const delay = Math.max(0, (start ?? this.clock()) - this.clock());
@@ -347,11 +389,14 @@ export class Soundscape {
 
   private cleanup(voice: Voice): void {
     if (!this.active.has(voice)) return;
+    this.active.delete(voice);
     voice.stopped = true;
+    if (this.musicVoice === voice) { this.musicVoice = undefined; this.musicTarget = undefined; this.publish({ track: null }); }
+    if (voice.source) { voice.source.onended = null; try { voice.source.stop(); } catch { /* Already ended. */ } }
     clearTimeout(voice.timer); clearTimeout(voice.startTimer); clearInterval(voice.fadeTimer);
     voice.source?.disconnect(); voice.node?.disconnect(); voice.pan?.disconnect();
     if (voice.media) { voice.media.pause(); voice.media.removeAttribute('src'); voice.media.load(); }
-    this.active.delete(voice);
+    this.publishPlayback();
     this.trimCache();
   }
 
@@ -400,26 +445,43 @@ export class Soundscape {
 
   togglePreview(id: MusicId, forcePlay = false): void {
     this.cancelEvents();
-    if (!forcePlay && this.previewId === id && !this.previewPaused) {
-      this.previewOffset = this.position(id); this.previewPaused = true;
+    // Scene music and a preview share one transport, including the first pause.
+    const current = this.musicVoice?.key === id && !this.musicVoice.stopped;
+    if (!forcePlay && (this.previewId === id && !this.previewPaused && !this.state.error || current && this.state.playing)) {
+      this.previewOffset = this.position(id); this.previewId = id; this.previewPaused = true;
     } else {
-      if (this.previewId !== id) this.previewOffset = 0;
+      if (this.previewId !== id) this.previewOffset = current ? this.position(id) : 0;
       this.previewId = id; this.previewPaused = false;
     }
     this.publish({ preview: this.previewId, previewPaused: this.previewPaused, error: !this.context && !this.mediaSupported ? '当前浏览器暂时无法播放音频，仍可继续阅读。' : null });
+    this.sync();
+    this.publishPlayback();
+  }
+
+  seek(id: MusicId, seconds: number): void {
+    if (!Number.isFinite(seconds)) return;
+    const paused = this.previewId === id && this.previewPaused;
+    this.previewOffset = Math.max(0, Math.min(seconds, trackById(id).seconds - .01));
+    this.previewId = id; this.previewPaused = paused;
+    ++this.musicRequest; this.musicTarget = undefined;
+    if (this.musicVoice) this.cleanup(this.musicVoice);
+    this.publish({ preview: id, previewPaused: paused, loading: false, loadingTrack: null });
     this.sync();
   }
 
   endPreview(): void {
     if (!this.previewId) return;
+    this.resumePosition = this.previewId === this.frame.music && this.previewPaused
+      ? { id: this.previewId, offset: this.position(this.previewId) } : null;
     this.previewId = null; this.previewPaused = false; this.previewOffset = 0;
     this.publish({ preview: null, previewPaused: false, error: null });
     this.sync();
   }
 
   position(id: MusicId): number {
+    if (this.previewId === id && this.previewPaused) return this.previewOffset;
     const voice = this.musicVoice;
-    if (voice?.key === id) {
+    if (voice?.key === id && !voice.stopped) {
       if (voice.media) return voice.media.currentTime;
       return Math.max(0, this.clock() - voice.startedAt + voice.offset) % voice.seconds;
     }
@@ -431,12 +493,9 @@ export class Soundscape {
       this.cancelEvents();
       void this.context?.suspend().catch(() => {});
       for (const voice of this.active) voice.media?.pause();
-      this.publish({ playing: false });
-    } else if (!this.settings?.muted) {
-      void this.context?.resume().catch(() => {});
-      for (const voice of this.active) if (voice.media && !voice.stopped && !voice.startTimer) void voice.media.play().catch(() => {});
-      this.publish({ playing: !!this.musicVoice });
-      this.sync();
+      this.publishPlayback();
+    } else if (this.settings && !this.settings.muted) {
+      void this.unlock(this.settings);
     }
   };
 
@@ -445,6 +504,7 @@ export class Soundscape {
     document.removeEventListener('visibilitychange', this.visibility);
     for (const voice of this.active) this.cleanup(voice);
     this.active.clear(); this.cache.clear(); this.loading.clear();
+    this.context?.removeEventListener('statechange', this.contextChanged);
     void this.context?.close().catch(() => {});
   }
 }

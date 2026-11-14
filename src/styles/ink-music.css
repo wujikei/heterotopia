@@ -612,3 +612,15 @@
     display: none;
   }
 }
+
+.music-progress-track { position: relative; }
+.music-seek {
+  position: absolute;
+  inset: -16px 0;
+  width: 100%;
+  height: 44px;
+  opacity: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+.music-progress-track:focus-within { outline: 1px solid var(--gold, #c9a46a); outline-offset: 4px; }

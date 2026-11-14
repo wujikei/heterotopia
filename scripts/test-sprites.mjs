@@ -81,6 +81,38 @@ async function check(label, state, run, options = {}) {
 }
 
 try {
+  for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
+    await check(`Cold river light preserves skin in all Xua expressions (${viewport.width})`, at('B-1', 'B-1:5:0'), async page => {
+      await full(page, 'xua');
+      const samples = await page.evaluate(async () => {
+        const portrait = document.querySelector('.actor--xua img');
+        const filter = getComputedStyle(portrait).filter;
+        const results = [];
+        for (const name of ['v3', 'smile', 'surprised', 'sad']) {
+          const image = new Image(); image.src = new URL(`art/portrait-xua-${name}.webp`, location.href).href; await image.decode();
+          const canvas = document.createElement('canvas'); canvas.width = image.width; canvas.height = image.height;
+          const ctx = canvas.getContext('2d'); ctx.drawImage(image, 0, 0);
+          const raw = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+          ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.filter = filter; ctx.drawImage(image, 0, 0);
+          const lit = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+          let count = 0, warm = 0;
+          for (let y = Math.floor(image.height * .14); y < image.height * .22; y++) {
+            for (let x = Math.floor(image.width * .38); x < image.width * .64; x++) {
+              const i = (y * image.width + x) * 4;
+              if (raw[i + 3] > 250 && raw[i] > raw[i + 1] + 12 && raw[i + 1] > raw[i + 2] + 8) {
+                count++; if (lit[i] > lit[i + 1] && lit[i + 1] > lit[i + 2]) warm++;
+              }
+            }
+          }
+          results.push({ name, filter, count, warmFraction: warm / count });
+        }
+        return results;
+      });
+      assert.ok(samples.every(sample => sample.count > 100 && sample.warmFraction > .99), JSON.stringify(samples));
+      await page.screenshot({ path: path(`river-natural-skin-${viewport.width}.png`) });
+      results.push({ label: 'Raw and rendered skin samples', samples });
+    }, { viewport });
+  }
   await check('The title screen requests no portraits; Save-Data skips unrelated idle art', at('0-1', '0-1:11:0'), async page => {
     await turn(page, '0-1:12:0'); await full(page, 'shen');
     await page.waitForTimeout(500);
