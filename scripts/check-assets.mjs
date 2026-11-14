@@ -4,6 +4,7 @@ import { portraitName } from '../src/assets.ts';
 import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
 import { AVAILABLE_EXTRAS } from '../src/data/extras.ts';
 import { CGS } from '../src/data/cgs.ts';
+import { ACTOR_VARIANTS, actorPortraitName } from '../src/data/actorVariants.ts';
 
 const root = new URL('../', import.meta.url);
 const imageManifest = JSON.parse(await readFile(new URL('src/data/art-manifest.json', root), 'utf8'));
@@ -17,6 +18,7 @@ const requiredArt = new Set([
   ...Object.entries(AVAILABLE).flatMap(([key, expressions]) => expressions.map(expression => `${portraitNameFor(key, expression)}.webp`)),
   ...[...AVAILABLE_EXTRAS].flatMap(key => [`${portraitName(key)}.webp`, `portrait-${key}-face.webp`]),
   ...CGS.filter(cg => cg.file).flatMap(cg => [cg.file, ...(cg.thumbnail ? [cg.thumbnail] : [])]).map(name => `${name}.webp`),
+  ...Object.entries(ACTOR_VARIANTS).flatMap(([key, variants]) => Object.entries(variants).flatMap(([variant, states]) => states.map(expression => `${actorPortraitName({ character: { key }, variant, expression })}.webp`))),
 ]);
 const requiredOriginals = new Set(Object.values(imageManifest.originals ?? {}));
 const requiredAudio = new Set(audio.files.map(item => item.file));

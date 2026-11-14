@@ -23,6 +23,7 @@
     "test:cache": "node scripts/test-cache.mjs",
     "test:assets": "node scripts/with-preview.mjs scripts/test-assets.mjs",
     "test:cgs": "node --import tsx scripts/with-preview.mjs scripts/test-cg-layouts.mjs",
+    "test:actor-variants": "node --import tsx scripts/with-preview.mjs scripts/test-actor-variants.mjs",
     "art:originals": "python scripts/encode-originals.py",
     "import:story": "python scripts/import_story.py"
   },

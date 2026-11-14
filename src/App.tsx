@@ -12,8 +12,9 @@ import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
 import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, portraitAsset } from './data/world';
 import { actorForBeat } from './actors';
+import { actorPortraitName } from './data/actorVariants';
+import { locationForBeat } from './scenePresentation';
 import { cgForBeat } from './data/cgs';
-import { portraitNameFor } from './data/expressions';
 import { prefetchWhenIdle, preloadImage } from './preload';
 import { afterFirstScreen } from './idle';
 import { warmReadingFonts } from './fonts';
@@ -226,19 +227,18 @@ export default function App() {
     const next = SCENES[SCENES.findIndex(item => item.id === game.sceneId) + 1];
     const upcoming = next ? compileScene(next.id, currentProfile.current, game) : [];
     const portraits = new Set<string>();
-    // Some opening scenes omit cast tags: include actual speakers as well.
+    // Prefetch the actual costumes and poses selected for these pages.
     for (const [items, location] of [[current, scene], [upcoming, next]] as const) {
       if (!location) continue;
       for (const item of items) {
         const actor = actorForBeat(item, location, items);
-        if (actor) portraits.add(portraitAsset(actor.character.key));
-        for (const key of item.cast) portraits.add(portraitAsset(key));
+        if (actor) portraits.add(asset(actorPortraitName(actor)));
       }
     }
     const position = Math.max(0, current.findIndex(item => item.id === game.beatId));
     const nearest = current.slice(position).map(item => actorForBeat(item, scene, current)).find(Boolean);
     const urgent = [
-      ...(nearest ? [preloadImage(asset(portraitNameFor(nearest.character.key, nearest.expression)), 'high')] : []),
+      ...(nearest ? [preloadImage(asset(actorPortraitName(nearest)), 'high')] : []),
       preloadImage(asset(cgForBeat(current[position], scene.id)?.file || current[position].background)),
     ];
     let cancelled = false;
@@ -344,7 +344,7 @@ export default function App() {
       const nearest = items.slice(position).map(item => actorForBeat(item, location, items)).find(Boolean);
       const currentBeatArt = cgForBeat(items[position], location.id)?.file || items[position].background;
       const critical = [preloadImage(asset(currentBeatArt), 'high')];
-      if (nearest) critical.push(preloadImage(asset(portraitNameFor(nearest.character.key, nearest.expression)), 'high'));
+      if (nearest) critical.push(preloadImage(asset(actorPortraitName(nearest)), 'high'));
       let timer = 0;
       // Keep a stalled image from blocking the story; loading failures stay retryable.
       await Promise.race([Promise.allSettled(critical), new Promise(resolve => { timer = window.setTimeout(resolve, 4000); })]);
@@ -534,7 +534,7 @@ export default function App() {
 
   const lineKind = beat?.kind !== 'text' ? 'speech' : !beat.speaker ? 'narration' : beat.mood.includes('内心') ? 'inner' : 'speech';
   const position = Math.max(0, beats.findIndex(item => item.id === beat?.id));
-  const locationName = BACKGROUNDS[background]?.subtitle ?? scene.title;
+  const locationName = beat ? locationForBeat(scene, beat) : scene.title;
   const modalSeals: Record<ModalName, string> = { chapters: '迹', characters: '名', gallery: '绘', journal: '记', settings: '听', saves: '签', history: '回', menu: '憩', about: '梦', music: '水' };
   const modalInfo: Record<ModalName, [string, string]> = {
     chapters: ['行迹', '走过的水路'], characters: ['人物志', '记住他们的名字'], gallery: ['浮生绘卷', '一程山河'], journal: ['旅人手记', '河水记得的事'], settings: ['听风与读字', '按你自己的节奏'], saves: ['一枚书签', '留住一个瞬间'], history: ['方才的话', '水面上的回声'], menu: ['梦间小憩', '在河边歇一歇'], about: ['关于此梦', '水声未散之前'], music: ['听水集', '河上的十一支曲子'],

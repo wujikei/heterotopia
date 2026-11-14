@@ -37,8 +37,8 @@ try {
     await page.locator('.actor img').waitFor();
     await page.locator('.actor img').evaluate(image => image.decode());
     const source = await page.locator('.actor img').evaluate(image => image.currentSrc);
-    assert.match(source, viewport.width < 760 ? /portrait-shen-m\.(avif|webp)$/ : /portrait-shen\.(avif|webp)$/);
-    const requested = await page.evaluate(() => performance.getEntriesByType('resource').map(entry => entry.name).filter(url => /portrait-shen(?:-m)?\.(avif|webp)$/.test(url)));
+    assert.match(source, viewport.width < 760 ? /portrait-shen-school-m\.(avif|webp)$/ : /portrait-shen-school\.(avif|webp)$/);
+    const requested = await page.evaluate(() => performance.getEntriesByType('resource').map(entry => entry.name).filter(url => /portrait-shen-school(?:-m)?\.(avif|webp)$/.test(url)));
     assert.equal(new Set(requested).size, 1, `Prefetch and picture disagreed: ${requested}`);
     assert.deepEqual(failures, []);
     await page.screenshot({ path: fileURLToPath(new URL(viewport.width < 760 ? 'mobile-dpr3.png' : 'desktop.png', folder)) });
@@ -48,7 +48,7 @@ try {
     await page.setViewportSize(resized);
     await page.waitForFunction(mobile => {
       const image = document.querySelector('.actor img');
-      return image?.complete && image.naturalWidth > 0 && (mobile ? /-m\.(avif|webp)$/.test(image.currentSrc) : /portrait-shen\.(avif|webp)$/.test(image.currentSrc));
+      return image?.complete && image.naturalWidth > 0 && (mobile ? /-m\.(avif|webp)$/.test(image.currentSrc) : /portrait-shen-school\.(avif|webp)$/.test(image.currentSrc));
     }, resized.width < 760);
     results.push({ check: viewport.width < 760 ? 'mobile to desktop responsive source' : 'desktop to mobile responsive source', source: await page.locator('.actor img').evaluate(image => image.currentSrc), passed: true });
     if (supported && viewport.width >= 760) {

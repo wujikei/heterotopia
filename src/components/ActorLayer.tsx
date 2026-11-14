@@ -4,9 +4,9 @@ import { actorForBeat, actorInCast } from '../actors';
 import type { StageActor } from '../actors';
 import { ACTOR_LIGHT } from '../data/actorLight';
 import { asset } from '../assets';
-import { portraitNameFor } from '../data/expressions';
+import { actorPortraitCandidates, actorPortraitName } from '../data/actorVariants';
 import { ArtImage } from './ArtImage';
-import { isDecoded, preloadImage } from '../preload';
+import { preloadImage } from '../preload';
 import type { Beat, Scene } from '../types';
 
 type Layer = { id: number; sceneId: string; actor: StageActor; phase: 'pending' | 'active' | 'exit'; idle: boolean; cross: boolean; instant: boolean; returning?: boolean };
@@ -16,59 +16,54 @@ function ActorFigure({ layer, background, onReady, onError }: {
   layer: Layer; background: string; onReady: (id: number, delayed: boolean) => void; onError: (id: number) => void;
 }) {
   const { actor, id } = layer;
-  const defaultName = portraitNameFor(actor.character.key);
-  const desiredName = portraitNameFor(actor.character.key, actor.expression);
-  const url = asset(defaultName);
-  const desiredUrl = asset(desiredName);
+  const desiredName = actorPortraitName(actor);
+  const candidates = actorPortraitCandidates(actor);
+  const candidateKey = candidates.join(',');
   const figure = useRef<HTMLDivElement>(null);
-  const currentPortrait = useRef(defaultName);
+  const currentPortrait = useRef('');
   const request = useRef(0);
-  const [portrait, setPortrait] = useState({ current: defaultName, outgoing: '' });
+  const [portrait, setPortrait] = useState({ current: '', outgoing: '' });
   useLayoutEffect(() => {
-    let cancelled = false;
-    const started = performance.now();
-    const ready = () => {
-      // Commit the waiting style before switching. Waiting two animation frames
-      // adds visible latency on software-rendered browsers and hidden tabs.
-      if (figure.current) getComputedStyle(figure.current).opacity;
-      if (!cancelled) onReady(id, performance.now() - started > 1500);
-    };
-    if (isDecoded(url)) ready();
-    else void preloadImage(url).then(() => { if (!cancelled) ready(); }, () => { if (!cancelled) onError(id); });
-    return () => { cancelled = true; };
-  }, [id, url, onReady, onError]);
-  useEffect(() => {
     const generation = ++request.current;
-    if (currentPortrait.current === desiredName) return;
+    const started = performance.now();
     let timer: ReturnType<typeof setTimeout> | undefined;
     const commit = (name: string) => {
       if (generation !== request.current) return;
-      if (currentPortrait.current === name) { setPortrait({ current: name, outgoing: '' }); return; }
       const outgoing = currentPortrait.current;
       currentPortrait.current = name;
-      setPortrait({ current: name, outgoing });
+      setPortrait({ current: name, outgoing: name === outgoing ? '' : outgoing });
+      // The initial outfit is decoded before its stage can become visible.
+      if (figure.current) getComputedStyle(figure.current).opacity;
+      onReady(id, performance.now() - started > 1500);
       timer = setTimeout(() => {
         if (generation === request.current) setPortrait({ current: name, outgoing: '' });
       }, layer.instant ? 0 : 160);
     };
-    void preloadImage(desiredUrl).then(() => commit(desiredName), () => {
-      if (desiredName === defaultName) { onError(id); return; }
-      const fallbackUrl = asset(defaultName);
-      void preloadImage(fallbackUrl).then(() => commit(defaultName), () => onError(id));
-    });
+    void (async () => {
+      for (const name of candidates) {
+        try {
+          await preloadImage(asset(name), 'high');
+          if (generation !== request.current) return;
+          commit(name);
+          return;
+        } catch { if (generation !== request.current) return; }
+      }
+      if (generation === request.current) onError(id);
+    })();
     return () => {
       ++request.current;
       if (timer) clearTimeout(timer);
     };
-  }, [desiredName, desiredUrl, defaultName, id, onError]);
+  }, [candidateKey, desiredName, id, onReady, onError, layer.instant]);
   const duration = layer.instant ? '0ms' : layer.returning ? '180ms' : layer.phase === 'exit' || layer.cross ? '220ms' : layer.idle ? '180ms' : '400ms';
   const light = ACTOR_LIGHT[background];
   return <div ref={figure} className={`actor actor--${actor.character.key} actor--${layer.phase} ${layer.idle ? 'actor--idle' : 'actor--speaking'} ${layer.cross ? 'actor--cross' : ''} ${light ? `actor--${light}` : ''}`}
     data-mount-id={id} data-actor-state={layer.phase} data-actor-label={actor.label}
+    data-actor-variant={actor.variant} data-portrait={portrait.current}
     style={{ '--actor-tint': actor.character.color, '--actor-duration': duration, '--expression-duration': layer.instant ? '0ms' : '150ms' } as CSSProperties} aria-hidden="true">
     <div className="actor-glow" />
     {portrait.outgoing && <ArtImage className="actor-portrait actor-portrait--outgoing" name={portrait.outgoing} alt="" decoding="async" />}
-    <ArtImage className={`actor-portrait ${portrait.outgoing ? 'actor-portrait--incoming' : ''}`} name={portrait.current} alt="" decoding="async" />
+    {portrait.current && <ArtImage className={`actor-portrait ${portrait.outgoing ? 'actor-portrait--incoming' : ''}`} name={portrait.current} alt="" decoding="async" />}
     <span className="actor-vertical-name">{actor.label}</span>
   </div>;
 }

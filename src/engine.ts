@@ -102,6 +102,9 @@ export function compileScene(sceneId: string, profile: Profile, state: Pick<Game
     const speaker = name === '旁白' ? '' : name;
     const mood = moods.join('·');
     (block.pages ?? block.lines).forEach((page, pageIndex) => {
+      // The original paragraph moves home without another background tag.
+      // Keep page IDs and text intact while staging the actual location.
+      if (sceneId === '终-4' && blockIndex === 12 && pageIndex === 4) background = 'bedroom';
       beats.push({ ...base(), id: `${sceneId}:${blockIndex}:${pageIndex}`, kind: 'text', speaker, mood, text: page });
     });
     direction = '';
