@@ -125,7 +125,45 @@ async function turnPage(page) {
   await page.waitForFunction(before => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId !== before, before);
 }
 
+async function deliberateActivate(page, control, keyboard = false) {
+  if (keyboard) { await control.focus(); await page.keyboard.down('Space'); }
+  else { const box = await control.boundingBox(); assert.ok(box); await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await page.mouse.down(); }
+  // A human can hold a button while AudioContext.resume resolves and React rerenders.
+  await page.waitForTimeout(600);
+  if (keyboard) await page.keyboard.up('Space'); else await page.mouse.up();
+}
+
 try {
+  if (name === 'chromium') {
+    for (const keyboard of [false, true]) {
+      const cold = await open();
+      const enable = cold.getByRole('button', { name: '点击开启声音', exact: true });
+      await enable.waitFor();
+      await deliberateActivate(cold, enable, keyboard);
+      await waitFor(cold, 'music-river-home.mp3');
+      const state = await cold.evaluate(() => ({ settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')), contexts: window.__audioTest.contexts.map(context => context.state), gains: window.__audioTest.gains.slice(0, 3).map(gain => gain.gain.value), label: document.querySelector('.header-tools button')?.getAttribute('aria-label') }));
+      await writeFile(new URL(`cold-first-${keyboard ? 'keyboard' : 'pointer'}.json`, output), JSON.stringify(state, null, 2));
+      assert.equal(state.settings.muted, false, 'First enable gesture must not turn into mute between pointer/key down and click');
+      await cold.getByRole('button', { name: '静音', exact: true }).waitFor();
+      await cold.getByRole('button', { name: '听水集', exact: true }).click();
+      await cold.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+      assert.equal(await cold.locator('.music-track--selected .lucide-pause').count(), 1);
+      assert.equal(await count(cold, 'music-river-home.mp3'), 1);
+      await cold.screenshot({ path: screenshot(`cold-first-${keyboard ? 'keyboard' : 'pointer'}-room.png`) });
+      // Exercise the same transition on the room's mute and transport controls.
+      for (const kind of ['mute', 'play']) {
+        await cold.evaluate(() => window.__audioTest.contexts[0].suspend());
+        await cold.getByRole('button', { name: '点击开启试听声音', exact: true }).waitFor();
+        const control = cold.getByRole('button', { name: kind === 'mute' ? '点击开启试听声音' : '播放《循水归来》', exact: true });
+        await deliberateActivate(cold, control, keyboard);
+        await cold.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+        assert.equal(await cold.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings')).muted), false);
+        assert.equal(await count(cold, 'music-river-home.mp3'), 1, 'Unlock an existing suspended voice without starting another source');
+      }
+      await cold.close();
+    }
+    checks.push('Cold first pointer/Space enable preserves intent through delayed click; title and room controls never self-mute/pause during unlock');
+  }
   const page = await open();
   if (name === 'chromium') {
     console.log('Strict startup device state', await page.evaluate(() => ({ contexts: window.__audioTest.contexts.map(context => context.state), sources: window.__audioTest.starts.length, hint: document.querySelector('.sound-unlock-hint')?.textContent })));
