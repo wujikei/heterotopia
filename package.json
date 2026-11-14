@@ -19,7 +19,7 @@
     "test:ui-polish": "node --import tsx scripts/with-preview.mjs scripts/test-ui-polish.mjs",
     "test:reading-audio": "node --import tsx scripts/with-preview.mjs scripts/test-reading-audio.mjs",
     "art:compress": "python scripts/build-images.py",
-    "fonts:prepare": "node scripts/prepare-story.mjs && python scripts/prepare_fonts.py",
+    "fonts:prepare": "node scripts/prepare-story.mjs && python scripts/prepare_fonts.py && python scripts/prepare_locale_fonts.py",
     "assets:check": "node --import tsx scripts/check-assets.mjs",
     "test:cache": "node scripts/test-cache.mjs",
     "test:assets": "node scripts/with-preview.mjs scripts/test-assets.mjs",
@@ -27,6 +27,8 @@
     "test:actor-variants": "node --import tsx scripts/with-preview.mjs scripts/test-actor-variants.mjs",
     "test:relics": "node --import tsx scripts/with-preview.mjs scripts/test-relics.mjs",
     "test:scene-direction": "node --import tsx scripts/with-preview.mjs scripts/test-scene-direction.mjs",
+    "test:localization": "node --import tsx scripts/with-preview.mjs scripts/test-localization.mjs",
+    "test:localization:webkit": "node --import tsx scripts/with-preview.mjs scripts/test-localization.mjs --webkit",
     "art:originals": "python scripts/encode-originals.py",
     "import:story": "python scripts/import_story.py"
   },

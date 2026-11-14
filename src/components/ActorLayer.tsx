@@ -1,3 +1,4 @@
+import { tr, useLocale } from '../i18n';
 import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { actorForBeat, actorInCast } from '../actors';
@@ -15,6 +16,7 @@ let mountId = 0;
 function ActorFigure({ layer, background, onReady, onError }: {
   layer: Layer; background: string; onReady: (id: number, delayed: boolean) => void; onError: (id: number) => void;
 }) {
+  useLocale();
   const { actor, id } = layer;
   const desiredName = actorPortraitName(actor);
   const candidates = actorPortraitCandidates(actor);
@@ -62,9 +64,9 @@ function ActorFigure({ layer, background, onReady, onError }: {
     data-actor-variant={actor.variant} data-portrait={portrait.current}
     style={{ '--actor-tint': actor.character.color, '--actor-duration': duration, '--expression-duration': layer.instant ? '0ms' : '150ms' } as CSSProperties} aria-hidden="true">
     <div className="actor-glow" />
-    {portrait.outgoing && <ArtImage className="actor-portrait actor-portrait--outgoing" name={portrait.outgoing} alt="" decoding="async" />}
-    {portrait.current && <ArtImage className={`actor-portrait ${portrait.outgoing ? 'actor-portrait--incoming' : ''}`} name={portrait.current} alt="" decoding="async" />}
-    <span className="actor-vertical-name">{actor.label}</span>
+    {tr(portrait.outgoing && <ArtImage className="actor-portrait actor-portrait--outgoing" name={portrait.outgoing} alt="" decoding="async" />)}
+    {tr(portrait.current && <ArtImage className={`actor-portrait ${portrait.outgoing ? 'actor-portrait--incoming' : ''}`} name={portrait.current} alt="" decoding="async" />)}
+    <span className="actor-vertical-name">{tr(actor.label)}</span>
   </div>;
 }
 
@@ -72,6 +74,7 @@ function ActorFigure({ layer, background, onReady, onError }: {
 export const ActorLayer = memo(function ActorLayer({ beat, scene, beats, reducedMotion, skipping }: {
   beat: Beat; scene: Scene; beats: Beat[]; reducedMotion: boolean; skipping: boolean;
 }) {
+  useLocale();
   const desired = actorForBeat(beat, scene, beats);
   const [layers, setLayers] = useState<Layer[]>([]);
   const latest = useRef({ reducedMotion, skipping, beat });
@@ -124,5 +127,5 @@ export const ActorLayer = memo(function ActorLayer({ beat, scene, beats, reduced
     return () => clearTimeout(timer);
   }, [layers]);
 
-  return <>{layers.filter(layer => layer.sceneId === scene.id).map(layer => <ActorFigure key={layer.id} layer={layer} background={beat.background} onReady={ready} onError={failed} />)}</>;
+  return <>{tr(layers.filter(layer => layer.sceneId === scene.id).map(layer => <ActorFigure key={layer.id} layer={layer} background={beat.background} onReady={ready} onError={failed} />))}</>;
 });

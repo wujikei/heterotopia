@@ -1,4 +1,5 @@
 import { newProfile, SCENES } from './engine';
+import { isLanguage } from './localeText';
 import type { GameState, Profile, SaveSlot, Settings } from './types';
 
 const PREFIX = 'heterotopia.v1.';
@@ -31,6 +32,7 @@ export function loadProfile(): Profile {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
+  language: 'zh',
   textSpeed: 32, autoDelay: 4, fontSize: 22, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55,
   muted: false, reducedMotion: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false, showSprites: true,
   lightweight: false, autoAfterChoice: true,
@@ -44,6 +46,7 @@ export function loadSettings(): Settings {
   const raw = read<Partial<Settings>>('settings', DEFAULT_SETTINGS);
   if (!raw || typeof raw !== 'object') return DEFAULT_SETTINGS;
   return {
+    language: isLanguage(raw.language) ? raw.language : 'zh',
     textSpeed: clamp(raw.textSpeed, 0, 65, DEFAULT_SETTINGS.textSpeed),
     autoDelay: clamp(raw.autoDelay, 2, 10, DEFAULT_SETTINGS.autoDelay),
     fontSize: clamp(raw.fontSize, 17, 29, DEFAULT_SETTINGS.fontSize),

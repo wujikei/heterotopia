@@ -1,0 +1,165 @@
+@font-face {
+  font-family: StoryLatin;
+  src: url('/fonts/story-latin.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: StoryJapanese;
+  src: url('/fonts/story-japanese.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+}
+:root:lang(en), :root:lang(de) {
+  --serif: StoryLatin, StorySerif, Georgia, serif;
+  --hand: var(--serif);
+}
+:root:lang(ja) {
+  --serif: StoryJapanese, StorySerif, serif;
+  --hand: var(--serif);
+}
+.setting-language {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding: 0 0 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid #766e5540;
+}
+.setting-language label { font-size: 17px; }
+.setting-language select {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 36px 8px 16px;
+  border: 1px solid #87755088;
+  border-radius: 3px;
+  background: #e6dcc4;
+  color-scheme: light;
+  color: #24312b;
+  font: 16px/1.6 var(--serif);
+}
+.setting-language select:focus-visible { outline: 2px solid #9c6f35; outline-offset: 3px; }
+.setting-language [role] { font-size: 13px; color: #596050; }
+.setting-language [role=alert] { color: #8a3425; }
+.language-notice {
+  position: fixed;
+  z-index: 30;
+  top: max(16px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100vw - 32px);
+  padding: 12px 18px;
+  border: 1px solid #987c58;
+  background: #e6dcc4;
+  color: #503b28;
+  font: 15px/1.5 var(--serif);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+:is(:lang(en), :lang(de)) :is(button, .eyebrow, .speaker, .dialogue-text, .character-biography, .modal, .ending-screen, .home-screen) {
+  letter-spacing: normal;
+}
+:is(:lang(en), :lang(de)) .home-title {
+  font-size: 78px;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+:is(:lang(en), :lang(de)) .home-body { width: min(720px, 85vw); }
+:is(:lang(en), :lang(de)) .home-verse p { letter-spacing: .02em; }
+:is(:lang(en), :lang(de)) :is(.home-side-poem, .actor-vertical-name, .history-speaker--seal) {
+  writing-mode: horizontal-tb;
+  letter-spacing: .04em;
+}
+:is(:lang(en), :lang(de)) .actor-vertical-name { right: 10%; max-width: 75%; font-size: 14px; }
+:is(:lang(en), :lang(de)) .history-speaker--seal { width: auto; max-width: 100%; }
+:is(:lang(en), :lang(de)) :is(.dialogue-text, .character-description, .history-copy, .relic-copy, .ending-content blockquote) {
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  text-align: start;
+  line-height: 1.75;
+}
+:is(:lang(en), :lang(de)) .speaker { flex-wrap: wrap; gap: 6px 14px; }
+:is(:lang(en), :lang(de)) .dialogue {
+  max-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgb(201 164 106 / 35%) transparent;
+}
+:is(:lang(en), :lang(de)) .speaker-seal strong { letter-spacing: .03em; font-size: 16px; }
+:is(:lang(en), :lang(de)) .speaker-mood { letter-spacing: .015em; }
+:is(:lang(en), :lang(de)) .ending-stage {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  min-height: 0;
+  margin: 26px 0 16px;
+}
+:is(:lang(en), :lang(de)) .ending-title {
+  writing-mode: horizontal-tb;
+  inline-size: auto;
+  block-size: auto;
+  max-width: 100%;
+  font-size: 58px;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+:is(:lang(en), :lang(de)) .ending-side { align-self: center; flex-direction: row; }
+:is(:lang(en), :lang(de)) .ending-subtitle { writing-mode: horizontal-tb; letter-spacing: .03em; }
+:is(:lang(en), :lang(de)) .ending-content blockquote { text-align: center; }
+:is(:lang(en), :lang(de)) .ending-seal {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  font-size: 13px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+:is(:lang(en), :lang(de)) .choice-stamp { font-size: 11px; letter-spacing: 0; text-transform: uppercase; }
+:is(:lang(en), :lang(de)) .ending-content blockquote::before { content: '“'; }
+:is(:lang(en), :lang(de)) .ending-content blockquote::after { content: '”'; }
+:is(:lang(en), :lang(de)) :is(.intro-chapter, .intro-subtitle, .chapter-intro h2) { letter-spacing: .04em; }
+:is(:lang(en), :lang(de)) :is(.choice-prompt, .choice-copy strong, .choice-copy small) { letter-spacing: .01em; }
+:is(:lang(en), :lang(de)) .choice-copy small { line-height: 1.65; }
+:is(:lang(en), :lang(de)) .choice-option { min-width: 0; }
+:is(:lang(en), :lang(de)) .modal-heading h2 { font-size: 25px; letter-spacing: .03em; overflow-wrap: anywhere; }
+:is(:lang(en), :lang(de)) .section-label,
+:is(:lang(en), :lang(de)) .setting-row strong,
+:is(:lang(en), :lang(de)) .setting-row small { letter-spacing: .02em; }
+:is(:lang(en), :lang(de)) .about-title { font-size: 48px; letter-spacing: 0; }
+:is(:lang(en), :lang(de)) .character-biography h3 { flex-wrap: wrap; letter-spacing: .02em; }
+:is(:lang(en), :lang(de)) :is(.route-copy, .choice-copy, .save-slot-info, .character-biography, .location-copy, .setting-row > span) { min-width: 0; }
+:is(:lang(en), :lang(de)) .home-header-note { font-size: 11px; letter-spacing: .03em; }
+:is(:lang(en), :lang(de)) .reading-controls { gap: 12px; }
+:is(:lang(en), :lang(de)) .reading-controls button { gap: 5px; letter-spacing: .01em; }
+:is(:lang(en), :lang(de)) .home-side-poem { display: none; }
+:lang(ja) :is(.dialogue-text, .history-copy, .character-description) { line-break: strict; word-break: normal; }
+@media (max-width: 700px) {
+  :is(:lang(en), :lang(de)) .home-body { width: 100%; }
+  :is(:lang(en), :lang(de)) .home-title { font-size: 44px; }
+  :is(:lang(en), :lang(de)) .home-header-note { display: none; }
+  :is(:lang(en), :lang(de)) .home-library { flex-wrap: wrap; gap: 12px 18px; }
+  :is(:lang(en), :lang(de)) .home-library button { font-size: 12px; }
+  :is(:lang(en), :lang(de)) .dialogue-footer { flex-wrap: wrap; gap: 7px; }
+  :is(:lang(en), :lang(de)) .dialogue-text { font-size: max(17px, calc(var(--dialogue-size) - 2px)); line-height: 1.6; }
+  :is(:lang(en), :lang(de)) .reading-controls { gap: 10px; }
+  :is(:lang(en), :lang(de)) .reading-controls button { font-size: 11px; }
+  :is(:lang(en), :lang(de)) .ending-title { font-size: 38px; }
+  :is(:lang(en), :lang(de)) .about-title { font-size: 38px; }
+  :is(:lang(en), :lang(de)) .ending-stage { gap: 13px; }
+  :is(:lang(en), :lang(de)) .route-copy strong { font-size: 14px; }
+  :is(:lang(en), :lang(de)) .route-copy small { font-size: 11px; }
+  :is(:lang(en), :lang(de)) .setting-row { flex-wrap: wrap; gap: 10px; }
+  :is(:lang(en), :lang(de)) .setting-row > span { flex: 1 1 180px; }
+  :is(:lang(en), :lang(de)) .range-control { flex: 1 1 210px; }
+  :is(:lang(en), :lang(de)) .about-stats { flex-wrap: wrap; gap: 16px; }
+  .setting-language [role] { flex-basis: 100%; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  :is(:lang(en), :lang(de)) .dialogue-text { max-height: 30vh; overflow-y: auto; }
+  :is(:lang(en), :lang(de)) .home-title { font-size: 38px; }
+  :is(:lang(en), :lang(de)) .ending-screen { align-items: flex-start; }
+}

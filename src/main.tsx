@@ -16,6 +16,7 @@ import './styles/ink-ending.css';
 import './styles/ink-perf.css';
 import './styles/ink-interaction.css';
 import './styles/ink-relics.css';
+import './styles/languages.css';
 
 void initializeImageFormats().then(() => {
   createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);

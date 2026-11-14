@@ -1,3 +1,4 @@
+import { t, tr, useLocale } from '../i18n';
 import { createContext, useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { ChevronLeft, X } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -19,6 +20,7 @@ export function useModalBack(handler: () => boolean) {
 }
 
 export function Modal({ title, eyebrow, seal, children, notice, onClose, onBack, backLabel, restoreFocus, className = '' }: { title: string; eyebrow: string; seal?: string; children: ReactNode; notice?: ReactNode; onClose: () => void; onBack?: () => void; backLabel?: string; restoreFocus?: () => void; className?: string }) {
+  useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const innerBack = useRef<(() => boolean) | null>(null);
   const before = useRef<HTMLElement | null>(null);
@@ -54,10 +56,10 @@ export function Modal({ title, eyebrow, seal, children, notice, onClose, onBack,
   return <div className="modal-backdrop" onPointerDown={event => { if (event.target === event.currentTarget) onClose(); }}>
     <div className="modal-frame">
       <span className="scroll-rod scroll-rod--top" aria-hidden="true" />
-      <div ref={ref} className={`modal ${className}`} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}>
-        <header className="modal-header"><div className="modal-heading"><span className="modal-seal" aria-hidden="true">{seal ?? title.slice(0, 1)}</span><div>{onBack ? <button className="modal-back" onClick={onBack}><ChevronLeft size={14} aria-hidden="true" />{backLabel ?? '返回'}</button> : <span className="eyebrow">{eyebrow}</span>}<h2>{title}</h2></div></div><button className="icon-button modal-close" onClick={onClose} aria-label="关闭"><X size={22} strokeWidth={1.3} /></button></header>
-        {notice}
-        <ModalBack.Provider value={innerBack}>{children}</ModalBack.Provider>
+      <div ref={ref} className={`modal ${className}`} role="dialog" aria-modal="true" aria-label={tr(title)} tabIndex={-1}>
+        <header className="modal-header"><div className="modal-heading"><span className="modal-seal" aria-hidden="true">{seal ?? title.slice(0, 1)}</span><div>{tr(onBack ? <button className="modal-back" onClick={onBack}><ChevronLeft size={14} aria-hidden="true" />{tr(backLabel ?? '返回')}</button> : <span className="eyebrow">{tr(eyebrow)}</span>)}<h2>{tr(title)}</h2></div></div><button className="icon-button modal-close" onClick={onClose} aria-label={t("关闭")}><X size={22} strokeWidth={1.3} /></button></header>
+        {tr(notice)}
+        <ModalBack.Provider value={innerBack}>{tr(children)}</ModalBack.Provider>
       </div>
       <span className="scroll-rod scroll-rod--bottom" aria-hidden="true" />
     </div>

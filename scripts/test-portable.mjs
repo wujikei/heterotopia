@@ -122,6 +122,8 @@ try {
       const img = new Image(); img.src = src;
       try { await img.decode(); } catch { broken.push(name); }
     }
+    await document.fonts.load('400 22px StoryLatin', 'äöü ÄÖÜ ß Heterotopia');
+    await document.fonts.load('400 22px StoryJapanese', '異托邦、日本語、ただいま。');
     await document.fonts.load('400 22px StorySerif', '异托邦，魂兮归来。');
     await document.fonts.load('400 22px StorySerif', '丁');
     await document.fonts.load('600 22px StorySerif', '启程');
@@ -132,7 +134,9 @@ try {
   }, expected);
   assert.deepEqual(integrity.missing, []);
   assert.deepEqual(integrity.broken, []);
-  assert.equal(integrity.fonts.length, 8);
+  assert.equal(integrity.fonts.length, 10);
+  assert.ok(integrity.fonts.some(font => font.family === 'StoryJapanese'));
+  assert.ok(integrity.fonts.some(font => font.family === 'StoryLatin'));
   assert.ok(integrity.fonts.some(font => font.family === 'StoryHand'));
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
   for (const [sceneId, beatId, portrait] of [
