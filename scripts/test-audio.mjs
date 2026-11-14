@@ -17,8 +17,8 @@ const screenshot = file => fileURLToPath(new URL(file, output));
 
 // Tests use fresh, disposable profiles and explicitly synthetic story progress.
 // Observers are injected only into these test pages, never into the shipped game.
-async function open(fixture, forceMedia = false, muted = false) {
-  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
+async function open(fixture, forceMedia = false, muted = false, deviceBrowser = browser) {
+  const context = await deviceBrowser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
   contexts.push(context);
   await context.addInitScript(({ fixture: data, forceMedia, muted }) => {
     if (!sessionStorage.getItem('synthetic-audio-test')) {
@@ -282,6 +282,19 @@ try {
     }
   } else {
     checks.push('No Web Audio: media fallback or graceful silent reading, with functional settings and listening-room download');
+  }
+  if (name === 'chromium') {
+    // An isolated test device permits autoplay; production code changes no policy.
+    const permittedBrowser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
+    try {
+      const permitted = await open(undefined, false, false, permittedBrowser);
+      await waitFor(permitted, 'music-river-home.mp3');
+      assert.equal(await count(permitted, 'music-river-home.mp3'), 1);
+      assert.ok(await permitted.evaluate(() => window.__audioTest.contexts.some(context => context.state === 'running')));
+      await permitted.getByRole('button', { name: '听水集', exact: true }).click();
+      await permitted.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+      checks.push('A browser that permits autoplay starts title music without a gesture and the room immediately reflects it');
+    } finally { await permittedBrowser.close(); }
   }
   assert.deepEqual(errors, []);
   console.log(`${name} audio checks passed: ${checks.join('; ')}.`);
