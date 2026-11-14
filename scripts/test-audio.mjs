@@ -105,7 +105,8 @@ try {
   const page = await open();
   if (name === 'chromium') {
     assert.equal(await page.evaluate(() => window.__audioTest.starts.length), 0, 'Strict autoplay must not report/start a Web Audio source');
-    await page.locator('.sound-unlock-hint').getByText('点击开启声音', { exact: true }).waitFor();
+    await page.locator('.sound-unlock-hint').waitFor();
+    assert.equal(await page.locator('.sound-unlock-hint').innerText(), '点击开启声音');
     const blocked = await page.evaluate(() => window.__audioTest.contexts.map(context => context.state));
     assert.ok(blocked.length > 0 && blocked.every(state => state !== 'running'), JSON.stringify(blocked));
     // A keyboard event targeted at body must also unlock; it does not bubble through <main>.
@@ -259,7 +260,7 @@ try {
         };
       });
       await media.getByRole('button', { name: '听水集', exact: true }).click();
-      await media.locator('.music-player-note').getByText('点击开启声音', { exact: true }).waitFor();
+      await media.waitForFunction(() => document.querySelector('.music-player-note')?.textContent === '点击开启声音');
       await media.evaluate(() => { window.__syntheticMediaBlocked = false; });
       await media.getByRole('button', { name: '试听《循水归来》', exact: true }).click();
       await media.waitForFunction(() => window.__audioTest.mediaElements.some(element => element.src.includes('music-river-home.mp3') && !element.paused && element.currentTime > .2 && element.volume > 0));
