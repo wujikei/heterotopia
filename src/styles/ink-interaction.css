@@ -13,7 +13,7 @@
 .game-screen:focus {
   outline: none;
 }
-.app:has(.modal-backdrop) .dialogue {
+.app--modal .dialogue {
   visibility: hidden;
 }
 .game-location {

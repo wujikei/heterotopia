@@ -13,6 +13,8 @@ import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkF
 import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, portraitAsset } from './data/world';
 import { actorForBeat } from './actors';
 import { actorPortraitName } from './data/actorVariants';
+import { relicForBeat } from './data/relics';
+import type { RelicId } from './data/relics';
 import { locationForBeat } from './scenePresentation';
 import { cgForBeat } from './data/cgs';
 import { prefetchWhenIdle, preloadImage } from './preload';
@@ -100,6 +102,7 @@ export default function App() {
   const modal = modalPath.at(-1) ?? null;
   const modalParent = modalPath.at(-2);
   const [saveMode, setSaveMode] = useState<'save' | 'load'>('save');
+  const [journalRelic, setJournalRelic] = useState<RelicId | undefined>();
   const [auto, setAuto] = useState(false);
   const [skipping, setSkipping] = useState(false);
   const [holdingSkip, setHoldingSkip] = useState(false);
@@ -160,6 +163,7 @@ export default function App() {
   const typing = useTypewriter(screen === 'play' ? beat?.id : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? 'hero' : beat?.background ?? 'hero';
   const cg = screen === 'play' && beat ? cgForBeat(beat, scene.id) : undefined;
+  const relic = screen === 'play' && beat?.kind === 'text' ? relicForBeat(beat.id) : undefined;
 
   useLayoutEffect(() => setArtQuality(settings.lightweight), [settings.lightweight]);
 
@@ -291,6 +295,7 @@ export default function App() {
   }, [screen, beat?.id, beat?.kind, modal, intro]);
 
   const openModal = useCallback((name: ModalName) => {
+    if (name === 'journal') setJournalRelic(undefined);
     if (name === 'saves' && !isStoryReady()) void loadStory().then(() => setStoryReady(true)).catch(() => {});
     if (!document.querySelector('[role="dialog"]')) modalOpener.current = document.activeElement as HTMLElement | null;
     setModalPath(path => path.at(-1) === name ? path : [...path, name]);
@@ -541,7 +546,7 @@ export default function App() {
   };
   const toastNotice = toast && <div className={`toast ${modal ? 'toast--inline' : ''}`} key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span><span>{toast}</span><button onClick={() => setToast('')} aria-label="关闭提示"><X size={13} /></button></div>;
 
-  return <main className={`app app--${screen} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`}>
+  return <main className={`app app--${screen} ${modal ? 'app--modal' : ''} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`}>
     <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} />
     <Atmosphere scene={background} reduced={settings.reducedMotion} />
 
@@ -575,6 +580,7 @@ export default function App() {
         <section className={`dialogue dialogue--${lineKind}`} aria-label="故事正文" inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />
           <div className="dialogue-body">
+            {relic && !hidden && !intro && <button className="relic-cue" onClick={() => { openModal('journal'); setJournalRelic(relic.id); }} aria-label={`细看${relic.title}`}><InkBrush size={15} /><span>物笺 · {relic.title}</span><ArrowRight size={13} /></button>}
             {beat.speaker && <div className="speaker"><span className="speaker-seal"><strong>{beat.speaker}</strong></span>{beat.mood && <span className="speaker-mood">{beat.mood}</span>}</div>}
             <button className="dialogue-advance" onClick={next} aria-label={typing.done ? '继续' : '立即显示全文'}><p className="dialogue-text" data-testid="dialogue-text" aria-label={beat.text}><span aria-hidden="true">{beat.text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{beat.text.slice(typing.count)}</span><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true" /></p></button>
             <footer className="dialogue-footer">
@@ -625,7 +631,7 @@ export default function App() {
       {modal === 'chapters' && <ChaptersView profile={profile} currentScene={screen === 'play' ? game?.sceneId : undefined} onJump={jump} />}
       {modal === 'characters' && <CharactersView profile={profile} />}
       {modal === 'gallery' && <GalleryView profile={profile} />}
-      {modal === 'journal' && <JournalView state={game} profile={profile} />}
+      {modal === 'journal' && <JournalView state={game} profile={profile} initialRelic={journalRelic} />}
       {modal === 'settings' && <SettingsView settings={settings} onChange={changeSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { changeSettings(DEFAULT_SETTINGS); notify('阅读设置已恢复。'); }} />}
       {modal === 'saves' && <SaveView slots={slots} state={game} profile={profile} autosave={loadAutosave()} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />}
       {modal === 'history' && <Backlog state={game} profile={profile} onReplay={replay} />}

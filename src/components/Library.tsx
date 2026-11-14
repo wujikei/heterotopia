@@ -1,8 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Download, Headphones, Image as ImageIcon, LockKeyhole, RotateCcw, Upload, X } from 'lucide-react';
 import { asset, assetSources, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitFace, sourceDocument } from '../data/world';
 import { portraitName } from '../assets';
 import { ArtImage } from './ArtImage';
+import { RelicArt, RelicCard, RelicStudy } from './RelicStudy';
+import { illustratedInventoryItem, relicById, relicForItem, relicUnlocked, seenRelics } from '../data/relics';
+import type { Relic, RelicId } from '../data/relics';
 import { useModalBack } from './Modal';
 import { sound } from '../audio';
 import { CGS, cgUnlocked } from '../data/cgs';
@@ -166,23 +169,53 @@ export function GalleryView({ profile }: { profile: Profile }) {
   </div></div>;
 }
 
-export function JournalView({ state, profile }: { state: GameState | null; profile: Profile }) {
-  const [tab, setTab] = useState<'bag' | 'endings'>('bag');
-  const items = (state?.inventory ?? []).filter(id => ITEMS[id]);
+export function JournalView({ state, profile, initialRelic }: { state: GameState | null; profile: Profile; initialRelic?: RelicId }) {
+  const [tab, setTab] = useState<'bag' | 'relics' | 'endings'>('bag');
+  const [selected, setSelected] = useState<Relic | undefined>(() => {
+    const relic = initialRelic && relicById(initialRelic);
+    return relic && relicUnlocked(relic, profile) ? relic : undefined;
+  });
+  const opener = useRef<HTMLElement | null>(null);
+  const scroll = useRef<HTMLDivElement>(null);
+  const returnScroll = useRef(0);
+  useLayoutEffect(() => {
+    if (selected && scroll.current) scroll.current.scrollTop = 0;
+  }, [selected]);
+  const openRelic = (relic: Relic) => {
+    opener.current = document.activeElement as HTMLElement;
+    returnScroll.current = scroll.current?.scrollTop ?? 0;
+    setSelected(relic);
+  };
+  const back = () => {
+    setSelected(undefined);
+    requestAnimationFrame(() => {
+      if (scroll.current) scroll.current.scrollTop = returnScroll.current;
+      const label = opener.current?.getAttribute('aria-label');
+      const restored = label ? Array.from(scroll.current?.querySelectorAll<HTMLButtonElement>('button') ?? []).find(button => button.getAttribute('aria-label') === label) : undefined;
+      (restored ?? scroll.current?.querySelector<HTMLElement>('.notebook-tabs [aria-selected="true"]'))?.focus({ preventScroll: true });
+    });
+  };
+  useModalBack(() => { if (!selected) return false; back(); return true; });
+  const items = (state?.inventory ?? []).filter(id => ITEMS[id] && (!illustratedInventoryItem(id) || relicForItem(id, profile)));
+  const relics = seenRelics(profile);
   const ghosts = Math.max(0, 4 - items.length);
-  return <div className="journal-content">
+  return <div className="journal-content" ref={scroll}>
     <div className="notebook">
-      <div className="tab-bar notebook-tabs" role="tablist"><button role="tab" aria-selected={tab === 'bag'} className={tab === 'bag' ? 'selected' : ''} onClick={() => setTab('bag')}>随身之物</button><button role="tab" aria-selected={tab === 'endings'} className={tab === 'endings' ? 'selected' : ''} onClick={() => setTab('endings')}>命运的回声<span>{profile.endings.length} / 6</span></button></div>
-      <div className="notebook-page" key={tab}>
-        {tab === 'bag' ? <>
+      <div className="tab-bar notebook-tabs" role="tablist"><button role="tab" aria-selected={tab === 'bag'} className={tab === 'bag' ? 'selected' : ''} onClick={() => { setTab('bag'); setSelected(undefined); }}>随身之物</button><button role="tab" aria-selected={tab === 'relics'} className={tab === 'relics' ? 'selected' : ''} onClick={() => { setTab('relics'); setSelected(undefined); }}>途中物笺</button><button role="tab" aria-selected={tab === 'endings'} className={tab === 'endings' ? 'selected' : ''} onClick={() => { setTab('endings'); setSelected(undefined); }}>命运的回声<span>{profile.endings.length} / 6</span></button></div>
+      <div className={`notebook-page ${selected ? 'notebook-page--study' : tab === 'relics' ? 'notebook-page--relic-index' : ''}`} key={tab}>
+        {selected ? <RelicStudy relic={selected} state={state} profile={profile} onSelect={setSelected} onBack={back} /> : tab === 'bag' ? <>
           <div className="bone-panel"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><div><span className="eyebrow">卜骨上的两道裂纹</span><h3>{canReturn(profile) ? '来处与归处，终于相合。' : hasRoyal(profile) || hasKunlun(profile) ? '另一条路，仍在等你。' : '两条路，共享这一夜。'}</h3><p>记忆留存，物件归于此夜原样。<br />{profile.oldNames ? '那十根旧队名简，你已经问过。' : '有些名字，还没有被听见。'}</p><div className="bone-legend"><span className={hasRoyal(profile) ? 'is-lit' : ''}>第一道 · 王裔 {hasRoyal(profile) && <Check size={12} />}</span><span className={hasKunlun(profile) ? 'is-lit' : ''}>第二道 · 昆仑 {hasKunlun(profile) && <Check size={12} />}</span></div></div></div>
           <h4 className="section-label">此刻，行囊里</h4>
           <div className="inventory-grid">
-            {items.map(id => <div className="inventory-item" key={id}><span className="item-seal">{ITEMS[id].mark}</span><div><h4>{ITEMS[id].name}</h4><p>{ITEMS[id].detail}</p></div></div>)}
+            {items.map(id => {
+              const relic = relicForItem(id, profile);
+              const copy = <div><h4>{ITEMS[id].name}</h4><p>{ITEMS[id].detail}</p>{relic && <small className="item-study-hint">细看此物 <ArrowRight size={12} /></small>}</div>;
+              return relic ? <button className="inventory-item inventory-item--illustrated" key={id} data-inventory-item={id} aria-label={`细看${ITEMS[id].name}`} onClick={() => openRelic(relic)}><RelicArt relic={relic} profile={profile} />{copy}</button> : <div className="inventory-item" key={id}><span className="item-seal">{ITEMS[id].mark}</span>{copy}</div>;
+            })}
             {Array.from({ length: ghosts }, (_, i) => <div className="inventory-item inventory-item--ghost" key={`ghost-${i}`} aria-hidden="true"><span className="item-seal">{['图', '玉', '简', '笛'][i % 4]}</span><div><h4>尚未拾得</h4><p>{items.length || i ? '路上还会遇见。' : '行囊还轻。先走到故事里去吧。'}</p></div></div>)}
           </div>
           {!items.length && <p className="empty-note">行囊还轻。先走到故事里去吧。</p>}
-        </> : <div className="endings-grid">{Object.entries(ENDINGS).map(([id, ending]) => {
+        </> : tab === 'relics' ? <><div className="relic-index-heading"><span className="eyebrow">所见，所记</span><h3>让旧物，留住人的温度。</h3><p>行囊会变，见过的模样留在这里。</p></div><div className="relic-grid">{relics.map(relic => <RelicCard key={relic.group} relic={relic} state={state} profile={profile} onOpen={() => openRelic(relic)} />)}</div>{!relics.length && <p className="empty-note">还没有记下的物件。<br />先走到故事里去吧。</p>}</> : <div className="endings-grid">{Object.entries(ENDINGS).map(([id, ending]) => {
           const known = profile.endings.includes(id as keyof typeof ENDINGS);
           return <div className={`ending-card ${known ? 'ending-card--known' : ''}`} key={id} style={{ '--glimpse': `url("${asset(`${ending.background}-thumb`)}")` } as React.CSSProperties}><span className="ending-roman" aria-hidden="true">{ending.index}</span>{!known && <LockKeyhole className="ending-lock" size={16} strokeWidth={1.2} />}<small>{known ? ending.subtitle : '一页未尽的命运'}</small><h3>{known ? ending.title : '未闻'}</h3><p>{known ? ending.quote : '亲历之后，才能记住。'}</p></div>;
         })}</div>}

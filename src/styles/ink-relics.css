@@ -1,0 +1,138 @@
+/* Object studies borrow the notebook's paper, with room to look before reading. */
+@font-face {
+  font-family: StorySerif;
+  src: url('/fonts/story-relics-serif.woff2') format('woff2');
+  font-weight: 200 900;
+  font-display: swap;
+  unicode-range: U+5F0F,U+7B3A,U+8D6D,U+8F83;
+}
+@font-face {
+  font-family: StoryHand;
+  src: url('/fonts/story-relics-hand.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+5F0F,U+7B3A,U+8D6D,U+8F83;
+}
+.relic-cue {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid rgba(218, 191, 142, .3);
+  border-radius: 2px;
+  background: rgba(9, 29, 35, .84);
+  color: #e3d1ad;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+.relic-cue:hover { background: #19373c; border-color: #b99b66; }
+.notebook-tabs { flex-wrap: wrap; }
+.relic-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+.relic-art img, .relic-bone-light {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.relic-art img { filter: drop-shadow(0 8px 10px rgba(55, 45, 28, .14)); }
+.relic-art-mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--hand);
+  font-size: 52px;
+  opacity: 0;
+  color: #9b835c;
+}
+.relic-art--missing .relic-art-mark { opacity: .45; }
+.relic-bone-light { pointer-events: none; }
+.relic-bone-light path { opacity: 0; stroke: #e9ac54; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.relic-bone-light .is-lit { opacity: .95; filter: drop-shadow(0 0 3px #d19a36); }
+.inventory-item--illustrated { width: 100%; text-align: left; }
+.inventory-item--illustrated:hover { background: rgba(255, 252, 240, .72); }
+.inventory-item--illustrated .relic-art { width: 72px; margin: -4px -2px -4px -5px; }
+.inventory-item--illustrated > div { min-width: 0; }
+.item-study-hint { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font-size: 11px; color: #806039; }
+.relic-index-heading { padding-bottom: 22px; }
+.relic-index-heading h3 { margin: 8px 0; font-size: 24px; letter-spacing: .12em; font-weight: 600; }
+.relic-index-heading p { font-family: var(--hand); color: var(--paper-ink-soft); font-size: 15px; }
+.relic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.relic-card {
+  position: relative;
+  min-width: 0;
+  text-align: left;
+  background: rgba(255, 252, 242, .45);
+  color: var(--paper-ink);
+  border: 1px solid rgba(100, 82, 48, .18);
+  padding: 10px 14px 18px;
+}
+.relic-card:hover { background: rgba(255, 252, 242, .8); border-color: rgba(100, 82, 48, .4); }
+.relic-card .relic-art { width: calc(100% + 4px); margin: -2px -2px -6px; }
+.relic-card-copy { display: flex; flex-direction: column; gap: 5px; }
+.relic-card-copy small { color: #846b45; font-size: 10px; letter-spacing: .16em; }
+.relic-card-copy strong { font-size: 17px; font-weight: 600; letter-spacing: .08em; }
+.relic-card-copy > span { font-family: var(--hand); font-size: 12px; color: var(--paper-ink-soft); }
+.relic-card-arrow { position: absolute; right: 12px; bottom: 19px; color: #896e44; }
+.notebook-page--study, .notebook-page--relic-index { background: radial-gradient(ellipse at 35% 20%, #f1ead9, #e3d7bc 90%); }
+.relic-study-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 0 18px; border-bottom: 1px solid rgba(95, 78, 49, .22); }
+.relic-study-toolbar .text-button { color: #5f5844; font-size: 13px; }
+.relic-study-toolbar > span { font-size: 11px; letter-spacing: .14em; color: #8a6a3a; }
+.relic-study-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 30px; align-items: center; padding: 26px 0 6px; }
+.relic-study-plate {
+  position: relative;
+  margin: 0;
+  background: radial-gradient(ellipse at 50% 42%, rgba(255, 254, 241, .75), rgba(244, 235, 208, .12) 70%);
+  border: 1px solid rgba(104, 86, 56, .2);
+}
+.relic-plate-mark { position: absolute; left: 16px; top: 14px; font-family: var(--hand); font-size: 20px; color: #a48c65; }
+.relic-study-plate figcaption { position: relative; padding: 0 12px 15px; margin-top: -18px; text-align: center; font-size: 11px; letter-spacing: .13em; color: #7e6b4b; }
+.relic-study-copy { min-width: 0; }
+.relic-study-copy h3 { margin: 10px 0 20px; font-size: clamp(25px, 2.5vw, 34px); letter-spacing: .14em; font-weight: 600; line-height: 1.6; outline: none; }
+.relic-study-copy > p { font-size: 15px; line-height: 2.1; color: var(--paper-ink-soft); }
+.relic-study-copy blockquote { margin: 26px 0 12px; padding-left: 15px; border-left: 2px solid rgba(143, 78, 54, .45); color: #74533c; font-family: var(--hand); font-size: 17px; line-height: 1.9; }
+.relic-source { font-size: 11px; letter-spacing: .05em; color: #857358; }
+.relic-versions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(104, 86, 56, .2); }
+.relic-versions button { min-height: 36px; padding: 6px 10px; border: 1px solid rgba(104, 86, 56, .3); color: #796747; font-size: 12px; }
+.relic-versions button[aria-pressed="true"] { background: #6f4d36; border-color: #6f4d36; color: #f1e7ce; }
+.relic-memory { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 22px; color: #8b8069; font-size: 12px; }
+.relic-memory .is-lit { color: #9d5837; }
+@media (max-width: 900px) {
+  .relic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .relic-study-layout { gap: 20px; }
+}
+@media (max-width: 600px) {
+  .notebook-tabs { padding-left: 18px; gap: 3px; }
+  .notebook-tabs > button { padding: 9px 9px; font-size: 12px; letter-spacing: .04em; }
+  .notebook-tabs > button > span { display: none; }
+  .notebook-page--study { padding: 18px 14px 24px 39px; }
+  .relic-grid { gap: 10px; }
+  .relic-card { padding: 7px 10px 14px; }
+  .relic-card-copy strong { font-size: 15px; letter-spacing: .03em; }
+  .relic-card-copy > span { font-size: 11px; line-height: 1.6; }
+  .relic-card-arrow { display: none; }
+  .relic-index-heading h3 { font-size: 21px; line-height: 1.7; letter-spacing: .06em; }
+  .relic-index-heading p { font-size: 14px; line-height: 1.8; }
+  .relic-study-layout { grid-template-columns: 1fr; gap: 22px; padding-top: 18px; }
+  .relic-study-plate { width: 100%; max-width: 340px; justify-self: center; }
+  .relic-study-copy h3 { margin: 6px 0 14px; font-size: 26px; }
+  .relic-study-copy blockquote { margin-top: 20px; }
+  .relic-study-plate figcaption { font-size: 10px; padding-bottom: 12px; }
+  .relic-cue { bottom: calc(100% + 12px); min-height: 34px; font-size: 11px; gap: 7px; padding: 5px 10px; }
+}
+@media (max-height: 520px) and (min-width: 600px) {
+  .relic-study-layout { grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); padding-top: 16px; }
+  .relic-study-plate { max-width: 310px; }
+  .relic-cue { bottom: calc(100% + 8px); }
+}

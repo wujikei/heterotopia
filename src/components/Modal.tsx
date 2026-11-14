@@ -42,11 +42,13 @@ export function Modal({ title, eyebrow, seal, children, notice, onClose, onBack,
     window.addEventListener('keydown', keydown, true);
     return () => {
       window.removeEventListener('keydown', keydown, true);
-      queueMicrotask(() => {
+      // Let the reading surface paint once without `inert`/visibility:hidden
+      // before returning keyboard focus after an inner study closes.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
         if (document.querySelector('[role="dialog"]')) return;
         if (restoreRef.current) restoreRef.current();
         else if (before.current?.isConnected) before.current.focus({ preventScroll: true });
-      });
+      }));
     };
   }, []);
   return <div className="modal-backdrop" onPointerDown={event => { if (event.target === event.currentTarget) onClose(); }}>
