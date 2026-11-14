@@ -106,8 +106,13 @@ export class Soundscape {
       ? this.context.resume().catch(() => {}) : Promise.resolve();
     if (!this.context) {
       for (const voice of this.active) if (voice.media && !voice.stopped && !voice.startTimer) {
-        void voice.media.play().then(() => { voice.mediaPlaying = true; this.publish({ unlocked: true }); this.publishPlayback(); }, () => {
-          this.publish({ unlocked: false }); this.publishPlayback();
+        void voice.media.play().then(() => {
+          voice.mediaPlaying = true;
+          if (voice.bus === 'music' || !this.musicChoice()) this.publish({ unlocked: true });
+          this.publishPlayback();
+        }, () => {
+          if (voice.bus === 'music') this.publish({ unlocked: false });
+          this.publishPlayback();
         });
       }
     }
@@ -311,7 +316,11 @@ export class Soundscape {
       voice.seconds = loopSeconds ?? media.duration;
       if (offset && Number.isFinite(media.duration)) media.currentTime = offset % media.duration;
     }, { once: true });
-    media.addEventListener('playing', () => { voice.mediaPlaying = true; this.publish({ unlocked: true }); this.publishPlayback(); });
+    media.addEventListener('playing', () => {
+      voice.mediaPlaying = true;
+      if (bus === 'music' || !this.musicChoice()) this.publish({ unlocked: true });
+      this.publishPlayback();
+    });
     for (const event of ['pause', 'waiting', 'ended']) media.addEventListener(event, () => { voice.mediaPlaying = false; this.publishPlayback(); });
     media.addEventListener('ended', () => this.cleanup(voice), { once: true });
     media.addEventListener('error', () => {
@@ -325,7 +334,11 @@ export class Soundscape {
       try {
         await media.play();
         if (!guard() || voice.stopped) this.cleanup(voice);
-        else { voice.mediaPlaying = true; this.publish({ unlocked: true }); this.publishPlayback(); }
+        else {
+          voice.mediaPlaying = true;
+          if (bus === 'music' || !this.musicChoice()) this.publish({ unlocked: true });
+          this.publishPlayback();
+        }
       } catch (error) {
         this.cleanup(voice);
         if (bus === 'music') {
