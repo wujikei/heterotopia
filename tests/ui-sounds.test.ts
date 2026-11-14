@@ -13,7 +13,7 @@ function backend() {
   let blocked = false;
   const parameter = () => ({ value: 0, setTargetAtTime(value: number) { this.value = value; }, setValueAtTime(value: number) { this.value = value; }, cancelScheduledValues() {}, linearRampToValueAtTime(value: number) { this.value = value; } });
   const gain = () => ({ gain: parameter(), connect() {}, disconnect() {} });
-  class Context {
+  class Context extends EventTarget {
     state = 'suspended'; currentTime = 0; destination = {};
     createGain = gain;
     createDynamicsCompressor = () => ({ threshold: parameter(), knee: parameter(), ratio: parameter(), attack: parameter(), release: parameter(), connect() {} });

@@ -9,7 +9,7 @@ await loadStory();
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4173/heterotopia/';
 const name = process.env.VN_TEST_BROWSER || 'chromium';
-const browser = await ({ chromium, firefox, webkit }[name]).launch({ headless: true, ...(name === 'chromium' && /^https:/.test(base) ? { args: ['--no-proxy-server'] } : {}) });
+const browser = await ({ chromium, firefox, webkit }[name]).launch({ headless: true, ...(name === 'chromium' ? { args: ['--autoplay-policy=document-user-activation-required', ...(/^https:/.test(base) ? ['--no-proxy-server'] : [])] } : {}) });
 const output = new URL(`../artifacts/audio-${name}/`, import.meta.url);
 await mkdir(output, { recursive: true });
 const contexts = [], errors = [], checks = [];
@@ -17,12 +17,13 @@ const screenshot = file => fileURLToPath(new URL(file, output));
 
 // Tests use fresh, disposable profiles and explicitly synthetic story progress.
 // Observers are injected only into these test pages, never into the shipped game.
-async function open(fixture, forceMedia = false) {
-  const context = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
+async function open(fixture, forceMedia = false, muted = false, deviceBrowser = browser) {
+  const gateAutoplay = name === 'chromium' && deviceBrowser === browser;
+  const context = await deviceBrowser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
   contexts.push(context);
-  await context.addInitScript(({ fixture: data, forceMedia }) => {
+  await context.addInitScript(({ fixture: data, forceMedia, muted, gateAutoplay }) => {
     if (!sessionStorage.getItem('synthetic-audio-test')) {
-      localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted: false, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
+      localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
       if (data) {
         localStorage.setItem('heterotopia.v1.profile', JSON.stringify(data.profile));
         localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(data.state));
@@ -32,6 +33,35 @@ async function open(fixture, forceMedia = false) {
     if (forceMedia) {
       Object.defineProperty(window, 'AudioContext', { configurable: true, value: undefined });
       Object.defineProperty(window, 'webkitAudioContext', { configurable: true, value: undefined });
+    }
+    // CI Chromium permits Web Audio on loopback even with the strict flag.
+    // Add a *more restrictive* test-only policy: real contexts are suspended,
+    // and resume/play are rejected until a trusted pointer/key gesture.
+    // The permitted-autoplay device below does not install this boundary.
+    if (gateAutoplay) {
+      let activated = false;
+      const contexts = new Set();
+      for (const event of ['pointerdown', 'keydown']) document.addEventListener(event, input => {
+        if (input.isTrusted) {
+          activated = true;
+          // Native browsers can also release a pending page-load resume before
+          // click, even when our global activation listener leaves controls alone.
+          for (const context of contexts) void context.resume();
+        }
+      }, true);
+      const Original = window.AudioContext ?? window.webkitAudioContext;
+      if (Original) {
+        class GestureContext extends Original {
+          constructor(...args) { super(...args); contexts.add(this); void super.suspend(); }
+          get state() { return activated ? super.state : 'suspended'; }
+          resume() { return activated ? super.resume() : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError')); }
+        }
+        Object.defineProperty(window, 'AudioContext', { configurable: true, value: GestureContext });
+      }
+      const play = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function(...args) {
+        return activated ? play.apply(this, args) : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError'));
+      };
     }
     const trace = window.__audioTest = { requests: [], starts: [], stops: [], gains: [], contexts: [], buffers: [], media: [], mediaElements: [] };
     const files = new WeakMap(), decoded = new WeakMap();
@@ -46,6 +76,11 @@ async function open(fixture, forceMedia = false) {
     const Context = window.AudioContext ?? window.webkitAudioContext;
     if (Context) {
       const proto = Context.prototype;
+      const resume = proto.resume;
+      proto.resume = function(...args) {
+        if (!trace.contexts.includes(this)) trace.contexts.push(this);
+        return resume.apply(this, args);
+      };
       const decode = proto.decodeAudioData, createSource = proto.createBufferSource, createGain = proto.createGain;
       proto.decodeAudioData = function(bytes) {
         if (!trace.contexts.includes(this)) trace.contexts.push(this);
@@ -75,7 +110,7 @@ async function open(fixture, forceMedia = false) {
       if (!trace.mediaElements.includes(this)) trace.mediaElements.push(this);
       return play.call(this);
     };
-  }, { fixture, forceMedia });
+  }, { fixture, forceMedia, muted, gateAutoplay });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
   page.on('response', response => { if (response.status() >= 400 && !response.url().includes('favicon.ico')) errors.push(`${response.status()} ${response.url()}`); });
@@ -96,9 +131,68 @@ async function turnPage(page) {
   await page.waitForFunction(before => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId !== before, before);
 }
 
+async function deliberateActivate(page, control, keyboard = false) {
+  if (keyboard) { await control.focus(); await page.keyboard.down('Space'); }
+  else { const box = await control.boundingBox(); assert.ok(box); await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await page.mouse.down(); }
+  // A human can hold a button while AudioContext.resume resolves and React rerenders.
+  await page.waitForTimeout(600);
+  if (keyboard) await page.keyboard.up('Space'); else await page.mouse.up();
+}
+
 try {
+  if (name === 'chromium') {
+    for (const keyboard of [false, true]) {
+      const cold = await open();
+      const enable = cold.getByRole('button', { name: '点击开启声音', exact: true });
+      await enable.waitFor();
+      await deliberateActivate(cold, enable, keyboard);
+      await waitFor(cold, 'music-river-home.mp3');
+      await cold.waitForTimeout(400);
+      const state = await cold.evaluate(() => ({ settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')), contexts: window.__audioTest.contexts.map(context => context.state), gains: window.__audioTest.gains.slice(0, 3).map(gain => gain.gain.value), label: document.querySelector('.header-tools button')?.getAttribute('aria-label') }));
+      await writeFile(new URL(`cold-first-${keyboard ? 'keyboard' : 'pointer'}.json`, output), JSON.stringify(state, null, 2));
+      assert.equal(state.settings.muted, false, 'First enable gesture must not turn into mute between pointer/key down and click');
+      await cold.getByRole('button', { name: '静音', exact: true }).waitFor();
+      await cold.getByRole('button', { name: '听水集', exact: true }).click();
+      await cold.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+      assert.equal(await cold.locator('.music-track--selected .lucide-pause').count(), 1);
+      assert.equal(await count(cold, 'music-river-home.mp3'), 1);
+      await cold.screenshot({ path: screenshot(`cold-first-${keyboard ? 'keyboard' : 'pointer'}-room.png`) });
+      // Exercise the same transition on the room's mute and transport controls.
+      for (const kind of ['mute', 'play']) {
+        await cold.evaluate(() => window.__audioTest.contexts[0].suspend());
+        await cold.getByRole('button', { name: '点击开启试听声音', exact: true }).waitFor();
+        const control = cold.getByRole('button', { name: kind === 'mute' ? '点击开启试听声音' : '播放《循水归来》', exact: true });
+        await deliberateActivate(cold, control, keyboard);
+        await cold.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+        assert.equal(await cold.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings')).muted), false);
+        assert.equal(await count(cold, 'music-river-home.mp3'), 1, 'Unlock an existing suspended voice without starting another source');
+      }
+      await cold.close();
+    }
+    checks.push('Cold first pointer/Space enable preserves intent through delayed click; title and room controls never self-mute/pause during unlock');
+  }
   const page = await open();
-  assert.equal(await page.evaluate(() => window.__audioTest.requests.length), 0, 'No audio fetch before a user gesture');
+  if (name === 'chromium') {
+    console.log('Strict startup device state', await page.evaluate(() => ({ contexts: window.__audioTest.contexts.map(context => context.state), sources: window.__audioTest.starts.length, hint: document.querySelector('.sound-unlock-hint')?.textContent })));
+    assert.equal(await page.evaluate(() => window.__audioTest.starts.length), 0, 'Strict autoplay must not report/start a Web Audio source');
+    await page.locator('.sound-unlock-hint').waitFor();
+    assert.equal(await page.locator('.sound-unlock-hint').innerText(), '点击开启声音');
+    const blocked = await page.evaluate(() => window.__audioTest.contexts.map(context => context.state));
+    assert.ok(blocked.length > 0 && blocked.every(state => state !== 'running'), JSON.stringify(blocked));
+    // A keyboard event targeted at body must also unlock; it does not bubble through <main>.
+    await page.keyboard.press('Shift');
+    await waitFor(page, 'music-river-home.mp3');
+    assert.equal(await count(page, 'music-river-home.mp3'), 1);
+    checks.push('Restricted test device blocks no-gesture startup; first trusted body key unlocks the real title source exactly once');
+    const muted = await open(undefined, false, true);
+    await muted.keyboard.press('Shift');
+    assert.equal(await muted.evaluate(() => window.__audioTest.starts.length), 0);
+    assert.equal(await muted.locator('.sound-unlock-hint').count(), 0);
+    await muted.reload();
+    assert.equal(await muted.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings')).muted), true);
+    await muted.close();
+    checks.push('Persisted mute survives startup, first gesture and reload');
+  }
   await page.getByRole('button', { name: '启程', exact: true }).click();
   await page.locator('.game-screen').waitFor();
   await closeIntro(page);
@@ -124,7 +218,7 @@ try {
     // Idle Web Audio nodes can expose the last processed AudioParam value.
     // A tiny, isolated DC probe keeps all buses rendering during this assertion.
     await page.evaluate(() => {
-      const trace = window.__audioTest, probe = trace.contexts[0].createConstantSource();
+    const trace = window.__audioTest, probe = trace.contexts[0].createConstantSource();
       probe.offset.value = .00001;
       trace.gains.slice(0, 3).forEach(gain => probe.connect(gain));
       probe.start(); trace.muteProbe = probe;
@@ -153,10 +247,15 @@ try {
   await page.getByRole('button', { name: /回到标题/ }).click();
   await page.getByRole('button', { name: /再点一次，回到标题/ }).click();
   await page.getByRole('button', { name: '听水集', exact: true }).click();
-  await page.getByRole('button', { name: '试听《循水归来》', exact: true }).click();
   if (webAudio) {
     await waitFor(page, 'music-river-home.mp3');
     await page.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+    assert.equal(await page.locator('.music-track--selected .lucide-pause').count(), 1, 'Row and main player must immediately reflect scene playback');
+    const startsBeforeRoom = await count(page, 'music-river-home.mp3');
+    await page.getByRole('button', { name: '关闭', exact: true }).click();
+    await page.getByRole('button', { name: '听水集', exact: true }).click();
+    await page.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+    assert.equal(await count(page, 'music-river-home.mp3'), startsBeforeRoom, 'Opening/closing the room must not restart the scene score');
     await page.waitForTimeout(800);
     const beforePause = await page.getByRole('progressbar', { name: '试听进度' }).getAttribute('value');
     await page.getByRole('button', { name: '暂停试听', exact: true }).click();
@@ -165,6 +264,8 @@ try {
     await page.waitForTimeout(400);
     assert.equal(Number(await page.getByRole('progressbar', { name: '试听进度' }).getAttribute('value')), paused);
     assert.ok(paused >= Number(beforePause));
+    await page.getByRole('slider', { name: '试听位置', exact: true }).fill('20');
+    await page.waitForFunction(() => Number(document.querySelector('progress[aria-label="试听进度"]')?.getAttribute('value')) === 20);
     await page.getByRole('button', { name: '播放《循水归来》', exact: true }).click();
     await page.waitForFunction(paused => Number(document.querySelector('progress[aria-label="试听进度"]')?.getAttribute('value')) > paused, paused, { timeout: 5000 });
   }
@@ -229,7 +330,7 @@ try {
         };
       });
       await media.getByRole('button', { name: '听水集', exact: true }).click();
-      await media.getByText('点击播放，开启声音。', { exact: true }).waitFor();
+      await media.waitForFunction(() => document.querySelector('.music-player-note')?.textContent === '点击开启声音');
       await media.evaluate(() => { window.__syntheticMediaBlocked = false; });
       await media.getByRole('button', { name: '试听《循水归来》', exact: true }).click();
       await media.waitForFunction(() => window.__audioTest.mediaElements.some(element => element.src.includes('music-river-home.mp3') && !element.paused && element.currentTime > .2 && element.volume > 0));
@@ -250,6 +351,19 @@ try {
     }
   } else {
     checks.push('No Web Audio: media fallback or graceful silent reading, with functional settings and listening-room download');
+  }
+  if (name === 'chromium') {
+    // An isolated test device permits autoplay; production code changes no policy.
+    const permittedBrowser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
+    try {
+      const permitted = await open(undefined, false, false, permittedBrowser);
+      await waitFor(permitted, 'music-river-home.mp3');
+      assert.equal(await count(permitted, 'music-river-home.mp3'), 1);
+      assert.ok(await permitted.evaluate(() => window.__audioTest.contexts.some(context => context.state === 'running')));
+      await permitted.getByRole('button', { name: '听水集', exact: true }).click();
+      await permitted.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+      checks.push('A browser that permits autoplay starts title music without a gesture and the room immediately reflects it');
+    } finally { await permittedBrowser.close(); }
   }
   assert.deepEqual(errors, []);
   console.log(`${name} audio checks passed: ${checks.join('; ')}.`);
