@@ -4,6 +4,24 @@
 
 在线游玩：**[https://wujikei.github.io/heterotopia/](https://wujikei.github.io/heterotopia/)**。手机、平板和电脑均可用现代浏览器直接打开。声音在首次点击后启用；进度保存在当前设备的浏览器里，换设备可通过导出、导入存档继续。
 
+## 开发历程
+
+每批改动在独立分支验证，经确认合并后发布。以下日期为北京时间。
+
+| 日期 | 批次 | 实际交付 |
+| --- | --- | --- |
+| 2026-11-13 | [#1](https://github.com/wujikei/heterotopia/pull/1)–[#2](https://github.com/wujikei/heterotopia/pull/2) | 确立水墨卷轴、灯火与朱印的界面；重排人物志、行迹、手记、听水集及结局页。 |
+| 2026-11-13 | [#3](https://github.com/wujikei/heterotopia/pull/3)–[#4](https://github.com/wujikei/heterotopia/pull/4) | 修复阅读焦点与书签确认，改善手机操作、立绘衔接和移动构图。 |
+| 2026-11-13 | [#5](https://github.com/wujikei/heterotopia/pull/5) | 压缩资源，拆分首页字体与剧情，加入版本化离线缓存。 |
+| 2026-11-14 | [#6](https://github.com/wujikei/heterotopia/pull/6)–[#7](https://github.com/wujikei/heterotopia/pull/7) | 默认原画与可选轻量模式；表情差分、配角和叙事 CG；手机阅读、自动阅读、沉浸绘卷与声音交互完善。 |
+| 2026-11-14 | [#8](https://github.com/wujikei/heterotopia/pull/8) · 美术精修第一批 | 重做关键 CG，增加七张手机专用构图。 |
+| 2026-11-14 | [#9](https://github.com/wujikei/heterotopia/pull/9) · 第二批 | 补齐现代与古代场景服装、芈的交流姿态，改善平板演出。 |
+| 2026-11-14 | [#10](https://github.com/wujikei/heterotopia/pull/10)–[#11](https://github.com/wujikei/heterotopia/pull/11) · 第三批 | 为旅途旧物制作物笺，接入正文与手记，并修复离线设置刷新检查。 |
+| 2026-11-14 | [#12](https://github.com/wujikei/heterotopia/pull/12) · 第四批 | 六张时段背景、三首约 146 秒长配乐、关键段落表情与自动停留；提供分片离线版和完整单文件。已合并并发布。 |
+| 2026-11-14 | 四语版本 | 设置内可切换中文、English、日本語、Deutsch；每种译本覆盖 1,603 页剧情与 970 条界面文案，保留已有路线和存档，并支持离线阅读。 |
+
+游戏默认中文，语言偏好保存在本机。切换后正文、选项、人物志、回看、书签和界面文案同步更新；四种语言共用原场景编号与阅读进度，已有存档无需重开。英语、德语和日语字体随游戏本地提供。译名与文风约定见 [翻译说明](docs/translation-guide.md)。
+
 ## 开始游玩
 
 双击根目录的 **开始游戏.cmd**，或者直接用 Chrome、Edge 打开 **异托邦.html**。请将它与同目录的 **离线资源/** 文件夹一起保留；全部画面、字体、剧情和声音均可断网使用，不需要安装依赖，也不需要启动 ComfyUI。需要复制一个文件带走时，执行 `npm run portable:single`，生成 `artifacts/portable/异托邦-单文件.html`。
@@ -36,11 +54,11 @@
 
 第四批时段背景和长配乐的实际提示、种子、任务 ID、源文件校验和与加工验收记录在 `docs/art/art-direction-4-*.json`，交付说明见 `docs/reviews/art-direction-4.md`。历史短版配乐的生成记录仍保留在 `audio-prompts.json`；本批用相同主题音色、速度和调性重新作曲，没有输入旧曲的音频参考。
 
-背景默认呈现与原 PNG 像素逐点相同的无损 WebP 原画；在“阅读设置”开启“轻量模式”后使用 AVIF/WebP 压缩图。32 张原画随网站提供，并在实际选择时才下载和缓存；安装站点缓存不会预先拉取整套原画。人物立绘与表情差分同时提供桌面版和 640×960 移动版。两种离线版都保留原画、压缩图和全部声音：仓库版用同目录的数据文件避免单个文件超过 GitHub 100 MiB 限制，单文件版全部内嵌，保存在构建产物中。`npm run art:compress` 用 Pillow 从已登记的原画生成轻量变体，`npm run art:originals` 将原画转为像素完全一致的无损 WebP 并更新清单；`npm run fonts:prepare` 用 fontTools 从字形相同的母版生成互不重叠的首页、场景标题与正文字体。这些命令仅在修改对应资源时执行，CI 使用已提交的编码产物。
+背景默认呈现与原 PNG 像素逐点相同的无损 WebP 原画；在“阅读设置”开启“轻量模式”后使用 AVIF/WebP 压缩图。32 张原画随网站提供，并在实际选择时才下载和缓存；安装站点缓存不会预先拉取整套原画。人物立绘与表情差分同时提供桌面版和 640×960 移动版。两种离线版都保留原画、压缩图和全部声音：仓库版用同目录的数据文件避免单个文件超过 GitHub 100 MiB 限制，单文件版全部内嵌，保存在构建产物中。`npm run art:compress` 用 Pillow 从已登记的原画生成轻量变体，`npm run art:originals` 将原画转为像素完全一致的无损 WebP 并更新清单；`npm run fonts:prepare` 用 fontTools 从字形相同的母版生成互不重叠的首页、场景标题与正文字体。它还会用 `resources/fonts/NotoSerifSC-Variable.ttf` 生成英语与德语衬线体，并从 Noto Serif CJK 日文源字形生成离线假名字体。字体来源、OFL 授权及文件校验值列在 `public/fonts/locales-manifest.json`；无需在线字体服务。这些命令仅在修改对应资源时执行，CI 使用已提交的编码产物。
 
 网站使用 44.1 kHz 立体声 MP3，配乐为 192 kbps，目标约 -18 LUFS；技术数据与来源见 `public/audio/manifest.json`。游玩和重听均不需要启动 ComfyUI。音频按场景加载，解码缓存设有容量上限，避免一次加载整张原声。
 
-中文字体为 Noto Serif SC，遵循 SIL Open Font License；授权全文见 `字体授权-OFL.txt`。原著剧本由用户提供，保存在 `public/原著剧本-V6.txt`。源稿 SHA-256 记录于 `src/data/story.json`。
+中文与拉丁文字体 Noto Serif SC 遵循 SIL Open Font License；日文 Noto Serif CJK 亦遵循 SIL Open Font License。完整授权见 `字体授权-OFL.txt`、`public/fonts/NotoSerifJP-OFL.txt`。原著剧本由用户提供，保存在 `public/原著剧本-V6.txt`。源稿 SHA-256 记录于 `src/data/story.json`。
 
 ## 开发与重新构建
 

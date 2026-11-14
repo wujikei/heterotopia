@@ -4,7 +4,7 @@ import { Soundscape } from '../src/audio';
 import { scoreFrame } from '../src/score';
 import type { Settings } from '../src/types';
 
-const settings: Settings = { muted: false, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55, textSpeed: 32, autoDelay: 4, fontSize: 22, reducedMotion: false, showSprites: true, lightweight: false, autoAfterChoice: true };
+const settings: Settings = { language: 'zh', muted: false, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55, textSpeed: 32, autoDelay: 4, fontSize: 22, reducedMotion: false, showSprites: true, lightweight: false, autoAfterChoice: true };
 const settle = () => new Promise(resolve => setTimeout(resolve, 0));
 
 /** Only browser policy/clock/device boundaries are simulated; Soundscape is real. */

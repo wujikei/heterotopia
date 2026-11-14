@@ -1,5 +1,6 @@
 export type Route = 'prologue' | 'common' | 'royal' | 'kunlun' | 'return';
 export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home';
+export type Language = 'zh' | 'en' | 'ja' | 'de';
 export interface RawBlock { tag: string; lines: string[]; pages?: string[] }
 export interface Scene { id: string; title: string; chapter: string; route: Route; background: string; blocks: RawBlock[] }
 export interface Choice { key: string; title: string; detail: string; target?: string; disabled?: boolean; hint?: string }
@@ -29,6 +30,7 @@ export interface GameState {
 }
 export interface SaveSlot { version: 1; savedAt: string; state: GameState; label?: string }
 export interface Settings {
+  language: Language;
   textSpeed: number;
   autoDelay: number;
   fontSize: number;

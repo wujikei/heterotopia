@@ -89,6 +89,9 @@ test('old settings keep existing volumes and receive a separate effect volume', 
   const { loadSettings, DEFAULT_SETTINGS } = await import('../src/storage');
   const loaded = loadSettings();
   assert.equal(loaded.musicVolume, 30); assert.equal(loaded.ambienceVolume, 38); assert.equal(loaded.sfxVolume, DEFAULT_SETTINGS.sfxVolume);
+  assert.equal(loaded.language, 'zh');
+  raw = JSON.stringify({ language: 'de', musicVolume: 30 }); assert.equal(loadSettings().language, 'de');
+  raw = JSON.stringify({ language: 'fr' }); assert.equal(loadSettings().language, 'zh');
   raw = JSON.stringify({ sfxVolume: 1000 }); assert.equal(loadSettings().sfxVolume, 100);
   raw = JSON.stringify({ sfxVolume: 'broken' }); assert.equal(loadSettings().sfxVolume, 55);
 });

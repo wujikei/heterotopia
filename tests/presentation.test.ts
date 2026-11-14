@@ -20,6 +20,7 @@ test('a dream bookmark uses the saved page location instead of the scene default
   assert.equal(slotPresentation(awake, profile).background, 'bedroom-morning');
   assert.equal(slotPresentation({ ...state, beatId: 'obsolete' }, profile).background, sceneById(state.sceneId).background);
   assert.equal(slotPresentation({ ...state, beatId: 'obsolete' }, profile).excerpt, '');
+  assert.equal(slotPresentation(state, profile, () => 'one two three', 12, true).excerpt, 'one two…');
 });
 
 test('borrowed-body presentation follows the return line even with separately compiled beats', () => {

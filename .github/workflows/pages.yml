@@ -47,6 +47,7 @@ jobs:
           npm run test:ui-polish
           npm run test:reading-audio
           npm run test:scene-direction
+          npm run test:localization
       - name: Verify image fallbacks and persistent website cache
         run: |
           npm run assets:check

@@ -111,7 +111,7 @@ html = html.replace(scriptMatch[0], () => `${embedded}<script type="module">if($
 html = html.replace(/<link\b[^>]*rel="(?:modulepreload|preload)"[^>]*>/g, '');
 const icon = await readFile(path.join(dist, 'favicon.svg'));
 html = html.replace('./favicon.svg', `data:image/svg+xml;base64,${icon.toString('base64')}`);
-const license = await Promise.all(['NotoSerifSC-OFL.txt', 'LXGWWenKai-OFL.txt'].map(name => readFile(path.join(dist, 'fonts', name), 'utf8'))).then(items => items.join('\n\n').replace(/[\t ]+$/gm, ''));
+const license = await Promise.all(['NotoSerifSC-OFL.txt', 'LXGWWenKai-OFL.txt', 'NotoSerifJP-OFL.txt'].map(name => readFile(path.join(dist, 'fonts', name), 'utf8'))).then(items => items.join('\n\n').replace(/[\t ]+$/gm, ''));
 html = html.replace('</head>', () => `<!-- Embedded font license: Noto Serif SC\n${license.replaceAll('-->', '-- >')}\n-->\n</head>`);
 html = html.replace(/[\t ]+$/gm, '');
 if (!standalone && Buffer.byteLength(html, 'utf8') >= 100 * 1024 * 1024) throw new Error('Repository HTML exceeds the GitHub 100 MiB file limit');
