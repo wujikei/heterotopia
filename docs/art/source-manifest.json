@@ -1,0 +1,734 @@
+{
+  "sourceRoot": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex",
+  "metadataAuthority": "Original PNG prompt metadata; exact historical prompts and seeds, not the revised planning prompts.",
+  "reproduce": "python scripts/report-art-sources.py; node --import tsx scripts/report-expressions.mjs",
+  "processors": [
+    "scripts/compose-expressions.py",
+    "scripts/process-ui3-art.py"
+  ],
+  "historicalPromptNotes": [
+    {
+      "id": "s06-snow-hands",
+      "note": "The source PNG used the old phrase 三个楚地少年 and also explicitly 蒙眼少女. Current art constraint is 三个孩子; 雩 remains a girl with her blindfold intact."
+    },
+    {
+      "id": "daoist",
+      "note": "The source PNG used an invented age 40–50. The revised planning prompt removes that number; the script calls him 老人. Do not treat the historical prompt age as story canon."
+    }
+  ],
+  "expressions": [
+    {
+      "character": "shen",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00002_.png",
+      "sha256": "2f19e627b06b8a997a81c6a9c53d43d1d30a81235f9246781ed5804a94e168a3",
+      "width": 1248,
+      "height": 832,
+      "workflow": "edit",
+      "seed": 1113001,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-4f581122afa1415e992ccbcbcc79b1d5.png"
+      ],
+      "prompt": "这是一张游戏角色沈辞的表情差分参考图，三列两行共六格，每格是同一位黑发十七岁中国高中男生、蓝白校服领口、朝右的三分之二侧脸。请只改变每格的面部表情，精确保持六格网格、每格头部的大小与位置、脸型、发型、发际线、头部角度、衣领、同一画师的细腻手绘线条与柔和色彩完全一致，米白背景不变，无字无标号无分隔线。左上第一格保持原来的平静神情；上中第二格露出克制温柔的微笑，嘴角微微上扬；右上第三格明显惊魂未定、双眼微睁、眉毛抬起、嘴唇微微张开；左下第四格生气但不夸张，眉头紧蹙、眼神坚定、嘴巴闭紧；下中第五格悲伤难过，内侧眉抬起，眼角湿润，嘴角下垂，不要大滴泪；右下第六格轻轻闭上双眼，沉静疲惫，嘴部放松。所有格子必须是参考图的同一个人。不要改头发与衣服，不要移动或转头，不要增加身体或手，不要文字。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-shen.webp",
+      "proof": "artifacts/ui-fix-3/proofs/shen-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "angry",
+        "sad",
+        "closed"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    },
+    {
+      "character": "xu",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00003_.png",
+      "sha256": "c5741b657f0b16dd56ee2bbaedbf5fa7e17e35a5db0645343df1b1818b175e29",
+      "width": 1248,
+      "height": 832,
+      "workflow": "edit",
+      "seed": 1113002,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-e602add558184d38b3b6d27f511f9015.png"
+      ],
+      "prompt": "请严格在参考图原有的三列两行六格网格内，为同一角色戌制作表情差分。每个格子保持相同的头部尺寸、位置、朝向、脸型、年龄、头发与外轮廓、衣领、画师笔触与光照，米白背景不变，无文字无标号无边框。不转头不移动，不添加其他人物。从左到右、从上到下依次为：第一格原本平静的表情，第二格克制而温暖的微笑，第三格明显惊讶、眼睛微睁大、嘴轻轻张开，第四格克制的愤怒、眉头收紧、嘴紧闭，第五格难过悲伤、眉内角抬起、嘴角下垂、第六格轻轻闭上双眼、沉静。只改变必要的眉眼与嘴角，所有格子必须是参考图的同一个人、同一造型；保持细腻专业的中国手绘视觉小说美术，不要改服装不要新增装饰。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-xu.webp",
+      "proof": "artifacts/ui-fix-3/proofs/xu-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "angry",
+        "sad",
+        "closed"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    },
+    {
+      "character": "quheng",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00004_.png",
+      "sha256": "51ace59d6e0eaa9bd505f0f90f1412d7761545517df79c8c6d34817c7c155209",
+      "width": 1024,
+      "height": 1024,
+      "workflow": "edit",
+      "seed": 1113003,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-23ffe2e2f645439b99ac177e6565a5b6.png"
+      ],
+      "prompt": "请严格在参考图原有的两列两行四格网格内，为同一角色屈衡制作表情差分。每个格子保持相同的头部尺寸、位置、朝向、脸型、年龄、头发与外轮廓、衣领、画师笔触与光照，米白背景不变，无文字无标号无边框。不转头不移动，不添加其他人物。左上第一格保持原本平静的神情；右上第二格露出克制温柔、明显可读的微笑，嘴角轻轻上扬；左下第三格惊讶、眉峰稍抬、嘴唇轻轻分开；右下第四格悲伤、眉内角抬起、嘴角下垂，不要大滴泪。保持原图老人的真实年龄、皱纹与骨相，不能变年轻。只改变必要的眉眼与嘴角，所有格子必须是参考图的同一个人、同一造型；保持细腻专业的中国手绘视觉小说美术，不要改服装不要新增装饰。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-quheng.webp",
+      "proof": "artifacts/ui-fix-3/proofs/quheng-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "sad"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    },
+    {
+      "character": "xua",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00005_.png",
+      "sha256": "d9aacf49b594c80f29ee7c5c44fc6f58d5444b3541141188fa0b2bc937754be0",
+      "width": 1024,
+      "height": 1024,
+      "workflow": "edit",
+      "seed": 1113004,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-ec1fec15a8304c968b322fb3747d15ed.png"
+      ],
+      "prompt": "请严格在参考图原有的两列两行四格网格内，为同一角色媭制作表情差分。每个格子保持相同的头部尺寸、位置、朝向、脸型、年龄、头发与外轮廓、衣领、画师笔触与光照，米白背景不变，无文字无标号无边框。不转头不移动，不添加其他人物。左上第一格保持原本平静的神情；右上第二格露出克制温柔、明显可读的微笑，嘴角轻轻上扬；左下第三格惊讶、眉峰稍抬、嘴唇轻轻分开；右下第四格悲伤、眉内角抬起、嘴角下垂，不要大滴泪。只改变必要的眉眼与嘴角，所有格子必须是参考图的同一个人、同一造型；保持细腻专业的中国手绘视觉小说美术，不要改服装不要新增装饰。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-xua-v3.webp",
+      "proof": "artifacts/ui-fix-3/proofs/xua-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "sad"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    },
+    {
+      "character": "yu",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00006_.png",
+      "sha256": "734713ec341000155c456375f892cfa8fbf16dc9cb051b8f94f436e0eeff7556",
+      "width": 1024,
+      "height": 1024,
+      "workflow": "edit",
+      "seed": 1113005,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-ed05984f852f43bba45aa2d318a2984b.png"
+      ],
+      "prompt": "请严格在参考图原有的两列两行四格网格内，为同一角色雩制作表情差分。每个格子保持相同的头部尺寸、位置、朝向、脸型、年龄、头发与外轮廓、衣领、画师笔触与光照，米白背景不变，无文字无标号无边框。不转头不移动，不添加其他人物。左上第一格保持原本平静的神情；右上第二格露出克制温柔、明显可读的微笑，嘴角轻轻上扬；左下第三格惊讶、眉峰稍抬、嘴唇轻轻分开；右下第四格悲伤、眉内角抬起、嘴角下垂，不要大滴泪。雩的双眼始终被原本的米白色蒙眼布完整覆盖，布的位置、形状、厚度和结完全不变，绝不可画出眼睛；仅通过嘴部和面部肌肉表达笑、惊、悲。只改变必要的眉眼与嘴角，所有格子必须是参考图的同一个人、同一造型；保持细腻专业的中国手绘视觉小说美术，不要改服装不要新增装饰。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-yu.webp",
+      "proof": "artifacts/ui-fix-3/proofs/yu-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "sad"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    },
+    {
+      "character": "amao",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00007_.png",
+      "sha256": "29ccb59b675111d83987affd971a7409a7ae6461700a49fde8053b9aec253996",
+      "width": 1024,
+      "height": 1024,
+      "workflow": "edit",
+      "seed": 1113006,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-5fd75de0603d4994b21827d6faae1376.png"
+      ],
+      "prompt": "请严格在参考图原有的两列两行四格网格内，为同一角色阿媪制作表情差分。每个格子保持相同的头部尺寸、位置、朝向、脸型、年龄、头发与外轮廓、衣领、画师笔触与光照，米白背景不变，无文字无标号无边框。不转头不移动，不添加其他人物。左上第一格保持原本平静的神情；右上第二格露出克制温柔、明显可读的微笑，嘴角轻轻上扬；左下第三格惊讶、眉峰稍抬、嘴唇轻轻分开；右下第四格悲伤、眉内角抬起、嘴角下垂，不要大滴泪。保持原图老人的真实年龄、皱纹与骨相，不能变年轻。只改变必要的眉眼与嘴角，所有格子必须是参考图的同一个人、同一造型；保持细腻专业的中国手绘视觉小说美术，不要改服装不要新增装饰。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-amao.webp",
+      "proof": "artifacts/ui-fix-3/proofs/amao-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "sad"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    },
+    {
+      "character": "tang",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00008_.png",
+      "sha256": "4b2b89202e2efcf208bf94524880dab607876095a6f7031e07c6171bb53428b9",
+      "width": 1024,
+      "height": 1024,
+      "workflow": "edit",
+      "seed": 1113007,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-74856802c41149ceabfbe223e0618e22.png"
+      ],
+      "prompt": "请严格在参考图原有的两列两行四格网格内，为同一角色唐瑾制作表情差分。每个格子保持相同的头部尺寸、位置、朝向、脸型、年龄、头发与外轮廓、衣领、画师笔触与光照，米白背景不变，无文字无标号无边框。不转头不移动，不添加其他人物。左上第一格保持原本平静的神情；右上第二格露出克制温柔、明显可读的微笑，嘴角轻轻上扬；左下第三格惊讶、眉峰稍抬、嘴唇轻轻分开；右下第四格悲伤、眉内角抬起、嘴角下垂，不要大滴泪。只改变必要的眉眼与嘴角，所有格子必须是参考图的同一个人、同一造型；保持细腻专业的中国手绘视觉小说美术，不要改服装不要新增装饰。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-tang.webp",
+      "proof": "artifacts/ui-fix-3/proofs/tang-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "sad"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    },
+    {
+      "character": "yuan",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00009_.png",
+      "sha256": "2f810ee6aab0c41f2b2ffef229a003a3c97f8f32dd15b8bc32907dcfb443d734",
+      "width": 1024,
+      "height": 1024,
+      "workflow": "edit",
+      "seed": 1113008,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-4044898276ae4f20a508f08b76e20931.png"
+      ],
+      "prompt": "请严格在参考图原有的两列两行四格网格内，为同一角色沅制作表情差分。每个格子保持相同的头部尺寸、位置、朝向、脸型、年龄、头发与外轮廓、衣领、画师笔触与光照，米白背景不变，无文字无标号无边框。不转头不移动，不添加其他人物。左上第一格保持原本平静的神情；右上第二格露出克制温柔、明显可读的微笑，嘴角轻轻上扬；左下第三格惊讶、眉峰稍抬、嘴唇轻轻分开；右下第四格悲伤、眉内角抬起、嘴角下垂，不要大滴泪。只改变必要的眉眼与嘴角，所有格子必须是参考图的同一个人、同一造型；保持细腻专业的中国手绘视觉小说美术，不要改服装不要新增装饰。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed",
+      "originalPortrait": "public/art/portrait-yuan.webp",
+      "proof": "artifacts/ui-fix-3/proofs/yuan-composition.json",
+      "states": [
+        "smile",
+        "surprised",
+        "sad"
+      ],
+      "faceOnly": true,
+      "alphaIdentical": true,
+      "changedOutsideFace": 0
+    }
+  ],
+  "cgs": [
+    {
+      "id": "e1-blade",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00015_.png",
+      "sha256": "b9ce032899c0ecdc9837cc3024f84c6b867fa28e3685c6f361919745c43e3589",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140090,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-9013796e729f4e2f85b19b7f490fac2e.png",
+        "codex-reference-d210e13c8f564449a66e87c5d24a3768.png"
+      ],
+      "prompt": "只输出完整横向叙事插画。第一图只作画幅、原游戏笔触参考，允许重画所有内容；第二图作戌和媭的外貌衣着参考。寿春楚国宗庙后巷，纯古代战国场景，石巷、木门、竹帘、粥铺柴火白汽，不出现任何现代物品，严禁自行车、汽车、电线、现代衣着、现代建筑。清晨，十五岁的楚地白衣少年戌被两名差役带往巷深处，主角以远处背影和一只握着小铜铃的手呈现，衣着须与第二图相符；左侧少女媭提着小菜篮躲在木门后望着他，远处另有模糊逃出的村民身影。他们终于活到了天亮。克制、哀伤而保留日常。16:9电影构图，青黛旧金灰蓝色，水墨厚涂融合，可信战国楚代木构与石路。画面无文字，无伤口血腥，无庆功氛围，无拼贴双联画水印logo。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "e2-mercy",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00001_.png",
+      "sha256": "244a68f8e3db3a26e828768e3eecf7778df935ce76c6d5f54ee7a2c63e280e33",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140001,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-b257cb9bc098421d91c21f4e8fdc9ab6.png",
+        "codex-reference-38c4fd06a36148bbb1f71262986e8819.png"
+      ],
+      "prompt": "参考图1只提供画风与横向画幅，允许彻底重构构图；参考图2只提供白衣少年的身份和衣着，不要复制排版。只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。冷雨中的荒野废亭，十五岁楚地少年裹着旧冬衣安静坐在柱脚，十根旧竹名简在膝上，一根歪着，破骨笛与接雨的碎陶罐底放在手边。亭外空无一人，芦苇与黎明淡光从远处进入。以全景和人物侧背影表现无人再催他说话的寂静，不显示血、伤口或死亡特写。戌参考外貌、旧麻衣与白疤保持一致。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "e3-leave",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00003_.png",
+      "sha256": "27ee145dd2782627364f654727255e8a806dedee4cf52978fea15f9eb14cc91f",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140002,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-410bdaca44d842bab25c5a52cabd6a38.png",
+        "codex-reference-6b342b62c52b4ea5876f18d1ee1be24c.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。寿春护城河清晨，楚地少年穿普通旧巫衣站在灰白石岸，背影小而挺直，手腕的束绳只作远景暗示，绝不描绘痛苦或暴力。河上一只布鞋开口向上，接住一小片晨光，岸鸟掠过上方。远处登记的人与竹简虚化，焦点在少年抬起的头和真实河水；不是逃离庆功，不画热闹宫殿或胜利姿态。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "e4-names",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00004_.png",
+      "sha256": "419f36edc7d813d8ee0d34c59e5953ce50176ad8666bb42de5dee321376ddf3a",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140003,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-b54b1e0a58824faaa47ce60d94077098.png",
+        "codex-reference-4c9c5065b525403bbaba85f712f7bc04.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。宗庙西墙化入一条安静星河，暮色高台上三块拼合玉放在祭案，白衣楚地少年握着木鸟和卜骨，正走向河边低灯。蒙眼少女在船上侧头听脚步，为他把包袱挪开一个位置；老臣屈衡拄杖立在远处台阶。人物都以参考立绘为准，重点是留出的空位与微弱暖灯，不画文字显影。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "e5-kunlun",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00005_.png",
+      "sha256": "65825a7b34f8d7d4c3d1d51c851bf3ad1bc2869585544c04df799d0300c9f627",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140004,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-544fa132393e4858a6dd6115d5d29c1d.png",
+        "codex-reference-1f80d1da27a2495caffa195b9cf0e178.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。无时的光河，两片深蓝星空之间流着宽河，水底的星光柔和照亮一块坐得下许多人的平石。楚地孩子在岸边休息：蒙眼少女循笛声侧头，独臂少女用唯一左手编绳，幼小男孩蹲着捞星，一旁女孩护着双耳陶罐，白衣少年静静坐下。用中远景避免密集面部，身体完整自然，缺臂和蒙眼设定严格保留。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "e6-home",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00016_.png",
+      "sha256": "722d60bc1faac33b766489f5eed3c5a986f10d991712c5634195f0df61a0eff8",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140095,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-1b29c7bca28e4a8eb7aeb5a38b52d4e9.png",
+        "codex-reference-6365e4bfe38f4ec7a05afd8017270216.png"
+      ],
+      "prompt": "只生成一幅完整横向电影式家庭晚餐场景，不是拼贴或双联画。以参考一仅作为本作柔和水彩厚涂画风与画幅参考，参考二只帮助保持沈辞和唐瑾的现代校服。场景中恰好四个人并清楚区分：最左侧一位四十多岁成年母亲，面容成熟、黑发低髻、穿素色家居衣和旧围裙，手持汤勺正在从炖锅给儿子添汤；中间父亲四十多岁、短发，剥蒜微笑；桌边十六岁儿子沈辞，穿蓝白校服，不持汤勺；右侧十五岁女儿唐瑾，低马尾，穿蓝白校服，安静挑出葱花。母亲必须明显是成人，不能穿校服；唐瑾必须明显是未成年校服学生，不能被画成母亲。温暖的宜昌普通家庭厨房与木餐桌，莲藕排骨汤水汽透过暖灯，画面叙事温柔不摆拍。窗外蓝色傍晚住宅。远处门缝里的旧图盒只露茶色纸边。角色自然可信、手部正确，服装完整，除这四人没有别人；无文字无标志无水印。16:9横向叙事CG，下三分之一保留暗而低细节的空间以承接画面UI，不要把人物脸放在最右四分之一。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s01-dream-boat",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00007_.png",
+      "sha256": "2ec56e7f1778096daa0284c95841c9ac73b12bb57a64c1534c95244554e2d8cc",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140006,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-2a897ed073864fc6b145b6f22e00b83a.png",
+        "codex-reference-c3aa67ae10f446f4a5d712d8c5deaec4.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。第一人称贴近一条夜航旧木船，湿衣袖与一只小手攥紧船沿，船底积水映出一张遥远的青铜脸，芦苇擦过低低船灯。船板缝间的水影像许多伸来的手，但不画断肢、伤口或血，未知感来自水纹、倾斜构图与远处的鼓影。深蓝黑与一盏旧金，光从船底缓慢透入。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s02-first-crossing",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00008_.png",
+      "sha256": "142863fd44075e171b9a2eefec545ac73f57f84546572b0b9d280183ea438c08",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140007,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-62fc1495dfaf4bb982cbb1784296b7ef.png",
+        "codex-reference-f895709cf6734aa9a2d714d2e6911f86.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。破晓渡口，鸟首旧木舟缓缓离岸。穿旧象牙白麻衣的十五岁少年扑在船尾，高举手臂向河岸挥；柳树旁的老妇阿媪夹着一只小陶罐，也举起手。河转弯前，两个人都没有放下。薄雾、低船灯、温灰蓝天光，中远景把河面距离作为画面核心，不画拥抱团圆。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s03-ritual",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00009_.png",
+      "sha256": "ad5d1caa297caf395ec43dd1e3947e022287ce9ba56f4be4173363e2adb3b7ff",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140008,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-805f340e5205489dbcf8ccdc93dac1fb.png",
+        "codex-reference-5c687ad9f8e342acb25de8bfeeccbe57.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。楚国宗庙大祭高台，瘦老臣屈衡跪在白衣少年旁，把一片旧名帛展开，祭案三玉在火光里微亮。台外老妇从人群中抬头，远处赤足的模糊人影从深处走来。火光压低、风突然安静，神秘来自空席和被认真叫到的名字，帛上仅抽象刻痕不能可读。老臣左手缺两指，不作恐怖特写。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s04-old-names",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00010_.png",
+      "sha256": "2662635cb83f3f3269d2a32c2af0ad4f190d78035f00626a119537821181fe62",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140009,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-65bde9329e3e42b4a78cfe0f22f800d4.png",
+        "codex-reference-65bb79171626476b8a8e10f148026926.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。古朴书房夜灯，一只旧木箱打开，十根有水渍的竹名简在案上摊开，旧断笛与一卷写到半途的新简在旁。六十多岁清瘦老臣低头，缺指左手搁在一根名简边，白衣少年站在对面安静等他开口。用手部、灯、木纹与两个人的空隙表达迟来的追问，不画任何可读字。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s05-mi-flute",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00011_.png",
+      "sha256": "1cec9134402930a8f38f2610a2c7cb79c4bbe90b3a2d0fd6a41f6822625fcd18",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140010,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-2ea546701c8d47029e875e3f94e350ce.png",
+        "codex-reference-bec88ae837c543d0a15d4f22884cfde1.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。芈在光河岸上试吹一支缠过布的破骨笛。十四岁楚地少年黑发略蓬松、小发束，旧米白麻衣，嘴唇自然贴近笛口，笑意克制而认真；一群小乌鸦从两片星空之间落下，停在肩头和石边，仿佛愿意为每个漏音多等一会儿。蒙眼少女在旁伸手接他。没有血、舌头或创伤展示，身份以芈既有参考立绘为准。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s06-snow-hands",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00012_.png",
+      "sha256": "b3e8052c781f681d219b1c2e66a0b5bb60069fdaa91dad68a5562b2e9b363198",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140011,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-ca64f25a81b1422792bc7bc956ed5c78.png",
+        "codex-reference-01475a55e67e451db0267b071d50091f.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。盐客旧洞雪夜，最后一段木头仅有一点暖红，三个楚地少年裹在同一件旧冬衣下依靠坐着：白衣少年居中，蒙眼少女与握破笛的少年从两侧靠进来，六只手轮着藏进尚暖处。洞外细雪和黎明淡光，景深柔和，重点是衣襟里没有松开的手。安静、有尊严，不显示死亡面孔，不煽情张口哭喊。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s07-light-river",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00013_.png",
+      "sha256": "98a1c7cf51c7e8a6427fa399b64765acfe1fc5e0368baf88eb7a9cd7d2be456d",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140012,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-13e5ab91d06d436e81e04bc84bc45d66.png",
+        "codex-reference-f54e4884f35c44d1a175e10ce3c0d04f.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。视角从平凉的河岸石面抬起，脚下与头顶各一片星夜，宽河横在两片夜之间，光从水底慢慢长上来。一块平石坐得下许多人，幼小的沅在岸边把脚伸进水又拿出来，好奇看水从趾缝漏去；白衣少年刚坐起，只留侧背影。星光是水与纸上的轻光，不是霓虹或科幻光束。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "id": "s08-farewell",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00014_.png",
+      "sha256": "1fc530e56f506ec01fe5410e3d11cda7e76c05df3d1ab02969137343aa1ac4dd",
+      "width": 1376,
+      "height": 768,
+      "workflow": "multiref",
+      "seed": 9140013,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [
+        "codex-reference-a678329b41474c548c95e70535a93f8d.png",
+        "codex-reference-25c2c9b6c87c4716951e477948b8d844.png"
+      ],
+      "prompt": "只输出一幅完整的横向叙事插画，绝不是人物卡、拼图、双联画或并排画。第一张参考图提供原游戏的笔触、氛围、场景色彩和画幅；第二张参考图仅用于角色身份与衣着。不要在画面中绘制正文或文字；让底部下方留白呈低细节暗部，右侧尽量不放脸。光河岸的近景，芈将破骨笛放低，伸手轻敲沈辞掌心两下，然后慢慢张开。两位少年的手是焦点；白衣戌在不远处蹲到石旁，为缺翅的小木鸟找垫石，蒙眼少女侧耳，其他孩子轮廓安静。现代校服沈辞与古代白衣戌此刻是两个人，不可画成同一人。没有文字或夸张哭泣，告别靠光和手的停顿。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    }
+  ],
+  "extras": [
+    {
+      "character": "mother",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00043_.png",
+      "sha256": "69713907c60e123198bbe8d29bf487e3747f6318ee1911de4c6b7a608eb84f87",
+      "width": 768,
+      "height": 1152,
+      "workflow": "txt2img",
+      "seed": 9150000,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [],
+      "prompt": "现代中国普通母亲，四十岁上下为美术制作取值（原文未规定年龄），黑发简单扎起，穿家常长袖与旧围裙，刚端起一碗早餐，神情温暖而有生活劳累感；不要奢华装扮。原文依据：0-2立绘明确围裙；0-8搓洗校服；终-5拿汤勺。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "character": "gouzi",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00044_.png",
+      "sha256": "6dd493c85f3066ab66ad264697d9d28c868f591cf59b130b01466365b1606fbe",
+      "width": 768,
+      "height": 1152,
+      "workflow": "txt2img",
+      "seed": 9150001,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [],
+      "prompt": "战国楚地巫村少年，身材略高，晒过的皮肤，束起的乱黑发，朴素灰褐麻衣，手扶一支鱼叉，嘴快而带一点逞强的神情；年龄十五岁上下为制作取值。原文依据：1-3河滩少年群、扛鱼叉；1-7老觋叫狗子掌灯。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "character": "zhou",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00045_.png",
+      "sha256": "9748e952f61a50b98ef37a183cdcc321d29cd415289986fa1684cb59a66038a4",
+      "width": 768,
+      "height": 1152,
+      "workflow": "txt2img",
+      "seed": 9150002,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [],
+      "prompt": "现代中国高中女老师，三十多岁为制作取值，素色衬衫、深蓝开衫与长裤，手持课本和一小截粉笔，清醒而耐心的目光。原文依据：0-4课堂敲书；0-9讲楚地巫祭、在黑板敲归字，叙述使用她。不要在画面写字。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "character": "daoist",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00046_.png",
+      "sha256": "e9374bd25a7943e93e87b9b51acdcfaa493581fd890d94b01d2032304b5abce8",
+      "width": 768,
+      "height": 1152,
+      "workflow": "txt2img",
+      "seed": 9150003,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [],
+      "prompt": "现代中国校门外的邋遢男道士，四十到五十岁为制作取值，略乱发髻、短胡茬，穿旧灰布道袍，下摆沾少许湿泥，一只手拿几颗旧螺丝，眼神清醒而随意，不神化、不加法术。原文依据：0-6低头收螺丝、0-8道袍下摆湿泥。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    },
+    {
+      "character": "aheng",
+      "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00047_.png",
+      "sha256": "7c934f7e3f3d9d73b5fee263d4990ce3b81032a1105d46cba8827b4c438609eb",
+      "width": 768,
+      "height": 1152,
+      "workflow": "txt2img",
+      "seed": 9150004,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "references": [],
+      "prompt": "战国楚地成年女采药人，背着比肩还宽的竹药篓，裤腿沾泥，腰边系一小串红果，旧长袖袖口被荆条拉出细线；头发实用扎起，笑意爽朗，身体有力量感。年龄三十岁上下为制作取值。原文依据：B-8:9:0—:11:1，女人、宽篓、泥裤腿、红果、荆条袖口。不要神仙服饰，不加兽耳。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "negativePrompt": "低质量，模糊，变形，畸形解剖结构，多余的手指，多余的肢体，残缺，文字，水印，签名，logo，JPEG 压缩痕迹，过曝，欠曝\nlow quality, blurry, deformed, bad anatomy, extra limbs, extra fingers, mutilated, text, watermark, signature, logo, jpeg artifacts, overexposed, underexposed"
+    }
+  ]
+}

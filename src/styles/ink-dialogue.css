@@ -39,6 +39,23 @@
     drop-shadow(0 10px 30px rgba(2, 12, 16, 0.45));
   transition: filter 180ms ease-out;
 }
+.actor img.actor-portrait {
+  position: absolute;
+  inset: 0;
+}
+.actor img.actor-portrait--outgoing {
+  animation: actor-expression-out var(--expression-duration, 150ms) ease-out both;
+}
+.actor img.actor-portrait--incoming {
+  animation: actor-expression-in var(--expression-duration, 150ms) ease-out both;
+}
+@keyframes actor-expression-out {
+  to { opacity: 0; }
+}
+@keyframes actor-expression-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 .actor--warm img {
   filter: sepia(.08) saturate(.96) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
 }

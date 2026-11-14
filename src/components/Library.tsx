@@ -1,9 +1,14 @@
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Download, Headphones, Image as ImageIcon, LockKeyhole, RotateCcw, Upload, X } from 'lucide-react';
 import { asset, assetSources, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitFace, sourceDocument } from '../data/world';
 import { portraitName } from '../assets';
 import { ArtImage } from './ArtImage';
+import { useModalBack } from './Modal';
+import { sound } from '../audio';
+import { CGS, cgUnlocked } from '../data/cgs';
+import { AVAILABLE_EXTRAS, EXTRAS } from '../data/extras';
 import { canReturn, hasKunlun, hasRoyal, SCENES, sceneById } from '../engine';
+import { isStoryReady, loadStory } from '../story';
 import { BoneMark } from './Atmosphere';
 import { slotPresentation } from '../savePresentation';
 import type { GameState, Profile, Route, SaveSlot, Settings } from '../types';
@@ -56,14 +61,33 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
 
 export function CharactersView({ profile }: { profile: Profile }) {
   const [selected, setSelected] = useState(CHARACTERS[0]);
-  const known = (key: string) => profile.met.includes(key) || key === 'shen';
-  const count = CHARACTERS.filter(character => known(character.key)).length;
+  const [storyReady, setStoryReady] = useState(isStoryReady);
+  useEffect(() => {
+    if (storyReady || !profile.read.length) return;
+    let active = true;
+    void loadStory().then(() => { if (active) setStoryReady(true); }).catch(() => {});
+    return () => { active = false; };
+  }, [storyReady, profile.read.length]);
+  const characters = [...CHARACTERS, ...EXTRAS.filter(character => AVAILABLE_EXTRAS.has(character.key))];
+  const heardExtras = useMemo(() => {
+    const readBlocks = new Set(profile.read.map(id => id.slice(0, id.lastIndexOf(':'))));
+    const heard = new Set<string>();
+    for (const scene of SCENES) scene.blocks.forEach((block, index) => {
+      if (!readBlocks.has(`${scene.id}:${index}`)) return;
+      const speaker = block.tag.split('·')[0];
+      const character = EXTRAS.find(extra => extra.name === speaker || (extra.key === 'daoist' && speaker === '邋遢道士'));
+      if (character) heard.add(character.key);
+    });
+    return heard;
+  }, [profile.read, storyReady]);
+  const known = (key: string) => profile.met.includes(key) || key === 'shen' || heardExtras.has(key);
+  const count = characters.filter(character => known(character.key)).length;
   return <div className="characters-layout">
     <div className="character-gallery">
-      <p className="character-hint">记住一个名字，也记住一个人。<span>{count}<i> / {CHARACTERS.length}</i></span></p>
-      <div className="character-grid">{CHARACTERS.map((character, index) => {
+      <p className="character-hint">记住一个名字，也记住一个人。<span>{count}<i> / {characters.length}</i></span></p>
+      <div className="character-grid">{characters.map((character, index) => {
         const met = known(character.key);
-        return <button className={`character-card ${selected.key === character.key ? 'selected' : ''} ${met ? '' : 'character-card--locked'}`} key={character.key} disabled={!met} onClick={() => setSelected(character)} aria-pressed={selected.key === character.key} aria-label={met ? `${character.name}，${character.subtitle}` : `第 ${index + 1} 位，尚未相逢`}>
+        return <button className={`character-card ${selected.key === character.key ? 'selected' : ''} ${met ? '' : 'character-card--locked'}`} key={character.key} data-character={character.key} disabled={!met} onClick={() => setSelected(character)} aria-pressed={selected.key === character.key} aria-label={met ? `${character.name}，${character.subtitle}` : `第 ${index + 1} 位，尚未相逢`}>
           <span className="character-thumb" style={{ '--character-color': character.color } as React.CSSProperties}><img src={portraitFace(character.key)} alt="" loading="lazy" />{!met && <span className="character-unknown" aria-hidden="true">？</span>}</span>
           <span className="character-card-name">{met ? character.name : '未相逢'}</span>
         </button>;
@@ -82,25 +106,61 @@ export function CharactersView({ profile }: { profile: Profile }) {
 }
 
 export function GalleryView({ profile }: { profile: Profile }) {
-  const entries = Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day');
-  const unlocked = entries.filter(([key]) => profile.art.includes(key));
+  const [tab, setTab] = useState<'landscapes' | 'cgs'>('landscapes');
+  const entries = tab === 'landscapes'
+    ? Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day').map(([key, info]) => ({ key, art: key, thumbnail: `${key}-thumb`, ...info, known: profile.art.includes(key) }))
+    : CGS.filter(cg => !!cg.file).map(cg => ({ key: cg.id, art: cg.file, thumbnail: cg.thumbnail || cg.file, name: cg.title, subtitle: cg.caption, chapter: '旅途留影', known: cgUnlocked(cg, profile) }));
+  const unlocked = entries.filter(entry => entry.known);
   const [viewing, setViewing] = useState<string | null>(null);
   const [hideCaption, setHideCaption] = useState(false);
+  const pointer = useRef<{ x: number; y: number } | null>(null);
+  const swiped = useRef(false);
   const move = (step: number) => {
-    const index = unlocked.findIndex(([key]) => key === viewing);
-    setViewing(unlocked[(index + step + unlocked.length) % unlocked.length][0]);
+    if (unlocked.length < 2) return;
+    const index = unlocked.findIndex(entry => entry.key === viewing);
+    setViewing(unlocked[(index + step + unlocked.length) % unlocked.length].key);
   };
-  if (viewing) return <div className={`gallery-viewer ${hideCaption ? 'gallery-viewer--clean' : ''}`}>
-    <ArtImage className="gallery-full" name={viewing} alt={BACKGROUNDS[viewing].name} onClick={() => setHideCaption(!hideCaption)} />
-    <button className="gallery-back icon-button" onClick={() => setViewing(null)} aria-label="返回绘卷"><ArrowLeft size={22} /></button>
-    <div className="gallery-caption"><span className="eyebrow">{BACKGROUNDS[viewing].chapter}</span><h3>{BACKGROUNDS[viewing].name}</h3><p>{BACKGROUNDS[viewing].subtitle}</p><a href={assetSources(viewing).webp} download={`异托邦-${BACKGROUNDS[viewing].name}.webp`} className="text-button"><Download size={14} />收藏此景</a></div>
-    {unlocked.length > 1 && <div className="gallery-arrows"><button className="icon-button" onClick={() => move(-1)} aria-label="上一张"><ArrowLeft size={20} /></button><span>{unlocked.findIndex(([key]) => key === viewing) + 1} / {unlocked.length}</span><button className="icon-button" onClick={() => move(1)} aria-label="下一张"><ArrowRight size={20} /></button></div>}
+  useModalBack(() => {
+    if (!viewing) return false;
+    if (hideCaption) setHideCaption(false);
+    else setViewing(null);
+    return true;
+  });
+  useEffect(() => {
+    if (!viewing) return;
+    const keydown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault(); event.stopPropagation();
+        move(event.key === 'ArrowLeft' ? -1 : 1);
+      }
+    };
+    window.addEventListener('keydown', keydown, true);
+    return () => window.removeEventListener('keydown', keydown, true);
+  }, [viewing, unlocked.map(entry => entry.key).join(',')]);
+  const viewed = unlocked.find(entry => entry.key === viewing);
+  if (viewed) return <div className={`gallery-viewer ${hideCaption ? 'gallery-viewer--clean' : ''}`} data-gallery-art={viewed.art} style={hideCaption ? { position: 'fixed', inset: 0, width: '100vw', height: '100dvh', zIndex: 30 } : undefined}>
+    <button className="gallery-art-toggle" aria-label={hideCaption ? '退出沉浸看图' : '沉浸看图'} onClick={() => {
+      if (swiped.current) { swiped.current = false; return; }
+      setHideCaption(value => !value);
+    }} onPointerDown={event => {
+      pointer.current = { x: event.clientX, y: event.clientY }; swiped.current = false;
+    }} onPointerUp={event => {
+      if (!pointer.current) return;
+      const dx = event.clientX - pointer.current.x, dy = event.clientY - pointer.current.y;
+      pointer.current = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { swiped.current = true; move(dx < 0 ? 1 : -1); }
+    }} onPointerCancel={() => { pointer.current = null; }}>
+      <ArtImage className="gallery-full" name={viewed.art} alt={viewed.name} draggable={false} />
+    </button>
+    <button className="gallery-back icon-button" onClick={() => setViewing(null)} aria-label="返回绘卷"><X size={19} /><span>返回</span></button>
+    <div className="gallery-caption"><span className="eyebrow">{viewed.chapter}</span><h3>{viewed.name}</h3><p>{viewed.subtitle}</p><a href={assetSources(viewed.art).webp} download={`异托邦-${viewed.name}.webp`} className="text-button"><Download size={14} />下载此景</a><small className="gallery-gesture-hint">轻触画面沉浸观看 · 左右滑动换图</small></div>
+    {unlocked.length > 1 && <div className="gallery-arrows"><button className="icon-button" onClick={() => move(-1)} aria-label="上一张"><ArrowLeft size={20} /></button><span>{unlocked.findIndex(entry => entry.key === viewing) + 1} / {unlocked.length}</span><button className="icon-button" onClick={() => move(1)} aria-label="下一张"><ArrowRight size={20} /></button></div>}
   </div>;
-  return <div className="gallery-content"><div className="library-intro"><p>走过的山河，会在这里留下影子。</p><span>{unlocked.length} <i>/ {entries.length}</i></span></div><div className="gallery-grid">
-    {entries.map(([key, info], index) => {
-      const known = profile.art.includes(key);
-      return <button key={key} className={`gallery-card ${!known ? 'gallery-card--locked' : ''}`} disabled={!known} onClick={() => setViewing(key)}>
-        <div className="gallery-thumbnail">{known ? <img src={asset(`${key}-thumb`)} alt={info.name} loading="lazy" /> : <><img className="locked-glimpse" src={asset(`${key}-thumb`)} alt="" loading="lazy" aria-hidden="true" /><span className="locked-landscape" /><LockKeyhole size={20} strokeWidth={1} /></>}<span className="gallery-index">{String(index + 1).padStart(2, '0')}</span>{known && <ImageIcon className="gallery-open" size={20} strokeWidth={1} />}</div><div className="gallery-card-title"><strong>{known ? info.name : '未至之境'}</strong><small>{known ? info.subtitle : '随旅途解锁'}</small></div>
+  return <div className="gallery-content"><div className="tab-bar gallery-tabs" role="tablist" aria-label="绘卷分类"><button role="tab" aria-selected={tab === 'landscapes'} className={tab === 'landscapes' ? 'selected' : ''} onClick={() => setTab('landscapes')}>山河</button><button role="tab" aria-selected={tab === 'cgs'} className={tab === 'cgs' ? 'selected' : ''} onClick={() => setTab('cgs')}>留影 · CG</button></div><div className="library-intro"><p>{tab === 'landscapes' ? '走过的山河，会在这里留下影子。' : '亲历过的瞬间，才会在卷中展开。'}</p><span>{unlocked.length} <i>/ {entries.length}</i></span></div>{!entries.length && <p className="empty-note">下一程的留影，还在水声里。</p>}<div className="gallery-grid">
+    {entries.map((info, index) => {
+      const { key, known } = info;
+      return <button key={key} className={`gallery-card ${!known ? 'gallery-card--locked' : ''}`} disabled={!known} onClick={() => { setViewing(key); setHideCaption(false); }}>
+        <div className="gallery-thumbnail">{known ? <ArtImage name={info.thumbnail} alt={info.name} loading="lazy" /> : <><ArtImage className="locked-glimpse" name={info.thumbnail} alt="" loading="lazy" aria-hidden="true" /><span className="locked-landscape" /><LockKeyhole size={20} strokeWidth={1} /></>}<span className="gallery-index">{String(index + 1).padStart(2, '0')}</span>{known && <ImageIcon className="gallery-open" size={20} strokeWidth={1} />}</div><div className="gallery-card-title"><strong>{known ? info.name : '未至之境'}</strong><small>{known ? info.subtitle : '随旅途解锁'}</small></div>
       </button>;
     })}
   </div></div>;
@@ -157,9 +217,9 @@ export function SaveView({ slots, state, profile, initialMode, onSave, onLoad, o
 
 export function SettingsView({ settings, onChange, onExport, onImport, onReset, onMusic }: { settings: Settings; onChange: (settings: Settings) => void; onExport: () => void; onImport: (file: File) => void; onReset: () => void; onMusic: () => void }) {
   const input = useRef<HTMLInputElement>(null);
-  const slider = (key: 'textSpeed' | 'autoDelay' | 'fontSize' | 'musicVolume' | 'ambienceVolume' | 'sfxVolume', label: string, min: number, max: number, description: string, unit: string) => <label className="setting-row"><span><strong>{label}</strong><small>{description}</small></span><div className="range-control"><input aria-label={label} type="range" min={min} max={max} value={settings[key]} style={{ '--range-fill': `${(settings[key] - min) / (max - min) * 100}%` } as React.CSSProperties} onChange={event => onChange({ ...settings, [key]: Number(event.target.value) })} /><output>{key === 'textSpeed' && settings[key] === 0 ? '即现' : `${settings[key]}${unit}`}</output></div></label>;
-  const toggle = (key: 'reducedMotion' | 'showSprites' | 'muted', label: string, description: string) => <div className="setting-row"><span><strong>{label}</strong><small>{description}</small></span><button type="button" className={`toggle ${settings[key] ? 'toggle--on' : ''}`} role="switch" aria-checked={settings[key]} aria-label={label} onClick={() => onChange({ ...settings, [key]: !settings[key] })}><span /></button></div>;
-  return <div className="settings-content"><div className="settings-columns"><section><h3 className="section-label">阅读 · 按自己的节奏</h3>{slider('textSpeed', '文字显现', 0, 65, '调到最左侧可立即显示全文', '字/秒')}{slider('autoDelay', '自动间隔', 2, 10, '全文显示后，再稍等一会儿', '秒')}{slider('fontSize', '正文字号', 17, 29, '把字调到舒服的大小', 'px')}{toggle('showSprites', '人物立绘', '让说话的人出现在画面中')}{toggle('reducedMotion', '减弱动态', '减少粒子、镜头移动与转场')}</section><section><h3 className="section-label">听觉 · 一条河的声音</h3>{slider('musicVolume', '配乐音量', 0, 100, '十一首原声，随旅途渐次展开', '%')}{slider('ambienceVolume', '环境音量', 0, 100, '水声、风声与灶边的微响', '%')}{slider('sfxVolume', '音效音量', 0, 100, '纸页、铜铃与脚下的一步', '%')}{toggle('muted', '静音', '暂时把声音放轻')}<button className="text-button settings-music-link" onClick={onMusic}><Headphones size={16} strokeWidth={1.2} />听水集 · 原声重听<ArrowRight size={14} /></button><div className="settings-note"><span>戴上耳机，</span><p>听水从远处来，也听人慢慢说话。</p></div></section></div><div className="settings-footer"><div className="settings-transfer"><button className="text-button" onClick={onExport}><Download size={15} />导出旅途</button><button className="text-button" onClick={() => input.current?.click()}><Upload size={15} />导入存档</button><input ref={input} type="file" accept="application/json,.json" hidden onChange={event => { const file = event.target.files?.[0]; if (file) onImport(file); event.target.value = ''; }} /></div><button className="text-button quiet" onClick={onReset}><RotateCcw size={14} />恢复阅读设置</button></div><div className="keyboard-reference" aria-label="阅读快捷键"><span><kbd>Space</kbd> / <kbd>Enter</kbd> 继续 / 显示全文</span><span><kbd>←</kbd> / <kbd>PageUp</kbd> 回看 / 上滑</span><span><kbd>A</kbd> 自动阅读</span><span><kbd>Ctrl</kbd> 按住跳过已读</span><span><kbd>1–6</kbd> 选择纸签</span><span><kbd>S</kbd> 存档 / <kbd>L</kbd> 读档</span><span><kbd>H</kbd> 隐藏界面</span><span><kbd>F</kbd> 全屏</span><span><kbd>Esc</kbd> 菜单 / 逐层返回</span></div></div>;
+  const slider = (key: 'textSpeed' | 'autoDelay' | 'fontSize' | 'musicVolume' | 'ambienceVolume' | 'sfxVolume', label: string, min: number, max: number, description: string, unit: string) => <label className="setting-row"><span><strong>{label}</strong><small>{description}</small></span><div className="range-control"><input aria-label={label} type="range" min={min} max={max} value={settings[key]} style={{ '--range-fill': `${(settings[key] - min) / (max - min) * 100}%` } as React.CSSProperties} onChange={event => onChange({ ...settings, [key]: Number(event.target.value) })} onPointerUp={() => { if (key === 'sfxVolume') sound.click('preview'); }} onKeyUp={event => { if (key === 'sfxVolume' && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key)) sound.click('preview'); }} /><output>{key === 'textSpeed' && settings[key] === 0 ? '即现' : key === 'autoDelay' ? settings[key] <= 3 ? '较快' : settings[key] >= 8 ? '较慢' : '适中' : `${settings[key]}${unit}`}</output></div></label>;
+  const toggle = (key: 'reducedMotion' | 'showSprites' | 'muted' | 'lightweight' | 'autoAfterChoice', label: string, description: string) => <div className="setting-row"><span><strong>{label}</strong><small>{description}</small></span><button type="button" className={`toggle ${settings[key] ? 'toggle--on' : ''}`} role="switch" aria-checked={settings[key]} aria-label={label} onClick={() => { sound.click('toggle'); onChange({ ...settings, [key]: !settings[key] }); }}><span /></button></div>;
+  return <div className="settings-content"><div className="settings-columns"><section><h3 className="section-label">阅读 · 按自己的节奏</h3>{slider('textSpeed', '文字显现', 0, 65, '调到最左侧可立即显示全文', '字/秒')}{slider('autoDelay', '自动节奏', 2, 10, '快 ↔ 慢，长句会多留一点时间', '')}{toggle('autoAfterChoice', '选择后继续自动阅读', '作出选择后，沿用之前的自动阅读节奏')}{slider('fontSize', '正文字号', 17, 29, '把字调到舒服的大小', 'px')}{toggle('showSprites', '人物立绘', '让说话的人出现在画面中')}{toggle('reducedMotion', '减弱动态', '减少粒子、镜头移动与转场')}{toggle('lightweight', '轻量模式', '开启使用较小背景；关闭呈现原画细节')}</section><section><h3 className="section-label">听觉 · 一条河的声音</h3>{slider('musicVolume', '配乐音量', 0, 100, '十一首原声，随旅途渐次展开', '%')}{slider('ambienceVolume', '环境音量', 0, 100, '水声、风声与灶边的微响', '%')}{slider('sfxVolume', '音效音量', 0, 100, '纸页、铜铃与脚下的一步', '%')}{toggle('muted', '静音', '暂时把声音放轻')}<button className="text-button settings-music-link" onClick={onMusic}><Headphones size={16} strokeWidth={1.2} />听水集 · 原声重听<ArrowRight size={14} /></button><div className="settings-note"><span>戴上耳机，</span><p>听水从远处来，也听人慢慢说话。</p></div></section></div><div className="settings-footer"><div className="settings-transfer"><button className="text-button" onClick={onExport}><Download size={15} />导出旅途</button><button className="text-button" onClick={() => input.current?.click()}><Upload size={15} />导入存档</button><input ref={input} type="file" accept="application/json,.json" hidden onChange={event => { const file = event.target.files?.[0]; if (file) onImport(file); event.target.value = ''; }} /></div><button className="text-button quiet" onClick={onReset}><RotateCcw size={14} />恢复阅读设置</button></div><div className="keyboard-reference" aria-label="阅读快捷键"><span><kbd>Space</kbd> / <kbd>Enter</kbd> 继续 / 显示全文</span><span><kbd>←</kbd> / <kbd>PageUp</kbd> 回看 / 上滑</span><span><kbd>A</kbd> 自动阅读</span><span><kbd>Ctrl</kbd> 按住跳过已读</span><span><kbd>1–6</kbd> 选择纸签</span><span><kbd>S</kbd> 存档 / <kbd>L</kbd> 读档</span><span><kbd>H</kbd> 隐藏界面</span><span><kbd>F</kbd> 全屏</span><span><kbd>Esc</kbd> 菜单 / 逐层返回</span></div></div>;
 }
 
 export function AboutView() {

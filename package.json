@@ -15,11 +15,14 @@
     "test:perf": "node --import tsx scripts/with-preview.mjs scripts/perf-sprites.mjs",
     "test:portable": "node --import tsx scripts/test-portable.mjs",
     "test:audio": "node --import tsx scripts/with-preview.mjs scripts/test-audio.mjs",
+    "test:ui-polish": "node --import tsx scripts/with-preview.mjs scripts/test-ui-polish.mjs",
+    "test:reading-audio": "node --import tsx scripts/with-preview.mjs scripts/test-reading-audio.mjs",
     "art:compress": "python scripts/build-images.py",
     "fonts:prepare": "node scripts/prepare-story.mjs && python scripts/prepare_fonts.py",
     "assets:check": "node --import tsx scripts/check-assets.mjs",
     "test:cache": "node scripts/test-cache.mjs",
     "test:assets": "node scripts/with-preview.mjs scripts/test-assets.mjs",
+    "art:originals": "python scripts/encode-originals.py",
     "import:story": "python scripts/import_story.py"
   },
   "dependencies": {

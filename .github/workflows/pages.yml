@@ -41,6 +41,8 @@ jobs:
         run: |
           npm run test:interactions
           npm run test:sprites
+          npm run test:ui-polish
+          npm run test:reading-audio
       - name: Verify image fallbacks and persistent website cache
         run: |
           npm run assets:check

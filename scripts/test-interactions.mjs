@@ -3,6 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium, firefox, webkit } from 'playwright';
 import { advance, compileScene, currentBeat, enterScene, newGame, newProfile } from '../src/engine.ts';
+import { cgForBeat } from '../src/data/cgs.ts';
 import { loadStory } from '../src/story.ts';
 
 await loadStory();
@@ -55,8 +56,15 @@ async function check(label, run, options = {}) {
     await page.goto(base);
     await page.evaluate(() => document.fonts.ready);
     if (data.state) await page.getByRole('button', { name: /^续梦/ }).click();
-    const background = data.state ? currentBeat(data.state, data.profile).background : 'hero';
-    await page.waitForFunction(background => new RegExp(`/art/${background}\\.(avif|webp)`).test(document.querySelector('.scene-image--current')?.style.backgroundImage || ''), background);
+    const beat = data.state ? currentBeat(data.state, data.profile) : null;
+    const cg = data.state ? cgForBeat(beat, data.state.sceneId) : undefined;
+    const background = cg?.file ?? beat?.background ?? 'hero';
+    await page.waitForFunction(({ background, compressed }) => {
+      const image = document.querySelector('.scene-image--current')?.style.backgroundImage || '';
+      return compressed
+        ? new RegExp(`/art/${background}\\.(avif|webp)`).test(image)
+        : new RegExp(`/art-original/${background}\\.(png|webp)`).test(image);
+    }, { background, compressed: !!cg || data.settings?.lightweight === true });
     await run(page, data);
     results.push({ label, passed: true });
     console.log(`PASS ${label}`);

@@ -102,7 +102,7 @@ try {
   if (process.env.VN_DEBUG_CACHE) console.log(JSON.stringify({ foreground, responses }));
   assert.ok(foreground.every(file => file === 'index.html'), JSON.stringify(foreground));
   assert.ok(foreground.length <= (name === 'webkit' ? 2 : 1), JSON.stringify(foreground));
-  assert.ok(responses.filter(item => /\/(assets|fonts|art)\//.test(item.url)).every(item => item.serviceWorker));
+  assert.ok(responses.filter(item => /\/(assets|fonts|art|art-original)\//.test(item.url)).every(item => item.serviceWorker));
   results.push({ check: 'persistent cold restart, expired HTTP cache, Fast3G on Chromium', networkRequests: foreground.length, fontsReadyMs, responses: [...responses] });
   console.log(`${name}: persistent restart uses ${foreground.length} HTML request(s), all assets from service worker.`);
 

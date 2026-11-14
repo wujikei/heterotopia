@@ -1,0 +1,551 @@
+{
+  "sources": "docs/art/background-sources.json",
+  "method": "Pillow decode; reconstruct documented steps; compare mode, dimensions, full pixel buffers, and source/published SHA-256",
+  "pillowVersion": "12.3.0",
+  "registeredCoverageMatches": true,
+  "checked": 27,
+  "pixelIdentical": 27,
+  "verified": 27,
+  "directBackgrounds": 26,
+  "derivedBackgrounds": 1,
+  "uniqueSourcePngs": 26,
+  "uniqueSourcePngBytes": 50515917,
+  "publishedWebpBytes": 36772850,
+  "rows": [
+    {
+      "key": "alley",
+      "sourceKey": "alley",
+      "source": "txt2img_00007_.png",
+      "steps": [],
+      "published": "public/art-original/alley.webp",
+      "sourceSha256": "f17f8eba61b2718658b3db88945c33a2c996f4511d8c0def2e7d496e63f6024b",
+      "publishedSha256": "f9c82b948a38e3e15936e9ba9d64cc63ba8d282eccf8110f269c4e6b23b76465",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1278058,
+      "verified": true
+    },
+    {
+      "key": "bamboo",
+      "sourceKey": "bamboo",
+      "source": "txt2img_00012_.png",
+      "steps": [],
+      "published": "public/art-original/bamboo.webp",
+      "sourceSha256": "ffa25822b4622008c9e960f04c548c100eb60de596e1122602fb31adb5f86330",
+      "publishedSha256": "e765ce9afac62d69b3dd33ef48661ea81bb5593eac91ddc2da70e8f2391c626f",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1340454,
+      "verified": true
+    },
+    {
+      "key": "bedroom",
+      "sourceKey": "bedroom",
+      "source": "txt2img_00002_.png",
+      "steps": [],
+      "published": "public/art-original/bedroom.webp",
+      "sourceSha256": "5b84969595c8fd85b0781b9fce784a97f16aa5ea5ea096fd46a6445b530e135b",
+      "publishedSha256": "2c1afe45a0fde8799dbbe61cb7c0a8d9355955a0eed54a93678f7abf4db24e16",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1100546,
+      "verified": true
+    },
+    {
+      "key": "bus",
+      "sourceKey": "bus",
+      "source": "txt2img_00004_.png",
+      "steps": [],
+      "published": "public/art-original/bus.webp",
+      "sourceSha256": "1724c29567d25634d3df0eaa69bb18cc79326ad7ea989a03e2268ce4e256a9eb",
+      "publishedSha256": "0c8d8012599b6c2403326d371d40037af51c365e112c4dad3ba751693ef4c652",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1448208,
+      "verified": true
+    },
+    {
+      "key": "cave",
+      "sourceKey": "cave",
+      "source": "txt2img_00022_.png",
+      "steps": [],
+      "published": "public/art-original/cave.webp",
+      "sourceSha256": "a5277ec5c42d0ca42e08a239e8c76441bcf33d66cef352c982b62af313a9dc33",
+      "publishedSha256": "f29fc3cdba1f33dbac0bbc4a3b257e5cd0f517726935924ee8a9a74539db95cb",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1431276,
+      "verified": true
+    },
+    {
+      "key": "classroom",
+      "sourceKey": "classroom",
+      "source": "txt2img_00006_.png",
+      "steps": [],
+      "published": "public/art-original/classroom.webp",
+      "sourceSha256": "33adfe3ecfee0b72f33cfde0a943371bffd63e3719dc367be0d14ae5b55981bd",
+      "publishedSha256": "364471d597bd4e6c9c7698d761ff09a510c999e191db009c02dc2c90186f9452",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1311862,
+      "verified": true
+    },
+    {
+      "key": "classroom-day",
+      "sourceKey": "classroom",
+      "source": "txt2img_00006_.png",
+      "steps": [
+        {
+          "operation": "convert",
+          "mode": "RGB"
+        },
+        {
+          "operation": "brightness",
+          "factor": 1.26
+        },
+        {
+          "operation": "color",
+          "factor": 0.82
+        },
+        {
+          "operation": "blend",
+          "color": [
+            228,
+            196,
+            150
+          ],
+          "alpha": 0.1
+        }
+      ],
+      "published": "public/art-original/classroom-day.webp",
+      "sourceSha256": "33adfe3ecfee0b72f33cfde0a943371bffd63e3719dc367be0d14ae5b55981bd",
+      "publishedSha256": "7ab008085ccbe27fa180dfe60b32e4d10daadc45dc45f4ecd5ade038c96fc990",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGB",
+      "pixelIdentical": true,
+      "publishedBytes": 1254392,
+      "verified": true
+    },
+    {
+      "key": "dream-boat",
+      "sourceKey": "dream-boat",
+      "source": "txt2img_00040_.png",
+      "steps": [],
+      "published": "public/art-original/dream-boat.webp",
+      "sourceSha256": "839c649d171ffd2e1c250e8b11cb7ff28d87ef1c779748efa9212b3b758e856b",
+      "publishedSha256": "e1ed08b70f43dac1bccff1a18167ee104c8de2b1cfd7dff926f1605afb9bf482",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1216434,
+      "verified": true
+    },
+    {
+      "key": "hero",
+      "sourceKey": "hero",
+      "source": "txt2img_00001_.png",
+      "steps": [],
+      "published": "public/art-original/hero.webp",
+      "sourceSha256": "1978955775b2ca3d880f7795a50972e8859d0a38193a0e783ec4a07b9697b843",
+      "publishedSha256": "f8a00b7edc8d65f41267b75f5c583f9758d4521c9e46cef61fb929218e8e494d",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1057798,
+      "verified": true
+    },
+    {
+      "key": "home",
+      "sourceKey": "home",
+      "source": "txt2img_00003_.png",
+      "steps": [],
+      "published": "public/art-original/home.webp",
+      "sourceSha256": "9378963a04b44dda58ba24dd36c45e549a582b1181a44f590e5c75250b208d10",
+      "publishedSha256": "85870678fb909f416c9ac6bef4c3fc572776392f19cc1faa8f2a4f4b9c067edf",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1297326,
+      "verified": true
+    },
+    {
+      "key": "hut",
+      "sourceKey": "hut",
+      "source": "txt2img_00008_.png",
+      "steps": [],
+      "published": "public/art-original/hut.webp",
+      "sourceSha256": "131c70ce8e22b6e3a6f46039e689717c6eca4f31579f2d044b26cd9cd139196d",
+      "publishedSha256": "71d6043bf2fd6ea05db2a3c5359fb58fc5d2934c11373d03d00e714fe01b0756",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1251256,
+      "verified": true
+    },
+    {
+      "key": "light-river",
+      "sourceKey": "light-river",
+      "source": "txt2img_00024_.png",
+      "steps": [],
+      "published": "public/art-original/light-river.webp",
+      "sourceSha256": "6377212551f826ea608cbb6ec640e74760fbefa6016e906323c6ecd0bdb90f68",
+      "publishedSha256": "b8d866b2c68b32b9362bfb2f5e741d84a9b9bf184d228e9e81ecfb83541f6749",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1437220,
+      "verified": true
+    },
+    {
+      "key": "marsh",
+      "sourceKey": "marsh",
+      "source": "txt2img_00018_.png",
+      "steps": [],
+      "published": "public/art-original/marsh.webp",
+      "sourceSha256": "aad76b9263908c47662a31998b82a8d0436de4437a4e019a375379d1ced037e6",
+      "publishedSha256": "37e82f0dad3f18f0c61c581a76dbd0d9c9b550b4fe8473da75fbc0ff13da804c",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1273472,
+      "verified": true
+    },
+    {
+      "key": "mountain",
+      "sourceKey": "mountain",
+      "source": "txt2img_00019_.png",
+      "steps": [],
+      "published": "public/art-original/mountain.webp",
+      "sourceSha256": "69bfd050df361442712ee7e46bb059fb6a3f8eedc68f85918d8c84f384941ee3",
+      "publishedSha256": "66ab859d79b23b4e45fef029f8823ca5eacdc3e4813d2d6455a2e0a43029a7d7",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1741808,
+      "verified": true
+    },
+    {
+      "key": "nightmare",
+      "sourceKey": "nightmare",
+      "source": "txt2img_00025_.png",
+      "steps": [],
+      "published": "public/art-original/nightmare.webp",
+      "sourceSha256": "1936756b9b2468968799fa4e76bd202c860627e866a289829c62b05c4815a426",
+      "publishedSha256": "4c73c202f197f6603222f775a1173cb94ad4e57be13b7b9e7b22df564774b2c5",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1209266,
+      "verified": true
+    },
+    {
+      "key": "palace",
+      "sourceKey": "palace",
+      "source": "txt2img_00014_.png",
+      "steps": [],
+      "published": "public/art-original/palace.webp",
+      "sourceSha256": "5fd60bbe782c4af10075839a59e0923317d017d72405268287ec5daecbf94cd7",
+      "publishedSha256": "cabebedd15337c70e1483fbbb570b23d873ba9e8be97c0565d06976638949228",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1318304,
+      "verified": true
+    },
+    {
+      "key": "ritual",
+      "sourceKey": "ritual",
+      "source": "txt2img_00011_.png",
+      "steps": [],
+      "published": "public/art-original/ritual.webp",
+      "sourceSha256": "103c9870fadbf5477eb02f2ebe940692ea7df05a0e71db2c84502c8a57b94b88",
+      "publishedSha256": "611976a17e0fb511568d0c605131876b3f9d22e9d6ecac8624a651c7ae0eafbb",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1319184,
+      "verified": true
+    },
+    {
+      "key": "river",
+      "sourceKey": "river",
+      "source": "txt2img_00016_.png",
+      "steps": [],
+      "published": "public/art-original/river.webp",
+      "sourceSha256": "14259e695aad59778010ab46eb81947ea87400fb5be01a2b12fd83e7c43459ee",
+      "publishedSha256": "ff1326d6e225211945f7d2fa7533b253b82ca2b2045c39e59f1ee6ddee55a523",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1483320,
+      "verified": true
+    },
+    {
+      "key": "ruins",
+      "sourceKey": "ruins",
+      "source": "txt2img_00017_.png",
+      "steps": [],
+      "published": "public/art-original/ruins.webp",
+      "sourceSha256": "8ff54e3f44e26b00879eed4e70fc1e35f4f4dff6c4263837e198847831d9d899",
+      "publishedSha256": "2c75723139b899cfa857010bf61dee386c74222627769a4cde5f2abb1c0cb788",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1414180,
+      "verified": true
+    },
+    {
+      "key": "school",
+      "sourceKey": "school",
+      "source": "txt2img_00005_.png",
+      "steps": [],
+      "published": "public/art-original/school.webp",
+      "sourceSha256": "ef6d11045eb6484a6a1c979e65edf993de52e81619e209d199a55ca6b67bb8fe",
+      "publishedSha256": "57765ef002cc42dc47966a10736244d1832ede596564f26d6f00e3eae610a7fc",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1495994,
+      "verified": true
+    },
+    {
+      "key": "shrine",
+      "sourceKey": "shrine",
+      "source": "txt2img_00010_.png",
+      "steps": [],
+      "published": "public/art-original/shrine.webp",
+      "sourceSha256": "9a1b34f3fe0e6e09e881cf5f8b27cb8bb9556c668b6b030d51ee72110d1fb8e3",
+      "publishedSha256": "315890733eac79491a6b4c9cbd5f449289900decd19332e25a4c8132f1c5b25f",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1414734,
+      "verified": true
+    },
+    {
+      "key": "snow",
+      "sourceKey": "snow",
+      "source": "txt2img_00023_.png",
+      "steps": [],
+      "published": "public/art-original/snow.webp",
+      "sourceSha256": "0e9db595ecf88b10774e573828327385eb07b7cd9f5ca813e575af0017a691e8",
+      "publishedSha256": "d7c1c87c0954c20efbdcc5721b053e27d09920aae9bcb965dfef1c5faf423e53",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1498660,
+      "verified": true
+    },
+    {
+      "key": "study",
+      "sourceKey": "study",
+      "source": "txt2img_00013_.png",
+      "steps": [],
+      "published": "public/art-original/study.webp",
+      "sourceSha256": "68976fe696bd23dd94af40736fe6e18823a864fe8d74875405f7434a033c3db0",
+      "publishedSha256": "dfe01f17733c84149ce4e0bf2fcf24537fc6fb64adae801cee6c6137e944c3d6",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1150242,
+      "verified": true
+    },
+    {
+      "key": "tomb",
+      "sourceKey": "tomb",
+      "source": "txt2img_00015_.png",
+      "steps": [],
+      "published": "public/art-original/tomb.webp",
+      "sourceSha256": "0916e4cd7693663a56efe97a42548fc810d390172685bed91ed4fc8d986199b8",
+      "publishedSha256": "bfd8a3a31cb25d868c47b3dc3c7dc25fb62f4380128b92037420435d9766bc02",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1273104,
+      "verified": true
+    },
+    {
+      "key": "underwater",
+      "sourceKey": "underwater",
+      "source": "txt2img_00020_.png",
+      "steps": [],
+      "published": "public/art-original/underwater.webp",
+      "sourceSha256": "33723d4f808a5322b5c1e2346a963e6a4e785cf376bf76bf3dbc24c018795b50",
+      "publishedSha256": "8ccf61d1a8e86843068957e37fc356eef2b1c7cdf1159054ea87eb697035c180",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1416214,
+      "verified": true
+    },
+    {
+      "key": "valley",
+      "sourceKey": "valley",
+      "source": "txt2img_00021_.png",
+      "steps": [],
+      "published": "public/art-original/valley.webp",
+      "sourceSha256": "b1bd5179fe5857055347ff61a2918d4035d1ba7945ce328606c12dce810c0447",
+      "publishedSha256": "6d0c142770f84b6a3ddf1d909ba47cece4d108f3c35ab3652cd0ba607fdbbf00",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1713358,
+      "verified": true
+    },
+    {
+      "key": "village",
+      "sourceKey": "village",
+      "source": "txt2img_00009_.png",
+      "steps": [],
+      "published": "public/art-original/village.webp",
+      "sourceSha256": "06aac7cc6078df6692b9a5b0b4084b327c85e6ce9656968eebbd2fcb7a206292",
+      "publishedSha256": "1246c5c62ea2405530bde346e69a3f571c439dc228654b5b0cc7cdd0bc05d7ab",
+      "sourceHashMatches": true,
+      "publishedHashMatches": true,
+      "size": [
+        1344,
+        768
+      ],
+      "mode": "RGBA",
+      "pixelIdentical": true,
+      "publishedBytes": 1626180,
+      "verified": true
+    }
+  ]
+}

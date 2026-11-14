@@ -1,5 +1,5 @@
 import rawSoundtrack from './data/soundtrack.json';
-import type { Beat, Profile } from './types';
+import type { Beat, EndingId, Profile } from './types';
 
 export const MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
 export type MusicId = typeof MUSIC_IDS[number];
@@ -11,10 +11,35 @@ export interface Track { id: MusicId; title: string; subtitle: string; bpm: numb
 export const SOUNDTRACK = rawSoundtrack as Track[];
 export const trackById = (id: MusicId) => SOUNDTRACK.find(track => track.id === id)!;
 type EmbeddedAudio = typeof globalThis & { __HETEROTOPIA_AUDIO__?: Record<string, string> };
-export const audioAsset = (file: string) => (globalThis as EmbeddedAudio).__HETEROTOPIA_AUDIO__?.[file] ?? `${import.meta.env.BASE_URL}audio/${file}`;
+export const audioAsset = (file: string) => (globalThis as EmbeddedAudio).__HETEROTOPIA_AUDIO__?.[file] ?? `${import.meta.env?.BASE_URL ?? './'}audio/${file}`;
 
 export interface Effect { id: EffectId; at?: number; gain?: number; pan?: number }
 export interface SoundEvent { id: string; effects: Effect[] }
+export type UiSoundKind = 'page' | 'choice' | 'stamp' | 'open' | 'close' | 'toggle' | 'bell' | 'save' | 'preview';
+
+/** Existing recordings only. UI intent stays separate from screenplay cues. */
+export const UI_EFFECTS: Record<UiSoundKind, Readonly<Effect>> = {
+  page: { id: 'page', gain: .12 },
+  choice: { id: 'choice', gain: .33 },
+  stamp: { id: 'wood-latch', gain: .42 },
+  open: { id: 'cloth', gain: .18 },
+  close: { id: 'page', gain: .14 },
+  toggle: { id: 'choice', gain: .18 },
+  bell: { id: 'bronze', gain: .12 },
+  save: { id: 'bookmark', gain: .28 },
+  preview: { id: 'choice', gain: .33 },
+};
+
+// Authored additions go here when their recordings exist. Empty hooks never
+// introduce an extra bell or disturb the screenplay's three silent farewells.
+export const CHAPTER_EFFECTS: Record<string, Effect[]> = {};
+export const ENDING_EFFECTS: Partial<Record<EndingId, Effect[]>> = {};
+export const MUSIC_ALTERNATES: Partial<Record<MusicId, { file: string; seconds: number }>> = {};
+export function musicSegment(id: MusicId, cycle = 0): { file: string; seconds: number } {
+  return cycle % 2 === 1 && MUSIC_ALTERNATES[id] ? MUSIC_ALTERNATES[id]! : trackById(id);
+}
+export const chapterSoundEvent = (sceneId: string): SoundEvent | null => CHAPTER_EFFECTS[sceneId]?.length
+  ? { id: `chapter:${sceneId}`, effects: CHAPTER_EFFECTS[sceneId] } : null;
 export interface ScoreFrame {
   scene: string;
   cue: string;
@@ -166,6 +191,9 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
   if (sceneId === 'B-12-2' && block === 9 && page >= 2) { frame.musicGain = .35; frame.ambience = [['winter', .15]]; }
   if (sceneId === 'B-12-2' && block === 9 && page >= 4) {
     frame.music = null; frame.ambience = page >= 6 ? [['river', .1]] : []; frame.transition = 5.5;
+  }
+  if (beat.kind === 'ending' && ENDING_EFFECTS[beat.ending]?.length) {
+    frame.events.push({ id: `ending:${beat.ending}`, effects: ENDING_EFFECTS[beat.ending]! });
   }
   return frame;
 }

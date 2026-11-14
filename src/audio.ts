@@ -1,5 +1,5 @@
-import { audioAsset, scoreFrame, trackById } from './score';
-import type { AmbienceId, Effect, EffectId, MusicId, ScoreFrame } from './score';
+import { audioAsset, scoreFrame, trackById, UI_EFFECTS } from './score';
+import type { AmbienceId, Effect, MusicId, ScoreFrame, UiSoundKind } from './score';
 import type { Settings } from './types';
 
 type Bus = 'music' | 'ambience' | 'sfx';
@@ -8,7 +8,7 @@ interface Voice {
   source?: AudioBufferSourceNode; node?: GainNode; pan?: StereoPannerNode; media?: HTMLAudioElement;
   timer?: number; startTimer?: number; fadeTimer?: number; stopped?: boolean; event?: string;
 }
-interface AudioState {
+export interface AudioState {
   unlocked: boolean; available: boolean; track: MusicId | null; preview: MusicId | null;
   previewPaused: boolean; playing: boolean; loading: boolean; error: string | null;
 }
@@ -43,6 +43,7 @@ export class Soundscape {
   private previewPaused = false;
   private previewOffset = 0;
   private lastPageClick = 0;
+  private uiRequest = 0;
   private listeners = new Set<() => void>();
   private state: AudioState = { unlocked: false, available: true, track: null, preview: null, previewPaused: false, playing: false, loading: false, error: null };
 
@@ -78,13 +79,13 @@ export class Soundscape {
         this.mediaSupported = typeof Audio !== 'undefined' && !!new Audio().canPlayType('audio/mpeg');
         if (!this.mediaSupported) this.publish({ available: false, error: '当前浏览器暂时无法播放音频，仍可继续阅读。' });
       }
-      this.publish({ unlocked: true });
     }
     // Resume inside the gesture, before fetching or decoding assets.
     const resume = this.context && this.context.state !== 'running' && this.context.state !== 'closed'
       ? this.context.resume().catch(() => {}) : Promise.resolve();
     this.update(settings);
     await resume;
+    this.publish({ unlocked: this.context ? this.context.state === 'running' : this.mediaSupported });
     if (this.context?.state === 'running') this.publish({ available: true, playing: !!this.musicVoice && !settings.muted && !document.hidden });
   }
 
@@ -382,13 +383,19 @@ export class Soundscape {
     for (const voice of this.active) if (voice.event && !voice.stopped) this.retire(voice, .045);
   }
 
-  click(kind: 'page' | 'choice' | 'bell' = 'page'): void {
-    if (!this.activated || this.settings?.muted || document.hidden || this.options.skipping) return;
+  /** Warm a timed UI accent while its control is visible, before the gesture. */
+  prepareUi(kind: UiSoundKind): void {
+    if (!this.activated || !this.context || this.settings?.muted || !this.settings?.sfxVolume || document.hidden) return;
+    void this.buffer(`sfx-${UI_EFFECTS[kind].id}.mp3`).catch(() => {});
+  }
+
+  click(kind: UiSoundKind = 'page'): void {
+    if (!this.activated || this.settings?.muted || !this.settings?.sfxVolume || document.hidden || this.options.skipping) return;
     const now = performance.now();
     if (kind === 'page' && now - this.lastPageClick < 110) return;
     if (kind === 'page') this.lastPageClick = now;
-    const id: EffectId = kind === 'bell' ? 'bookmark' : kind;
-    void this.effect({ id, gain: kind === 'page' ? .12 : kind === 'choice' ? .33 : .28 }, this.clock(), () => !this.settings?.muted && !document.hidden);
+    const request = ++this.uiRequest;
+    void this.effect(UI_EFFECTS[kind], this.clock(), () => request === this.uiRequest && !this.settings?.muted && !!this.settings?.sfxVolume && !document.hidden && !this.options.skipping);
   }
 
   togglePreview(id: MusicId, forcePlay = false): void {
@@ -434,7 +441,7 @@ export class Soundscape {
   };
 
   dispose(): void {
-    ++this.musicRequest; ++this.cueGeneration; this.ambienceRequests.clear();
+    ++this.musicRequest; ++this.cueGeneration; ++this.uiRequest; this.ambienceRequests.clear();
     document.removeEventListener('visibilitychange', this.visibility);
     for (const voice of this.active) this.cleanup(voice);
     this.active.clear(); this.cache.clear(); this.loading.clear();

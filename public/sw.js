@@ -54,6 +54,15 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') void self.skipWaiting();
+  if (event.data?.type === 'WARM_ART') event.waitUntil((async () => {
+    const url = new URL(event.data.url, SCOPE);
+    const relative = url.pathname.slice(SCOPE.pathname.length);
+    if (url.origin !== SCOPE.origin || !['art/hero.avif', 'art/hero.webp', 'art-original/hero.png', 'art-original/hero.webp'].includes(relative)) return;
+    const cache = await caches.open(CACHE);
+    if (await cache.match(url.href)) return;
+    const response = await fetch(url.href);
+    if (response.status === 200) await cache.put(url.href, response);
+  })().catch(() => {}));
 });
 
 async function rangeResponse(request, response) {
@@ -112,7 +121,7 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET' || url.origin !== SCOPE.origin || !url.pathname.startsWith(SCOPE.pathname)) return;
   if (request.mode === 'navigate') { event.respondWith(navigation(event)); return; }
   const relative = url.pathname.slice(SCOPE.pathname.length);
-  if (/^(assets|art|fonts|audio)\//.test(relative) || relative === 'favicon.svg') {
+  if (/^(assets|art|art-original|fonts|audio)\//.test(relative) || relative === 'favicon.svg') {
     event.respondWith(cachedAsset(request, event));
   }
 });

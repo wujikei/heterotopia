@@ -1,4 +1,4 @@
-import { avifEnabled, isPortable } from './assets';
+import { asset, avifEnabled, isPortable } from './assets';
 import { afterFirstScreen } from './idle';
 
 let waiting: ServiceWorker | null = null;
@@ -28,6 +28,9 @@ export function registerSiteCache(): void {
       registration.addEventListener('updatefound', () => {
         registration.installing?.addEventListener('statechange', () => { void report(); });
       });
+      // Cache only the title image this reader selected. Lightweight readers
+      // never download a full PNG merely because the worker is installing.
+      void navigator.serviceWorker.ready.then(current => current.active?.postMessage({ type: 'WARM_ART', url: new URL(asset('hero'), document.baseURI).href }));
     }).catch(() => { /* caching failure must never prevent reading */ });
   }, 2400);
 }

@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "sourceDirectory": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex",
+  "sourceIndex": "artifacts/recovered-art.json; retained original ComfyUI PNG exports",
+  "description": "26 direct source PNGs and one classroom-day reconstruction; published files are lossless WebP. No standalone classroom-day source PNG is claimed.",
+  "backgrounds": [
+    {
+      "key": "alley",
+      "sourceKey": "alley",
+      "source": "txt2img_00007_.png",
+      "sourceSha256": "f17f8eba61b2718658b3db88945c33a2c996f4511d8c0def2e7d496e63f6024b",
+      "steps": [],
+      "published": "public/art-original/alley.webp",
+      "publishedSha256": "f9c82b948a38e3e15936e9ba9d64cc63ba8d282eccf8110f269c4e6b23b76465"
+    },
+    {
+      "key": "bamboo",
+      "sourceKey": "bamboo",
+      "source": "txt2img_00012_.png",
+      "sourceSha256": "ffa25822b4622008c9e960f04c548c100eb60de596e1122602fb31adb5f86330",
+      "steps": [],
+      "published": "public/art-original/bamboo.webp",
+      "publishedSha256": "e765ce9afac62d69b3dd33ef48661ea81bb5593eac91ddc2da70e8f2391c626f"
+    },
+    {
+      "key": "bedroom",
+      "sourceKey": "bedroom",
+      "source": "txt2img_00002_.png",
+      "sourceSha256": "5b84969595c8fd85b0781b9fce784a97f16aa5ea5ea096fd46a6445b530e135b",
+      "steps": [],
+      "published": "public/art-original/bedroom.webp",
+      "publishedSha256": "2c1afe45a0fde8799dbbe61cb7c0a8d9355955a0eed54a93678f7abf4db24e16"
+    },
+    {
+      "key": "bus",
+      "sourceKey": "bus",
+      "source": "txt2img_00004_.png",
+      "sourceSha256": "1724c29567d25634d3df0eaa69bb18cc79326ad7ea989a03e2268ce4e256a9eb",
+      "steps": [],
+      "published": "public/art-original/bus.webp",
+      "publishedSha256": "0c8d8012599b6c2403326d371d40037af51c365e112c4dad3ba751693ef4c652"
+    },
+    {
+      "key": "cave",
+      "sourceKey": "cave",
+      "source": "txt2img_00022_.png",
+      "sourceSha256": "a5277ec5c42d0ca42e08a239e8c76441bcf33d66cef352c982b62af313a9dc33",
+      "steps": [],
+      "published": "public/art-original/cave.webp",
+      "publishedSha256": "f29fc3cdba1f33dbac0bbc4a3b257e5cd0f517726935924ee8a9a74539db95cb"
+    },
+    {
+      "key": "classroom",
+      "sourceKey": "classroom",
+      "source": "txt2img_00006_.png",
+      "sourceSha256": "33adfe3ecfee0b72f33cfde0a943371bffd63e3719dc367be0d14ae5b55981bd",
+      "steps": [],
+      "published": "public/art-original/classroom.webp",
+      "publishedSha256": "364471d597bd4e6c9c7698d761ff09a510c999e191db009c02dc2c90186f9452"
+    },
+    {
+      "key": "classroom-day",
+      "sourceKey": "classroom",
+      "source": "txt2img_00006_.png",
+      "sourceSha256": "33adfe3ecfee0b72f33cfde0a943371bffd63e3719dc367be0d14ae5b55981bd",
+      "steps": [
+        {
+          "operation": "convert",
+          "mode": "RGB"
+        },
+        {
+          "operation": "brightness",
+          "factor": 1.26
+        },
+        {
+          "operation": "color",
+          "factor": 0.82
+        },
+        {
+          "operation": "blend",
+          "color": [
+            228,
+            196,
+            150
+          ],
+          "alpha": 0.1
+        }
+      ],
+      "published": "public/art-original/classroom-day.webp",
+      "publishedSha256": "7ab008085ccbe27fa180dfe60b32e4d10daadc45dc45f4ecd5ade038c96fc990",
+      "derivationReference": "scripts/collect_art.py:derived; same color operations, reconstructed from retained classroom PNG"
+    },
+    {
+      "key": "dream-boat",
+      "sourceKey": "dream-boat",
+      "source": "txt2img_00040_.png",
+      "sourceSha256": "839c649d171ffd2e1c250e8b11cb7ff28d87ef1c779748efa9212b3b758e856b",
+      "steps": [],
+      "published": "public/art-original/dream-boat.webp",
+      "publishedSha256": "e1ed08b70f43dac1bccff1a18167ee104c8de2b1cfd7dff926f1605afb9bf482"
+    },
+    {
+      "key": "hero",
+      "sourceKey": "hero",
+      "source": "txt2img_00001_.png",
+      "sourceSha256": "1978955775b2ca3d880f7795a50972e8859d0a38193a0e783ec4a07b9697b843",
+      "steps": [],
+      "published": "public/art-original/hero.webp",
+      "publishedSha256": "f8a00b7edc8d65f41267b75f5c583f9758d4521c9e46cef61fb929218e8e494d"
+    },
+    {
+      "key": "home",
+      "sourceKey": "home",
+      "source": "txt2img_00003_.png",
+      "sourceSha256": "9378963a04b44dda58ba24dd36c45e549a582b1181a44f590e5c75250b208d10",
+      "steps": [],
+      "published": "public/art-original/home.webp",
+      "publishedSha256": "85870678fb909f416c9ac6bef4c3fc572776392f19cc1faa8f2a4f4b9c067edf"
+    },
+    {
+      "key": "hut",
+      "sourceKey": "hut",
+      "source": "txt2img_00008_.png",
+      "sourceSha256": "131c70ce8e22b6e3a6f46039e689717c6eca4f31579f2d044b26cd9cd139196d",
+      "steps": [],
+      "published": "public/art-original/hut.webp",
+      "publishedSha256": "71d6043bf2fd6ea05db2a3c5359fb58fc5d2934c11373d03d00e714fe01b0756"
+    },
+    {
+      "key": "light-river",
+      "sourceKey": "light-river",
+      "source": "txt2img_00024_.png",
+      "sourceSha256": "6377212551f826ea608cbb6ec640e74760fbefa6016e906323c6ecd0bdb90f68",
+      "steps": [],
+      "published": "public/art-original/light-river.webp",
+      "publishedSha256": "b8d866b2c68b32b9362bfb2f5e741d84a9b9bf184d228e9e81ecfb83541f6749"
+    },
+    {
+      "key": "marsh",
+      "sourceKey": "marsh",
+      "source": "txt2img_00018_.png",
+      "sourceSha256": "aad76b9263908c47662a31998b82a8d0436de4437a4e019a375379d1ced037e6",
+      "steps": [],
+      "published": "public/art-original/marsh.webp",
+      "publishedSha256": "37e82f0dad3f18f0c61c581a76dbd0d9c9b550b4fe8473da75fbc0ff13da804c"
+    },
+    {
+      "key": "mountain",
+      "sourceKey": "mountain",
+      "source": "txt2img_00019_.png",
+      "sourceSha256": "69bfd050df361442712ee7e46bb059fb6a3f8eedc68f85918d8c84f384941ee3",
+      "steps": [],
+      "published": "public/art-original/mountain.webp",
+      "publishedSha256": "66ab859d79b23b4e45fef029f8823ca5eacdc3e4813d2d6455a2e0a43029a7d7"
+    },
+    {
+      "key": "nightmare",
+      "sourceKey": "nightmare",
+      "source": "txt2img_00025_.png",
+      "sourceSha256": "1936756b9b2468968799fa4e76bd202c860627e866a289829c62b05c4815a426",
+      "steps": [],
+      "published": "public/art-original/nightmare.webp",
+      "publishedSha256": "4c73c202f197f6603222f775a1173cb94ad4e57be13b7b9e7b22df564774b2c5"
+    },
+    {
+      "key": "palace",
+      "sourceKey": "palace",
+      "source": "txt2img_00014_.png",
+      "sourceSha256": "5fd60bbe782c4af10075839a59e0923317d017d72405268287ec5daecbf94cd7",
+      "steps": [],
+      "published": "public/art-original/palace.webp",
+      "publishedSha256": "cabebedd15337c70e1483fbbb570b23d873ba9e8be97c0565d06976638949228"
+    },
+    {
+      "key": "ritual",
+      "sourceKey": "ritual",
+      "source": "txt2img_00011_.png",
+      "sourceSha256": "103c9870fadbf5477eb02f2ebe940692ea7df05a0e71db2c84502c8a57b94b88",
+      "steps": [],
+      "published": "public/art-original/ritual.webp",
+      "publishedSha256": "611976a17e0fb511568d0c605131876b3f9d22e9d6ecac8624a651c7ae0eafbb"
+    },
+    {
+      "key": "river",
+      "sourceKey": "river",
+      "source": "txt2img_00016_.png",
+      "sourceSha256": "14259e695aad59778010ab46eb81947ea87400fb5be01a2b12fd83e7c43459ee",
+      "steps": [],
+      "published": "public/art-original/river.webp",
+      "publishedSha256": "ff1326d6e225211945f7d2fa7533b253b82ca2b2045c39e59f1ee6ddee55a523"
+    },
+    {
+      "key": "ruins",
+      "sourceKey": "ruins",
+      "source": "txt2img_00017_.png",
+      "sourceSha256": "8ff54e3f44e26b00879eed4e70fc1e35f4f4dff6c4263837e198847831d9d899",
+      "steps": [],
+      "published": "public/art-original/ruins.webp",
+      "publishedSha256": "2c75723139b899cfa857010bf61dee386c74222627769a4cde5f2abb1c0cb788"
+    },
+    {
+      "key": "school",
+      "sourceKey": "school",
+      "source": "txt2img_00005_.png",
+      "sourceSha256": "ef6d11045eb6484a6a1c979e65edf993de52e81619e209d199a55ca6b67bb8fe",
+      "steps": [],
+      "published": "public/art-original/school.webp",
+      "publishedSha256": "57765ef002cc42dc47966a10736244d1832ede596564f26d6f00e3eae610a7fc"
+    },
+    {
+      "key": "shrine",
+      "sourceKey": "shrine",
+      "source": "txt2img_00010_.png",
+      "sourceSha256": "9a1b34f3fe0e6e09e881cf5f8b27cb8bb9556c668b6b030d51ee72110d1fb8e3",
+      "steps": [],
+      "published": "public/art-original/shrine.webp",
+      "publishedSha256": "315890733eac79491a6b4c9cbd5f449289900decd19332e25a4c8132f1c5b25f"
+    },
+    {
+      "key": "snow",
+      "sourceKey": "snow",
+      "source": "txt2img_00023_.png",
+      "sourceSha256": "0e9db595ecf88b10774e573828327385eb07b7cd9f5ca813e575af0017a691e8",
+      "steps": [],
+      "published": "public/art-original/snow.webp",
+      "publishedSha256": "d7c1c87c0954c20efbdcc5721b053e27d09920aae9bcb965dfef1c5faf423e53"
+    },
+    {
+      "key": "study",
+      "sourceKey": "study",
+      "source": "txt2img_00013_.png",
+      "sourceSha256": "68976fe696bd23dd94af40736fe6e18823a864fe8d74875405f7434a033c3db0",
+      "steps": [],
+      "published": "public/art-original/study.webp",
+      "publishedSha256": "dfe01f17733c84149ce4e0bf2fcf24537fc6fb64adae801cee6c6137e944c3d6"
+    },
+    {
+      "key": "tomb",
+      "sourceKey": "tomb",
+      "source": "txt2img_00015_.png",
+      "sourceSha256": "0916e4cd7693663a56efe97a42548fc810d390172685bed91ed4fc8d986199b8",
+      "steps": [],
+      "published": "public/art-original/tomb.webp",
+      "publishedSha256": "bfd8a3a31cb25d868c47b3dc3c7dc25fb62f4380128b92037420435d9766bc02"
+    },
+    {
+      "key": "underwater",
+      "sourceKey": "underwater",
+      "source": "txt2img_00020_.png",
+      "sourceSha256": "33723d4f808a5322b5c1e2346a963e6a4e785cf376bf76bf3dbc24c018795b50",
+      "steps": [],
+      "published": "public/art-original/underwater.webp",
+      "publishedSha256": "8ccf61d1a8e86843068957e37fc356eef2b1c7cdf1159054ea87eb697035c180"
+    },
+    {
+      "key": "valley",
+      "sourceKey": "valley",
+      "source": "txt2img_00021_.png",
+      "sourceSha256": "b1bd5179fe5857055347ff61a2918d4035d1ba7945ce328606c12dce810c0447",
+      "steps": [],
+      "published": "public/art-original/valley.webp",
+      "publishedSha256": "6d0c142770f84b6a3ddf1d909ba47cece4d108f3c35ab3652cd0ba607fdbbf00"
+    },
+    {
+      "key": "village",
+      "sourceKey": "village",
+      "source": "txt2img_00009_.png",
+      "sourceSha256": "06aac7cc6078df6692b9a5b0b4084b327c85e6ce9656968eebbd2fcb7a206292",
+      "steps": [],
+      "published": "public/art-original/village.webp",
+      "publishedSha256": "1246c5c62ea2405530bde346e69a3f571c439dc228654b5b0cc7cdd0bc05d7ab"
+    }
+  ]
+}

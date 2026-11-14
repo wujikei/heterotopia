@@ -38,6 +38,8 @@ export interface Settings {
   muted: boolean;
   reducedMotion: boolean;
   showSprites: boolean;
+  lightweight: boolean;
+  autoAfterChoice: boolean;
 }
 export interface Character {
   key: string;
