@@ -9,7 +9,7 @@ await loadStory();
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4173/heterotopia/';
 const name = process.env.VN_TEST_BROWSER || 'chromium';
-const browser = await ({ chromium, firefox, webkit }[name]).launch({ headless: true, ...(name === 'chromium' ? { args: ['--autoplay-policy=user-gesture-required', ...(/^https:/.test(base) ? ['--no-proxy-server'] : [])] } : {}) });
+const browser = await ({ chromium, firefox, webkit }[name]).launch({ headless: true, ...(name === 'chromium' ? { args: ['--autoplay-policy=document-user-activation-required', ...(/^https:/.test(base) ? ['--no-proxy-server'] : [])] } : {}) });
 const output = new URL(`../artifacts/audio-${name}/`, import.meta.url);
 await mkdir(output, { recursive: true });
 const contexts = [], errors = [], checks = [];
@@ -104,6 +104,7 @@ async function turnPage(page) {
 try {
   const page = await open();
   if (name === 'chromium') {
+    console.log('Strict startup device state', await page.evaluate(() => ({ contexts: window.__audioTest.contexts.map(context => context.state), sources: window.__audioTest.starts.length, hint: document.querySelector('.sound-unlock-hint')?.textContent })));
     assert.equal(await page.evaluate(() => window.__audioTest.starts.length), 0, 'Strict autoplay must not report/start a Web Audio source');
     await page.locator('.sound-unlock-hint').waitFor();
     assert.equal(await page.locator('.sound-unlock-hint').innerText(), '点击开启声音');
