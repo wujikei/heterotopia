@@ -60,7 +60,8 @@ async function open(fixture, viewport = { width: 1440, height: 900 }) {
   const background = beat ? cgForBeat(beat, fixture.state.sceneId)?.file || beat.background : 'hero';
   await page.waitForFunction(name => {
     const stage = document.querySelector('.scene-image--current');
-    const assets = globalThis.__HETEROTOPIA_ORIGINALS__?.[name] ?? globalThis.__HETEROTOPIA_ASSETS__[name];
+    const mobile = matchMedia('(max-aspect-ratio: 3/4)').matches ? globalThis.__HETEROTOPIA_ASSETS__[`${name}-m`] : undefined;
+    const assets = globalThis.__HETEROTOPIA_ORIGINALS__?.[name] ?? mobile ?? globalThis.__HETEROTOPIA_ASSETS__[name];
     return stage?.style.backgroundImage.includes(assets)
       && Number(getComputedStyle(stage).opacity) > 0.99;
   }, background);
@@ -78,6 +79,7 @@ try {
     ...Object.entries(AVAILABLE).flatMap(([key, states]) => states.map(state => portraitNameFor(key, state))),
     ...[...AVAILABLE_EXTRAS].map(portraitName),
     ...CGS.filter(cg => cg.file).flatMap(cg => [cg.file, ...(cg.thumbnail ? [cg.thumbnail] : [])]),
+    ...imageManifest.mobile.filter(name => name.startsWith('cg-')).map(name => `${name}-m`),
   ];
   const integrity = await page.evaluate(async expectedNames => {
     const assets = globalThis.__HETEROTOPIA_ASSETS__;
@@ -100,6 +102,14 @@ try {
   assert.equal(integrity.fonts.length, 6);
   assert.ok(integrity.fonts.some(font => font.family === 'StoryHand'));
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
+  const snowState = { ...newGame(newProfile()), sceneId: 'B-12-2', beatId: 'B-12-2:3:1' };
+  const mobileCGPage = await open({ state: snowState, profile: newProfile() }, { width: 390, height: 844 });
+  assert.equal(await mobileCGPage.locator('.scene-image--current').evaluate(stage => stage.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__['cg-s06-snow-hands-m'])), true);
+  await mobileCGPage.setViewportSize({ width: 844, height: 390 });
+  await mobileCGPage.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__['cg-s06-snow-hands']));
+  await mobileCGPage.setViewportSize({ width: 390, height: 844 });
+  await mobileCGPage.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__['cg-s06-snow-hands-m']));
+  await mobileCGPage.screenshot({ path: artifact('art-direction-1-offline-mobile.png') });
   const originalIntegrity = await page.evaluate(async expectedNames => {
     const originals = globalThis.__HETEROTOPIA_ORIGINALS__ ?? {};
     const missingOriginals = expectedNames.filter(name => !originals[name]?.startsWith('data:image/'));

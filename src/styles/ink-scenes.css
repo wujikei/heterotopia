@@ -18,6 +18,11 @@
   mask-image: radial-gradient(ellipse 80% 90% at 50% 55%, #000 calc(var(--reveal) - 35%), transparent var(--reveal));
   animation: ink-reveal 1.5s var(--ease-ink) both;
 }
+@media (max-aspect-ratio: 3/4) {
+  .scene-image[data-art="cg-s02-first-crossing"] {
+    background-position: 78% center;
+  }
+}
 .scene-art--motion .scene-image--current {
   animation:
     ink-reveal 1.5s var(--ease-ink) both,

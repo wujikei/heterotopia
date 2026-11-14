@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { asset } from '../data/world';
-import { backgroundImageForUrl, artQuality, subscribeArtQuality } from '../assets';
+import { backgroundImageForUrl, artQuality, subscribeArtQuality, artViewport, subscribeArtViewport } from '../assets';
 import { preloadImage } from '../preload';
 
 export function SceneArt({ name, motion = true, cg }: { name: string; motion?: boolean; cg?: string }) {
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
+  useSyncExternalStore(subscribeArtViewport, artViewport, () => 'false:false');
   const target = cg || name;
   const selected = asset(target);
   const [loaded, setLoaded] = useState({ name: target, url: selected });
@@ -13,16 +14,17 @@ export function SceneArt({ name, motion = true, cg }: { name: string; motion?: b
     let cancelled = false;
     const show = async () => {
       let displayed = target;
-      try { await preloadImage(selected); }
+      let url: string;
+      try { url = await preloadImage(selected); }
       catch {
         if (!cg) return;
         displayed = name;
-        try { await preloadImage(asset(name)); } catch { return; }
+        try { url = await preloadImage(asset(name)); } catch { return; }
       }
       if (cancelled) return;
-      const next = { name: displayed, url: asset(displayed) };
+      const next = { name: displayed, url };
       setLoaded(current => {
-        if (current.url === next.url) return current;
+        if (current.url === next.url || new URL(current.url, document.baseURI).href === next.url) return current;
         setPrevious(current);
         return next;
       });
@@ -35,8 +37,8 @@ export function SceneArt({ name, motion = true, cg }: { name: string; motion?: b
     const timer = setTimeout(() => setPrevious(null), 1700);
     return () => clearTimeout(timer);
   }, [previous, loaded]);
-  return <div className={`scene-art ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
-    {previous && <div className="scene-image scene-image--previous" style={{ backgroundImage: backgroundImageForUrl(previous.url) }} />}
+  return <div className={`scene-art ${loaded.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
+    {previous && <div className="scene-image scene-image--previous" data-art={previous.name} style={{ backgroundImage: backgroundImageForUrl(previous.url) }} />}
     <div key={loaded.url} className="scene-image scene-image--current" data-art={loaded.name} style={{ backgroundImage: backgroundImageForUrl(loaded.url) }} />
     <div className="scene-shade" />
     <div className="scene-grain" />

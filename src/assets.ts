@@ -20,10 +20,21 @@ const base = () => import.meta.env?.BASE_URL ?? './';
 export const isPortable = () => !!(globalThis as Embedded).__HETEROTOPIA_ASSETS__;
 export const avifEnabled = () => avif;
 export const mobileArt = () => typeof matchMedia === 'function' && matchMedia('(max-width: 760px)').matches;
+export const mobileMedia = (name: string) => name.startsWith('cg-') ? '(max-aspect-ratio: 3/4)' : '(max-width: 760px)';
+const matches = (query: string) => typeof matchMedia === 'function' && matchMedia(query).matches;
+export const artViewport = () => `${mobileArt()}:${matches(mobileMedia('cg-'))}`;
+export function subscribeArtViewport(listener: () => void) {
+  if (typeof matchMedia !== 'function') return () => {};
+  const queries = [matchMedia('(max-width: 760px)'), matchMedia(mobileMedia('cg-'))];
+  queries.forEach(query => query.addEventListener('change', listener));
+  return () => queries.forEach(query => query.removeEventListener('change', listener));
+}
 export const portraitName = (key: string) => `portrait-${key}${key === 'tu' ? '-v2' : key === 'xua' ? '-v3' : ''}`;
+export const imageFailed = (url: string) => failed.has(urlKey(url));
 
 export function assetSources(name: string) {
   const embedded = (globalThis as Embedded).__HETEROTOPIA_ASSETS__?.[name];
+  const embeddedMobile = (globalThis as Embedded).__HETEROTOPIA_ASSETS__?.[`${name}-m`];
   const originalFile = (manifest.originals as Record<string, string>)[name];
   const original = (globalThis as Embedded).__HETEROTOPIA_ORIGINALS__?.[name] ?? (!isPortable() && originalFile ? `${base()}art-original/${originalFile}` : undefined);
   if (!lightweight && original && !failed.has(urlKey(original))) {
@@ -35,20 +46,24 @@ export function assetSources(name: string) {
     webp,
     type: 'image/webp',
     avif: !embedded && avifNames.has(name) ? `${base()}art/${name}.avif` : undefined,
-    mobile: !embedded && mobileNames.has(name) ? {
-      webp: `${base()}art/${name}-m.webp`, avif: `${base()}art/${name}-m.avif`,
+    mobile: mobileNames.has(name) && (!isPortable() || embeddedMobile) ? {
+      webp: embeddedMobile ?? `${base()}art/${name}-m.webp`,
+      avif: !isPortable() ? `${base()}art/${name}-m.avif` : undefined,
+      media: mobileMedia(name),
     } : undefined,
   };
 }
 
-export function asset(name: string): string {
+export function asset(name: string, responsive = true): string {
   const sources = assetSources(name);
-  const selected = mobileArt() && sources.mobile ? sources.mobile : sources;
+  const selected = responsive && sources.mobile && matches(sources.mobile.media) && !imageFailed(sources.mobile.webp) ? sources.mobile : sources;
   return avif && selected.avif && !failed.has(urlKey(selected.avif)) ? selected.avif : selected.webp;
 }
 export const portraitAsset = (key: string) => asset(portraitName(key));
 export const portraitFace = (key: string) => asset(`portrait-${key}-face`);
-export const imageFallback = (url: string) => /\.avif$/.test(url) ? url.replace(/\.avif$/, '.webp') : /\/art-original\/[^/]+\.(?:png|webp)$/.test(url) ? url.replace('/art-original/', '/art/').replace(/\.(?:png|webp)$/, '.webp') : undefined;
+export const imageFallback = (url: string) => /\.avif$/.test(url) ? url.replace(/\.avif$/, '.webp')
+  : /\/art\/[^/]+-m\.webp$/.test(url) ? url.replace(/-m\.webp$/, '.webp')
+  : /\/art-original\/[^/]+\.(?:png|webp)$/.test(url) ? url.replace('/art-original/', '/art/').replace(/\.(?:png|webp)$/, '.webp') : undefined;
 export function recordImageFailure(url: string) { failed.add(urlKey(url)); }
 
 export function backgroundImage(name: string): string {

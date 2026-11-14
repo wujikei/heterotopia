@@ -25,8 +25,31 @@
 }
 .ending-screen--home .ending-ink {
   background:
-    radial-gradient(ellipse 40% 36% at 50% 40%, rgba(240, 190, 110, 0.16), transparent 70%),
-    radial-gradient(ellipse 62% 70% at 50% 46%, rgba(10, 18, 16, 0.55), rgba(6, 16, 16, 0.84) 62%, rgba(4, 12, 12, 0.95));
+    linear-gradient(180deg, rgba(19, 16, 12, 0.22), rgba(19, 16, 12, 0.22) 44%, rgba(12, 18, 17, 0.58) 68%, rgba(4, 12, 12, 0.93));
+}
+.ending-screen--blade .ending-ink {
+  background: linear-gradient(180deg, rgba(3, 12, 16, 0.28), rgba(3, 12, 16, 0.28) 44%, rgba(3, 12, 16, 0.68) 70%, rgba(3, 12, 16, 0.94));
+}
+.ending-art-toggle {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(20px, env(safe-area-inset-right));
+  z-index: 5;
+  padding: 10px 14px;
+  border: 1px solid #e3d5b638;
+  background: #07151ba6;
+  color: #e5dfcd;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+.ending-screen--clean .ending-content,
+.ending-screen--clean .ending-copyright,
+.ending-screen--clean .ending-ink,
+.ending-screen--clean .ending-ripple {
+  visibility: hidden;
+}
+.app--hidden .scene-art--cg .scene-shade {
+  opacity: 0;
 }
 .ending-ripple,
 .ending-ripple::after {

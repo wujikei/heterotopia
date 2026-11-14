@@ -10,12 +10,13 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = path.join(root, 'dist');
 let html = await readFile(path.join(dist, 'index.html'), 'utf8');
 const assetMap = {};
+const manifest = JSON.parse(await readFile(path.join(root, 'src/data/art-manifest.json'), 'utf8'));
+const mobileCGs = new Set(manifest.mobile.filter(name => name.startsWith('cg-')).map(name => `${name}-m.webp`));
 for (const name of await readdir(path.join(dist, 'art'))) {
-  if (!name.endsWith('.webp') || name.endsWith('-m.webp')) continue;
+  if (!name.endsWith('.webp') || (name.endsWith('-m.webp') && !mobileCGs.has(name))) continue;
   const image = await readFile(path.join(dist, 'art', name));
   assetMap[name.slice(0, -5)] = `data:image/webp;base64,${image.toString('base64')}`;
 }
-const manifest = JSON.parse(await readFile(path.join(root, 'src/data/art-manifest.json'), 'utf8'));
 const originalMap = {};
 for (const [name, filename] of Object.entries(manifest.originals ?? {})) {
   if (!assetMap[name]) throw new Error(`Original has no lightweight fallback: ${name}`);
@@ -69,6 +70,7 @@ const license = await Promise.all(['NotoSerifSC-OFL.txt', 'LXGWWenKai-OFL.txt'].
 html = html.replace('</head>', () => `<!-- Embedded font license: Noto Serif SC\n${license.replaceAll('-->', '-- >')}\n-->\n</head>`);
 const destination = process.env.VN_PORTABLE_OUTPUT || path.join(root, '异托邦.html');
 html = html.replace(/[\t ]+$/gm, '');
+if (Buffer.byteLength(html, 'utf8') >= 100 * 1024 * 1024) throw new Error('Portable edition exceeds the GitHub 100 MiB file limit');
 await writeFile(destination, html, 'utf8');
 await writeFile(path.join(root, '字体授权-OFL.txt'), license, 'utf8');
 console.log(`Portable game: ${destination}`);
