@@ -1,0 +1,106 @@
+[
+  {
+    "name": "cg-s06-snow-hands",
+    "variant": "landscape",
+    "promptId": "6a33e53d-e26d-4fc3-9f67-1f9663d046b5",
+    "output": "multiref_00017_.png",
+    "workflow": "multiref",
+    "accepted": true
+  },
+  {
+    "name": "cg-e1-blade",
+    "variant": "landscape",
+    "promptId": "3f2c4f64-0a83-4e9b-87c2-23bebc00e5e6",
+    "output": "multiref_00018_.png",
+    "workflow": "multiref",
+    "accepted": true
+  },
+  {
+    "name": "cg-s08-farewell",
+    "variant": "landscape",
+    "promptId": "0ee6cf97-c982-4bce-a94d-ecf13f6f0d51",
+    "output": "multiref_00019_.png",
+    "workflow": "multiref",
+    "accepted": false
+  },
+  {
+    "name": "cg-s06-snow-hands",
+    "variant": "portrait",
+    "promptId": "1e01e1b8-d91d-4160-bb1c-de233fad71c4",
+    "output": "edit_00010_.png",
+    "workflow": "edit",
+    "accepted": true
+  },
+  {
+    "name": "cg-s02-first-crossing",
+    "variant": "portrait",
+    "promptId": "4e5a2a80-d0ea-4ade-ae46-cb67f0baaa7f",
+    "output": "edit_00011_.png",
+    "workflow": "edit",
+    "accepted": true
+  },
+  {
+    "name": "cg-s04-old-names",
+    "variant": "portrait",
+    "promptId": "8931e867-b524-42a8-9e88-c8ad1b942acf",
+    "output": "edit_00012_.png",
+    "workflow": "edit",
+    "accepted": false
+  },
+  {
+    "name": "cg-s08-farewell",
+    "variant": "landscape",
+    "promptId": "2334b2b2-4f5e-4af6-beab-140179cfd303",
+    "output": "edit_00013_.png",
+    "workflow": "edit",
+    "accepted": false
+  },
+  {
+    "name": "cg-s05-mi-flute",
+    "variant": "portrait",
+    "promptId": "0cc4d1aa-da3f-4ac8-83da-a1cda51a8250",
+    "output": "edit_00014_.png",
+    "workflow": "edit",
+    "accepted": true
+  },
+  {
+    "name": "cg-e6-home",
+    "variant": "portrait",
+    "promptId": "5bec4de7-a27a-4234-bb9b-e96e5a94ff7a",
+    "output": "edit_00015_.png",
+    "workflow": "edit",
+    "accepted": true
+  },
+  {
+    "name": "cg-e1-blade",
+    "variant": "portrait",
+    "promptId": "61eb8310-feb4-4cdd-95ee-6f47ed4fe43d",
+    "output": "edit_00016_.png",
+    "workflow": "edit",
+    "accepted": true
+  },
+  {
+    "name": "cg-s08-farewell",
+    "variant": "landscape",
+    "promptId": "5923f785-38de-40b8-9707-7bfc114de20e",
+    "output": "edit_00017_.png",
+    "workflow": "edit",
+    "accepted": true
+  },
+  {
+    "name": "cg-s04-old-names",
+    "variant": "portrait",
+    "promptId": "b83d23a4-e3aa-4b6a-974e-48d128080e44",
+    "output": "edit_00018_.png",
+    "workflow": "edit",
+    "accepted": true
+  },
+  {
+    "name": "cg-s08-farewell",
+    "variant": "portrait",
+    "promptId": "1937de06-5d54-4365-bb1e-7aeb9cfa6a81",
+    "output": "edit_00019_.png",
+    "workflow": "edit",
+    "accepted": true
+  }
+]

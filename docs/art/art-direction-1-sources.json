@@ -1,0 +1,319 @@
+{
+  "batch": "art-direction-1",
+  "tool": "Local ComfyUI / Qwen-Image 2.1",
+  "authority": "Actual PNG prompt metadata and exact uploaded reference bytes; historical records are retained separately.",
+  "reproduceRecord": "python scripts/record-cg-sources.py",
+  "buildDelivery": "python scripts/build-images.py --only cg-e1-blade cg-s06-snow-hands cg-s08-farewell cg-s02-first-crossing cg-s04-old-names cg-s05-mi-flute cg-e6-home",
+  "images": [
+    {
+      "name": "cg-e1-blade",
+      "variant": "landscape",
+      "master": "resources/art-src/cgs/v2/e1-blade.png",
+      "sha256": "1a9e2d05e86c21d099df27095c444388abe587ba13aa20c75ad14ea34b6aad6b",
+      "width": 1376,
+      "height": 768,
+      "references": [
+        {
+          "comfyName": "codex-reference-b8477656bbbd45a59a3e4ec7bf738b03.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-b8477656bbbd45a59a3e4ec7bf738b03.jpg",
+          "sha256": "62fb48d5aec2b274d8eb9ca4b504ebc0dd41147b8b9a67c1f349147f4c7d6304"
+        },
+        {
+          "comfyName": "codex-reference-c98fb1ca942946f9a05aebb1a2222fdd.png",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-c98fb1ca942946f9a05aebb1a2222fdd.png",
+          "sha256": "26d12e70b023f6a1dad57914b9903d55b4d9da445b40c8c415cb6976d5049cf8"
+        }
+      ],
+      "seed": 11140102,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "为中国文学视觉小说画一幅克制的悲剧结局CG，完整横向插画，无文字。图1只参考楚地旧城窄巷、青灰木石、水彩厚涂的质感，不保留原图的近景男女合影和所有前景人物。图2提供人物身份：左边棠，瘦小的年轻少女，松乱的小发髻、散下来的碎发、朴素赭红衣，右边戌是米白古装、靛蓝袖口的小髻少年。故事此刻两人已经分离。重新设计一个有空间深度的清晨窄巷：画面中远景正中，白衣少年的瘦小背影被两名穿深灰旧衣的搜检者带往幽暗的宗庙后巷，三个人一同背对观者，明确是押送关系，少年手无武器。近景左侧一辆装满菜筐的出城木板车，棠独自蹲在菜筐后，赭衣、松髻、小小的半侧脸、双手藏着一块包糖的止血布，可辨认但不抢占画面，她不和少年并排，不面对观众微笑，不站起来挥手。木车正在向巷外去。画面只有这一个少女，绝不能出现高发髻端正的媭。两道高墙之间露出一角苍白天空，最远处卖粥小摊的白汽在朝光中散开，空气里仿佛有米香。湿石板上一束微暖天光与押送背影形成孤独的引导线，前景有青菜叶、竹筐纹理和车辙。人物尺度小于建筑，让离去和没有来得及的日常成为主体。低饱和青黛灰褐、少量赭红和米金，精致中国水彩与手绘厚涂，柔和自然肤色，静默、怅然、有呼吸的留白，电影感，不煽情。画面下方20%保留安静石路供游戏叠字，不绘制任何文字、名册上的字、印章、水印、黑渐变条、现代服饰、武器、血腥或英雄胜利姿态。",
+      "negativePrompt": "合影，情侣，媭，近景白衣少年正脸，重复少女，文字，水印，血腥，兵器，校服",
+      "promptId": "3f2c4f64-0a83-4e9b-87c2-23bebc00e5e6",
+      "output": "multiref_00018_.png",
+      "workflow": "multiref"
+    },
+    {
+      "name": "cg-s06-snow-hands",
+      "variant": "landscape",
+      "master": "resources/art-src/cgs/v2/s06-snow-hands.png",
+      "sha256": "0898de374242b8838377b58c634ce8b1f11e3dc60dd2131e878cb9e0be626e02",
+      "width": 1376,
+      "height": 768,
+      "references": [
+        {
+          "comfyName": "codex-reference-1cb390cb3fef4557b62437c0483324e1.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-1cb390cb3fef4557b62437c0483324e1.jpg",
+          "sha256": "5b9018d646e850827ebfb8cfaccb3e19ca98bfe012c0408112146e1f9937e3df"
+        },
+        {
+          "comfyName": "codex-reference-9f48a501c5ae4e338bf3882cb298df59.png",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-9f48a501c5ae4e338bf3882cb298df59.png",
+          "sha256": "b95c610cf881ebd4010323c57342ac93df2978988ccf519a8831af78db5136f7"
+        }
+      ],
+      "seed": 11140101,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "为中国叙事视觉小说《异托邦》重绘一幅完整横向CG，单幅插画，无拼贴无文字。图1仅提供雪洞、旧布与青蓝夜色的绘画风格，不保留其错误的三人座位与分开的衣服。图2是三位人物身份参考：左为雩（黑长发白布蒙眼的少女），中为戌（黑发束小髻、米白交领、靛蓝袖口的少年），右为芈（凌乱短黑发、持破骨笛的少年）。重新构图：戌坐正中，敞开阿媪那件宽大的灰褐旧冬衣，雩在画面左侧、芈在右侧，两人头和肩都紧紧依靠在戌肩侧，三个人被同一件连续的大冬衣包裹，身体紧贴，没有冷风能钻过的缝隙。戌低头看衣襟下交叠取暖的手；雩的白蒙眼布完整清晰，脸轻靠戌肩；芈疲惫而安静，笛子已放低，一截缠布的短骨笛放在他们膝前。衣襟间三个人的手自然相触、相互拢住，允许部分手藏在衣服下面，不要为了数手把六只手摊成一排。中近景，三张脸形成紧凑三角形，脸在上方三分之一，接触的手在画面中心偏下，三人整体占中间70%宽度。背景为粗糙洞壁，洞外一点细雪与淡天光，快熄灭的火只给指尖和颊边一丝暗金暖光。表情克制、困倦、仍愿彼此回应，不微笑不摆拍，不画死亡脸。精致的中国手绘厚涂与水彩融合，真实布料褶皱，柔和边缘，青黛和灰褐限制色，明亮而自然的肤色，映画级空间感，静默悲伤。下方20%是低细节的衣摆和暗石地、仍保有绘画质感，不要添加纯黑渐变条、文字、边框、水印、现代衣物、额外人物。",
+      "negativePrompt": "文字，水印，拼贴，分镜，多余手指，多余肢体，三件分开的棉衣，女孩坐中间，现代校服，欢笑",
+      "promptId": "6a33e53d-e26d-4fc3-9f67-1f9663d046b5",
+      "output": "multiref_00017_.png",
+      "workflow": "multiref"
+    },
+    {
+      "name": "cg-s08-farewell",
+      "variant": "landscape",
+      "master": "resources/art-src/cgs/v2/s08-farewell.png",
+      "sha256": "ced36fd6c305ef36677b7dc36592fa6e58404164db3b1061efb369d0b5635392",
+      "width": 1376,
+      "height": 768,
+      "references": [
+        {
+          "comfyName": "codex-reference-fd055c932c044dc5b79c2dd93380b2cf.png",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-fd055c932c044dc5b79c2dd93380b2cf.png",
+          "sha256": "4e4ad0e8982911719cf612cdeae1d718bee05960420e5221cca5451449dcada9"
+        }
+      ],
+      "seed": 11140123,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "仅修改参考图中央两人的手势，其他人物脸、站位、衣服、光河和水彩厚涂风格保持原样。让右边沈辞举起左手张开，掌面正对画面左侧并略朝向观者，手掌像一扇竖起的小门，掌心的纹路清晰可见，五指自然朝上张开；左边芈伸出右手，用一根食指的指尖，明确轻敲沈辞竖起的左掌心正中央。芈右手其余四指自然蜷起，食指从左向右水平指向掌心，指尖要落在宽阔掌面中央的掌纹上，与皮肤贴住。两人手掌只通过这根食指的指尖轻轻接触，绝不能两个人食指相对触碰，绝不能芈碰到沈辞的指尖或拇指，绝不能握手、击掌或十指交扣。这个画面表达无声少年敲朋友掌心两下告别，一根食指也可以敲两下。让两人的手彼此贴近身体中间，轻巧温柔的动作，正常手指结构，不出现多余手臂。芈的另一手仍然放低握骨笛。保持干净的构图与自然肤色。无文字、水印。",
+      "negativePrompt": "指尖对指尖，触摸拇指，握手，击掌，手悬空，魔法光效，六指，文字",
+      "promptId": "5923f785-38de-40b8-9707-7bfc114de20e",
+      "output": "edit_00017_.png",
+      "workflow": "edit"
+    },
+    {
+      "name": "cg-e1-blade",
+      "variant": "portrait",
+      "master": "resources/art-src/cgs/mobile/e1-blade.png",
+      "sha256": "d62d830891f7ca9f685594e78c94c5e6051bda23bbc793b680b8b508bed53c06",
+      "width": 768,
+      "height": 1376,
+      "references": [
+        {
+          "comfyName": "codex-reference-c86128edb8084178b1ea470828b424da.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-c86128edb8084178b1ea470828b424da.jpg",
+          "sha256": "58d5b3587ae46ba27ff741c4e5ab81e5b3382478459240538151a71ab5bc613b"
+        }
+      ],
+      "seed": 11140109,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "把参考重绘成一幅完整连续的手机竖幅CG《天亮以前》，不要保留缩小横图的画框，不要拼贴或上下模糊重复。精致中国水彩和手绘厚涂，楚地旧城清晨，青灰高墙与木屋沿狭巷向远处收束，墙缝一角苍白天空，远处卖粥的蒸汽透着米金晨光。叙事身份严格保留：近一点左侧出城木车上，一个独自蹲在菜筐后的小少女棠，松乱小发髻、碎发、赭红旧衣、双手藏着包糖的布，不微笑；中远景少年戌白色古衣靛蓝袖口、束小髻的背影，被两名灰衣搜检者一左一右带往后巷。让押送三人的背影在画面高度32%-47%、中央位置；菜车与棠在前一层景深，高度42%-62%，但棠的脸必须在中央76%宽度内，别让她贴到左侧画外。棠低头躲在菜筐后，和正在被押走的戌明显分开，二者不是同行合照，画面只有这一位少女，绝不增加其他红衣少女。让巷道向画面上方延伸，木车从画面中下方缓缓出城，湿石路上的天光贯穿近远。上方25%是木檐高墙与淡天光，下方30%是安静湿石路、车轮和菜叶，保留笔触细节供游戏叠字，不添加纯黑渐变条。画面克制、静默，有普通生活正在继续的重量，无胜利姿态、兵刃、血腥、现代物品、文字、水印或边框。",
+      "negativePrompt": "情侣合影，媭，多名少女，少女出框，血腥，武器，假文字，黑条，拼贴",
+      "promptId": "61eb8310-feb4-4cdd-95ee-6f47ed4fe43d",
+      "output": "edit_00016_.png",
+      "workflow": "edit"
+    },
+    {
+      "name": "cg-s06-snow-hands",
+      "variant": "portrait",
+      "master": "resources/art-src/cgs/mobile/s06-snow-hands.png",
+      "sha256": "ae784a12ce970cc1c8fdf4ab750c526149c260667b36a92dd919791ca889853b",
+      "width": 768,
+      "height": 1376,
+      "references": [
+        {
+          "comfyName": "codex-reference-c0bdd954225140bdbb46d01b6444fb3a.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-c0bdd954225140bdbb46d01b6444fb3a.jpg",
+          "sha256": "cd20ff65b12302195ed6d95ede8cb18680eb0cf4c5d4cbf6fd0db0a89f60b0d1"
+        }
+      ],
+      "seed": 11140104,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "把参考中雪洞的三人紧靠取暖，重绘成一幅完整的手机竖屏插画，保持竖幅比例。参考是临时排版草稿，消除所有缩小画框、拼贴边缘、模糊重复背景，画成一幅连续完整的真实水彩厚涂CG。严格保留三个人物身份和依靠关系：中央是黑发小髻、米白交领、靛蓝袖口的戌；左边是白布完整蒙眼的长黑发少女雩；右边是凌乱短黑发的少年芈。戌敞开阿媪的同一件灰褐大冬衣，让雩和芈从左右两侧靠进来，两人头靠他肩头，三个人肩膀贴住，由同一件连续冬衣从左右包拢。手互相轻拢保暖，部分藏在衣襟下；芈的短骨笛缠着布，已经放低，贴在他们膝前。没有表演式微笑，没有死人面色，没有各自裹一条被子的间隙。重新安排为紧凑中景，三张脸在画面高度约30%-45%，手和笛在高度50%-60%；所有脸、蒙眼布、手与笛都落在画面中央76%宽度内，左右边缘留洞壁余地，手机裁切也不能切断侧边人的脸。画面最上方25%画雪洞粗糙岩壁与侧后方一线冰蓝晨光；下方35%是长衣摆、暗褐石地、零星灰烬，安静但有细腻笔触，不画纯黑条。洞外细雪与微弱将熄的火形成冷暖对照。人物头部比例自然、肤色温和，细腻中国水彩融合手绘厚涂，低饱和青黛灰褐，情感静默克制，无文字无水印无边框。",
+      "negativePrompt": "横向小画框，拼贴，重复人物，三件分开的冬衣，女孩在中间，笑脸，死尸，现代服装，文字，水印",
+      "promptId": "1e01e1b8-d91d-4160-bb1c-de233fad71c4",
+      "output": "edit_00010_.png",
+      "workflow": "edit"
+    },
+    {
+      "name": "cg-s08-farewell",
+      "variant": "portrait",
+      "master": "resources/art-src/cgs/mobile/s08-farewell.png",
+      "sha256": "09320865bfbec829f45608d50acef48ee774306cf8a7f60f79daf50c30496d69",
+      "width": 768,
+      "height": 1376,
+      "references": [
+        {
+          "comfyName": "codex-reference-4d7fc02fea4446efbcdfeed71406772a.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-4d7fc02fea4446efbcdfeed71406772a.jpg",
+          "sha256": "1a73c88c633b21a84ff6bb119c2a69cbf54278cb2c5ef7ce4a49864d7326329b"
+        }
+      ],
+      "seed": 11140110,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "把参考重绘为一幅连续完整的手机竖向CG《掌心的两下》，无拼贴、内嵌横图、模糊重复或黑条。参考中的两人必须保留身份：左边凌乱短黑发、米白古代交领的无声少年芈，右边现代蓝白校服、黑短发少年沈辞。两人侧身相对，脸和手都完整进入手机画面。保留并明确画好原图的掌心敲击：沈辞左手竖起，五指自然张开朝上，掌面朝向芈并略朝观者，掌纹清晰；芈用右手的一根食指指尖轻轻触在沈辞掌心正中央，其他四指自然收起，两个皮肤表面确实接触。不是指尖对指尖、不是碰拇指、不是握手或击掌，这是在掌心敲两下、传递无声告别。芈另一手的破骨笛放低在腰侧，不贴嘴，沈辞低头看手，芈神情认真不舍。竖向中景采用两人很近的斜侧角度，两张脸在高度30%-43%，接触的掌心在高度48%-57%，笛子在高度55%-62%。全部脸、完整双手、笛子位于中央76%宽度内，旁边留青黛水光，不切边。上方25%是幽蓝夜空和一条温金光河的远线，下方35%为安静细腻的河滩石纹与水光，给游戏正文留空间。精细中国水彩和手绘厚涂融合，颜色和人物面貌承接参考，温和自然肤色，米白与靛蓝衣料，手部关节自然可信，安静、含蓄、不摆拍、不灿笑，不增加其他人物，不画文字、水印、框线。",
+      "negativePrompt": "手悬空，指尖对指尖，碰拇指，握手，击掌，吹笛，脸出框，长马尾，六指，拼贴，字，水印",
+      "promptId": "1937de06-5d54-4365-bb1e-7aeb9cfa6a81",
+      "output": "edit_00019_.png",
+      "workflow": "edit"
+    },
+    {
+      "name": "cg-s02-first-crossing",
+      "variant": "portrait",
+      "master": "resources/art-src/cgs/mobile/s02-first-crossing.png",
+      "sha256": "a1b539e4eb8ad92cc57f45972caae2e8e83e9b424570c02053eb847c21c212ad",
+      "width": 768,
+      "height": 1376,
+      "references": [
+        {
+          "comfyName": "codex-reference-d4e50ff0a78f4e5499f9f4153dc88c5c.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-d4e50ff0a78f4e5499f9f4153dc88c5c.jpg",
+          "sha256": "700a14a60393ba78fd5c6b0af7b38b7caaaa931e4748a93fd9d2196e68e8a4fb"
+        }
+      ],
+      "seed": 11140105,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "根据参考，重新画成一幅完整竖向手机插画《河拐弯以前》，中国文学视觉小说CG。参考只是临时竖版草稿，必须去掉所有缩小横图的边界和模糊重复，把上下空间画成连续自然的山水。保留故事中的两人互相挥别：米白古代交领、束小髻的少年戌坐在一只正在离岸的细长木舟里，一只手举起向岸上挥别；灰发慈祥老妇阿媪穿靛蓝旧布衣，站在更高一点的河岸，腋下夹着一个小陶罐，另一只手举起回应。两人分处水上与岸上，视线相对，两只挥别的手和两张脸都完整。采用纵深而不是横向分开：近一点的木舟在画面左下但中心安全区，远一点阿媪在画面右上方小岸坡，二者之间留一小段反光河水，距离让人读懂离别。两张脸、挥手和陶罐均落在画面高度25%-60%、中央76%宽度内，不要靠最外侧。舟头向左下缓缓驶出，阿媪仍站着，未放下手。上方25%为水墨般远山、轻雾和垂柳，最下方35%为近水涟漪和舟尾，给正文安静留白。青黛山水，柔和米金清晨，水彩和细腻手绘厚涂融合，古朴楚地日常，不要宏伟宫殿。保留原图克制温柔的气质，不要让老妇消失，不要把人物挤到两边，不要添加文字、边框、黑色渐变条、水印或其他人物。",
+      "negativePrompt": "横幅嵌图，拼贴，重复人物，老妇缺失，人物出框，字，水印，黑条",
+      "promptId": "4e5a2a80-d0ea-4ade-ae46-cb67f0baaa7f",
+      "output": "edit_00011_.png",
+      "workflow": "edit"
+    },
+    {
+      "name": "cg-s04-old-names",
+      "variant": "portrait",
+      "master": "resources/art-src/cgs/mobile/s04-old-names.png",
+      "sha256": "366daf64020e84054898721f9ad3b17b5d1db2980d1938de62ad29675d6757bb",
+      "width": 768,
+      "height": 1376,
+      "references": [
+        {
+          "comfyName": "codex-reference-ca2d365a87074b55bde7d7619d0c947e.png",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-ca2d365a87074b55bde7d7619d0c947e.png",
+          "sha256": "2f4e0ffb5f0d19b90f90f0e31de41960313d5653fd2e9d74291893bb2b3e6ee4"
+        }
+      ],
+      "seed": 11140126,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "保留参考竖屏插画的两个人、脸、衣服、油灯、打开的旧木箱、骨笛、青金光线和全部绘画风格。只整理他们面前的桌面道具，让故事中的十根姓名木简能清楚辨认。移除原来过大的写满密字的木板、纸卷和两块方形木牌，桌面换成恰好十根窄长木简，明确分成左、右两组，中间隔开一点，每组恰好五根平行的长木条，十根木条同样宽长，每根有自然木纹和两三个微小模糊刻痕，不要密集假文字，不要写任何可读汉字。木条全部平放在两个人身前、画面中央的桌面上，完全可见，不相互遮挡。屈衡依然只伸出右手，右手放在一根木简旁，缺两指的左手继续藏在衣袖里。两人的脸都留在画面内，不放大人物，不改变视角和竖幅比例。原有旧箱里缠布断笛保留。木简的旧木色与桌面自然融合，暖油灯从左侧照亮木简边缘，柔和阴影、精细水彩与厚涂笔触。下方仍为安静木桌近沿。无文字、水印、框线。",
+      "negativePrompt": "大木板，纸张，卷轴，方形木牌，密集假字，少于十根，多于十根，多余手，完整左手，水印",
+      "promptId": "b83d23a4-e3aa-4b6a-974e-48d128080e44",
+      "output": "edit_00018_.png",
+      "workflow": "edit"
+    },
+    {
+      "name": "cg-s05-mi-flute",
+      "variant": "portrait",
+      "master": "resources/art-src/cgs/mobile/s05-mi-flute.png",
+      "sha256": "b674ee3fb86c3617f249f40196d4b4d76984a24004909b9c689298c551f4a5c7",
+      "width": 768,
+      "height": 1376,
+      "references": [
+        {
+          "comfyName": "codex-reference-5e5501728bf8445fb99a65e90760099a.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-5e5501728bf8445fb99a65e90760099a.jpg",
+          "sha256": "93ee279970f7c5e98c0cf7eb41213243509601b82819bcc7c3464322b5fe77bb"
+        }
+      ],
+      "seed": 11140107,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "将参考重新构图为一幅完整连续的手机竖幅中国水彩厚涂CG《没吹完的一声笛》。参考是临时排版，去除内嵌横幅、拼贴边界和模糊重复背景。保留人物身份和场景：光河石岸，左侧凌乱短黑发的古代少年芈，朴素米白交领，认真地吹一支短小的破骨笛，笛身裂口用旧布缠住，一只黑鸟停在他近处石头上；右侧长黑发、白布完整蒙眼的少女雩，侧脸安静听他的笛声。二人坐得近一些，芈略靠前、雩略靠后，避免左右拉得太开。二人的完整脸、蒙眼布、嘴边骨笛、正常的持笛双手全部位于画面高度30%-58%、中央76%宽度内，不能把笛子或脸切出画外。几只黑鸟在他们头顶的光河倒影上方短暂停留，鸟有不同远近，不要密集恐怖鸦群，不挡住脸和手。最上方是深青夜空、远山与一线温金星河，最下方35%为安静石滩、浅水和金光微波，给正文留白，但不画黑色渐变条。保持参考清晰的五官与自然肤色，米白棉麻笔触，精细的手绘水彩厚涂，低饱和青黛与旧金，画面有静默的耐心和温柔，不要甜蜜摆拍，不添加文字、标题、水印、框线、额外人物、现代衣物。",
+      "negativePrompt": "人物出框，笛子消失，露眼少女，横图嵌框，拼贴，假字，水印，多余手指",
+      "promptId": "0cc4d1aa-da3f-4ac8-83da-a1cda51a8250",
+      "output": "edit_00014_.png",
+      "workflow": "edit"
+    },
+    {
+      "name": "cg-e6-home",
+      "variant": "portrait",
+      "master": "resources/art-src/cgs/mobile/e6-home.png",
+      "sha256": "cc93139c38963782c71dae32330b5b0a77d0e602d4e07144233fe9e92e64015c",
+      "width": 768,
+      "height": 1376,
+      "references": [
+        {
+          "comfyName": "codex-reference-8d575be1fbf949d6ad24c6836958c572.jpg",
+          "file": "resources/art-src/references/art-direction-1/codex-reference-8d575be1fbf949d6ad24c6836958c572.jpg",
+          "sha256": "24a202ea6380345032139d3481c25363f9cf9006c9695ad218402f0d69757803"
+        }
+      ],
+      "seed": 11140108,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "models": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      },
+      "prompt": "将参考重新画成完整的竖屏手机CG《再添半碗》，一幅自然连续的家庭晚餐插画，去掉临时小横图、拼贴边界、上下模糊重复图像和原有黑色条带。现代中国普通家庭的暖灯厨房，四个人都必须完整出现：短黑发的少年沈辞穿蓝白校服、没有背包；黑色低马尾的女孩唐瑾穿蓝白校服、没有背包也不抱本子；黑发温柔母亲穿米褐上衣与朴素围裙，侧身用汤勺为沈辞添半碗汤；短黑发父亲穿浅褐家居毛衣、坐着持筷微笑。人物身份与参考一致，都是现代人，没有古代发髻、交领古衣或古装道具。采用略俯视的近距离竖向餐桌构图：母亲在左后方站着添汤，父亲在右后方坐着；沈辞在左前方、唐瑾在右前方坐着，两人脸转向母亲和饭桌，四张脸排成紧凑菱形，全部位于中央76%宽度、高度28%-52%；添汤的勺、沈辞的碗和母亲的手在高度50%-61%。不要让任何一张脸贴近画面边缘，手机居中裁切仍需保留四张脸。下方35%是安静的木桌近沿、饭碗、几道家常菜与微微汤汽，为叠字留空间。上方是暖灯、旧厨房柜和窗外靛蓝暮色。暖光柔和、日常生活的米色木褐与陶白，明亮自然的肤色，精细水彩与手绘厚涂融合，构图亲切，不是摆拍全家福，母亲正在添汤而其他人自然等待，朴素且有回家的安心。无文字、水印、边框、额外人物、夸张大笑。",
+      "negativePrompt": "少于四人，古代服装，背包，合照，人物出框，父亲在正中独占，水印，拼贴，黑条",
+      "promptId": "5bec4de7-a27a-4234-bb9b-e96e5a94ff7a",
+      "output": "edit_00015_.png",
+      "workflow": "edit"
+    }
+  ]
+}

@@ -48,6 +48,7 @@ jobs:
         run: |
           npm run assets:check
           npm run test:assets
+          npm run test:cgs
           npm run test:cache
       - name: Verify the single-file offline edition
         run: |

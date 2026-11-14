@@ -150,7 +150,7 @@ export function GalleryView({ profile }: { profile: Profile }) {
       pointer.current = null;
       if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { swiped.current = true; move(dx < 0 ? 1 : -1); }
     }} onPointerCancel={() => { pointer.current = null; }}>
-      <ArtImage className="gallery-full" name={viewed.art} alt={viewed.name} draggable={false} />
+      <ArtImage className="gallery-full" name={viewed.art} responsive={false} alt={viewed.name} draggable={false} />
     </button>
     <button className="gallery-back icon-button" onClick={() => setViewing(null)} aria-label="返回绘卷"><X size={19} /><span>返回</span></button>
     <div className="gallery-caption"><span className="eyebrow">{viewed.chapter}</span><h3>{viewed.name}</h3><p>{viewed.subtitle}</p><a href={assetSources(viewed.art).webp} download={`异托邦-${viewed.name}.webp`} className="text-button"><Download size={14} />下载此景</a><small className="gallery-gesture-hint">轻触画面沉浸观看 · 左右滑动换图</small></div>

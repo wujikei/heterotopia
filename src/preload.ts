@@ -1,31 +1,31 @@
 import { imageFallback, recordImageFailure } from './assets';
 
-type CachedImage = { promise: Promise<void>; decoded: boolean };
+type CachedImage = { promise: Promise<string>; decoded: boolean };
 const images = new Map<string, CachedImage>();
 
 /** A fulfilled promise means the image can be painted, including data: images. */
-export function preloadImage(url: string, priority: 'high' | 'low' | 'auto' = 'auto'): Promise<void> {
+export function preloadImage(url: string, priority: 'high' | 'low' | 'auto' = 'auto'): Promise<string> {
   const cached = images.get(url);
   if (cached) return cached.promise;
   const image = new Image();
   image.decoding = 'async';
   image.fetchPriority = priority;
-  let resolve!: () => void;
+  let resolve!: (url: string) => void;
   let reject!: (error: Error) => void;
-  const entry: CachedImage = { decoded: false, promise: new Promise<void>((yes, no) => { resolve = yes; reject = no; }) };
+  const entry: CachedImage = { decoded: false, promise: new Promise<string>((yes, no) => { resolve = yes; reject = no; }) };
+  const aliases = new Set([url]);
   images.set(url, entry);
   const clear = () => { image.onload = null; image.onerror = null; };
   image.onerror = () => {
-    const fallback = imageFallback(image.src) ? imageFallback(url) : undefined;
+    recordImageFailure(image.src);
+    const fallback = imageFallback(image.src);
     if (fallback) {
-      recordImageFailure(url);
+      aliases.add(fallback);
       images.set(fallback, entry);
       image.src = fallback;
       return;
     }
-    clear(); images.delete(url); // a later visit may retry a transient failure
-    const fallbackUrl = imageFallback(url);
-    if (fallbackUrl) images.delete(fallbackUrl);
+    clear(); aliases.forEach(key => images.delete(key)); // a later visit may retry a transient failure
     reject(new Error(`Image unavailable: ${url.slice(0, 100)}`));
   };
   image.onload = async () => {
@@ -33,7 +33,7 @@ export function preloadImage(url: string, priority: 'high' | 'low' | 'auto' = 'a
     // Some WebKit versions reject decode() for an otherwise loaded image.
     try { await image.decode?.(); } catch { /* onload is the fallback */ }
     entry.decoded = true;
-    resolve();
+    resolve(image.src);
   };
   image.src = url;
   return entry.promise;

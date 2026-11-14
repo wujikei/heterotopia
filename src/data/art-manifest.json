@@ -104,6 +104,13 @@
     "village"
   ],
   "mobile": [
+    "cg-e1-blade",
+    "cg-e6-home",
+    "cg-s02-first-crossing",
+    "cg-s04-old-names",
+    "cg-s05-mi-flute",
+    "cg-s06-snow-hands",
+    "cg-s08-farewell",
     "portrait-aheng",
     "portrait-amao",
     "portrait-amao-sad",
@@ -180,5 +187,19 @@
     "underwater": "underwater.webp",
     "valley": "valley.webp",
     "village": "village.webp"
+  },
+  "masters": {
+    "cg-e1-blade": "resources/art-src/cgs/v2/e1-blade.png",
+    "cg-s06-snow-hands": "resources/art-src/cgs/v2/s06-snow-hands.png",
+    "cg-s08-farewell": "resources/art-src/cgs/v2/s08-farewell.png"
+  },
+  "mobileMasters": {
+    "cg-e1-blade": "resources/art-src/cgs/mobile/e1-blade.png",
+    "cg-s06-snow-hands": "resources/art-src/cgs/mobile/s06-snow-hands.png",
+    "cg-s08-farewell": "resources/art-src/cgs/mobile/s08-farewell.png",
+    "cg-s02-first-crossing": "resources/art-src/cgs/mobile/s02-first-crossing.png",
+    "cg-s04-old-names": "resources/art-src/cgs/mobile/s04-old-names.png",
+    "cg-s05-mi-flute": "resources/art-src/cgs/mobile/s05-mi-flute.png",
+    "cg-e6-home": "resources/art-src/cgs/mobile/e6-home.png"
   }
 }
