@@ -22,7 +22,7 @@ function at(sceneId: string, id: string) {
 
 test('waking, breakfast, school and returning home stage the appropriate costume', () => {
   for (const [scene, id, portrait] of [
-    ['0-1', '0-1:8:0', 'portrait-shen-home'],
+    ['0-1', '0-1:8:0', 'portrait-shen-home-surprised'],
     ['0-1', '0-1:15:0', 'portrait-shen-home-surprised'],
     ['0-2', '0-2:4:0', 'portrait-shen-school'],
     ['0-2', '0-2:6:0', 'portrait-tang-dining'],
@@ -49,13 +49,13 @@ test('cold scenes dress the borrowed body while retaining its original speaker l
 test('returning from the alley switches the background at the original paragraph boundary', () => {
   assert.equal(at('终-4', '终-4:12:3').beat.background, 'alley');
   const returned = at('终-4', '终-4:12:4');
-  assert.equal(returned.beat.background, 'bedroom');
+  assert.equal(returned.beat.background, 'bedroom-evening');
   assert.equal(actorPortraitName(returned.actor), 'portrait-shen-home');
-  assert.equal(at('终-4', '终-4:13:0').beat.background, 'bedroom');
+  assert.equal(at('终-4', '终-4:13:0').beat.background, 'bedroom-evening');
   assert.equal(locationForBeat(returned.scene, returned.beat), '沈家卧室 · 数日后傍晚');
   assert.equal(slotPresentation({ ...newGame(profile), sceneId: '终-4', beatId: returned.beat.id }, profile).title, '沈家卧室 · 数日后傍晚');
   const waking = at('0-1', '0-1:15:0');
-  assert.equal(locationForBeat(waking.scene, waking.beat), '05:41 · 沈家卧室');
+  assert.equal(locationForBeat(waking.scene, waking.beat), '07:12 · 沈家卧室');
 });
 
 test('each delivered costume or pose appears on an actual page outside a CG', () => {

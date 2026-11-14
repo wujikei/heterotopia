@@ -1,0 +1,62 @@
+[
+  {
+    "name": "classroom-day",
+    "pixelExact": true,
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sourceSHA256": "140e9a1cf5a0b6daa6744e45aefe4db03ac7f4561b29a918de0c42800d088c77",
+    "originalBytes": 1106136
+  },
+  {
+    "name": "bedroom-morning",
+    "pixelExact": true,
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sourceSHA256": "89feedc642b185f4d62f7e64d30621b0a5538afd22a94a16388f2a15f62feaa7",
+    "originalBytes": 993762
+  },
+  {
+    "name": "bedroom-evening",
+    "pixelExact": true,
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sourceSHA256": "b4d59d58c1bbefe22914ae49f0e4a3e55b876341c392689a4f1bc16878c5c88a",
+    "originalBytes": 1096760
+  },
+  {
+    "name": "home-morning",
+    "pixelExact": true,
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sourceSHA256": "681de077c1fc9bc2ac785952359660b1dac4eb2559e9f0ee0e91bee8a8486acd",
+    "originalBytes": 1046880
+  },
+  {
+    "name": "snow-night",
+    "pixelExact": true,
+    "dimensions": [
+      1344,
+      768
+    ],
+    "sourceSHA256": "074c88f13f63ae56f824b2376707f9ef6a4c7314f4698731c39c2879a7ed140d",
+    "originalBytes": 1065486
+  },
+  {
+    "name": "canteen-day",
+    "pixelExact": true,
+    "dimensions": [
+      1376,
+      768
+    ],
+    "sourceSHA256": "2170fdba6a723148de7427f8d5af141401c0e055a77f9797c0be4a74dc67f6d4",
+    "originalBytes": 1041384
+  }
+]

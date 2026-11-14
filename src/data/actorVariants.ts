@@ -28,7 +28,7 @@ export const POSE_BEATS: Record<string, ActorVariant> = {
 export function variantForBeat(key: string, beat: Beat, scene: Scene): ActorVariant {
   if (key === 'mi') return POSE_BEATS[beat.id] ?? 'default';
   if (key === 'shen') {
-    if (scene.id === '0-1' || scene.id === '终-5' || (scene.id === '终-4' && beat.background === 'bedroom')) return 'home';
+    if (scene.id === '0-1' || scene.id === '终-5' || (scene.id === '终-4' && beat.background.startsWith('bedroom'))) return 'home';
     if (['0-2', '0-4', '0-7', '0-10', '0-11', '终-2', '终-3'].includes(scene.id) || beat.background.startsWith('classroom')) return 'school';
   }
   if (key === 'tang' && ['0-2', '终-5'].includes(scene.id)) return 'dining';

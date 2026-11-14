@@ -6,7 +6,7 @@
 
 ## 开始游玩
 
-双击根目录的 **开始游戏.cmd**，或者直接用 Chrome、Edge 打开 **异托邦.html**。这是包含全部画面、字体、剧情和声音的单文件离线版，不需要安装依赖，也不需要启动 ComfyUI。
+双击根目录的 **开始游戏.cmd**，或者直接用 Chrome、Edge 打开 **异托邦.html**。请将它与同目录的 **离线资源/** 文件夹一起保留；全部画面、字体、剧情和声音均可断网使用，不需要安装依赖，也不需要启动 ComfyUI。需要复制一个文件带走时，执行 `npm run portable:single`，生成 `artifacts/portable/异托邦-单文件.html`。
 
 进度自动保存在当前浏览器中。另有六个手动存档位；在“阅读设置”里可导出、导入 JSON 存档。换浏览器或设备前，请先导出存档。同一份游戏通过不同网址或文件位置打开时，浏览器可能使用不同的存储空间。
 
@@ -22,6 +22,8 @@
 
 11 首本机生成的器乐配乐贯穿两条路线：从《那张未谈完的便签》的日常，到《高台千灯》的祭礼、《未说完的一声笛》的风雪，最后回到《灯下有人等》。琴、箫、低音弦乐与克制的钢琴形成主要音色。
 
+行舟、雪夜与光河三首主题使用约 146 秒的长段版本，减少慢读时的短循环。开场、阿媪送行、雪夜和告别有逐页表情注释；少量关键句在自动阅读中额外停留 0.45–1.4 秒，手动翻页与已读快进保持即时。白昼教室、晨间卧室、早餐厨房、食堂、傍晚卧室和雪夜洞穴随原文的时段切换；梦醒后的背景和书签地点也相应更新。
+
 配乐经过小节交叠循环和双遍响度处理，场景间自然交叉渐变；相同主题继续播放，不因翻页重新开始。12 层环境声与 28 种音效随剧本音效标记触发，包括船底叩击、铜铃三响、纸页、椅脚、石门、断笛与归路车铃。重要告别处逐步撤去配乐，保留静默与远水。读档、章节跳转和已读快进不会重放剧情动作音效。
 
 ## 剧本规则
@@ -32,7 +34,9 @@
 
 主视觉、场景、人物表情差分与叙事 CG 由本机 ComfyUI / Qwen-Image 2.1 制作；人物采用透明背景 WebP。生成依据、来源元数据、交付和表情覆盖记录见 `docs/art/generation-plan.json`、`docs/art/source-manifest.json`、`docs/art/delivery.md`、`docs/art/expression-usage.md` 与 `art-prompts.json`。11 首器乐配乐由本机 ComfyUI / ACE-Step 1.5 Turbo 生成，提示词、种子与任务记录见 `audio-prompts.json`。环境声与音效由本作程序化声音设计制作，源码见 `scripts/produce_audio.py`；没有使用第三方声音采样或角色配音。
 
-背景默认呈现与原 PNG 像素逐点相同的无损 WebP 原画；在“阅读设置”开启“轻量模式”后使用 AVIF/WebP 压缩图。原画随网站提供，并在实际选择时才下载和缓存；安装站点缓存不会预先拉取整套原画。人物立绘与表情差分同时提供桌面版和 640×960 移动版。离线单文件会内嵌原画和压缩图，因此体积明显大于仅含轻量资源的版本。`npm run art:compress` 用 Pillow 从已登记的原画生成轻量变体，`npm run art:originals` 将原画转为像素完全一致的无损 WebP 并更新清单；`npm run fonts:prepare` 用 fontTools 从字形相同的母版生成互不重叠的首页、场景标题与正文字体。这些命令仅在修改对应资源时执行，CI 使用已提交的编码产物。
+第四批时段背景和长配乐的实际提示、种子、任务 ID、源文件校验和与加工验收记录在 `docs/art/art-direction-4-*.json`，交付说明见 `docs/reviews/art-direction-4.md`。历史短版配乐的生成记录仍保留在 `audio-prompts.json`；本批用相同主题音色、速度和调性重新作曲，没有输入旧曲的音频参考。
+
+背景默认呈现与原 PNG 像素逐点相同的无损 WebP 原画；在“阅读设置”开启“轻量模式”后使用 AVIF/WebP 压缩图。32 张原画随网站提供，并在实际选择时才下载和缓存；安装站点缓存不会预先拉取整套原画。人物立绘与表情差分同时提供桌面版和 640×960 移动版。两种离线版都保留原画、压缩图和全部声音：仓库版用同目录的数据文件避免单个文件超过 GitHub 100 MiB 限制，单文件版全部内嵌，保存在构建产物中。`npm run art:compress` 用 Pillow 从已登记的原画生成轻量变体，`npm run art:originals` 将原画转为像素完全一致的无损 WebP 并更新清单；`npm run fonts:prepare` 用 fontTools 从字形相同的母版生成互不重叠的首页、场景标题与正文字体。这些命令仅在修改对应资源时执行，CI 使用已提交的编码产物。
 
 网站使用 44.1 kHz 立体声 MP3，配乐为 192 kbps，目标约 -18 LUFS；技术数据与来源见 `public/audio/manifest.json`。游玩和重听均不需要启动 ComfyUI。音频按场景加载，解码缓存设有容量上限，避免一次加载整张原声。
 
@@ -40,7 +44,7 @@
 
 ## 开发与重新构建
 
-已安装 Node.js 时：`npm install`，然后 `npm run dev`。生产构建：`npm run build`；单文件打包：`npm run portable`。
+已安装 Node.js 时：`npm install`，然后 `npm run dev`。生产构建：`npm run build`；仓库离线版打包：`npm run portable`；完整单文件打包：`npm run portable:single`。发布工作流会验证两种离线版，并在回归附件中保留完整单文件。
 
 `npm test` 验证分支、四个王裔结局、两种路线顺序、条件记忆、物件重置、安全重读、借身立绘和书签地点。先执行 `npm run build`，再执行 `npm run test:browser` 可检查桌面、窄屏、存读档与设置；`npm run test:interactions` 检查弹窗、焦点、删除确认、回看、翻页、章节卡、快进、选择及 320px 至横屏布局。`npm run test:sprites` 检查解码后出场、旁白保留、换人、慢图与缺图、手机按钮对齐及梦船书签。浏览器测试自动启动、关闭预览服务，使用独立的临时进度。
 
@@ -50,9 +54,11 @@
 
 `npm run assets:check` 审计动态和静态资源引用、原画、表情、配角和 CG；`npm run test:assets` 检查手机图、透明边缘、缺失 AVIF 的 WebP 回退及剧情下载失败。`npm run test:ui-polish` 检查人物志、书签、回看、绘卷沉浸浏览与六个结局的桌面/手机排版；可用 `VN_TEST_BROWSER=firefox` 或 `webkit` 重复检查。普通浏览器回归阻止 Service Worker，独立的 `npm run test:cache` 用真实 `/heterotopia/` 子路径与临时持久化浏览器，验证 HTTP 缓存过期后的重开、断网续读、音频 Range、版本更新和紧急注销。
 
-生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查全部内嵌美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
+生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查本地数据文件的哈希、缺失资源提示、全部美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。指定 `VN_PORTABLE_FILE=artifacts/portable/异托邦-单文件.html` 可验证完整单文件。`npm run test:scene-direction` 验证时段边界、关键表情、原画回退和自动/手动停留，支持 Chromium 与 WebKit。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
 
 重新处理声音需要 Python、numpy 与 FFmpeg：将 11 首同名 FLAC 母带放入忽略的 `artifacts/audio-masters/`，执行 `python scripts/produce_audio.py`。母带留在本机；Git 只包含处理后的游戏音频、提示记录与可复现的声音设计脚本。
+
+若重新处理历史短版全套声音，随后执行 `python scripts/process-long-score.py` 恢复三首长主题；所需的 `*-long.flac` 母带路径和 SHA-256 在第四批音乐任务记录中。单独重做本批背景使用 `python scripts/process-time-of-day.py`，会校验源图哈希和无损像素一致性。
 
 修改原著后，运行 `python scripts/import_story.py` 重新导入。`scripts/collect_art.py` 只收集此项目已提交的本机生成任务；游玩不会调用生成服务。
 

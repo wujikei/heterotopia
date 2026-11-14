@@ -25,11 +25,15 @@ export const BACKGROUNDS: Record<string, { name: string; subtitle: string; chapt
   hero: { name: '一叶归舟', subtitle: '循着水声，回家', chapter: '梦的入口' },
   'dream-boat': { name: '水声之前', subtitle: '夜梦 · 船底的敲击', chapter: '水声之前' },
   bedroom: { name: '天光未明', subtitle: '05:41 · 沈家卧室', chapter: '水声之前' },
+  'bedroom-morning': { name: '再睡五分钟', subtitle: '07:12 · 沈家卧室', chapter: '水声之前' },
+  'bedroom-evening': { name: '窗边的余光', subtitle: '沈家卧室 · 数日后傍晚', chapter: '光河与归来' },
   home: { name: '饭还热着', subtitle: '宜昌 · 沈家', chapter: '水声之前' },
+  'home-morning': { name: '过早', subtitle: '沈家 · 早餐', chapter: '水声之前' },
   bus: { name: '同一班车', subtitle: '上学路 · 晨', chapter: '水声之前' },
   school: { name: '把影子留在操场', subtitle: '校园 · 薄暮', chapter: '水声之前' },
   classroom: { name: '一节很长的晚自习', subtitle: '高一七班 · 19:37', chapter: '水声之前' },
   'classroom-day': { name: '寻常的一天', subtitle: '高一七班 · 昼', chapter: '水声之前' },
+  'canteen-day': { name: '靠窗的位置', subtitle: '学校食堂 · 午间', chapter: '水声之前' },
   alley: { name: '来路与去路', subtitle: '老城 · 巷口', chapter: '水声之前' },
   nightmare: { name: '门外有水', subtitle: '教室 · 异变', chapter: '水声之前' },
   hut: { name: '借来的一口气', subtitle: '巫村 · 戌的屋', chapter: '共通线' },
@@ -48,6 +52,7 @@ export const BACKGROUNDS: Record<string, { name: string; subtitle: string; chapt
   valley: { name: '开春才吃得上', subtitle: '谷口 · 魏叔的田', chapter: '雾中问路' },
   cave: { name: '握住后来的人', subtitle: '谷后 · 子母洞', chapter: '山中余日' },
   snow: { name: '不松', subtitle: '盐客旧洞 · 第四十三日', chapter: '山中余日' },
+  'snow-night': { name: '火光低下去', subtitle: '盐客旧洞 · 雪夜', chapter: '山中余日' },
   'light-river': { name: '两片夜之间', subtitle: '光河之岸 · 无时', chapter: '光河与归来' },
 };
 

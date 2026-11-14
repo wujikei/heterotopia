@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
+import { readFile, writeFile, mkdir, copyFile, stat } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 import { advance, choose, completeEnding, continueEnding, currentBeat, newGame, newProfile, recordProgress } from '../src/engine.ts';
 import { BACKGROUNDS, CHARACTERS } from '../src/data/world.ts';
@@ -16,8 +18,11 @@ await loadStory();
 
 // Isolated, disposable browser contexts and synthetic test journeys only.
 // This never opens or changes the user's browser profile or real saves.
-const gameUrl = new URL('../异托邦.html', import.meta.url).href;
-const output = new URL('../artifacts/', import.meta.url);
+const gameUrl = process.env.VN_PORTABLE_FILE ? pathToFileURL(path.resolve(process.env.VN_PORTABLE_FILE)).href : new URL('../异托邦.html', import.meta.url).href;
+const html = await readFile(new URL(gameUrl), 'utf8');
+const sharded = html.includes('data-portable-shard');
+const edition = sharded ? 'sharded' : 'single';
+const output = new URL(`../artifacts/portable-${edition}/`, import.meta.url);
 const artifact = name => fileURLToPath(new URL(name, output));
 await mkdir(output, { recursive: true });
 const errors = [];
@@ -73,6 +78,29 @@ async function open(fixture, viewport = { width: 1440, height: 900 }) {
 }
 
 try {
+  if (sharded) {
+    const shardManifest = JSON.parse(await readFile(new URL('./离线资源/manifest.json', gameUrl), 'utf8'));
+    const referenced = [...html.matchAll(/data-portable-shard src="\.\/离线资源\/([^"]+)"/g)].map(match => match[1]);
+    assert.deepEqual(referenced, shardManifest.files.map(item => item.file));
+    for (const item of shardManifest.files) {
+      assert.match(item.file, /^resources-\d+-[a-f0-9]{12}\.js$/);
+      const data = await readFile(new URL(`./离线资源/${item.file}`, gameUrl));
+      assert.equal(data.length, item.bytes);
+      assert.equal(createHash('sha256').update(data).digest('hex'), item.sha256);
+      assert.ok(data.length <= 24 * 1024 * 1024, item.file);
+    }
+    assert.ok((await stat(new URL(gameUrl))).size < 100 * 1024 * 1024);
+    const missingFolder = new URL('missing-resources/', output);
+    await mkdir(missingFolder, { recursive: true });
+    const missingFile = new URL('异托邦.html', missingFolder);
+    await copyFile(new URL(gameUrl), missingFile);
+    const missingContext = await browser.newContext({ offline: true });
+    try {
+      const missingPage = await missingContext.newPage();
+      await missingPage.goto(missingFile.href);
+      await missingPage.locator('[data-portable-error]').filter({ hasText: '离线资源没有放齐。' }).waitFor();
+    } finally { await missingContext.close(); }
+  } else assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
   const page = await open();
   await page.getByRole('heading', { name: '异托邦' }).waitFor();
   const expected = [
@@ -262,7 +290,7 @@ try {
   await relicPage.locator('.relic-study-plate img').evaluate(img => img.decode());
   await relicPage.screenshot({ path: artifact('17-name-slips-offline-mobile.png') });
   assert.deepEqual(errors, []);
-  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, ...audioIntegrity, errors }, null, 2));
+  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), edition, mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, ...audioIntegrity, errors }, null, 2));
   console.log('Offline checks passed: original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
 } catch (error) {
   const diagnostics = await Promise.all(contexts.flatMap(context => context.pages()).map(async page => {

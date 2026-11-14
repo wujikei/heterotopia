@@ -148,8 +148,12 @@ const ACCENTS: Record<string, Effect[]> = {
 const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
   hero: [['river', .65], ['wind', .12]], 'dream-boat': [['river', .7], ['wind', .15]],
   bedroom: [['room', .25], ['street', .18]], home: [['room', .3], ['street', .15]],
+  'bedroom-morning': [['room', .25], ['street', .22]],
+  'bedroom-evening': [['room', .25], ['street', .12]],
+  'home-morning': [['room', .3], ['street', .22]],
   bus: [['street', .65], ['room', .3]], school: [['wind', .28], ['street', .3]],
   classroom: [['room', .65], ['street', .08]], 'classroom-day': [['room', .6], ['street', .15]],
+  'canteen-day': [['room', .4], ['street', .12]],
   alley: [['street', .65], ['wind', .12]], nightmare: [['underwater', .58], ['room', .12]],
   hut: [['hearth', .6], ['river', .12]], village: [['river', .5], ['wind', .2]],
   shrine: [['wind', .23], ['river', .32]], ritual: [['palace', .43], ['hearth', .18]],
@@ -158,6 +162,7 @@ const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
   river: [['river', .8], ['wind', .17]], ruins: [['wind', .45], ['hearth', .22]],
   marsh: [['marsh', .75]], underwater: [['underwater', .8]], valley: [['wind', .35], ['river', .18]],
   cave: [['cave', .65], ['wind', .18]], snow: [['winter', .5], ['hearth', .26]],
+  'snow-night': [['winter', .42], ['hearth', .09]],
   mountain: [['wind', .65]], 'light-river': [['river', .43], ['wind', .1]],
 };
 

@@ -46,16 +46,19 @@ jobs:
           npm run test:relics
           npm run test:ui-polish
           npm run test:reading-audio
+          npm run test:scene-direction
       - name: Verify image fallbacks and persistent website cache
         run: |
           npm run assets:check
           npm run test:assets
           npm run test:cgs
           npm run test:cache
-      - name: Verify the single-file offline edition
+      - name: Verify both offline editions
         run: |
           npm run portable
           npm run test:portable
+          npm run portable:single
+          VN_PORTABLE_FILE=artifacts/portable/异托邦-单文件.html npm run test:portable
       - name: Keep regression screenshots and device traces
         if: always()
         uses: actions/upload-artifact@v7

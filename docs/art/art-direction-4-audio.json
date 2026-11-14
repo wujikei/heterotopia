@@ -1,0 +1,53 @@
+[
+  {
+    "file": "music-river-journey.mp3",
+    "title": "把船撑向远方",
+    "kind": "music",
+    "loop": true,
+    "seconds": 146.84211,
+    "bytes": 3526091,
+    "integratedLUFS": -18.13,
+    "truePeakDB": -2.23,
+    "source": "Local ACE-Step 1.5",
+    "id": "river-journey",
+    "sourceSeconds": 150.0,
+    "overlapSeconds": 3.157891156462585,
+    "loopSeamAmplitude": 0.013918541371822357,
+    "sourceSHA256": "925db2543f29a6bb3f33d754a5ff4e23ab3869eb942d56a054235c78109895c1",
+    "sha256": "424718a794091e871e9fde74f888fe83fb1998837056f628808eea606953f04f"
+  },
+  {
+    "file": "music-last-flute.mp3",
+    "title": "未说完的一声笛",
+    "kind": "music",
+    "loop": true,
+    "seconds": 146.0,
+    "bytes": 3506032,
+    "integratedLUFS": -18.13,
+    "truePeakDB": -2.26,
+    "source": "Local ACE-Step 1.5",
+    "id": "last-flute",
+    "sourceSeconds": 150.0,
+    "overlapSeconds": 4.0,
+    "loopSeamAmplitude": 0.0004059821367263794,
+    "sourceSHA256": "e4459d38c56f32331fd87b86b4db61bc6cbad3171004e7ed19f2d8be299660aa",
+    "sha256": "eb2de1c9b3ec4e619bb7eae4e68b1996e1c6d51a6db3322f38ac7bc8280a216f"
+  },
+  {
+    "file": "music-river-of-names.mp3",
+    "title": "光河上的名字",
+    "kind": "music",
+    "loop": true,
+    "seconds": 146.47059,
+    "bytes": 3517314,
+    "integratedLUFS": -18.25,
+    "truePeakDB": -2.26,
+    "source": "Local ACE-Step 1.5",
+    "id": "river-of-names",
+    "sourceSeconds": 150.0,
+    "overlapSeconds": 3.529410430839002,
+    "loopSeamAmplitude": 0.0009343564743176103,
+    "sourceSHA256": "cf31748784aea522d831d7a8277d01b1c4937c8b25ab4fb4610bd847908191a7",
+    "sha256": "64f9f9badff47d4180658d6aba8fe97a0e06200862fff2c0f7f0860c31c7f73f"
+  }
+]

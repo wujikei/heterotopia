@@ -1,6 +1,6 @@
 import { characterFor, CHARACTERS } from './data/world';
 import { extraFor } from './data/extras';
-import { expressionForBeat, type Expression } from './data/expressions';
+import { BEAT_OVERRIDES, expressionForBeat, type Expression } from './data/expressions';
 import { presenceForBeat } from './data/presence';
 import { variantForBeat, type ActorVariant } from './data/actorVariants';
 import type { Beat, Character, Scene } from './types';
@@ -29,7 +29,7 @@ export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActo
       borrowed = true;
     }
   }
-  return { character, label: borrowed ? '戌（沈辞）' : character.name, castKey, expression: silent ? 'default' : expressionForBeat(beat), variant: variantForBeat(character.key, beat, scene) };
+  return { character, label: borrowed ? '戌（沈辞）' : character.name, castKey, expression: silent ? BEAT_OVERRIDES[beat.id] ?? 'default' : expressionForBeat(beat), variant: variantForBeat(character.key, beat, scene) };
 }
 
 export function actorInCast(actor: StageActor, cast: string[]): boolean {

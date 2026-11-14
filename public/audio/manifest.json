@@ -41,10 +41,10 @@
       "title": "把船撑向远方",
       "kind": "music",
       "loop": true,
-      "seconds": 56.84211,
-      "bytes": 1365660,
-      "integratedLUFS": -18.71,
-      "truePeakDB": -2.25,
+      "seconds": 146.84211,
+      "bytes": 3526091,
+      "integratedLUFS": -18.13,
+      "truePeakDB": -2.23,
       "source": "Local ACE-Step 1.5"
     },
     {
@@ -96,9 +96,9 @@
       "title": "未说完的一声笛",
       "kind": "music",
       "loop": true,
-      "seconds": 56.0,
-      "bytes": 1345601,
-      "integratedLUFS": -18.19,
+      "seconds": 146.0,
+      "bytes": 3506032,
+      "integratedLUFS": -18.13,
       "truePeakDB": -2.26,
       "source": "Local ACE-Step 1.5"
     },
@@ -107,10 +107,10 @@
       "title": "光河上的名字",
       "kind": "music",
       "loop": true,
-      "seconds": 56.47059,
-      "bytes": 1356883,
-      "integratedLUFS": -18.27,
-      "truePeakDB": -2.2,
+      "seconds": 146.47059,
+      "bytes": 3517314,
+      "integratedLUFS": -18.25,
+      "truePeakDB": -2.26,
       "source": "Local ACE-Step 1.5"
     },
     {
