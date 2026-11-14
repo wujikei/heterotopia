@@ -18,9 +18,10 @@ const screenshot = file => fileURLToPath(new URL(file, output));
 // Tests use fresh, disposable profiles and explicitly synthetic story progress.
 // Observers are injected only into these test pages, never into the shipped game.
 async function open(fixture, forceMedia = false, muted = false, deviceBrowser = browser) {
+  const gateAutoplay = name === 'chromium' && deviceBrowser === browser;
   const context = await deviceBrowser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
   contexts.push(context);
-  await context.addInitScript(({ fixture: data, forceMedia, muted }) => {
+  await context.addInitScript(({ fixture: data, forceMedia, muted, gateAutoplay }) => {
     if (!sessionStorage.getItem('synthetic-audio-test')) {
       localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
       if (data) {
@@ -32,6 +33,29 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
     if (forceMedia) {
       Object.defineProperty(window, 'AudioContext', { configurable: true, value: undefined });
       Object.defineProperty(window, 'webkitAudioContext', { configurable: true, value: undefined });
+    }
+    // CI Chromium permits Web Audio on loopback even with the strict flag.
+    // Add a *more restrictive* test-only policy: real contexts are suspended,
+    // and resume/play are rejected until a trusted pointer/key gesture.
+    // The permitted-autoplay device below does not install this boundary.
+    if (gateAutoplay) {
+      let activated = false;
+      for (const event of ['pointerdown', 'keydown']) document.addEventListener(event, input => {
+        if (input.isTrusted) activated = true;
+      }, true);
+      const Original = window.AudioContext ?? window.webkitAudioContext;
+      if (Original) {
+        class GestureContext extends Original {
+          constructor(...args) { super(...args); void super.suspend(); }
+          get state() { return activated ? super.state : 'suspended'; }
+          resume() { return activated ? super.resume() : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError')); }
+        }
+        Object.defineProperty(window, 'AudioContext', { configurable: true, value: GestureContext });
+      }
+      const play = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function(...args) {
+        return activated ? play.apply(this, args) : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError'));
+      };
     }
     const trace = window.__audioTest = { requests: [], starts: [], stops: [], gains: [], contexts: [], buffers: [], media: [], mediaElements: [] };
     const files = new WeakMap(), decoded = new WeakMap();
@@ -80,7 +104,7 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
       if (!trace.mediaElements.includes(this)) trace.mediaElements.push(this);
       return play.call(this);
     };
-  }, { fixture, forceMedia, muted });
+  }, { fixture, forceMedia, muted, gateAutoplay });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
   page.on('response', response => { if (response.status() >= 400 && !response.url().includes('favicon.ico')) errors.push(`${response.status()} ${response.url()}`); });
@@ -114,7 +138,7 @@ try {
     await page.keyboard.press('Shift');
     await waitFor(page, 'music-river-home.mp3');
     assert.equal(await count(page, 'music-river-home.mp3'), 1);
-    checks.push('Strict no-gesture startup is blocked honestly; first body key unlocks the current title exactly once');
+    checks.push('Restricted test device blocks no-gesture startup; first trusted body key unlocks the real title source exactly once');
     const muted = await open(undefined, false, true);
     await muted.keyboard.press('Shift');
     assert.equal(await muted.evaluate(() => window.__audioTest.starts.length), 0);
@@ -149,7 +173,30 @@ try {
     // Idle Web Audio nodes can expose the last processed AudioParam value.
     // A tiny, isolated DC probe keeps all buses rendering during this assertion.
     await page.evaluate(() => {
-      const trace = window.__audioTest, probe = trace.contexts[0].createConstantSource();
+      // CI Chromium permits Web Audio on loopback even with the strict flag.
+    // Add a *more restrictive* test-only policy: real contexts are suspended,
+    // and resume/play are rejected until a trusted pointer/key gesture.
+    // The permitted-autoplay device below does not install this boundary.
+    if (gateAutoplay) {
+      let activated = false;
+      for (const event of ['pointerdown', 'keydown']) document.addEventListener(event, input => {
+        if (input.isTrusted) activated = true;
+      }, true);
+      const Original = window.AudioContext ?? window.webkitAudioContext;
+      if (Original) {
+        class GestureContext extends Original {
+          constructor(...args) { super(...args); void super.suspend(); }
+          get state() { return activated ? super.state : 'suspended'; }
+          resume() { return activated ? super.resume() : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError')); }
+        }
+        Object.defineProperty(window, 'AudioContext', { configurable: true, value: GestureContext });
+      }
+      const play = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function(...args) {
+        return activated ? play.apply(this, args) : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError'));
+      };
+    }
+    const trace = window.__audioTest, probe = trace.contexts[0].createConstantSource();
       probe.offset.value = .00001;
       trace.gains.slice(0, 3).forEach(gain => probe.connect(gain));
       probe.start(); trace.muteProbe = probe;

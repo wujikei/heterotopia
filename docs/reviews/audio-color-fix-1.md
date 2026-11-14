@@ -40,3 +40,8 @@
 - 改前：tag `pre-audio-color-fix-1` + branch `backup/pre-audio-color-fix-1`（均为 PR #6 main 基线）。
 - 完成后：`audio-color-fix-1-ready` + `backup/audio-color-fix-1-ready`（以实际推送的 tested commit 为准）。
 - 等用户批准后才合并，未部署。不更改剧情、分支、存档格式或 Asia/Shanghai 时区。
+
+
+### 浏览器策略测试的前提修正
+
+两次失败都假设“headless Chromium 在 loopback 上会遵守启动 flag，挂起 Web Audio”。CI 的直接观察反驳了这个前提：无手势时真实 context 已经 running、提示为空。这不是生产播放失败，也不是提示 CSS 失效。已保留允许自动播放的设备测试；另在浏览器测试中加入**更严格、仅测试使用**的边界：真实 context 初始 suspend，resume/play 在可信指针/键盘激活前拒绝。音源、时钟、解码、暂停与媒体仍是真实浏览器的；此拒绝策略是测试注入，不能据此声称 headless 原生策略就会阻止播放。生产代码不注入或放宽任何策略。
