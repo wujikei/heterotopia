@@ -39,11 +39,11 @@ jobs:
         env:
           VN_TEST_TIMINGS: record
         run: |
+          npm run test:audio
           npm run test:interactions
           npm run test:sprites
           npm run test:ui-polish
           npm run test:reading-audio
-          npm run test:audio
       - name: Verify image fallbacks and persistent website cache
         run: |
           npm run assets:check
@@ -53,6 +53,14 @@ jobs:
         run: |
           npm run portable
           npm run test:portable
+      - name: Keep regression screenshots and device traces
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: regression-evidence
+          path: artifacts/
+          retention-days: 7
+          if-no-files-found: ignore
       - name: Configure GitHub Pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
