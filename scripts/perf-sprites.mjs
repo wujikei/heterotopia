@@ -98,7 +98,7 @@ try {
     const resumeReadyMs = await page.evaluate(() => Math.round(performance.now() - window.__resumeStarted));
     // No artificial prefetch wait. Report the new explicit reading preparation
     // separately so a shorter sprite animation never hides a shifted delay.
-    const cachedBeforeClick = await page.evaluate(() => performance.getEntriesByType('resource').some(entry => /\/art\/portrait-shen(?:-m)?\.(avif|webp)$/.test(entry.name) && entry.responseEnd > 0));
+    const cachedBeforeClick = await page.evaluate(() => performance.getEntriesByType('resource').some(entry => /\/art\/portrait-shen-school(?:-m)?\.(avif|webp)$/.test(entry.name) && entry.responseEnd > 0));
     const first = await probeClick(page, 'shen');
     const resumeToFirstFullMs = await page.evaluate(() => Math.round(performance.now() - window.__resumeStarted));
     measurements.push({ network, home: { loadMs, interactiveMs, fontsReadyMs, requests, bytes, resources }, resumeReadyMs, resumeToFirstFullMs, cachedBeforeClick, first });

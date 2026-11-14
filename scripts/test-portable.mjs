@@ -7,6 +7,7 @@ import { BACKGROUNDS, CHARACTERS } from '../src/data/world.ts';
 import { loadStory } from '../src/story.ts';
 import { CGS, cgForBeat } from '../src/data/cgs.ts';
 import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
+import { ACTOR_VARIANTS, actorPortraitName } from '../src/data/actorVariants.ts';
 import { AVAILABLE_EXTRAS } from '../src/data/extras.ts';
 import { portraitName } from '../src/assets.ts';
 
@@ -77,6 +78,7 @@ try {
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
     ...CHARACTERS.map(c => `portrait-${c.key}-face`),
     ...Object.entries(AVAILABLE).flatMap(([key, states]) => states.map(state => portraitNameFor(key, state))),
+    ...Object.entries(ACTOR_VARIANTS).flatMap(([key, variants]) => Object.entries(variants).flatMap(([variant, states]) => states.map(expression => actorPortraitName({ character: { key }, variant, expression })))),
     ...[...AVAILABLE_EXTRAS].map(portraitName),
     ...CGS.filter(cg => cg.file).flatMap(cg => [cg.file, ...(cg.thumbnail ? [cg.thumbnail] : [])]),
     ...imageManifest.mobile.filter(name => name.startsWith('cg-')).map(name => `${name}-m`),
@@ -102,6 +104,20 @@ try {
   assert.equal(integrity.fonts.length, 6);
   assert.ok(integrity.fonts.some(font => font.family === 'StoryHand'));
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
+  for (const [sceneId, beatId, portrait] of [
+    ['0-1', '0-1:15:0', 'portrait-shen-home-surprised'],
+    ['B-2', 'B-2:12:2', 'portrait-mi-palm'],
+  ]) {
+    const state = { ...newGame(newProfile()), sceneId, beatId };
+    const variantPage = await open({ state, profile: newProfile() }, { width: 390, height: 844 });
+    await variantPage.waitForFunction(name => {
+      const actor = document.querySelector(`.actor--active[data-portrait="${name}"]`);
+      const image = actor?.querySelector('.actor-portrait:not(.actor-portrait--outgoing)');
+      return image?.complete && image.currentSrc === globalThis.__HETEROTOPIA_ASSETS__[name];
+    }, portrait);
+    await variantPage.screenshot({ path: artifact(`${portrait}-offline.png`) });
+    await variantPage.context().close();
+  }
   const snowState = { ...newGame(newProfile()), sceneId: 'B-12-2', beatId: 'B-12-2:3:1' };
   const mobileCGPage = await open({ state: snowState, profile: newProfile() }, { width: 390, height: 844 });
   assert.equal(await mobileCGPage.locator('.scene-image--current').evaluate(stage => stage.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__['cg-s06-snow-hands-m'])), true);

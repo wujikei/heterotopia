@@ -1,0 +1,752 @@
+{
+  "counts": {
+    "shen/home": {
+      "pages": 9,
+      "examples": [
+        "0-1:8:0",
+        "0-1:12:0",
+        "0-1:15:0"
+      ]
+    },
+    "shen/school": {
+      "pages": 34,
+      "examples": [
+        "0-2:4:0",
+        "0-2:10:0",
+        "0-2:10:1"
+      ]
+    },
+    "tang/dining": {
+      "pages": 7,
+      "examples": [
+        "0-2:6:0",
+        "0-2:9:0",
+        "0-2:14:0"
+      ]
+    },
+    "xu/winter": {
+      "pages": 9,
+      "examples": [
+        "A-E2-4:4:0",
+        "A-E2-4:6:0",
+        "A-E2-4:8:0"
+      ]
+    },
+    "mi/palm": {
+      "pages": 3,
+      "examples": [
+        "B-2:12:2",
+        "B-7-5:13:2",
+        "B-13:28:0"
+      ]
+    },
+    "mi/listening": {
+      "pages": 3,
+      "examples": [
+        "B-2:12:6",
+        "B-5-5:8:4",
+        "B-7-2:7:1"
+      ]
+    },
+    "mi/tired": {
+      "pages": 4,
+      "examples": [
+        "B-10-4:11:4",
+        "B-11:3:3",
+        "B-12-1:3:6"
+      ]
+    }
+  },
+  "pages": [
+    {
+      "id": "0-1:8:0",
+      "sceneId": "0-1",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "default",
+      "portrait": "portrait-shen-home",
+      "text": "沈辞从床上坐起来，T恤后背整个湿透。他摸了摸脸，鼻梁，下巴，左边眉毛，挨个摸过去，像老师收卷以前最后清点一遍文具。"
+    },
+    {
+      "id": "0-1:12:0",
+      "sceneId": "0-1",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "default",
+      "portrait": "portrait-shen-home",
+      "text": "……晓得哒。"
+    },
+    {
+      "id": "0-1:15:0",
+      "sceneId": "0-1",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "surprised",
+      "portrait": "portrait-shen-home-surprised",
+      "text": "谁？"
+    },
+    {
+      "id": "0-1:17:0",
+      "sceneId": "0-1",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "default",
+      "portrait": "portrait-shen-home",
+      "text": "很好。天还没完全亮，今天已经开始针对我了。"
+    },
+    {
+      "id": "0-2:4:0",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "诶，唐瑾？你怎么……在这儿？"
+    },
+    {
+      "id": "0-2:6:0",
+      "sceneId": "0-2",
+      "character": "tang",
+      "label": "唐瑾",
+      "variant": "dining",
+      "expression": "default",
+      "portrait": "portrait-tang-dining",
+      "text": "阿姨，没事。"
+    },
+    {
+      "id": "0-2:9:0",
+      "sceneId": "0-2",
+      "character": "tang",
+      "label": "唐瑾",
+      "variant": "dining",
+      "expression": "default",
+      "portrait": "portrait-tang-dining",
+      "text": "没有啊。"
+    },
+    {
+      "id": "0-2:10:0",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "唐瑾这个人，越说“没有”，听上去越是有。偏偏她又很讨长辈喜欢，从前在我家打碎杯子，我妈第一句话都是问她有没有扎着手。换成我，大概得先问杯子招我惹我了。"
+    },
+    {
+      "id": "0-2:10:1",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "我低头拌面。芝麻酱把碱水面黏成一团，筷子戳进去，提不起来，松不开手。真亲切，简直是我这一周生活的缩略图。"
+    },
+    {
+      "id": "0-2:12:0",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "掉了魂。"
+    },
+    {
+      "id": "0-2:12:1",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "这话在湖北，未必全是骂人。小时候隔壁婆婆端着一碗米，沿巷子喊孩子回家，喊得很慢，米上立着一双筷子。那会儿我只觉得稀奇，跟在后头看了半条街。"
+    },
+    {
+      "id": "0-2:12:2",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "母亲当然没有那个意思。她还在替我夹面，可我忽然想起梦里的船。有人在船头喊名字，也是那样慢。"
+    },
+    {
+      "id": "0-2:14:0",
+      "sceneId": "0-2",
+      "character": "tang",
+      "label": "唐瑾",
+      "variant": "dining",
+      "expression": "default",
+      "portrait": "portrait-tang-dining",
+      "text": "我想学文科。"
+    },
+    {
+      "id": "0-2:16:0",
+      "sceneId": "0-2",
+      "character": "tang",
+      "label": "唐瑾",
+      "variant": "dining",
+      "expression": "default",
+      "portrait": "portrait-tang-dining",
+      "text": "嗯。我想过了。我喜欢文科，理科也没有你们想的那么轻松。"
+    },
+    {
+      "id": "0-2:18:0",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "又来了。"
+    },
+    {
+      "id": "0-2:18:1",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "这句话我听过太多遍，后来只要听见“一半”，连后面的字都能自己接上。唐瑾坐在这里，明明也只占一把椅子，到了这句话里，却忽然高得让我看不到头。"
+    },
+    {
+      "id": "0-2:22:0",
+      "sceneId": "0-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "我吃好了，先下去。"
+    },
+    {
+      "id": "0-4:7:0",
+      "sceneId": "0-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "太远了。今早这辆公交都不肯送我到学校，去武汉它不得当场散架。"
+    },
+    {
+      "id": "0-4:11:0",
+      "sceneId": "0-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "嗯，知道。负号没了。"
+    },
+    {
+      "id": "0-4:17:0",
+      "sceneId": "0-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "长太息以掩涕兮，哀民生之多艰……"
+    },
+    {
+      "id": "0-4:19:0",
+      "sceneId": "0-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "不记得了。"
+    },
+    {
+      "id": "0-4:22:0",
+      "sceneId": "0-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "啊……不要吧。"
+    },
+    {
+      "id": "0-4:24:0",
+      "sceneId": "0-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "秭归，屈原。这两个名字，在我们家跟楼下的早点铺差不多熟。端午龙舟一下水，爷爷能跟着鼓点喊到嗓子哑。"
+    },
+    {
+      "id": "0-4:24:1",
+      "sceneId": "0-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "他要知道我把《离骚》读成这个样子，估计得先叫我的魂，再考我的书。"
+    },
+    {
+      "id": "0-7:5:0",
+      "sceneId": "0-7",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "你是谁？"
+    },
+    {
+      "id": "0-7:7:0",
+      "sceneId": "0-7",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "这是哪儿？你要带我去哪儿？"
+    },
+    {
+      "id": "0-8:10:0",
+      "sceneId": "0-8",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "你也填了？"
+    },
+    {
+      "id": "0-8:12:0",
+      "sceneId": "0-8",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "真定了？"
+    },
+    {
+      "id": "0-8:16:0",
+      "sceneId": "0-8",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "我没事。真没事。你不用管。"
+    },
+    {
+      "id": "0-10:5:0",
+      "sceneId": "0-10",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "操场。"
+    },
+    {
+      "id": "0-10:13:0",
+      "sceneId": "0-10",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "补上这一点，大概就能看清了。"
+    },
+    {
+      "id": "0-10:21:0",
+      "sceneId": "0-10",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "喘不过气……等等，我明明还在……"
+    },
+    {
+      "id": "0-11:4:0",
+      "sceneId": "0-11",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "唐瑾……？"
+    },
+    {
+      "id": "0-11:14:0",
+      "sceneId": "0-11",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "绳子。先把绳子解开……"
+    },
+    {
+      "id": "A-E2-4:4:0",
+      "sceneId": "A-E2-4",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "这也能画错。唐瑾又该说了，地图上不许拿“差不多”当比例尺。"
+    },
+    {
+      "id": "A-E2-4:6:0",
+      "sceneId": "A-E2-4",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "sad",
+      "portrait": "portrait-xu-winter-sad",
+      "text": "我没……怪你。"
+    },
+    {
+      "id": "A-E2-4:8:0",
+      "sceneId": "A-E2-4",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "可你……不该。"
+    },
+    {
+      "id": "B-2:12:2",
+      "sceneId": "B-2",
+      "character": "mi",
+      "label": "芈",
+      "variant": "palm",
+      "expression": "default",
+      "portrait": "portrait-mi-palm",
+      "text": "沈辞学芈的手势：水，火，冷，等一等。学到“等”，食指要敲两下手心，他总漏掉一下。芈皱眉，把他的手抓过去，再敲，两下分得格外清楚。"
+    },
+    {
+      "id": "B-2:12:6",
+      "sceneId": "B-2",
+      "character": "mi",
+      "label": "芈",
+      "variant": "listening",
+      "expression": "default",
+      "portrait": "portrait-mi-listening",
+      "text": "芈立刻抿嘴，笑也收回去，笛子落在膝头。"
+    },
+    {
+      "id": "B-5-5:8:4",
+      "sceneId": "B-5-5",
+      "character": "mi",
+      "label": "芈",
+      "variant": "listening",
+      "expression": "default",
+      "portrait": "portrait-mi-listening",
+      "text": "芈把笛子攥在手中，一直没有举起。"
+    },
+    {
+      "id": "B-7-2:7:1",
+      "sceneId": "B-7-2",
+      "character": "mi",
+      "label": "芈",
+      "variant": "listening",
+      "expression": "default",
+      "portrait": "portrait-mi-listening",
+      "text": "芈把枝条放下，望着沈辞，没笑。"
+    },
+    {
+      "id": "B-7-5:13:2",
+      "sceneId": "B-7-5",
+      "character": "mi",
+      "label": "芈",
+      "variant": "palm",
+      "expression": "default",
+      "portrait": "portrait-mi-palm",
+      "text": "隔壁，芈摸到他的手，轻轻敲两下掌心。"
+    },
+    {
+      "id": "B-10-4:11:4",
+      "sceneId": "B-10-4",
+      "character": "mi",
+      "label": "芈",
+      "variant": "tired",
+      "expression": "default",
+      "portrait": "portrait-mi-tired",
+      "text": "沈辞在石上刻“媭”，第一笔错了，磨平重来。指尖冷到没有知觉，芈接过刀，把最后一笔补完，往常很轻松的手势，如今也比得很慢。"
+    },
+    {
+      "id": "B-11:3:0",
+      "sceneId": "B-11",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "洞后路石只露一半。沈辞拨开雪，认出阿蘅图上的水名，仍是那条支流。他们在山里走得这样慢，一日不过现代公路上十来分钟的路，鞋却已磨得再没完整的一块。"
+    },
+    {
+      "id": "B-11:3:3",
+      "sceneId": "B-11",
+      "character": "mi",
+      "label": "芈",
+      "variant": "tired",
+      "expression": "default",
+      "portrait": "portrait-mi-tired",
+      "text": "第二日，乌鸦群越过谷顶。芈带来的那只突然扑出去，叫两声，追着同伴远了。他站在门槛边，笛举到一半，最后又放下，等黑点完全没进林子，才回身收那件刚晾干的衣。"
+    },
+    {
+      "id": "B-12-1:3:6",
+      "sceneId": "B-12-1",
+      "character": "mi",
+      "label": "芈",
+      "variant": "tired",
+      "expression": "default",
+      "portrait": "portrait-mi-tired",
+      "text": "芈看得认真，拿过炭，在第三层添一棵树。鸟画得太多，枝上挤不下，连树干都停满了。雩摸过，说这样人走不了，便握住他的手，往树底下补出一条路。"
+    },
+    {
+      "id": "B-12-1:5:0",
+      "sceneId": "B-12-1",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "挨说。"
+    },
+    {
+      "id": "B-12-1:8:0",
+      "sceneId": "B-12-1",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "回。"
+    },
+    {
+      "id": "B-12-1:10:0",
+      "sceneId": "B-12-1",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "有。就是有时……很难吃。难吃得大家怀疑，他们是不是故意的。"
+    },
+    {
+      "id": "B-12-1:13:0",
+      "sceneId": "B-12-1",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "写了“下课再说”。我回了……好。"
+    },
+    {
+      "id": "B-12-1:16:3",
+      "sceneId": "B-12-1",
+      "character": "mi",
+      "label": "芈",
+      "variant": "tired",
+      "expression": "default",
+      "portrait": "portrait-mi-tired",
+      "text": "芈抱着缠坏的笛，雩侧着脸，都在等。他画一个小火堆，三个人围坐，衣服挤在一起，旁边又留三个位置。"
+    },
+    {
+      "id": "B-12-2:3:0",
+      "sceneId": "B-12-2",
+      "character": "xu",
+      "label": "戌（沈辞）",
+      "variant": "winter",
+      "expression": "default",
+      "portrait": "portrait-xu-winter",
+      "text": "最后一段木头偶尔爆出火星。沈辞用手护一下，等它落回火坑，再把手缩回衣里。能找的已经找过，能数的也全数过了，洞口那些标枝一根根收回，旁边没有新添的脚印。"
+    },
+    {
+      "id": "B-13:28:0",
+      "sceneId": "B-13",
+      "character": "mi",
+      "label": "芈",
+      "variant": "palm",
+      "expression": "default",
+      "portrait": "portrait-mi-palm",
+      "text": "母亲没有抬头。他想敲，才碰两下，芈便抓住他的手腕，雩也蹲下来，顺着那只手摸到发亮的石。"
+    },
+    {
+      "id": "终-2:10:0",
+      "sceneId": "终-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "我最近总睡不着。刚才……"
+    },
+    {
+      "id": "终-2:12:0",
+      "sceneId": "终-2",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "我想给我妈打个电话。"
+    },
+    {
+      "id": "终-3:4:0",
+      "sceneId": "终-3",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "sad",
+      "portrait": "portrait-shen-school-sad",
+      "text": "也不全好。我这几天，有点撑不住。"
+    },
+    {
+      "id": "终-3:8:0",
+      "sceneId": "终-3",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "你能来一下吗？"
+    },
+    {
+      "id": "终-3:15:0",
+      "sceneId": "终-3",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "下课了。"
+    },
+    {
+      "id": "终-3:21:0",
+      "sceneId": "终-3",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "行。"
+    },
+    {
+      "id": "终-3:23:0",
+      "sceneId": "终-3",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "这个，我能讲。不过可能有点慢。"
+    },
+    {
+      "id": "终-3:26:0",
+      "sceneId": "终-3",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "school",
+      "expression": "default",
+      "portrait": "portrait-shen-school",
+      "text": "你还收排骨吗？"
+    },
+    {
+      "id": "终-4:12:4",
+      "sceneId": "终-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "default",
+      "portrait": "portrait-shen-home",
+      "text": "回家，他把古图收进干燥的盒，和从前画坏的那些大陆放在一起。九层城取下，用了一个周末，慢慢添人。"
+    },
+    {
+      "id": "终-4:13:0",
+      "sceneId": "终-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "smile",
+      "portrait": "portrait-shen-home-smile",
+      "text": "人家画的，他得吃饭。"
+    },
+    {
+      "id": "终-4:16:0",
+      "sceneId": "终-4",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "default",
+      "portrait": "portrait-shen-home",
+      "text": "这位，原来想学做这个。"
+    },
+    {
+      "id": "终-5:4:0",
+      "sceneId": "终-5",
+      "character": "tang",
+      "label": "唐瑾",
+      "variant": "dining",
+      "expression": "default",
+      "portrait": "portrait-tang-dining",
+      "text": "你又走神。"
+    },
+    {
+      "id": "终-5:5:0",
+      "sceneId": "终-5",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "default",
+      "portrait": "portrait-shen-home",
+      "text": "在呢。"
+    },
+    {
+      "id": "终-5:11:0",
+      "sceneId": "终-5",
+      "character": "shen",
+      "label": "沈辞",
+      "variant": "home",
+      "expression": "default",
+      "portrait": "portrait-shen-home",
+      "text": "我还要半碗。"
+    },
+    {
+      "id": "0-2:27:0",
+      "sceneId": "0-2",
+      "character": "tang",
+      "label": "唐瑾",
+      "variant": "dining",
+      "expression": "default",
+      "portrait": "portrait-tang-dining",
+      "text": "阿姨，沈辞其实……"
+    },
+    {
+      "id": "0-2:29:0",
+      "sceneId": "0-2",
+      "character": "tang",
+      "label": "唐瑾",
+      "variant": "dining",
+      "expression": "default",
+      "portrait": "portrait-tang-dining",
+      "text": "算了。"
+    }
+  ]
+}

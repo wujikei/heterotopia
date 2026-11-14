@@ -1,0 +1,700 @@
+{
+  "sprites": [
+    {
+      "name": "portrait-shen-home",
+      "source": "resources/art-src/variants/generated/portrait-shen-home.png",
+      "output": "edit_00020_.png",
+      "expressions": [
+        "surprised",
+        "smile"
+      ],
+      "sha256": "5ec7647faa24775862976bff661870c79f7bea40e7939d24273a518cde4cfb75",
+      "dimensions": [
+        832,
+        1248
+      ],
+      "review": "Face, hands, costume and props visually reviewed; transparent delivery also reviewed against dark blue."
+    },
+    {
+      "name": "portrait-shen-school",
+      "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+      "output": "edit_00021_.png",
+      "expressions": [
+        "smile",
+        "surprised",
+        "angry",
+        "sad",
+        "closed"
+      ],
+      "sha256": "a8c1c2efb03a70222ba86f7f70ba8244b152cc57896928376d2cdc28b32d9680",
+      "dimensions": [
+        832,
+        1248
+      ],
+      "review": "Face, hands, costume and props visually reviewed; transparent delivery also reviewed against dark blue."
+    },
+    {
+      "name": "portrait-tang-dining",
+      "source": "resources/art-src/variants/generated/portrait-tang-dining.png",
+      "output": "edit_00022_.png",
+      "expressions": [],
+      "sha256": "8d2200adc2db6c1e6981134832201b25336ca49b43a107cb5d01d4295a67483a",
+      "dimensions": [
+        832,
+        1248
+      ],
+      "review": "Face, hands, costume and props visually reviewed; transparent delivery also reviewed against dark blue."
+    },
+    {
+      "name": "portrait-xu-winter",
+      "source": "resources/art-src/variants/generated/portrait-xu-winter.png",
+      "output": "edit_00023_.png",
+      "expressions": [
+        "sad"
+      ],
+      "sha256": "f8255495837f4968400ecf4182c3d87d46f9ae0321ddbc3a39e4d5749c3040ce",
+      "dimensions": [
+        832,
+        1248
+      ],
+      "review": "Face, hands, costume and props visually reviewed; transparent delivery also reviewed against dark blue."
+    },
+    {
+      "name": "portrait-mi-listening",
+      "source": "resources/art-src/variants/generated/portrait-mi-listening.png",
+      "output": "edit_00024_.png",
+      "expressions": [],
+      "sha256": "5cc3889e753c6be62b1f9e8bef08c84c6213c69ffec8bd790acf0cd164362e1a",
+      "dimensions": [
+        832,
+        1248
+      ],
+      "review": "Face, hands, costume and props visually reviewed; transparent delivery also reviewed against dark blue."
+    },
+    {
+      "name": "portrait-mi-palm",
+      "source": "resources/art-src/variants/generated/portrait-mi-palm.png",
+      "output": "edit_00025_.png",
+      "expressions": [],
+      "sha256": "a6e8fa0be89e6250f76124b20cb82aa936f60f040ad0703313a046523c9a246c",
+      "dimensions": [
+        832,
+        1248
+      ],
+      "review": "Face, hands, costume and props visually reviewed; transparent delivery also reviewed against dark blue."
+    },
+    {
+      "name": "portrait-mi-tired",
+      "source": "resources/art-src/variants/generated/portrait-mi-tired.png",
+      "output": "edit_00027_.png",
+      "expressions": [],
+      "sha256": "93cdf5ccdf4d6987d640159261ee799ab92e089c50a6567262a64f69d3401bf8",
+      "dimensions": [
+        832,
+        1248
+      ],
+      "review": "Face, hands, costume and props visually reviewed; transparent delivery also reviewed against dark blue."
+    }
+  ],
+  "rejected": [
+    {
+      "output": "edit_00026_.png",
+      "reference": "resources/art-src/references/art-direction-2/mi-tired-first-pass.png",
+      "reason": "The expression still reads as a faint smile; replaced with half-lowered eyelids and a neutral mouth."
+    }
+  ],
+  "generator": {
+    "engine": "ComfyUI 0.44.2 / Qwen-Image 2.1",
+    "unet": "qwen_image_2.1_int8_convrot.safetensors",
+    "clip": "qwen3vl_8b_int8_convrot.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors",
+    "sampler": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "date": "2026-11-14"
+  },
+  "jobs": [
+    {
+      "name": "portrait-shen-home",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-44cc017bb325402eb3a413631a8de135.png"
+        ],
+        "seed": 261114201,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "为叙事视觉小说重绘一张可抠图角色立绘。参考图是唯一的沈辞本人：保持同一个中国高中男生的脸、黑色短碎发、年龄、纤细体格、自然温暖肤色，保持原画水彩厚涂、细腻铅笔边线、低饱和青黛与米白画风。改为清晨刚醒在床沿坐直的居家姿态：素色浅灰棉质短袖T恤，领口略皱且有一点汗湿，深蓝居家长裤；手自然松放在膝上，肩微收，眼神安静而尚未清醒。上半身正面偏向画面右方，头部位于原图相同高度与相同尺寸，画到大腿，保持头发与两只手完整，人物居中，上下左右留可抠图余量。背景必须均匀纯亮绿色 #20c440，人物边缘干净，背景无阴影，无家具，无床，无地面。只画一个人，去掉所有校服、外套、拉链、蓝色运动条纹、书包、肩带和道具。不要文字，不要边框，不要其他人物，人物衣物不使用绿色。整张图是一张精致而克制的游戏立绘，非照片。"
+      },
+      "job": {
+        "prompt_id": "3bca2aeb-8d6c-4ffc-add2-05dbdbf6b606",
+        "number": 13,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114201,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-44cc017bb325402eb3a413631a8de135.png",
+          "file": "resources/art-src/references/art-direction-2/shen-canonical.png",
+          "sha256": "4bf2004de03f70746c1851bf9fd82478964b7be898e11b53f0baaa44f736a4e5"
+        }
+      ],
+      "decision": "selected",
+      "output": {
+        "filename": "edit_00020_.png",
+        "source": "resources/art-src/variants/generated/portrait-shen-home.png",
+        "sha256": "5ec7647faa24775862976bff661870c79f7bea40e7939d24273a518cde4cfb75"
+      }
+    },
+    {
+      "name": "portrait-shen-school",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-44cc017bb325402eb3a413631a8de135.png"
+        ],
+        "seed": 261114202,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "精确编辑这张中国高中男生沈辞的游戏立绘，制作校服无书包版本。必须完全保留原图的黑色短碎发、脸部五官、清淡自然表情、头部角度、头部位置大小、全身姿态、双手、白蓝相间的中国高中运动校服、深蓝裤子、水彩厚涂质感与铅笔边线。唯一修改：彻底移除黑色书包与双肩背带，背带所在处补画自然连续的白蓝校服褶皱，身体两侧只剩校服衣袖和腰部，不得有黑包或肩带残留。人物画到大腿且占画面比例与参考图相同。背景完全平涂亮绿色 #20c440，不要阴影、文字、地面、道具或其他人物。皮肤保持暖色，不要绿色反光。不要改变脸、发型、站姿与校服设计。"
+      },
+      "job": {
+        "prompt_id": "156d7dfe-cc6c-4e12-9ab4-1875a527de9d",
+        "number": 14,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114202,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-44cc017bb325402eb3a413631a8de135.png",
+          "file": "resources/art-src/references/art-direction-2/shen-canonical.png",
+          "sha256": "4bf2004de03f70746c1851bf9fd82478964b7be898e11b53f0baaa44f736a4e5"
+        }
+      ],
+      "decision": "selected",
+      "output": {
+        "filename": "edit_00021_.png",
+        "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+        "sha256": "a8c1c2efb03a70222ba86f7f70ba8244b152cc57896928376d2cdc28b32d9680"
+      }
+    },
+    {
+      "name": "portrait-tang-dining",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-c22d96e28c654940a72aee79c09b0b04.png"
+        ],
+        "seed": 261114203,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "为中国叙事视觉小说绘制唐瑾早餐坐姿立绘。严格保持参考图同一个少女：黑色低马尾、额前碎发、自然肤色、清秀真实的五官、白蓝中国高中运动校服、纤细平常的身材、精致水彩厚涂与铅笔线风格。姿态改为坐在餐桌前，身体直而肩放松，脸朝画面左侧略偏，眼神克制认真，嘴唇合拢，略收着情绪。画到膝上，头部在画面上方与原图相同高度、相同大小。前臂自然下垂至腿上，双手安静地搭在膝前，五指自然。完全移除书包、黑色肩带、兔子挂件、本子、书籍和所有文具；肩胸前只有完整校服褶皱，腹部与两手无遮挡。不要端碗，不要筷子，不要桌子和椅子，单独的人物坐姿剪影。背景必须均匀平涂鲜亮绿色 #20c440，无地面、投影、渐变、文字、边框、其他人物。衣服不使用绿色，保持暖肤色。整张人物完整居中，两边留余量。"
+      },
+      "job": {
+        "prompt_id": "d92537bd-c065-4716-9822-c16db5938003",
+        "number": 15,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114203,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-c22d96e28c654940a72aee79c09b0b04.png",
+          "file": "resources/art-src/references/art-direction-2/tang-canonical.png",
+          "sha256": "1cd6d2395e8db63be2c133d7526415bd35f059e5b0facf076d39866d20f0efa7"
+        }
+      ],
+      "decision": "selected",
+      "output": {
+        "filename": "edit_00022_.png",
+        "source": "resources/art-src/variants/generated/portrait-tang-dining.png",
+        "sha256": "8d2200adc2db6c1e6981134832201b25336ca49b43a107cb5d01d4295a67483a"
+      }
+    },
+    {
+      "name": "portrait-xu-winter",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-622011a4fec64eec817ca8c69859cdf9.png"
+        ],
+        "seed": 261114204,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "为叙事视觉小说制作参考人物戌的冬衣立绘。严格保持同一个楚地少年：黑发高束成小髻、略晒暖肤色、年轻清秀而结实的面容、左眉尾小旧疤、原来的脸形五官与头部位置比例、水彩厚涂和细腻铅笔边线。衣服改为阿媪手缝的旧冬衣：米褐色朴素厚棉麻交领长袄，衣襟有生活磨旧的细节，两个袖口都接一圈明显的靛青旧布，针脚整齐却与米褐衣料不相配；里面仍露一小截米白内衫，腰间灰蓝细布带。双肩稍收，手自然藏在宽厚袖口内相拢取暖，身体轻轻向前，神情安静、认真、有倦意但眼睛睁开。膝上立绘，身体居中，头和双袖完整。移除原图手里木鸟和所有道具，不要乌鸦，不要毛皮领、铠甲、斗篷、刺绣或金饰。均匀纯亮绿背景 #20c440，背景无阴影、雪、地面、文字或其他人，绿色不要映到皮肤。低饱和米褐衣服，保护温暖肤色，姿态内敛。"
+      },
+      "job": {
+        "prompt_id": "4096593b-c5fe-4cb4-a414-b11be133f7ac",
+        "number": 16,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114204,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-622011a4fec64eec817ca8c69859cdf9.png",
+          "file": "resources/art-src/references/art-direction-2/xu-canonical.png",
+          "sha256": "c3a5df636fe86ade93383f280b6c3f15ee0142bab631baeba1111bfd2c2d8229"
+        }
+      ],
+      "decision": "selected",
+      "output": {
+        "filename": "edit_00023_.png",
+        "source": "resources/art-src/variants/generated/portrait-xu-winter.png",
+        "sha256": "f8255495837f4968400ecf4182c3d87d46f9ae0321ddbc3a39e4d5749c3040ce"
+      }
+    },
+    {
+      "name": "portrait-mi-listening",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-33399a4650804e9c8af137b4f924c153.png"
+        ],
+        "seed": 261114205,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "制作楚地少年芈的认真倾听、放低骨笛立绘。必须是参考图同一个十四岁少年，保持凌乱黑发与后脑小发束、同样的五官、年龄、自然温暖肤色、原画精细水彩厚涂和柔和铅笔边线，米白旧麻布交领衣、灰蓝腰带。把原先笑容收起，嘴唇安静合拢，眉头只有极轻的收束，双眼认真望向画面左侧的人，神态是专注听对方讲、克制郑重，没有哭泣或愤怒。头部位置、大小和体型与原图保持一致。姿态自然放松，不再举起手比手势；右手握一支细短米黄色骨笛，垂在腰下，笛口朝下远离嘴，左手松放于身前，两只手解剖正确且完整。移除肩上的乌鸦，保持单个人物干净剪影，衣料上不画鸟。画到大腿，身体居中，两边留边。背景完全均匀鲜亮绿色 #20c440，不要阴影、渐变、地面、文字、边框或其他人物；人物上不要绿色反光，不要衣饰花纹。"
+      },
+      "job": {
+        "prompt_id": "ddc71b26-aed3-40ae-a46e-2a8bdc2acb31",
+        "number": 17,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114205,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-33399a4650804e9c8af137b4f924c153.png",
+          "file": "resources/art-src/references/art-direction-2/mi-canonical.png",
+          "sha256": "1a0e2b9fb5725822b64c17027b94c79e8b68c42e1cb48534b320010eadcbb029"
+        }
+      ],
+      "decision": "selected",
+      "output": {
+        "filename": "edit_00024_.png",
+        "source": "resources/art-src/variants/generated/portrait-mi-listening.png",
+        "sha256": "5cc3889e753c6be62b1f9e8bef08c84c6213c69ffec8bd790acf0cd164362e1a"
+      }
+    },
+    {
+      "name": "portrait-mi-palm",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-33399a4650804e9c8af137b4f924c153.png"
+        ],
+        "seed": 261114206,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "为视觉小说制作芈演示掌心交流的单人立绘。这是参考图同一个楚地少年，严格保持相同面孔、凌乱黑发、后脑小发束、年轻体型、米白朴素麻布交领衣与灰蓝腰带，精细水彩厚涂与温暖自然肤色，头部高度和大小不变。神情认真柔和，嘴安静合拢，不露齿、不发声，目光微向画面左侧的人。关键动作：胸腹前清晰画出自己的两只手，他的左手掌心朝上并向观看者轻轻摊开，他的右手只伸食指，食指指腹轻轻接触自己左手的掌心中心，右手其余四指自然弯曲，准确的五指和关节，两只手没有融合或重叠遮挡。手势应一眼读清，是在示范“等一等”的掌心暗号。手部位于肚脐上方，留足空间。骨笛已经收在腰带里，仅腰侧露出一小段米黄色笛尾，双手都空着，没有手持笛。完全移除乌鸦、鸟羽和其他人物。一个人物膝上立绘，左右留余量，不切手、手指、头发。背景完全均匀亮绿色 #20c440，无阴影、渐变、道具场景、文字、边框或其他人物。画风克制真实，手不要夸张变大。"
+      },
+      "job": {
+        "prompt_id": "ae3287b5-2993-4394-ae47-f1938942e483",
+        "number": 18,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114206,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-33399a4650804e9c8af137b4f924c153.png",
+          "file": "resources/art-src/references/art-direction-2/mi-canonical.png",
+          "sha256": "1a0e2b9fb5725822b64c17027b94c79e8b68c42e1cb48534b320010eadcbb029"
+        }
+      ],
+      "decision": "selected",
+      "output": {
+        "filename": "edit_00025_.png",
+        "source": "resources/art-src/variants/generated/portrait-mi-palm.png",
+        "sha256": "a6e8fa0be89e6250f76124b20cb82aa936f60f040ad0703313a046523c9a246c"
+      }
+    },
+    {
+      "name": "portrait-mi-tired",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-33399a4650804e9c8af137b4f924c153.png"
+        ],
+        "seed": 261114207,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "为叙事视觉小说画同一个楚地少年芈的力竭守候立绘。与参考严格同一个十四岁少年，相同略蓬乱黑发和脑后小束发、相同五官脸形与身材，米白旧麻布交领衣、灰蓝腰带、水彩厚涂和铅笔边线。神情非常疲倦但仍温柔清醒：眼睑半低、眼下有淡淡疲色，嘴唇合拢而不微笑，肤色保持自然温暖，不苍白发青，不哭泣，不表现死亡。肩膀轻轻放低，坐姿或身体微靠向前，眼睛仍望向画面左侧的同伴。两只手在胸腹前安静抱住同一根短骨笛，笛身中段以旧米白布细细缠过，布下有细裂口，这是过洞时撞坏、被他们缠过的破笛；骨笛放低，远离嘴，两只手五指正确、动作舒展。完全移除肩上的乌鸦，肩上只有衣料。头顶与两手完整，两侧留空，头部在原图相同高度和大小，画到大腿。背景必须完全均匀平涂亮绿色 #20c440，不要投影、渐变、雪、地面、家具、其他人物、文字或边框。人物没有绿色反光，不要伤口或血。"
+      },
+      "job": {
+        "prompt_id": "bf0f8b09-28ec-4b08-b2ac-b95fe4d30f69",
+        "number": 19,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114207,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-33399a4650804e9c8af137b4f924c153.png",
+          "file": "resources/art-src/references/art-direction-2/mi-canonical.png",
+          "sha256": "1a0e2b9fb5725822b64c17027b94c79e8b68c42e1cb48534b320010eadcbb029"
+        }
+      ],
+      "decision": "rejected",
+      "output": {
+        "filename": "edit_00026_.png",
+        "source": "resources/art-src/references/art-direction-2/mi-tired-first-pass.png",
+        "sha256": "7a4aa9212eaa16da5033b3ac42a4a461fc12412188580e51f87a92ea00aedcdc"
+      }
+    },
+    {
+      "name": "portrait-mi-tired-revision",
+      "request": {
+        "workflow": "edit",
+        "references": [
+          "codex-reference-4d9205fc2b264958b438abdd1767cc1f.png"
+        ],
+        "seed": 261114208,
+        "steps": 20,
+        "cfg": 1,
+        "prompt": "精确修订这张芈的力竭守候立绘，只更改眼睛眉毛嘴角和肩颈的精神状态，身体衣服双手骨笛构图背景全部保留不变。现在画中男孩仍在微笑，看起来很有精神，这必须改正。少年已在山里挨过很长的寒夜，仍活着仍认真守着同伴：两个眼睛都明显半睁、上眼睑低落遮住约一半瞳孔，目光柔和向画面左下方，眉头轻轻收拢，眼下有浅浅的灰褐疲色；嘴角放平或者略下沉，嘴唇自然闭合，完全没有笑容，头略低，肩微垮。不要闭上眼，不要濒死、白脸、青脸、血、眼泪、伤口、夸张悲痛或怒容。必须仍是同一个少年相同五官发型，保持自然温暖肤色和精致水彩厚涂。双手仍安静抱着缠布破骨笛，位置与参考一模一样，不新增手指，不改变骨笛。保持完整绿色背景 #20c440、原图比例、头顶留白，单人立绘，无文字。"
+      },
+      "job": {
+        "prompt_id": "3cd7b1e2-2616-47c9-a51e-98c9e6f3ff20",
+        "number": 20,
+        "node_errors": {},
+        "workflow": "edit",
+        "seed": 261114208,
+        "state": "submitted"
+      },
+      "references": [
+        {
+          "uploadedName": "codex-reference-4d9205fc2b264958b438abdd1767cc1f.png",
+          "file": "resources/art-src/references/art-direction-2/mi-tired-first-pass.png",
+          "sha256": "7a4aa9212eaa16da5033b3ac42a4a461fc12412188580e51f87a92ea00aedcdc"
+        }
+      ],
+      "decision": "selected",
+      "output": {
+        "filename": "edit_00027_.png",
+        "source": "resources/art-src/variants/generated/portrait-mi-tired.png",
+        "sha256": "93cdf5ccdf4d6987d640159261ee799ab92e089c50a6567262a64f69d3401bf8"
+      }
+    }
+  ],
+  "compositing": {
+    "script": "scripts/process-actor-variants.py",
+    "technique": "Chroma key and desaturation of green edge spill; normalize to 768x1152. Reuse reviewed canonical expression faces via SIFT affine registration and an inner face mask. Keep alpha and all pixels outside the mask identical across expressions."
+  },
+  "faceMetrics": [
+    {
+      "name": "portrait-shen-home",
+      "source": "resources/art-src/variants/generated/portrait-shen-home.png",
+      "metrics": {}
+    },
+    {
+      "name": "portrait-shen-home-surprised",
+      "source": "resources/art-src/variants/generated/portrait-shen-home.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.9965991695971262,
+            0.002117658381661769,
+            -0.5082224729667381
+          ],
+          [
+            -0.002117658381661769,
+            0.9965991695971262,
+            1.047558354765974
+          ]
+        ],
+        "inliers": 63,
+        "scale": 0.9966014194845917,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 9606
+      }
+    },
+    {
+      "name": "portrait-shen-home-smile",
+      "source": "resources/art-src/variants/generated/portrait-shen-home.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.9966263266025623,
+            0.0021357121472138133,
+            -0.531954192841941
+          ],
+          [
+            -0.0021357121472138133,
+            0.9966263266025623,
+            1.0658110941269996
+          ]
+        ],
+        "inliers": 65,
+        "scale": 0.9966286149532799,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 9646
+      }
+    },
+    {
+      "name": "portrait-shen-school",
+      "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+      "metrics": {}
+    },
+    {
+      "name": "portrait-shen-school-smile",
+      "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.997896604657706,
+            -0.0004688514918147917,
+            0.4200701995410023
+          ],
+          [
+            0.0004688514918147917,
+            0.997896604657706,
+            0.4569384052382531
+          ]
+        ],
+        "inliers": 61,
+        "scale": 0.9978967148002339,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 9585
+      }
+    },
+    {
+      "name": "portrait-shen-school-surprised",
+      "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.9979482972743114,
+            -0.0006016270759996112,
+            0.4473868853334441
+          ],
+          [
+            0.0006016270759996112,
+            0.9979482972743114,
+            0.4199179988080323
+          ]
+        ],
+        "inliers": 60,
+        "scale": 0.9979484786239399,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 9622
+      }
+    },
+    {
+      "name": "portrait-shen-school-angry",
+      "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.9974257065492794,
+            -0.0005447869589955802,
+            0.4900447056899471
+          ],
+          [
+            0.0005447869589955802,
+            0.9974257065492794,
+            0.4731409781830619
+          ]
+        ],
+        "inliers": 61,
+        "scale": 0.9974258553286856,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 9612
+      }
+    },
+    {
+      "name": "portrait-shen-school-sad",
+      "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.9972700753197263,
+            -0.0007406221639748128,
+            0.5668726773059483
+          ],
+          [
+            0.0007406221639748128,
+            0.9972700753197263,
+            0.4039979869962629
+          ]
+        ],
+        "inliers": 62,
+        "scale": 0.9972703503310436,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 9618
+      }
+    },
+    {
+      "name": "portrait-shen-school-closed",
+      "source": "resources/art-src/variants/generated/portrait-shen-school.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.9978290423365511,
+            -0.0009748678527614429,
+            0.500921660034189
+          ],
+          [
+            0.0009748678527614429,
+            0.9978290423365511,
+            0.41361538693676897
+          ]
+        ],
+        "inliers": 59,
+        "scale": 0.9978295185539507,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 9558
+      }
+    },
+    {
+      "name": "portrait-tang-dining",
+      "source": "resources/art-src/variants/generated/portrait-tang-dining.png",
+      "metrics": {}
+    },
+    {
+      "name": "portrait-xu-winter",
+      "source": "resources/art-src/variants/generated/portrait-xu-winter.png",
+      "metrics": {}
+    },
+    {
+      "name": "portrait-xu-winter-sad",
+      "source": "resources/art-src/variants/generated/portrait-xu-winter.png",
+      "metrics": {
+        "method": "sift-ransac",
+        "matrix": [
+          [
+            0.9978571715102985,
+            0.001313514660866719,
+            -0.012710884546179952
+          ],
+          [
+            -0.001313514660866719,
+            0.9978571715102985,
+            0.2359303669148547
+          ]
+        ],
+        "inliers": 81,
+        "scale": 0.997858036022809,
+        "alpha_identical": true,
+        "changed_outside_face": 0,
+        "changed_pixels": 17244
+      }
+    },
+    {
+      "name": "portrait-mi-listening",
+      "source": "resources/art-src/variants/generated/portrait-mi-listening.png",
+      "metrics": {}
+    },
+    {
+      "name": "portrait-mi-palm",
+      "source": "resources/art-src/variants/generated/portrait-mi-palm.png",
+      "metrics": {}
+    },
+    {
+      "name": "portrait-mi-tired",
+      "source": "resources/art-src/variants/generated/portrait-mi-tired.png",
+      "metrics": {}
+    }
+  ],
+  "delivered": [
+    {
+      "name": "portrait-shen-home",
+      "master": "resources/art-src/variants/portrait-shen-home.png",
+      "sha256": "91830291963b7d1742e900ac288e4333e4e7a61f6f9b8c5409d04ca67d0f409f"
+    },
+    {
+      "name": "portrait-shen-home-surprised",
+      "master": "resources/art-src/variants/portrait-shen-home-surprised.png",
+      "sha256": "05f99c774fac175bf41ae626ab09ef879f8d2901970e25a03249c5843af7f779"
+    },
+    {
+      "name": "portrait-shen-home-smile",
+      "master": "resources/art-src/variants/portrait-shen-home-smile.png",
+      "sha256": "db850d563a76820388d6a2c3dac40f62ea8987a49266f5be7b66a55a4c0e9310"
+    },
+    {
+      "name": "portrait-shen-school",
+      "master": "resources/art-src/variants/portrait-shen-school.png",
+      "sha256": "01bb821e4248b05161027b67687f63d2b74b14c944e2d5d2101a7e6cc439c5ec"
+    },
+    {
+      "name": "portrait-shen-school-smile",
+      "master": "resources/art-src/variants/portrait-shen-school-smile.png",
+      "sha256": "80acb3b1e0bf687405d61663e6ad652ad459fbb48ca7cd69d1be81ade525d705"
+    },
+    {
+      "name": "portrait-shen-school-surprised",
+      "master": "resources/art-src/variants/portrait-shen-school-surprised.png",
+      "sha256": "343f5f9c8a63a25e79ec9e072efac9f98c434170f6f3feef9f1bee0e7b457246"
+    },
+    {
+      "name": "portrait-shen-school-angry",
+      "master": "resources/art-src/variants/portrait-shen-school-angry.png",
+      "sha256": "4ea17c9646e31ce20dd74d15750d818f9877621fc87299290d34b528327c7d11"
+    },
+    {
+      "name": "portrait-shen-school-sad",
+      "master": "resources/art-src/variants/portrait-shen-school-sad.png",
+      "sha256": "8a94d69d885ae36fd66df13e255e9fdfab3f4c0e4e144ca3cec89f347ca1e78b"
+    },
+    {
+      "name": "portrait-shen-school-closed",
+      "master": "resources/art-src/variants/portrait-shen-school-closed.png",
+      "sha256": "daadeaf7a22890a4021d2d9e553b221d2948650b5b88830b44fc225f2c82b2d5"
+    },
+    {
+      "name": "portrait-tang-dining",
+      "master": "resources/art-src/variants/portrait-tang-dining.png",
+      "sha256": "26d2bb2df6830322fdad98f66bb0a635057b6a92701f80cc2fc9f42b18fd4ce4"
+    },
+    {
+      "name": "portrait-xu-winter",
+      "master": "resources/art-src/variants/portrait-xu-winter.png",
+      "sha256": "ef6f7f14ca29943c65824195fa30c776e5c1979529ae93ae3e3b2ee4156a3e26"
+    },
+    {
+      "name": "portrait-xu-winter-sad",
+      "master": "resources/art-src/variants/portrait-xu-winter-sad.png",
+      "sha256": "12026283c80eb9e2872b30393083780e55004f846cdda237b30d07c2d70e68cb"
+    },
+    {
+      "name": "portrait-mi-listening",
+      "master": "resources/art-src/variants/portrait-mi-listening.png",
+      "sha256": "35a83fd3cf48da6d2c03f0db5fce459a261132eef090288f0aba6ed5a387cd80"
+    },
+    {
+      "name": "portrait-mi-palm",
+      "master": "resources/art-src/variants/portrait-mi-palm.png",
+      "sha256": "b8948bbeb9f3bff478b2020934854f4fdbd32b3e6620f8f03da7784c07802730"
+    },
+    {
+      "name": "portrait-mi-tired",
+      "master": "resources/art-src/variants/portrait-mi-tired.png",
+      "sha256": "216732e56d94763b9d368bb97c02981e20e450a55620ac73f5c3d1db6ca02777"
+    }
+  ]
+}

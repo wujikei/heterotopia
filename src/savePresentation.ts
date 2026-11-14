@@ -1,4 +1,4 @@
-import { BACKGROUNDS } from './data/world';
+import { locationForBeat } from './scenePresentation';
 import { currentBeat, sceneById } from './engine';
 import type { GameState, Profile } from './types';
 
@@ -12,7 +12,7 @@ export function slotPresentation(state: GameState, profile: Profile) {
     if (beat.id !== state.beatId) return fallback;
     return {
       background: beat.background,
-      title: BACKGROUNDS[beat.background]?.subtitle ?? scene.title,
+      title: locationForBeat(scene, beat),
       chapter: scene.chapter,
       excerpt: beat.kind === 'text' ? [...beat.text].slice(0, 20).join('') + ([...beat.text].length > 20 ? '…' : '') : '',
     };
