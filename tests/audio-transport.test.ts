@@ -8,7 +8,7 @@ const settings: Settings = { muted: false, musicVolume: 45, ambienceVolume: 38, 
 const settle = () => new Promise(resolve => setTimeout(resolve, 0));
 
 /** Only browser policy/clock/device boundaries are simulated; Soundscape is real. */
-function device(native = false, initiallyBlocked = false, pendingResume = false) {
+function device(native = false, initiallyBlocked = false, pendingResume = false, blockMusicOnly = false) {
   const pending: (() => void)[] = [];
   let blocked = initiallyBlocked;
   const starts: { key: string; offset: number; stopped: boolean }[] = [];
@@ -47,7 +47,7 @@ function device(native = false, initiallyBlocked = false, pendingResume = false)
     constructor(public src = '') { super(); media.push(this); }
     canPlayType() { return 'probably'; }
     async play() {
-      if (blocked) throw new DOMException('Gesture required', 'NotAllowedError');
+      if (blocked && (!blockMusicOnly || this.src.includes('music-'))) throw new DOMException('Gesture required', 'NotAllowedError');
       this.paused = false; this.dispatchEvent(new Event('playing'));
     }
     pause() { this.paused = true; this.dispatchEvent(new Event('pause')); }
@@ -166,5 +166,19 @@ test('a pending browser resume publishes blocked state immediately and a later g
     mock.allow(); await sound.unlock(settings); await startup; await settle();
     assert.equal(sound.getSnapshot().playing, true);
     assert.equal(mock.starts.filter(item => item.key.endsWith('music-river-home.mp3')).length, 1);
+  } finally { sound.dispose(); mock.restore(); }
+});
+
+
+test('native ambience success cannot hide a music-specific autoplay rejection', async () => {
+  const mock = device(true, true, false, true), sound = new Soundscape();
+  try {
+    await sound.unlock(settings); await settle();
+    assert.ok(mock.media.some(item => item.src.includes('amb-') && !item.paused));
+    assert.equal(sound.getSnapshot().playing, false);
+    assert.equal(sound.getSnapshot().unlocked, false);
+    assert.equal(sound.getSnapshot().needsGesture, true);
+    mock.allow(); await sound.unlock(settings); await settle();
+    assert.equal(sound.getSnapshot().playing, true);
   } finally { sound.dispose(); mock.restore(); }
 });

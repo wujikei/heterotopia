@@ -317,6 +317,7 @@ export class Soundscape {
       if (offset && Number.isFinite(media.duration)) media.currentTime = offset % media.duration;
     }, { once: true });
     media.addEventListener('playing', () => {
+      if (voice.stopped || !guard()) return;
       voice.mediaPlaying = true;
       if (bus === 'music' || !this.musicChoice()) this.publish({ unlocked: true });
       this.publishPlayback();
