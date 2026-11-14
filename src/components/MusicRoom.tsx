@@ -17,8 +17,8 @@ const stamp = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.fl
 
 export function MusicRoom({ profile, settings, onChange }: { profile: Profile; settings: Settings; onChange: (value: Settings) => void }) {
   const state = useSyncExternalStore(sound.subscribe, sound.getSnapshot);
-  const unlocked = unlockedTracks(profile);
-  const selected = state.preview ?? (state.loadingTrack && unlocked.includes(state.loadingTrack) ? state.loadingTrack : state.track && unlocked.includes(state.track) ? state.track : 'river-home');
+  const unlocked = [...new Set([...unlockedTracks(profile), ...(state.track ? [state.track] : []), ...(state.loadingTrack ? [state.loadingTrack] : [])])];
+  const selected = state.preview ?? state.loadingTrack ?? state.track ?? 'river-home';
   const [position, setPosition] = useState(0);
   const track = trackById(selected);
   const index = SOUNDTRACK.findIndex(item => item.id === selected);
