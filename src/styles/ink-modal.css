@@ -432,8 +432,8 @@
 .save-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 34px 26px;
-  padding-top: 16px;
+  gap: 20px 22px;
+  padding-top: 12px;
 }
 .save-slot {
   position: relative;
@@ -468,7 +468,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 14px 14px 40px;
+  padding: 10px 10px 28px;
   text-align: left;
   color: var(--paper-ink);
   background:
@@ -500,7 +500,7 @@
 }
 .save-slot-image {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 5.4;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -528,6 +528,35 @@
   line-height: 1;
   letter-spacing: 0;
   color: rgba(60, 50, 30, 0.22);
+}
+.save-slot:not(.save-slot--filled) .save-tassel {
+  opacity: 0.28;
+}
+.save-slot:not(.save-slot--filled) .save-slot-main {
+  color: #b4c2b6;
+  background: rgba(5, 20, 25, 0.18);
+  border: 1px dashed rgba(169, 188, 174, 0.32);
+  clip-path: none;
+  border-radius: 2px;
+}
+.save-slot:not(.save-slot--filled) .save-slot-image {
+  color: rgba(190, 204, 188, 0.42);
+  background: transparent;
+  box-shadow: none;
+}
+.save-slot:not(.save-slot--filled) .empty-slot-mark {
+  color: rgba(190, 204, 188, 0.18);
+  font-size: 28px;
+}
+.save-slot:not(.save-slot--filled) .save-slot-info {
+  opacity: 0.48;
+}
+.save-slot:not(.save-slot--filled) .save-slot-info > small {
+  color: #b4c2b6;
+}
+.save-slot:not(.save-slot--filled) .save-slot-number {
+  color: rgba(190, 204, 188, 0.4);
+  background: transparent;
 }
 .save-slot-number {
   position: absolute;
@@ -563,7 +592,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 12px 4px 0;
+  padding: 9px 4px 0;
   min-width: 0;
 }
 .save-slot-info > strong {
@@ -604,7 +633,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 26px;
+  margin-top: 18px;
   font-size: 13px;
   letter-spacing: 0.06em;
   color: #8f9e98;
@@ -668,11 +697,14 @@
   }
   .save-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 28px 14px;
+    gap: 20px 12px;
   }
   .save-slot-main {
-    padding: 10px 10px 34px;
+    padding: 9px 9px 28px;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 18px), 0 100%);
+  }
+  .save-slot-image {
+    aspect-ratio: 16 / 9;
   }
   .save-slot-info > strong {
     font-size: 14px;

@@ -12,13 +12,15 @@ const manifest = JSON.parse(await readFile(new URL('../src/data/art-manifest.jso
 const results = [];
 const errors = [];
 const state = { version: 1, sceneId: '0-4', beatId: '0-4:7:0', inventory: [], choices: {}, history: [], cycle: 1 };
-async function open(viewport = { width: 1280, height: 800 }, setup) {
+async function open(viewport = { width: 1280, height: 800 }, setup, settings = {}) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: viewport.width < 760 ? 3 : 1, serviceWorkers: 'block' });
-  await context.addInitScript(state => {
+  await context.addInitScript(({ state, settings }) => {
+    if (sessionStorage.getItem('synthetic-asset-test')) return;
     localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(state));
-    localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, muted: true, reducedMotion: true }));
+    localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, muted: true, reducedMotion: true, lightweight: true, ...settings }));
     localStorage.setItem('heterotopia.v1.readingHint', 'true');
-  }, state);
+    sessionStorage.setItem('synthetic-asset-test', 'true');
+  }, { state, settings });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
   await setup?.(page);
@@ -88,6 +90,28 @@ try {
       return background.includes('.webp') && !background.includes('.avif');
     });
     results.push({ check: 'missing AVIF falls back to WebP for backgrounds and portraits', passed: true });
+    await context.close();
+  }
+  {
+    const { context, page } = await open();
+    assert.equal(await page.evaluate(() => performance.getEntriesByType('resource').filter(entry => entry.name.includes('/art-original/')).length), 0, 'Lightweight startup must not fetch originals');
+    await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+    const toggle = page.getByRole('switch', { name: '轻量模式', exact: true });
+    await toggle.click();
+    await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes('/art-original/hero.webp'));
+    await page.reload();
+    await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes('/art-original/hero.webp'));
+    await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+    assert.equal(await toggle.getAttribute('aria-checked'), 'false');
+    await toggle.click();
+    await page.waitForFunction(() => /\/art\/hero\.(avif|webp)/.test(document.querySelector('.scene-image--current')?.style.backgroundImage || ''));
+    results.push({ check: 'quality switch changes the live background, persists across reload, and lightweight startup skips originals', passed: true });
+    await context.close();
+  }
+  {
+    const { context, page } = await open(undefined, page => page.route('**/art-original/*.webp', route => route.fulfill({ status: 404, body: 'Synthetic missing original' })), { lightweight: false });
+    await page.waitForFunction(() => /\/art\/hero\.(avif|webp)/.test(document.querySelector('.scene-image--current')?.style.backgroundImage || ''));
+    results.push({ check: 'missing original falls back to a lightweight background', passed: true });
     await context.close();
   }
   {

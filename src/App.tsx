@@ -1,14 +1,18 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { ArrowRight, Check, ChevronDown, ChevronRight, CircleHelp, Feather, Pause, Play, SkipForward, X } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { sound } from './audio';
+import { setArtQuality } from './assets';
 import { Atmosphere, BoatMark, BoneMark, SceneArt } from './components/Atmosphere';
 import { Modal } from './components/Modal';
 import { ActorLayer } from './components/ActorLayer';
 import { UpdateNotice } from './components/UpdateNotice';
+import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
 import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, portraitAsset } from './data/world';
 import { actorForBeat } from './actors';
+import { cgForBeat } from './data/cgs';
+import { portraitNameFor } from './data/expressions';
 import { prefetchWhenIdle, preloadImage } from './preload';
 import { afterFirstScreen } from './idle';
 import { warmReadingFonts } from './fonts';
@@ -17,7 +21,9 @@ import { advance, canReturn, choose, compileScene, completeEnding, continueEndin
 import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist, validState } from './storage';
 import { scoreFrame } from './score';
 import { replayHistory } from './reading';
+import { autoDelayFor } from './autoReading';
 import type { GameState, Profile, SaveSlot, Settings } from './types';
+import './styles/reading-audio.css';
 
 const Backlog = lazy(() => import('./components/Backlog').then(module => ({ default: module.Backlog })));
 const MusicRoom = lazy(() => import('./components/MusicRoom').then(module => ({ default: module.MusicRoom })));
@@ -79,6 +85,7 @@ function IconButton({ label, children, onClick, className = '', active = false }
 export default function App() {
   const [profile, setProfile] = useState<Profile>(loadProfile);
   const [settings, setSettings] = useState<Settings>(loadSettings);
+  const audioState = useSyncExternalStore(sound.subscribe, sound.getSnapshot);
   const [game, setGame] = useState<GameState | null>(loadAutosave);
   const [slots, setSlots] = useState<(SaveSlot | null)[]>(loadSlots);
   const [screen, setScreen] = useState<'home' | 'play'>('home');
@@ -103,6 +110,7 @@ export default function App() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [confirmHome, setConfirmHome] = useState(false);
   const [stamped, setStamped] = useState<string | null>(null);
+  const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const [showReadingHint, setShowReadingHint] = useState(() => {
     try { return localStorage.getItem('heterotopia.v1.readingHint') !== 'true'; } catch { return true; }
   });
@@ -112,17 +120,35 @@ export default function App() {
   const modalOpener = useRef<HTMLElement | null>(null);
   const nextAllowedAt = useRef(0);
   const choiceTimer = useRef(0);
+  const stampTimer = useRef(0);
+  const choiceRequest = useRef(0);
   const toastTimer = useRef<number>(0);
   const currentProfile = useRef(profile); currentProfile.current = profile;
   const currentGame = useRef(game); currentGame.current = game;
+  const currentSettings = useRef(settings); currentSettings.current = settings;
 
   const notify = useCallback((message: string) => {
     clearTimeout(toastTimer.current); setToast(message); setToastKey(v => v + 1);
     toastTimer.current = window.setTimeout(() => setToast(''), 2400);
   }, []);
   const stopSkipping = useCallback(() => { setSkipping(false); setHoldingSkip(false); }, []);
-  const closeModal = useCallback(() => setModalPath([]), []);
-  const backModal = useCallback(() => setModalPath(path => path.slice(0, -1)), []);
+  const clearChoiceTimers = useCallback(() => {
+    ++choiceRequest.current;
+    clearTimeout(choiceTimer.current); choiceTimer.current = 0;
+    clearTimeout(stampTimer.current); stampTimer.current = 0;
+  }, []);
+  const closeModal = useCallback(() => {
+    if (document.querySelector('[role="dialog"]')) sound.click('close');
+    setModalPath([]);
+  }, []);
+  const backModal = useCallback(() => { sound.click('close'); setModalPath(path => path.slice(0, -1)); }, []);
+  const changeSettings = useCallback((next: Settings) => {
+    const wasMuted = currentSettings.current.muted;
+    currentSettings.current = next;
+    sound.update(next); setSettings(next);
+    // Resume synchronously inside this setting gesture, then acknowledge it.
+    if (wasMuted && !next.muted) void sound.unlock(next).then(() => sound.click('toggle'));
+  }, []);
 
   const scene = game ? sceneById(game.sceneId) : SCENES[0];
   const beat = useMemo(() => game && storyReady ? currentBeat(game, profile) : null, [game, profile, storyReady]);
@@ -130,6 +156,9 @@ export default function App() {
   const text = beat?.kind === 'text' ? beat.text : '';
   const typing = useTypewriter(screen === 'play' ? beat?.id : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? 'hero' : beat?.background ?? 'hero';
+  const cg = screen === 'play' && beat ? cgForBeat(beat, scene.id) : undefined;
+
+  useLayoutEffect(() => setArtQuality(settings.lightweight), [settings.lightweight]);
 
   useEffect(() => {
     if (screen !== 'home' || storyReady || (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
@@ -191,20 +220,23 @@ export default function App() {
     const position = Math.max(0, current.findIndex(item => item.id === game.beatId));
     const nearest = current.slice(position).map(item => actorForBeat(item, scene, current)).find(Boolean);
     const urgent = [
-      ...(nearest ? [preloadImage(portraitAsset(nearest.character.key), 'high')] : []),
-      preloadImage(asset(current[position].background)),
+      ...(nearest ? [preloadImage(asset(portraitNameFor(nearest.character.key, nearest.expression)), 'high')] : []),
+      preloadImage(asset(cgForBeat(current[position], scene.id)?.file || current[position].background)),
     ];
     let cancelled = false;
     let stopIdle: (() => void) | undefined;
     // The first visible person must not compete with speculative scenery.
     void Promise.allSettled(urgent).then(async () => {
       if (cancelled) return;
-      const rest = [...portraits, ...new Set([...current, ...upcoming].map(item => asset(item.background)))];
+      const rest = [...portraits, ...new Set([
+        ...current.map(item => asset(cgForBeat(item, scene.id)?.file || item.background)),
+        ...upcoming.map(item => asset(cgForBeat(item, next!.id)?.file || item.background)),
+      ])];
       await Promise.allSettled(rest.map(url => preloadImage(url, 'low')));
       if (!cancelled) stopIdle = prefetchWhenIdle(CHARACTERS.map(character => portraitAsset(character.key)));
     });
     return () => { cancelled = true; stopIdle?.(); };
-  }, [game?.sceneId, game?.cycle, screen, scene]);
+  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight]);
 
   useEffect(() => {
     if (!intro) return;
@@ -217,7 +249,7 @@ export default function App() {
     const now = performance.now();
     if (now < nextAllowedAt.current) return;
     if (intro) { nextAllowedAt.current = now + 180; setIntro(null); return; }
-    if (hidden) { nextAllowedAt.current = now + 180; setHidden(false); return; }
+    if (hidden) { nextAllowedAt.current = now + 180; setHidden(false); sound.click('toggle'); return; }
     if (beat.kind !== 'text') return;
     nextAllowedAt.current = now + 180;
     if (!typing.done) { typing.reveal(); return; }
@@ -226,27 +258,32 @@ export default function App() {
   }, [modal, screen, game, beat, intro, hidden, typing]);
 
   useEffect(() => {
-    if ((!auto && !isSkipping) || modal || intro || screen !== 'play' || !beat || beat.kind !== 'text') return;
+    if ((!auto && !isSkipping) || modal || intro || hidden || !pageVisible || screen !== 'play' || !beat || beat.kind !== 'text') return;
     if (isSkipping && !skipPool.current.has(beat.id)) { stopSkipping(); notify('已到达未读的故事。'); return; }
     if (!typing.done && !isSkipping) return;
-    const delay = isSkipping ? 90 : settings.autoDelay * 1000 + Math.min(text.length * 20, 2400);
+    const delay = isSkipping ? 90 : autoDelayFor(text, settings.autoDelay);
     const timer = setTimeout(() => {
       setGame(previous => previous ? advance(previous, currentProfile.current) : previous);
     }, delay);
     return () => clearTimeout(timer);
-  }, [auto, isSkipping, modal, intro, screen, beat, typing.done, settings.autoDelay, text.length, notify, stopSkipping]);
+  }, [auto, isSkipping, modal, intro, hidden, pageVisible, screen, beat, typing.done, settings.autoDelay, text, notify, stopSkipping]);
+
+  useEffect(() => {
+    if (screen === 'play' && beat?.kind === 'choice' && !modal && !intro) sound.prepareUi('stamp');
+  }, [screen, beat?.id, beat?.kind, modal, intro]);
 
   const openModal = useCallback((name: ModalName) => {
     if (name === 'saves' && !isStoryReady()) void loadStory().then(() => setStoryReady(true)).catch(() => {});
     if (!document.querySelector('[role="dialog"]')) modalOpener.current = document.activeElement as HTMLElement | null;
     setModalPath(path => path.at(-1) === name ? path : [...path, name]);
     setHidden(false); setHoldingSkip(false);
-    clearTimeout(choiceTimer.current); choiceTimer.current = 0; setStamped(null);
-    clearTimeout(toastTimer.current); setToast(''); sound.click('choice');
-  }, []);
+    clearChoiceTimers(); setStamped(null);
+    clearTimeout(toastTimer.current); setToast(''); sound.click('open');
+  }, [clearChoiceTimers]);
   const openSaves = useCallback((mode: 'save' | 'load') => { setSaveMode(mode); openModal('saves'); }, [openModal]);
 
   const toggleFullscreen = useCallback(async () => {
+    sound.click('toggle');
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
       else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
@@ -263,8 +300,18 @@ export default function App() {
   useEffect(() => { setConfirmHome(false); }, [modal]);
   useEffect(() => {
     setStamped(null);
-    return () => { clearTimeout(choiceTimer.current); choiceTimer.current = 0; };
-  }, [beat?.id, screen]);
+    return clearChoiceTimers;
+  }, [beat?.id, screen, modal, intro, clearChoiceTimers]);
+  useEffect(() => {
+    const visibility = () => {
+      setPageVisible(!document.hidden);
+      // Background timers can be delayed until focus returns. Never play an
+      // old stamp then; the already chosen route may still finish silently.
+      if (document.hidden) { clearTimeout(stampTimer.current); stampTimer.current = 0; }
+    };
+    document.addEventListener('visibilitychange', visibility);
+    return () => document.removeEventListener('visibilitychange', visibility);
+  }, []);
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
   const prepareReading = async (stateForReading: () => GameState): Promise<GameState | null> => {
@@ -277,8 +324,9 @@ export default function App() {
       const items = compileScene(state.sceneId, currentProfile.current, state);
       const position = Math.max(0, items.findIndex(item => item.id === state.beatId));
       const nearest = items.slice(position).map(item => actorForBeat(item, location, items)).find(Boolean);
-      const critical = [preloadImage(asset(items[position].background), 'high')];
-      if (nearest) critical.push(preloadImage(portraitAsset(nearest.character.key), 'high'));
+      const currentBeatArt = cgForBeat(items[position], location.id)?.file || items[position].background;
+      const critical = [preloadImage(asset(currentBeatArt), 'high')];
+      if (nearest) critical.push(preloadImage(asset(portraitNameFor(nearest.character.key, nearest.expression)), 'high'));
       let timer = 0;
       // Keep a stalled image from blocking the story; loading failures stay retryable.
       await Promise.race([Promise.allSettled(critical), new Promise(resolve => { timer = window.setTimeout(resolve, 4000); })]);
@@ -311,13 +359,13 @@ export default function App() {
 
   const toggleMute = () => {
     const next = { ...settings, muted: !settings.muted };
-    setSettings(next); if (!next.muted) void sound.unlock(next);
+    changeSettings(next);
   };
 
   const handleChoice = (key: string) => {
     const state = currentGame.current;
     if (!state) return;
-    void sound.unlock(settings); sound.click('choice'); setAuto(false); stopSkipping();
+    setAuto(value => value && currentSettings.current.autoAfterChoice); stopSkipping();
     const updated = choose(state, currentProfile.current, key);
     setGame(updated);
   };
@@ -325,21 +373,34 @@ export default function App() {
   // 朱印落下之后再翻页；减弱动态时立即选择。
   const pickChoice = (key: string) => {
     if (stamped || choiceTimer.current || beat?.kind !== 'choice' || !beat.choices.some(choice => choice.key === key && !choice.disabled)) return;
-    if (settings.reducedMotion) { handleChoice(key); return; }
     void sound.unlock(settings);
+    if (settings.reducedMotion) { sound.click('stamp'); handleChoice(key); return; }
     setStamped(key);
     const selectedBeat = beat.id;
+    const request = ++choiceRequest.current;
     choiceTimer.current = window.setTimeout(() => {
       choiceTimer.current = 0;
-      if (currentGame.current?.beatId === selectedBeat) handleChoice(key);
+      if (request === choiceRequest.current && currentGame.current?.beatId === selectedBeat) handleChoice(key);
     }, 640);
   };
 
+  const stampAtContact = (key: string, animation: string) => {
+    if (animation !== 'stamp-down' || stamped !== key || stampTimer.current || !choiceTimer.current) return;
+    // Start from the rendered animation so a slow frame cannot move the sound
+    // ahead of the seal. The 20ms audio lead lands near the 300ms contact.
+    const request = choiceRequest.current, selectedBeat = currentGame.current?.beatId;
+    stampTimer.current = window.setTimeout(() => {
+      stampTimer.current = 0;
+      if (request === choiceRequest.current && currentGame.current?.beatId === selectedBeat) sound.click('stamp');
+    }, 280);
+  };
+
   const toggleSkip = () => {
+    sound.click('toggle');
     if (isSkipping) stopSkipping();
     else { skipPool.current = new Set(profile.read); setAuto(false); setSkipping(true); }
   };
-  const toggleAuto = () => { setAuto(value => !value); stopSkipping(); };
+  const toggleAuto = () => { sound.click('toggle'); setAuto(value => !value); stopSkipping(); };
 
   const jump = async (id: string) => {
     if (id === '0-1' && !profile.visited.includes(id)) { start(); return; }
@@ -363,7 +424,7 @@ export default function App() {
   const saveSlot = (index: number) => {
     if (!game) return;
     const updated = slots.map((slot, i) => i === index ? { version: 1 as const, savedAt: new Date().toISOString(), state: structuredClone(game) } : slot);
-    if (persist('slots', updated)) { setSlots(updated); sound.click('bell'); notify(`已在第 ${index + 1} 枚书签留下此刻。`); }
+    if (persist('slots', updated)) { setSlots(updated); sound.click('save'); notify(`已在第 ${index + 1} 枚书签留下此刻。`); }
     else notify('书签未能保存，请先导出旅途存档。');
   };
 
@@ -421,7 +482,7 @@ export default function App() {
       if (event.target instanceof HTMLButtonElement && !event.target.classList.contains('dialogue-advance') && [' ', 'enter'].includes(key)) return;
       if ([' ', 'enter', 'arrowright'].includes(key)) { event.preventDefault(); state.next(); return; }
       if (state.intro) return;
-      if (key === 'h' && state.beat?.kind === 'text') { event.preventDefault(); setHidden(value => !value); }
+      if (key === 'h' && state.beat?.kind === 'text') { event.preventDefault(); sound.click('toggle'); setHidden(value => !value); }
       if (key === 'arrowleft' || key === 'pageup') { event.preventDefault(); state.openModal('history'); }
       if (key === 'a' && state.beat?.kind === 'text') { event.preventDefault(); state.toggleAuto(); }
       if (/^[1-6]$/.test(key) && state.beat?.kind === 'choice') {
@@ -462,7 +523,7 @@ export default function App() {
   const toastNotice = toast && <div className={`toast ${modal ? 'toast--inline' : ''}`} key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span><span>{toast}</span><button onClick={() => setToast('')} aria-label="关闭提示"><X size={13} /></button></div>;
 
   return <main className={`app app--${screen} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`} onPointerDown={() => { if (!settings.muted) void sound.unlock(settings); }} onKeyDownCapture={() => { if (!settings.muted) void sound.unlock(settings); }}>
-    <SceneArt name={background} motion={!settings.reducedMotion} />
+    <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} />
     <Atmosphere scene={background} reduced={settings.reducedMotion} />
 
     {screen === 'home' ? <div className="home-screen" inert={!!modal}>
@@ -481,7 +542,7 @@ export default function App() {
         <div className="home-library">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={18} /><span>{item.text}</span></button>)}</div>
       </div>
       <div className="home-side-poem" aria-hidden="true"><span>一条河，两片夜。</span><i /><span>循着水声，回家。</span></div>
-      <footer className="home-footer"><button className="headphone-note" onClick={() => openModal('music')} aria-label="听水集"><InkDrop size={16} /><span>听水集 · 原声重听</span></button><span className="home-edition">八十一场故事 <i /> 两条归路 <i /> V6 完整版</span><button className="about-link" onClick={() => openModal('about')}>关于此梦 <CircleHelp size={13} strokeWidth={1.3} /></button></footer>
+      <footer className="home-footer"><button className="headphone-note" onClick={() => openModal('music')} aria-label="听水集"><InkDrop size={16} /><span>听水集 · 原声重听{!audioState.unlocked && audioState.available && !settings.muted && <small className="sound-unlock-hint">轻触开启声音</small>}</span></button><span className="home-edition">八十一场故事 <i /> 两条归路 <i /> V6 完整版</span><button className="about-link" onClick={() => openModal('about')}>关于此梦 <CircleHelp size={13} strokeWidth={1.3} /></button></footer>
       <div className="home-coordinate" aria-hidden="true"><span>19:37</span><i />THE MOMENT BEFORE THE WATER</div>
     </div> : game && beat ? <div className="game-screen" ref={readingRef} tabIndex={-1} inert={!!modal} onClickCapture={event => {
       if (event.detail > 0 && event.target instanceof Element && event.target.closest('button') && !event.target.closest('.dialogue-advance')) readingRef.current?.focus({ preventScroll: true });
@@ -490,7 +551,7 @@ export default function App() {
       <div className="sr-only" aria-live="polite" aria-atomic="true">{!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? `${beat.speaker ? `${beat.speaker}：` : ''}${beat.text}` : ''}</div>
       {showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label="阅读提示"><CircleHelp size={16} aria-hidden="true" /><p>点击画面继续，点「回看」重读。<small>更多操作可在阅读设置中查看。</small></p><button onClick={dismissReadingHint}>知道了</button></aside>}
 
-      {settings.showSprites && !intro && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} />}
+      {settings.showSprites && !intro && !cg && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} />}
       {beat.kind === 'text' && <><button className="advance-surface" onClick={next} aria-label={hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文'} tabIndex={-1} />
         <section className={`dialogue dialogue--${lineKind}`} aria-label="故事正文" inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />
@@ -507,17 +568,18 @@ export default function App() {
                   <button onClick={() => openSaves('save')} title="存档 · S"><InkBookmark /><span>存档</span></button>
                   <button onClick={() => openSaves('load')} title="读档 · L"><InkScroll /><span>读档</span></button>
                   <button onClick={() => openModal('settings')} title="阅读设置"><InkWind /><span>设置</span></button>
-                  <button onClick={() => { setHidden(true); setToolsOpen(false); }} title="隐藏界面 · H"><InkClosedEye /><span>隐藏</span></button>
+                  <button onClick={() => { sound.click('toggle'); setHidden(true); setToolsOpen(false); }} title="隐藏界面 · H"><InkClosedEye /><span>隐藏</span></button>
                 </div>
-                <button className="reading-toggle" onClick={() => setToolsOpen(value => !value)} aria-expanded={toolsOpen} aria-controls="reading-more" title={toolsOpen ? '收起' : '存档、读档、设置、隐藏'}><InkMore open={toolsOpen} /><span>{toolsOpen ? '收起' : '更多'}</span></button>
+                <button className="reading-toggle" onClick={() => { sound.click('toggle'); setToolsOpen(value => !value); }} aria-expanded={toolsOpen} aria-controls="reading-more" title={toolsOpen ? '收起' : '存档、读档、设置、隐藏'}><InkMore open={toolsOpen} /><span>{toolsOpen ? '收起' : '更多'}</span></button>
               </nav>
             </footer>
           </div>
+          {auto && typing.done && !modal && !intro && !hidden && pageVisible && !settings.reducedMotion && <span className="auto-reading-countdown" key={`${beat.id}:${settings.autoDelay}`} aria-hidden="true" style={{ animationDuration: `${autoDelayFor(text, settings.autoDelay)}ms` }} />}
         </section>
         {hidden && <div className="hidden-hint">点击画面，或按 H，继续听故事。</div>}
       </>}
 
-      {beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label="命运选择"><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{beat.prompt}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} aria-keyshortcuts={String(i + 1)} title={`按 ${i + 1} 选择`} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[i] ?? i + 1}</span><span className="choice-copy"><strong>{choice.disabled ? '尚未听见的名字' : choice.title}</strong><small>{choice.disabled ? choice.hint : choice.detail}</small></span><span className="choice-stamp" aria-hidden="true">定</span></button>)}</div>{game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。'}</span></div>}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />在分路前，留一枚书签</button></section>}
+      {beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label="命运选择"><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{beat.prompt}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} aria-keyshortcuts={String(i + 1)} title={`按 ${i + 1} 选择`} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[i] ?? i + 1}</span><span className="choice-copy"><strong>{choice.disabled ? '尚未听见的名字' : choice.title}</strong><small>{choice.disabled ? choice.hint : choice.detail}</small></span><span className="choice-stamp" aria-hidden="true" onAnimationStart={event => stampAtContact(choice.key, event.animationName)}>定</span></button>)}</div>{game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。'}</span></div>}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />在分路前，留一枚书签</button></section>}
 
       {beat.kind === 'ending' && <section className={`ending-screen ending-screen--${beat.ending} ${beat.ending === 'home' ? 'ending-screen--home' : ''}`} aria-label={`结局 · ${ENDINGS[beat.ending].title}`}>
         <span className="ending-ink" aria-hidden="true" /><span className="ending-ripple" aria-hidden="true" />
@@ -528,7 +590,7 @@ export default function App() {
             <h2 className="ending-title">{ENDINGS[beat.ending].title}</h2>
             <div className="ending-side"><span className="ending-subtitle">{ENDINGS[beat.ending].subtitle}</span><div className="ending-emblem"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /></div></div>
           </div>
-          <blockquote>{ENDINGS[beat.ending].quote}</blockquote>
+          <EndingQuote text={ENDINGS[beat.ending].quote} />
           <p className="ending-memory">{beat.ending === 'home' ? '故事写到这里，日子还在继续。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。'}</p>
           <div className="ending-actions"><button className="gold-button" onClick={() => { if (beat.ending === 'home') toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); audioJump.current = true; setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{beat.ending === 'home' ? '回到标题' : canReturn(profile) ? '循光归来' : '再赴灯下'}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>看看留下的记忆 <Feather size={14} /></button></div>
         </div>
@@ -544,17 +606,17 @@ export default function App() {
       {modal === 'characters' && <CharactersView profile={profile} />}
       {modal === 'gallery' && <GalleryView profile={profile} />}
       {modal === 'journal' && <JournalView state={game} profile={profile} />}
-      {modal === 'settings' && <SettingsView settings={settings} onChange={setSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { setSettings(DEFAULT_SETTINGS); notify('阅读设置已恢复。'); }} />}
+      {modal === 'settings' && <SettingsView settings={settings} onChange={changeSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { changeSettings(DEFAULT_SETTINGS); notify('阅读设置已恢复。'); }} />}
       {modal === 'saves' && <SaveView slots={slots} state={game} profile={profile} autosave={loadAutosave()} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />}
       {modal === 'history' && <Backlog state={game} profile={profile} onReplay={replay} />}
       {modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>不用急。水也可以慢慢流。</p><div className="pause-buttons">{screen === 'play' && <button className="gold-button" onClick={closeModal}>继续此梦 <Play size={15} /></button>}<div className="pause-grid">{LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={24} /><span>{item.text}</span><small>{item.note}</small></button>)}</div><div className="pause-rows"><button className="pause-row" onClick={() => openSaves('save')}><InkBookmark />存读档<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><InkDrop />听水集<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><InkWind />阅读设置<ChevronRight size={16} /></button></div>{screen === 'play' && <button className={`pause-row pause-row--home ${confirmHome ? 'is-confirming' : ''}`} onClick={() => { if (confirmHome) toHome(); else setConfirmHome(true); }} aria-live="polite"><InkReturn />{confirmHome ? '再点一次，回到标题' : '回到标题'}<small>{confirmHome ? '此刻已自动留存，可随时续梦' : '此刻已自动留存'}</small></button>}</div></div>}
       {modal === 'about' && <AboutView />}
-      {modal === 'music' && <MusicRoom profile={profile} settings={settings} onChange={setSettings} />}
+      {modal === 'music' && <MusicRoom profile={profile} settings={settings} onChange={changeSettings} />}
       </Suspense>
     </Modal>}
     {!modal && toastNotice}
     <UpdateNotice />
-    {auto && screen === 'play' && !modal && !intro && beat?.kind === 'text' && <button className="reading-mode-indicator" onClick={() => setAuto(false)}><span />自动阅读中 <Pause size={11} /></button>}
+    {auto && screen === 'play' && !modal && !intro && beat?.kind === 'text' && <button className="reading-mode-indicator" onClick={toggleAuto}><span />自动阅读中 <Pause size={11} /></button>}
     {isSkipping && screen === 'play' && !modal && <button className="reading-mode-indicator" onClick={stopSkipping}><SkipForward size={12} />已读快进中</button>}
   </main>;
 }

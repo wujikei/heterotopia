@@ -4,6 +4,8 @@ dist/
 artifacts/
 *.log
 *.tsbuildinfo
+__pycache__/
+*.pyc
 .env
 .env.*
 !.env.example

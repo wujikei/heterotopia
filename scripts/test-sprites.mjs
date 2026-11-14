@@ -86,16 +86,18 @@ try {
     await page.waitForTimeout(500);
     const portraits = await page.evaluate(() => performance.getEntriesByType('resource').map(e => e.name).filter(url => /\/portrait-/.test(url)));
     assert.ok(portraits.length > 0);
-    assert.ok(portraits.every(url => /portrait-(shen|tang)(?:-m)?\.(avif|webp)/.test(url)), portraits.join('\n'));
+    assert.ok(portraits.every(url => /portrait-(?:shen|tang|mother)(?:-(?:smile|surprised|angry|sad|closed))?(?:-m)?\.(avif|webp)/.test(url)), portraits.join('\n'));
   }, { saveData: true, home: async page => {
     assert.equal(await page.evaluate(() => performance.getEntriesByType('resource').filter(e => /\/portrait-/.test(e.name)).length), 0);
   } });
 
-  await check('Narration retains the exact actor node with a short speaking transition', at('0-2', '0-2:6:0'), async page => {
+  // Use an actual narration page. Mother now has a delivered portrait, so her
+  // dialogue must perform a speaker change rather than retaining an idle actor.
+  await check('Narration retains the exact actor node with a short speaking transition', at('0-7', '0-7:5:0'), async page => {
     const actor = page.locator('.actor').last();
     await actor.waitFor(); const key = await actor.evaluate(el => el.className.match(/actor--(shen|tang)/)[1]);
     await full(page, key); const node = await active(page, key).elementHandle();
-    await turn(page, '0-2:8:0');
+    await turn(page, '0-7:6:0');
     await page.waitForFunction(() => document.querySelector('.actor--idle') && Math.abs(Number(getComputedStyle(document.querySelector('.actor--idle')).opacity) - .55) < .01);
     assert.ok(await node.evaluate(el => el.isConnected));
     await page.waitForTimeout(190);
@@ -230,6 +232,30 @@ try {
     await card.locator('.save-slot-main').click();
     assert.equal(await page.locator('.location-name').innerText(), location);
   }, { viewport: { width: 390, height: 844 } });
+
+  await check('Authored surprise uses its delivered expression and preserves the actor name', at('0-1', '0-1:15:0'), async page => {
+    await full(page, 'shen');
+    await page.waitForFunction(() => /portrait-shen-surprised(?:-m)?\.(avif|webp)$/.test(document.querySelector('.actor-portrait:not(.actor-portrait--outgoing)')?.currentSrc || ''));
+    await page.locator('.actor-portrait:not(.actor-portrait--outgoing)').evaluate(image => image.decode());
+    assert.equal(await page.locator('.actor-vertical-name').innerText(), '沈辞');
+  }, { reduced: true });
+
+  await check('Reviewed supporting portraits and silent Mi stage at their authored appearances', at('0-4', '0-4:14:0'), async page => {
+    await full(page, 'zhou');
+    assert.equal(await page.locator('.actor-vertical-name').innerText(), '周老师');
+  }, { reduced: true });
+
+  await check('Silent Mi appears without inventing a speaking line', at('B-1', 'B-1:8:0'), async page => {
+    await full(page, 'mi');
+    assert.equal(await page.locator('.actor-vertical-name').innerText(), '芈');
+    assert.equal(await page.getByTestId('dialogue-text').getAttribute('aria-label'), currentBeat(at('B-1', 'B-1:8:0'), profile).text);
+  }, { reduced: true });
+
+  await check('A delivered narrative CG fills the scene and clears character overlays', newGame(profile), async page => {
+    await page.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'cg-s01-dream-boat');
+    assert.equal(await page.locator('.actor').count(), 0);
+    assert.equal(await page.getByTestId('dialogue-text').getAttribute('aria-label'), '船底下有东西在敲。');
+  }, { reduced: true });
 } finally {
   await browser.close();
   await writeFile(new URL('results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), browser: name, results, errors }, null, 2));

@@ -1,0 +1,1533 @@
+{
+  "generatedAt": "2026-11-14T01:24:53.825Z",
+  "source": "src/data/story.json; unique compiled text-page IDs across existing route conditions",
+  "textPages": 1603,
+  "characters": [
+    {
+      "key": "shen",
+      "name": "沈辞",
+      "spokenPages": 96,
+      "spokenBlocks": 83,
+      "stagedPages": 70,
+      "resolvedActorPages": 70,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 5,
+      "emptyMoodPages": 48,
+      "expressions": {
+        "default": 65,
+        "smile": 1,
+        "surprised": 2,
+        "angry": 1,
+        "sad": 1,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 65,
+        "smile": 1,
+        "surprised": 2,
+        "angry": 1,
+        "sad": 1,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "angry",
+        "sad",
+        "closed"
+      ]
+    },
+    {
+      "key": "tang",
+      "name": "唐瑾",
+      "spokenPages": 24,
+      "spokenBlocks": 24,
+      "stagedPages": 24,
+      "resolvedActorPages": 24,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 2,
+      "emptyMoodPages": 17,
+      "expressions": {
+        "default": 22,
+        "smile": 2,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 22,
+        "smile": 2,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "sad"
+      ]
+    },
+    {
+      "key": "song",
+      "name": "宋嘉树",
+      "spokenPages": 15,
+      "spokenBlocks": 15,
+      "stagedPages": 15,
+      "resolvedActorPages": 15,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 0,
+      "emptyMoodPages": 6,
+      "expressions": {
+        "default": 15,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 12,
+        "smile": 1,
+        "surprised": 2,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 3,
+      "available": [
+        "default"
+      ]
+    },
+    {
+      "key": "xu",
+      "name": "戌",
+      "spokenPages": 94,
+      "spokenBlocks": 94,
+      "stagedPages": 116,
+      "resolvedActorPages": 120,
+      "cgCoveredPages": 4,
+      "annotatedVisiblePages": 4,
+      "emptyMoodPages": 83,
+      "expressions": {
+        "default": 111,
+        "smile": 2,
+        "surprised": 1,
+        "angry": 0,
+        "sad": 2,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 115,
+        "smile": 2,
+        "surprised": 1,
+        "angry": 0,
+        "sad": 2,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "angry",
+        "sad",
+        "closed"
+      ]
+    },
+    {
+      "key": "amao",
+      "name": "阿媪",
+      "spokenPages": 23,
+      "spokenBlocks": 22,
+      "stagedPages": 23,
+      "resolvedActorPages": 23,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 3,
+      "emptyMoodPages": 21,
+      "expressions": {
+        "default": 19,
+        "smile": 2,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 2,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 19,
+        "smile": 2,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 2,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "sad"
+      ]
+    },
+    {
+      "key": "elder",
+      "name": "老觋",
+      "spokenPages": 20,
+      "spokenBlocks": 19,
+      "stagedPages": 20,
+      "resolvedActorPages": 20,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 0,
+      "emptyMoodPages": 17,
+      "expressions": {
+        "default": 20,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 20,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default"
+      ]
+    },
+    {
+      "key": "quheng",
+      "name": "屈衡",
+      "spokenPages": 34,
+      "spokenBlocks": 33,
+      "stagedPages": 33,
+      "resolvedActorPages": 34,
+      "cgCoveredPages": 1,
+      "annotatedVisiblePages": 3,
+      "emptyMoodPages": 31,
+      "expressions": {
+        "default": 30,
+        "smile": 0,
+        "surprised": 1,
+        "angry": 0,
+        "sad": 2,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 30,
+        "smile": 0,
+        "surprised": 1,
+        "angry": 1,
+        "sad": 2,
+        "closed": 0
+      },
+      "fallbackPages": 1,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "sad"
+      ]
+    },
+    {
+      "key": "chang",
+      "name": "棠",
+      "spokenPages": 16,
+      "spokenBlocks": 16,
+      "stagedPages": 16,
+      "resolvedActorPages": 16,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 0,
+      "emptyMoodPages": 15,
+      "expressions": {
+        "default": 16,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 16,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default"
+      ]
+    },
+    {
+      "key": "yu",
+      "name": "雩",
+      "spokenPages": 27,
+      "spokenBlocks": 27,
+      "stagedPages": 25,
+      "resolvedActorPages": 27,
+      "cgCoveredPages": 2,
+      "annotatedVisiblePages": 3,
+      "emptyMoodPages": 20,
+      "expressions": {
+        "default": 22,
+        "smile": 2,
+        "surprised": 1,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 24,
+        "smile": 2,
+        "surprised": 1,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "sad"
+      ]
+    },
+    {
+      "key": "mi",
+      "name": "芈",
+      "spokenPages": 0,
+      "spokenBlocks": 0,
+      "stagedPages": 3,
+      "resolvedActorPages": 5,
+      "cgCoveredPages": 2,
+      "annotatedVisiblePages": 0,
+      "emptyMoodPages": 0,
+      "expressions": {
+        "default": 3,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 5,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default"
+      ]
+    },
+    {
+      "key": "xua",
+      "name": "媭",
+      "spokenPages": 33,
+      "spokenBlocks": 33,
+      "stagedPages": 33,
+      "resolvedActorPages": 33,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 3,
+      "emptyMoodPages": 27,
+      "expressions": {
+        "default": 29,
+        "smile": 2,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 2,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 28,
+        "smile": 2,
+        "surprised": 0,
+        "angry": 1,
+        "sad": 2,
+        "closed": 0
+      },
+      "fallbackPages": 1,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "sad"
+      ]
+    },
+    {
+      "key": "yuan",
+      "name": "沅",
+      "spokenPages": 20,
+      "spokenBlocks": 20,
+      "stagedPages": 20,
+      "resolvedActorPages": 20,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 3,
+      "emptyMoodPages": 16,
+      "expressions": {
+        "default": 17,
+        "smile": 0,
+        "surprised": 2,
+        "angry": 0,
+        "sad": 1,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 17,
+        "smile": 0,
+        "surprised": 2,
+        "angry": 0,
+        "sad": 1,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default",
+        "smile",
+        "surprised",
+        "sad"
+      ]
+    },
+    {
+      "key": "tu",
+      "name": "荼",
+      "spokenPages": 11,
+      "spokenBlocks": 11,
+      "stagedPages": 11,
+      "resolvedActorPages": 11,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 0,
+      "emptyMoodPages": 9,
+      "expressions": {
+        "default": 11,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 11,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default"
+      ]
+    },
+    {
+      "key": "wuyang",
+      "name": "巫阳",
+      "spokenPages": 6,
+      "spokenBlocks": 6,
+      "stagedPages": 6,
+      "resolvedActorPages": 6,
+      "cgCoveredPages": 0,
+      "annotatedVisiblePages": 0,
+      "emptyMoodPages": 5,
+      "expressions": {
+        "default": 6,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "requestedExpressions": {
+        "default": 6,
+        "smile": 0,
+        "surprised": 0,
+        "angry": 0,
+        "sad": 0,
+        "closed": 0
+      },
+      "fallbackPages": 0,
+      "available": [
+        "default"
+      ]
+    }
+  ],
+  "extras": [
+    {
+      "key": "mother",
+      "name": "母亲",
+      "registered": true,
+      "spokenPages": 18,
+      "stagedPages": 18
+    },
+    {
+      "key": "gouzi",
+      "name": "狗子",
+      "registered": true,
+      "spokenPages": 15,
+      "stagedPages": 15
+    },
+    {
+      "key": "zhou",
+      "name": "周老师",
+      "registered": true,
+      "spokenPages": 10,
+      "stagedPages": 10
+    },
+    {
+      "key": "daoist",
+      "name": "道士",
+      "registered": true,
+      "spokenPages": 9,
+      "stagedPages": 9
+    },
+    {
+      "key": "aheng",
+      "name": "阿蘅",
+      "registered": true,
+      "spokenPages": 8,
+      "stagedPages": 8
+    }
+  ],
+  "delivery": {
+    "expressions": {
+      "total": 28,
+      "sources": 28,
+      "exported": 28,
+      "registered": 28
+    },
+    "cgs": {
+      "total": 14,
+      "sources": 14,
+      "exported": 14,
+      "registered": 14
+    },
+    "extras": {
+      "total": 5,
+      "sources": 5,
+      "exported": 5,
+      "registered": 5
+    }
+  },
+  "missingPortraitSpeakers": [
+    {
+      "speaker": "王",
+      "pages": 6,
+      "first": "A-4:6:0",
+      "examples": [
+        {
+          "id": "A-4:6:0",
+          "text": "不知道！不知道还一遍遍来叫寡人知道！"
+        },
+        {
+          "id": "A-4:9:0",
+          "text": "巫呢。来卜。"
+        },
+        {
+          "id": "A-4:11:0",
+          "text": "那个，抬头。"
+        }
+      ],
+      "blocks": 6
+    },
+    {
+      "speaker": "魏叔",
+      "pages": 5,
+      "first": "B-9-1:4:0",
+      "examples": [
+        {
+          "id": "B-9-1:4:0",
+          "text": "吃了没？"
+        },
+        {
+          "id": "B-9-1:9:0",
+          "text": "这个时节种，开春才吃得上。"
+        },
+        {
+          "id": "B-9-1:13:0",
+          "text": "那我再看。搁袋里，它也不会自己长。"
+        }
+      ],
+      "blocks": 5
+    },
+    {
+      "speaker": "父亲",
+      "pages": 4,
+      "first": "0-8:19:0",
+      "examples": [
+        {
+          "id": "0-8:19:0",
+          "text": "辞伢，链条买好了。这回回来给你换。别推着坏车乱跑，晓得不？"
+        },
+        {
+          "id": "终-4:4:0",
+          "text": "说修车，拖这么久。你怪我晚了没？"
+        },
+        {
+          "id": "终-4:8:0",
+          "text": "可说了回来，就该有个信。夜里再睡不着，你给我留话，停车了我听。"
+        }
+      ],
+      "blocks": 4
+    },
+    {
+      "speaker": "甲士",
+      "pages": 4,
+      "first": "1-11:7:0",
+      "examples": [
+        {
+          "id": "1-11:7:0",
+          "text": "屈公递了免行书。人我带走。"
+        },
+        {
+          "id": "1-11:11:0",
+          "text": "能等一夜。免书在路上，他若肯上车，我带他走，后头有屈公。"
+        },
+        {
+          "id": "1-11:16:0",
+          "text": "查籍已经查到这儿。后面还会来人。"
+        }
+      ],
+      "blocks": 4
+    },
+    {
+      "speaker": "先王之声",
+      "pages": 4,
+      "first": "A-6:16:0",
+      "examples": [
+        {
+          "id": "A-6:16:0",
+          "text": "他长高了么？"
+        },
+        {
+          "id": "A-8:12:0",
+          "text": "犹。"
+        },
+        {
+          "id": "A-8:15:0",
+          "text": "你在门外，为什么不应？"
+        }
+      ],
+      "blocks": 4
+    },
+    {
+      "speaker": "老卒",
+      "pages": 4,
+      "first": "A-E2-2:5:0",
+      "examples": [
+        {
+          "id": "A-E2-2:5:0",
+          "text": "别听了。"
+        },
+        {
+          "id": "A-E2-2:7:0",
+          "text": "新的人正接各门。再过一更，这纸未必认了。"
+        },
+        {
+          "id": "A-E2-2:10:0",
+          "text": "少记一个。"
+        }
+      ],
+      "blocks": 4
+    },
+    {
+      "speaker": "先王之魂",
+      "pages": 4,
+      "first": "A-H-1:6:0",
+      "examples": [
+        {
+          "id": "A-H-1:6:0",
+          "text": "戌呢？"
+        },
+        {
+          "id": "A-H-1:12:0",
+          "text": "衡还在拿别人替自己走。"
+        },
+        {
+          "id": "A-H-1:16:0",
+          "text": "你已经知道了。"
+        }
+      ],
+      "blocks": 4
+    },
+    {
+      "speaker": "老渡人",
+      "pages": 4,
+      "first": "B-6:7:0",
+      "examples": [
+        {
+          "id": "B-6:7:0",
+          "text": "去年秋天酿的，等我儿回来。封泥都等裂了，再留，真叫坛子自己喝了。"
+        },
+        {
+          "id": "B-6:12:0",
+          "text": "老巫右脚年轻时折过，脚趾合不拢。四年前，我还给他配过鞋。"
+        },
+        {
+          "id": "B-6:14:0",
+          "text": "沉江祠的老祝见过。明早我送，今夜别拆，先把人看住。"
+        }
+      ],
+      "blocks": 4
+    },
+    {
+      "speaker": "阿豆",
+      "pages": 4,
+      "first": "B-9-4:4:0",
+      "examples": [
+        {
+          "id": "B-9-4:4:0",
+          "text": "你们要拿什么？"
+        },
+        {
+          "id": "B-9-4:6:0",
+          "text": "我阿娘找水去了。"
+        },
+        {
+          "id": "B-9-4:10:0",
+          "text": "船去哪儿？"
+        }
+      ],
+      "blocks": 4
+    },
+    {
+      "speaker": "陈野",
+      "pages": 3,
+      "first": "0-5:6:0",
+      "examples": [
+        {
+          "id": "0-5:6:0",
+          "text": "小辞！对不住，真没看见！来打一会儿不？"
+        },
+        {
+          "id": "0-5:8:0",
+          "text": "你最近怎么了？蔫得跟被食堂煮过一遍似的。"
+        },
+        {
+          "id": "0-5:10:0",
+          "text": "那更该来，输球也怪运气，稳赚！"
+        }
+      ],
+      "blocks": 3
+    },
+    {
+      "speaker": "梦中少年",
+      "pages": 2,
+      "first": "0-7:9:0",
+      "examples": [
+        {
+          "id": "0-7:9:0",
+          "text": "别……"
+        },
+        {
+          "id": "0-11:16:0",
+          "text": "别……松。"
+        }
+      ],
+      "blocks": 2
+    },
+    {
+      "speaker": "护祭人",
+      "pages": 2,
+      "first": "A-E3-2:4:0",
+      "examples": [
+        {
+          "id": "A-E3-2:4:0",
+          "text": "等等。"
+        },
+        {
+          "id": "A-E3-2:8:0",
+          "text": "家里……还有两个孩子。"
+        }
+      ],
+      "blocks": 2
+    },
+    {
+      "speaker": "新娘母亲",
+      "pages": 2,
+      "first": "B-4:5:0",
+      "examples": [
+        {
+          "id": "B-4:5:0",
+          "text": "甲都混着穿。火一起，顾不上认了。"
+        },
+        {
+          "id": "B-4:9:0",
+          "text": "日子去年就挑好了。房子烧了，日子又没烧。"
+        }
+      ],
+      "blocks": 2
+    },
+    {
+      "speaker": "守妻老人",
+      "pages": 2,
+      "first": "B-5-2:7:0",
+      "examples": [
+        {
+          "id": "B-5-2:7:0",
+          "text": "她还听得见么？"
+        },
+        {
+          "id": "B-5-6:4:0",
+          "text": "我不懂那些名目。水分开，不乱碰，我们记得。"
+        }
+      ],
+      "blocks": 2
+    },
+    {
+      "speaker": "老祝",
+      "pages": 2,
+      "first": "B-7-1:6:0",
+      "examples": [
+        {
+          "id": "B-7-1:6:0",
+          "text": "这具身子，是前些日子收的一个亡人，没人认领。我见过左眼角那颗痣。巫阳的名字，借在他身上了。"
+        },
+        {
+          "id": "B-7-2:9:0",
+          "text": "这几年，朝外求得多，对身旁说得少，连泥人都给摆忘了。"
+        }
+      ],
+      "blocks": 2
+    },
+    {
+      "speaker": "梦中人",
+      "pages": 1,
+      "first": "0-1:4:0",
+      "examples": [
+        {
+          "id": "0-1:4:0",
+          "text": "这个呢？"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "司机",
+      "pages": 1,
+      "first": "0-3:19:0",
+      "examples": [
+        {
+          "id": "0-3:19:0",
+          "text": "别挤！轮胎出了点事，都先坐好！"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "英语老师",
+      "pages": 1,
+      "first": "0-4:4:0",
+      "examples": [
+        {
+          "id": "0-4:4:0",
+          "text": "既然这么精神，沈辞，你来翻译。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "林薇",
+      "pages": 1,
+      "first": "0-4:6:0",
+      "examples": [
+        {
+          "id": "0-4:6:0",
+          "text": "你今天也太倒霉了吧。要不去归元寺拜一拜？"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "老巫者",
+      "pages": 1,
+      "first": "0-7:4:0",
+      "examples": [
+        {
+          "id": "0-7:4:0",
+          "text": "魂兮归来……去君之恒干，何为四方些？"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "妇人",
+      "pages": 1,
+      "first": "1-4:5:0",
+      "examples": [
+        {
+          "id": "1-4:5:0",
+          "text": "今日去，祭肉分你一份。明日换了人，可没这个数。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "太后",
+      "pages": 1,
+      "first": "A-4:19:0",
+      "examples": [
+        {
+          "id": "A-4:19:0",
+          "text": "礼官用的人，礼官管。别吓坏了，大祭还要用。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "李园",
+      "pages": 1,
+      "first": "A-7:14:0",
+      "examples": [
+        {
+          "id": "A-7:14:0",
+          "text": "礼箭误发。继续！"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "负刍",
+      "pages": 1,
+      "first": "A-E1-1:8:0",
+      "examples": [
+        {
+          "id": "A-E1-1:8:0",
+          "text": "先王明言，熊犹弑兄。今夜诛罪，奉告宗庙！"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "军吏",
+      "pages": 1,
+      "first": "A-E3-3:4:0",
+      "examples": [
+        {
+          "id": "A-E3-3:4:0",
+          "text": "秦间一名。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "换酒人",
+      "pages": 1,
+      "first": "A-E3-3:9:0",
+      "examples": [
+        {
+          "id": "A-E3-3:9:0",
+          "text": "记着了。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "守祠人",
+      "pages": 1,
+      "first": "B-3-1:4:0",
+      "examples": [
+        {
+          "id": "B-3-1:4:0",
+          "text": "底下有旧祭道。东皇收过路礼，挑一样舍不得的，别空着手。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "合唱",
+      "pages": 1,
+      "first": "B-3-3:8:0",
+      "examples": [
+        {
+          "id": "B-3-3:8:0",
+          "text": "君无下此幽都些。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "新郎",
+      "pages": 1,
+      "first": "B-4:11:0",
+      "examples": [
+        {
+          "id": "B-4:11:0",
+          "text": "你……你慢点。我也……"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "村人",
+      "pages": 1,
+      "first": "B-5-2:4:0",
+      "examples": [
+        {
+          "id": "B-5-2:4:0",
+          "text": "这口井用了多少年，烧开了，总能……"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "门内人",
+      "pages": 1,
+      "first": "B-6:5:0",
+      "examples": [
+        {
+          "id": "B-6:5:0",
+          "text": "不知道。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "老兵",
+      "pages": 1,
+      "first": "B-9-3:7:0",
+      "examples": [
+        {
+          "id": "B-9-3:7:0",
+          "text": "拿着。"
+        }
+      ],
+      "blocks": 1
+    },
+    {
+      "speaker": "旧队少年",
+      "pages": 1,
+      "first": "B-13:19:0",
+      "examples": [
+        {
+          "id": "B-13:19:0",
+          "text": "那句话，他讲给人听了吗？"
+        }
+      ],
+      "blocks": 1
+    }
+  ],
+  "silentPresence": {
+    "B-1:8:0": [
+      "mi"
+    ],
+    "B-1:20:0": [
+      "mi"
+    ],
+    "B-13:8:2": [
+      "mi"
+    ],
+    "B-13:28:0": [
+      "mi"
+    ],
+    "终-1:22:2": [
+      "mi"
+    ]
+  },
+  "examples": [
+    {
+      "id": "0-1:15:0",
+      "sceneId": "0-1",
+      "speaker": "沈辞",
+      "mood": "猛地坐起",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "surprised",
+      "displayedExpression": "surprised",
+      "cg": null,
+      "stage": "shen",
+      "annotated": true,
+      "text": "谁？"
+    },
+    {
+      "id": "0-3:20:0",
+      "sceneId": "0-3",
+      "speaker": "宋嘉树",
+      "mood": "惊魂未定",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "default",
+      "displayedExpression": "default",
+      "cg": null,
+      "stage": "song",
+      "annotated": false,
+      "text": "我靠，你这个运气还带群体伤害的？"
+    },
+    {
+      "id": "0-6:9:0",
+      "sceneId": "0-6",
+      "speaker": "沈辞",
+      "mood": "",
+      "direction": "沈辞停住。身后饭店的油锅响了一下。",
+      "expression": "surprised",
+      "portraitExpression": "surprised",
+      "displayedExpression": "surprised",
+      "cg": null,
+      "stage": "shen",
+      "annotated": true,
+      "text": "……谁跟你说的？"
+    },
+    {
+      "id": "0-8:24:0",
+      "sceneId": "0-8",
+      "speaker": "沈辞",
+      "mood": "",
+      "direction": "",
+      "expression": "angry",
+      "portraitExpression": "angry",
+      "displayedExpression": "angry",
+      "cg": null,
+      "stage": "shen",
+      "annotated": true,
+      "text": "跟他说又能怎么样。能回来替我上课？"
+    },
+    {
+      "id": "1-2:9:0",
+      "sceneId": "1-2",
+      "speaker": "阿媪",
+      "mood": "",
+      "direction": "阿媪把柴放下，手指点在船边一团歪斜的线条上。",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "amao",
+      "annotated": true,
+      "text": "五岁画的。非说是凤凰。你看这翅膀，鸡都嫌短，还不许人笑。"
+    },
+    {
+      "id": "1-5:18:0",
+      "sceneId": "1-5",
+      "speaker": "阿媪",
+      "mood": "",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "amao",
+      "annotated": true,
+      "text": "你三岁。给宫里织布，咳了一个冬天。"
+    },
+    {
+      "id": "1-7:7:0",
+      "sceneId": "1-7",
+      "speaker": "阿媪",
+      "mood": "笑了一下",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "amao",
+      "annotated": false,
+      "text": "阿禾。小时候这么叫。长大了不让喊，嫌像没断奶。"
+    },
+    {
+      "id": "1-12:11:0",
+      "sceneId": "1-12",
+      "speaker": "阿媪",
+      "mood": "",
+      "direction": "沈辞低头，看袖口的靛青布。阿媪伸手，把他包着伤的掌心翻过来。",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "amao",
+      "annotated": true,
+      "text": "可我跟他们说，没用。你也听见了。"
+    },
+    {
+      "id": "A-1:16:0",
+      "sceneId": "A-1",
+      "speaker": "屈衡",
+      "mood": "",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "surprised",
+      "displayedExpression": "surprised",
+      "cg": null,
+      "stage": "quheng",
+      "annotated": true,
+      "text": "这个谁教你画的？"
+    },
+    {
+      "id": "A-4:6:0",
+      "sceneId": "A-4",
+      "speaker": "王",
+      "mood": "骤怒",
+      "direction": "",
+      "expression": "angry",
+      "portraitExpression": null,
+      "displayedExpression": null,
+      "cg": null,
+      "stage": null,
+      "annotated": false,
+      "text": "不知道！不知道还一遍遍来叫寡人知道！"
+    },
+    {
+      "id": "A-5:10:0",
+      "sceneId": "A-5",
+      "speaker": "戌（沈辞）",
+      "mood": "极费力",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "xu",
+      "annotated": false,
+      "text": "我不是……他的儿子。"
+    },
+    {
+      "id": "A-5:17:0",
+      "sceneId": "A-5",
+      "speaker": "戌（沈辞）",
+      "mood": "",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "surprised",
+      "displayedExpression": "surprised",
+      "cg": null,
+      "stage": "xu",
+      "annotated": true,
+      "text": "你也……送他们。"
+    },
+    {
+      "id": "A-5:22:0",
+      "sceneId": "A-5",
+      "speaker": "屈衡",
+      "mood": "",
+      "direction": "屈衡卷起祭图，搁到旁边。图上那个小人被最后一层纸遮住。",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "quheng",
+      "annotated": true,
+      "text": "给你一道命令，又装作给你一个父亲。是我的错。"
+    },
+    {
+      "id": "A-6a:9:0",
+      "sceneId": "A-6a",
+      "speaker": "屈衡",
+      "mood": "",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "quheng",
+      "annotated": true,
+      "text": "总以为下一回能备得足些，寻个好领队，多添几袋粮，路就会不同。"
+    },
+    {
+      "id": "A-7:18:0",
+      "sceneId": "A-7",
+      "speaker": "屈衡",
+      "mood": "扬声",
+      "direction": "",
+      "expression": "angry",
+      "portraitExpression": "default",
+      "displayedExpression": "default",
+      "cg": null,
+      "stage": "quheng",
+      "annotated": false,
+      "text": "南方不可止！"
+    },
+    {
+      "id": "A-E2-4:6:0",
+      "sceneId": "A-E2-4",
+      "speaker": "戌（沈辞）",
+      "mood": "很轻",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "xu",
+      "annotated": true,
+      "text": "我没……怪你。"
+    },
+    {
+      "id": "B-3-2:4:0",
+      "sceneId": "B-3-2",
+      "speaker": "沅",
+      "mood": "",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "surprised",
+      "displayedExpression": "surprised",
+      "cg": null,
+      "stage": "yuan",
+      "annotated": true,
+      "text": "不是草。"
+    },
+    {
+      "id": "B-3-2:10:0",
+      "sceneId": "B-3-2",
+      "speaker": "媭",
+      "mood": "嘶声",
+      "direction": "",
+      "expression": "angry",
+      "portraitExpression": "default",
+      "displayedExpression": "default",
+      "cg": null,
+      "stage": "xua",
+      "annotated": false,
+      "text": "过来拉！"
+    },
+    {
+      "id": "B-4:13:0",
+      "sceneId": "B-4",
+      "speaker": "戌（沈辞）",
+      "mood": "唱",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "xu",
+      "annotated": true,
+      "text": "悲莫悲兮生别离，乐莫乐兮新相知。"
+    },
+    {
+      "id": "B-7-5:12:0",
+      "sceneId": "B-7-5",
+      "speaker": "雩",
+      "mood": "",
+      "direction": "芈比出“大”，两只手张得几乎碰到火盆。",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "yu",
+      "annotated": true,
+      "text": "屋顶别下雨就行。还有，别搭在鸡旁边。"
+    },
+    {
+      "id": "B-9-6:8:0",
+      "sceneId": "B-9-6",
+      "speaker": "沅",
+      "mood": "",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "yuan",
+      "annotated": true,
+      "text": "她又骂小贼。"
+    },
+    {
+      "id": "B-10-3:4:0",
+      "sceneId": "B-10-3",
+      "speaker": "媭",
+      "mood": "带一点笑",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "xua",
+      "annotated": false,
+      "text": "看。没死。"
+    },
+    {
+      "id": "B-10-3:11:0",
+      "sceneId": "B-10-3",
+      "speaker": "媭",
+      "mood": "",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "xua",
+      "annotated": true,
+      "text": "你们两个，力气……比我想的大。"
+    },
+    {
+      "id": "B-10-4:6:0",
+      "sceneId": "B-10-4",
+      "speaker": "媭",
+      "mood": "",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "xua",
+      "annotated": true,
+      "text": "她也会怕吧。"
+    },
+    {
+      "id": "B-10-4:8:0",
+      "sceneId": "B-10-4",
+      "speaker": "媭",
+      "mood": "",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "xua",
+      "annotated": true,
+      "text": "我怕得……要命。"
+    },
+    {
+      "id": "B-13:4:0",
+      "sceneId": "B-13",
+      "speaker": "沅",
+      "mood": "猛地回头",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "surprised",
+      "displayedExpression": "surprised",
+      "cg": null,
+      "stage": "yuan",
+      "annotated": true,
+      "text": "我就说是这一条！"
+    },
+    {
+      "id": "B-13:29:0",
+      "sceneId": "B-13",
+      "speaker": "雩",
+      "mood": "",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "surprised",
+      "displayedExpression": "surprised",
+      "cg": null,
+      "stage": "yu",
+      "annotated": true,
+      "text": "已经发生了？"
+    },
+    {
+      "id": "终-1:9:0",
+      "sceneId": "终-1",
+      "speaker": "戌",
+      "mood": "",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "xu",
+      "annotated": true,
+      "text": "不像凤……凰。"
+    },
+    {
+      "id": "终-1:26:0",
+      "sceneId": "终-1",
+      "speaker": "雩",
+      "mood": "笑",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "yu",
+      "annotated": true,
+      "text": "不认得就问。你又没少问过我。"
+    },
+    {
+      "id": "终-3:4:0",
+      "sceneId": "终-3",
+      "speaker": "沈辞",
+      "mood": "",
+      "direction": "",
+      "expression": "sad",
+      "portraitExpression": "sad",
+      "displayedExpression": "sad",
+      "cg": null,
+      "stage": "shen",
+      "annotated": true,
+      "text": "也不全好。我这几天，有点撑不住。"
+    },
+    {
+      "id": "终-3:16:0",
+      "sceneId": "终-3",
+      "speaker": "唐瑾",
+      "mood": "",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "tang",
+      "annotated": true,
+      "text": "嗯。你这回没跑。"
+    },
+    {
+      "id": "终-3:27:0",
+      "sceneId": "终-3",
+      "speaker": "宋嘉树",
+      "mood": "愣一下",
+      "direction": "",
+      "expression": "surprised",
+      "portraitExpression": "default",
+      "displayedExpression": "default",
+      "cg": null,
+      "stage": "song",
+      "annotated": false,
+      "text": "你现在欠得起？先记账，别想靠哭免单啊。"
+    },
+    {
+      "id": "终-3:29:0",
+      "sceneId": "终-3",
+      "speaker": "宋嘉树",
+      "mood": "没笑",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "default",
+      "displayedExpression": "default",
+      "cg": null,
+      "stage": "song",
+      "annotated": false,
+      "text": "刚才你一倒，我腿都软了。下回撑不住，先跟我说。我嘴欠，可不传话。"
+    },
+    {
+      "id": "终-4:13:0",
+      "sceneId": "终-4",
+      "speaker": "沈辞",
+      "mood": "",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "shen",
+      "annotated": true,
+      "text": "人家画的，他得吃饭。"
+    },
+    {
+      "id": "终-4:14:0",
+      "sceneId": "终-4",
+      "speaker": "唐瑾",
+      "mood": "",
+      "direction": "",
+      "expression": "smile",
+      "portraitExpression": "smile",
+      "displayedExpression": "smile",
+      "cg": null,
+      "stage": "tang",
+      "annotated": true,
+      "text": "那也是你画得这么饿。"
+    }
+  ]
+}

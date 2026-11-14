@@ -33,6 +33,7 @@ export function loadProfile(): Profile {
 export const DEFAULT_SETTINGS: Settings = {
   textSpeed: 32, autoDelay: 4, fontSize: 22, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55,
   muted: false, reducedMotion: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false, showSprites: true,
+  lightweight: false, autoAfterChoice: true,
 };
 
 function clamp(value: unknown, min: number, max: number, fallback: number): number {
@@ -52,6 +53,8 @@ export function loadSettings(): Settings {
     muted: raw.muted === true,
     reducedMotion: typeof raw.reducedMotion === 'boolean' ? raw.reducedMotion : DEFAULT_SETTINGS.reducedMotion,
     showSprites: raw.showSprites !== false,
+    lightweight: raw.lightweight === true,
+    autoAfterChoice: raw.autoAfterChoice !== false,
   };
 }
 

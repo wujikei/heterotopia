@@ -1,0 +1,1516 @@
+{
+  "tool": "Local ComfyUI / Qwen-Image 2.1; original project portrait references",
+  "promptMeaning": "prompt and planningSeed describe the revised art constraints. generation identifies the exact source PNG; its historical prompt and actual seed are preserved in source-manifest.json.",
+  "stateMeaning": "planned: no recorded source; source-ready: source recorded but outputs incomplete; exported: all listed outputs exist. registered is the independent runtime delivery register.",
+  "expressionStatesIncludingOriginalDefaults": 36,
+  "existingDefaultCount": 8,
+  "newExpressionCount": 28,
+  "delivery": {
+    "expressions": {
+      "total": 28,
+      "sources": 28,
+      "exported": 28,
+      "registered": 28
+    },
+    "cgs": {
+      "total": 14,
+      "sources": 14,
+      "exported": 14,
+      "registered": 14
+    },
+    "extras": {
+      "total": 5,
+      "sources": 5,
+      "exported": 5,
+      "registered": 5
+    }
+  },
+  "expressions": [
+    {
+      "key": "portrait-shen-smile",
+      "character": "shen",
+      "expression": "smile",
+      "reference": "public/art/portrait-shen.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沈辞面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沈辞，十六岁的中国高中男生，清秀的脸，黑色柔软短发，忧郁又有一点倔强的眼神，穿蓝白色宽松运动校服外套，里面白色T恤，单肩背深色书包，双手放松，正在看向身旁的人。青春、安静、普通但鲜明。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-shen-smile.webp",
+        "public/art/portrait-shen-smile.avif",
+        "public/art/portrait-shen-smile-m.webp",
+        "public/art/portrait-shen-smile-m.avif",
+        "resources/art-src/expressions/portrait-shen-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130000,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00002_.png",
+        "sha256": "2f19e627b06b8a997a81c6a9c53d43d1d30a81235f9246781ed5804a94e168a3",
+        "seed": 1113001,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/shen"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-shen-surprised",
+      "character": "shen",
+      "expression": "surprised",
+      "reference": "public/art/portrait-shen.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沈辞面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沈辞，十六岁的中国高中男生，清秀的脸，黑色柔软短发，忧郁又有一点倔强的眼神，穿蓝白色宽松运动校服外套，里面白色T恤，单肩背深色书包，双手放松，正在看向身旁的人。青春、安静、普通但鲜明。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-shen-surprised.webp",
+        "public/art/portrait-shen-surprised.avif",
+        "public/art/portrait-shen-surprised-m.webp",
+        "public/art/portrait-shen-surprised-m.avif",
+        "resources/art-src/expressions/portrait-shen-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130001,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00002_.png",
+        "sha256": "2f19e627b06b8a997a81c6a9c53d43d1d30a81235f9246781ed5804a94e168a3",
+        "seed": 1113001,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/shen"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-shen-angry",
+      "character": "shen",
+      "expression": "angry",
+      "reference": "public/art/portrait-shen.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沈辞面部的表情。目标情绪：克制的愤怒与不甘，眉间轻收，目光坚定，嘴唇收紧；不咆哮，不龇牙，不改变姿态。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沈辞，十六岁的中国高中男生，清秀的脸，黑色柔软短发，忧郁又有一点倔强的眼神，穿蓝白色宽松运动校服外套，里面白色T恤，单肩背深色书包，双手放松，正在看向身旁的人。青春、安静、普通但鲜明。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-shen-angry.webp",
+        "public/art/portrait-shen-angry.avif",
+        "public/art/portrait-shen-angry-m.webp",
+        "public/art/portrait-shen-angry-m.avif",
+        "resources/art-src/expressions/portrait-shen-angry.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130002,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00002_.png",
+        "sha256": "2f19e627b06b8a997a81c6a9c53d43d1d30a81235f9246781ed5804a94e168a3",
+        "seed": 1113001,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/shen"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-shen-sad",
+      "character": "shen",
+      "expression": "sad",
+      "reference": "public/art/portrait-shen.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沈辞面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沈辞，十六岁的中国高中男生，清秀的脸，黑色柔软短发，忧郁又有一点倔强的眼神，穿蓝白色宽松运动校服外套，里面白色T恤，单肩背深色书包，双手放松，正在看向身旁的人。青春、安静、普通但鲜明。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-shen-sad.webp",
+        "public/art/portrait-shen-sad.avif",
+        "public/art/portrait-shen-sad-m.webp",
+        "public/art/portrait-shen-sad-m.avif",
+        "resources/art-src/expressions/portrait-shen-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130003,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00002_.png",
+        "sha256": "2f19e627b06b8a997a81c6a9c53d43d1d30a81235f9246781ed5804a94e168a3",
+        "seed": 1113001,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/shen"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-shen-closed",
+      "character": "shen",
+      "expression": "closed",
+      "reference": "public/art/portrait-shen.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沈辞面部的表情。目标情绪：轻轻闭上双眼，保留原有眼睑位置与睫毛，眉间松开，嘴唇自然闭合；不低头，不改变头部轮廓。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沈辞，十六岁的中国高中男生，清秀的脸，黑色柔软短发，忧郁又有一点倔强的眼神，穿蓝白色宽松运动校服外套，里面白色T恤，单肩背深色书包，双手放松，正在看向身旁的人。青春、安静、普通但鲜明。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-shen-closed.webp",
+        "public/art/portrait-shen-closed.avif",
+        "public/art/portrait-shen-closed-m.webp",
+        "public/art/portrait-shen-closed-m.avif",
+        "resources/art-src/expressions/portrait-shen-closed.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130004,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00002_.png",
+        "sha256": "2f19e627b06b8a997a81c6a9c53d43d1d30a81235f9246781ed5804a94e168a3",
+        "seed": 1113001,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/shen"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xu-smile",
+      "character": "xu",
+      "expression": "smile",
+      "reference": "public/art/portrait-xu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中戌面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "戌，十五岁战国楚地泽边中国少年，身形瘦小，黑色长发在脑后松松束成古代发髻，浓眉、瘦颧骨，左边眉尾一道极浅旧白疤，眼神安静而有一点倔强，穿洗旧的象牙白宽袖麻衣和灰蓝色布腰带，衣袖是错色靛青补布，一只手托着没刻完的小木鸟，古朴真实的战国楚人衣着。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-xu-smile.webp",
+        "public/art/portrait-xu-smile.avif",
+        "public/art/portrait-xu-smile-m.webp",
+        "public/art/portrait-xu-smile-m.avif",
+        "resources/art-src/expressions/portrait-xu-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130005,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00003_.png",
+        "sha256": "c5741b657f0b16dd56ee2bbaedbf5fa7e17e35a5db0645343df1b1818b175e29",
+        "seed": 1113002,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/xu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xu-surprised",
+      "character": "xu",
+      "expression": "surprised",
+      "reference": "public/art/portrait-xu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中戌面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "戌，十五岁战国楚地泽边中国少年，身形瘦小，黑色长发在脑后松松束成古代发髻，浓眉、瘦颧骨，左边眉尾一道极浅旧白疤，眼神安静而有一点倔强，穿洗旧的象牙白宽袖麻衣和灰蓝色布腰带，衣袖是错色靛青补布，一只手托着没刻完的小木鸟，古朴真实的战国楚人衣着。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-xu-surprised.webp",
+        "public/art/portrait-xu-surprised.avif",
+        "public/art/portrait-xu-surprised-m.webp",
+        "public/art/portrait-xu-surprised-m.avif",
+        "resources/art-src/expressions/portrait-xu-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130006,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00003_.png",
+        "sha256": "c5741b657f0b16dd56ee2bbaedbf5fa7e17e35a5db0645343df1b1818b175e29",
+        "seed": 1113002,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/xu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xu-angry",
+      "character": "xu",
+      "expression": "angry",
+      "reference": "public/art/portrait-xu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中戌面部的表情。目标情绪：克制的愤怒与不甘，眉间轻收，目光坚定，嘴唇收紧；不咆哮，不龇牙，不改变姿态。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "戌，十五岁战国楚地泽边中国少年，身形瘦小，黑色长发在脑后松松束成古代发髻，浓眉、瘦颧骨，左边眉尾一道极浅旧白疤，眼神安静而有一点倔强，穿洗旧的象牙白宽袖麻衣和灰蓝色布腰带，衣袖是错色靛青补布，一只手托着没刻完的小木鸟，古朴真实的战国楚人衣着。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-xu-angry.webp",
+        "public/art/portrait-xu-angry.avif",
+        "public/art/portrait-xu-angry-m.webp",
+        "public/art/portrait-xu-angry-m.avif",
+        "resources/art-src/expressions/portrait-xu-angry.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130007,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00003_.png",
+        "sha256": "c5741b657f0b16dd56ee2bbaedbf5fa7e17e35a5db0645343df1b1818b175e29",
+        "seed": 1113002,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/xu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xu-sad",
+      "character": "xu",
+      "expression": "sad",
+      "reference": "public/art/portrait-xu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中戌面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "戌，十五岁战国楚地泽边中国少年，身形瘦小，黑色长发在脑后松松束成古代发髻，浓眉、瘦颧骨，左边眉尾一道极浅旧白疤，眼神安静而有一点倔强，穿洗旧的象牙白宽袖麻衣和灰蓝色布腰带，衣袖是错色靛青补布，一只手托着没刻完的小木鸟，古朴真实的战国楚人衣着。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-xu-sad.webp",
+        "public/art/portrait-xu-sad.avif",
+        "public/art/portrait-xu-sad-m.webp",
+        "public/art/portrait-xu-sad-m.avif",
+        "resources/art-src/expressions/portrait-xu-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130008,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00003_.png",
+        "sha256": "c5741b657f0b16dd56ee2bbaedbf5fa7e17e35a5db0645343df1b1818b175e29",
+        "seed": 1113002,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/xu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xu-closed",
+      "character": "xu",
+      "expression": "closed",
+      "reference": "public/art/portrait-xu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中戌面部的表情。目标情绪：轻轻闭上双眼，保留原有眼睑位置与睫毛，眉间松开，嘴唇自然闭合；不低头，不改变头部轮廓。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "戌，十五岁战国楚地泽边中国少年，身形瘦小，黑色长发在脑后松松束成古代发髻，浓眉、瘦颧骨，左边眉尾一道极浅旧白疤，眼神安静而有一点倔强，穿洗旧的象牙白宽袖麻衣和灰蓝色布腰带，衣袖是错色靛青补布，一只手托着没刻完的小木鸟，古朴真实的战国楚人衣着。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-xu-closed.webp",
+        "public/art/portrait-xu-closed.avif",
+        "public/art/portrait-xu-closed-m.webp",
+        "public/art/portrait-xu-closed-m.avif",
+        "resources/art-src/expressions/portrait-xu-closed.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130009,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00003_.png",
+        "sha256": "c5741b657f0b16dd56ee2bbaedbf5fa7e17e35a5db0645343df1b1818b175e29",
+        "seed": 1113002,
+        "workflow": "edit",
+        "width": 1248,
+        "height": 832,
+        "metadataRecord": "source-manifest.json#expressions/xu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-quheng-smile",
+      "character": "quheng",
+      "expression": "smile",
+      "reference": "public/art/portrait-quheng.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中屈衡面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "屈衡，六十多岁中国战国楚国老臣，清瘦而疲惫的脸，花白头发高髻，目光复杂而沉静，穿质朴深褐色宽袖巫袍、内层米白色长衣，左手收在袖内，右手托一卷旧竹简，衣角磨损，长期压抑、心存愧疚的温厚老人。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-quheng-smile.webp",
+        "public/art/portrait-quheng-smile.avif",
+        "public/art/portrait-quheng-smile-m.webp",
+        "public/art/portrait-quheng-smile-m.avif",
+        "resources/art-src/expressions/portrait-quheng-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130010,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00004_.png",
+        "sha256": "51ace59d6e0eaa9bd505f0f90f1412d7761545517df79c8c6d34817c7c155209",
+        "seed": 1113003,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/quheng"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-quheng-surprised",
+      "character": "quheng",
+      "expression": "surprised",
+      "reference": "public/art/portrait-quheng.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中屈衡面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "屈衡，六十多岁中国战国楚国老臣，清瘦而疲惫的脸，花白头发高髻，目光复杂而沉静，穿质朴深褐色宽袖巫袍、内层米白色长衣，左手收在袖内，右手托一卷旧竹简，衣角磨损，长期压抑、心存愧疚的温厚老人。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-quheng-surprised.webp",
+        "public/art/portrait-quheng-surprised.avif",
+        "public/art/portrait-quheng-surprised-m.webp",
+        "public/art/portrait-quheng-surprised-m.avif",
+        "resources/art-src/expressions/portrait-quheng-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130011,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00004_.png",
+        "sha256": "51ace59d6e0eaa9bd505f0f90f1412d7761545517df79c8c6d34817c7c155209",
+        "seed": 1113003,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/quheng"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-quheng-sad",
+      "character": "quheng",
+      "expression": "sad",
+      "reference": "public/art/portrait-quheng.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中屈衡面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "屈衡，六十多岁中国战国楚国老臣，清瘦而疲惫的脸，花白头发高髻，目光复杂而沉静，穿质朴深褐色宽袖巫袍、内层米白色长衣，左手收在袖内，右手托一卷旧竹简，衣角磨损，长期压抑、心存愧疚的温厚老人。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-quheng-sad.webp",
+        "public/art/portrait-quheng-sad.avif",
+        "public/art/portrait-quheng-sad-m.webp",
+        "public/art/portrait-quheng-sad-m.avif",
+        "resources/art-src/expressions/portrait-quheng-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130012,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00004_.png",
+        "sha256": "51ace59d6e0eaa9bd505f0f90f1412d7761545517df79c8c6d34817c7c155209",
+        "seed": 1113003,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/quheng"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xua-smile",
+      "character": "xua",
+      "expression": "smile",
+      "reference": "public/art/portrait-xua-v3.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中媭面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。她没有右臂，画面左侧必须仍是原来束起的空袖，不补胳膊或手；唯一左手在画面右侧，必须完全不变。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "用例：视觉小说立绘的精确物体编辑。只修正参考图中少女的右臂，也就是画面左侧那条裸露的长手臂。她是独臂少女，右臂从肩下缺失。彻底移除画面左侧的整条右臂、右手、右侧药袋，改成一只自然垂下的短小空衣袖，空袖末端在右肩下方用细麻绳束起。画面左侧的空袖不可有手掌、手指、前臂或任何裸露皮肤伸出来。她的左臂，也就是画面右侧拿药草的手，保持完好。保持参考图的脸、五官、发髻、身材、暖棕色交领粗布衣裤、绘画笔触、全身构图和柔光完全不变。背景为均匀纯亮绿色色键背景 #00FF00，无地面、无投影，无文字。非血腥，已愈合，只有束起的空袖。Portrait only, exactly ONE arm and ONE hand visible: the surviving left hand on viewer's RIGHT. Viewer LEFT has a short tied EMPTY sleeve at the shoulder; no arm exists under it.",
+      "outputs": [
+        "public/art/portrait-xua-smile.webp",
+        "public/art/portrait-xua-smile.avif",
+        "public/art/portrait-xua-smile-m.webp",
+        "public/art/portrait-xua-smile-m.avif",
+        "resources/art-src/expressions/portrait-xua-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130013,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00005_.png",
+        "sha256": "d9aacf49b594c80f29ee7c5c44fc6f58d5444b3541141188fa0b2bc937754be0",
+        "seed": 1113004,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/xua"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xua-surprised",
+      "character": "xua",
+      "expression": "surprised",
+      "reference": "public/art/portrait-xua-v3.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中媭面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。她没有右臂，画面左侧必须仍是原来束起的空袖，不补胳膊或手；唯一左手在画面右侧，必须完全不变。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "用例：视觉小说立绘的精确物体编辑。只修正参考图中少女的右臂，也就是画面左侧那条裸露的长手臂。她是独臂少女，右臂从肩下缺失。彻底移除画面左侧的整条右臂、右手、右侧药袋，改成一只自然垂下的短小空衣袖，空袖末端在右肩下方用细麻绳束起。画面左侧的空袖不可有手掌、手指、前臂或任何裸露皮肤伸出来。她的左臂，也就是画面右侧拿药草的手，保持完好。保持参考图的脸、五官、发髻、身材、暖棕色交领粗布衣裤、绘画笔触、全身构图和柔光完全不变。背景为均匀纯亮绿色色键背景 #00FF00，无地面、无投影，无文字。非血腥，已愈合，只有束起的空袖。Portrait only, exactly ONE arm and ONE hand visible: the surviving left hand on viewer's RIGHT. Viewer LEFT has a short tied EMPTY sleeve at the shoulder; no arm exists under it.",
+      "outputs": [
+        "public/art/portrait-xua-surprised.webp",
+        "public/art/portrait-xua-surprised.avif",
+        "public/art/portrait-xua-surprised-m.webp",
+        "public/art/portrait-xua-surprised-m.avif",
+        "resources/art-src/expressions/portrait-xua-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130014,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00005_.png",
+        "sha256": "d9aacf49b594c80f29ee7c5c44fc6f58d5444b3541141188fa0b2bc937754be0",
+        "seed": 1113004,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/xua"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-xua-sad",
+      "character": "xua",
+      "expression": "sad",
+      "reference": "public/art/portrait-xua-v3.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中媭面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。她没有右臂，画面左侧必须仍是原来束起的空袖，不补胳膊或手；唯一左手在画面右侧，必须完全不变。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "用例：视觉小说立绘的精确物体编辑。只修正参考图中少女的右臂，也就是画面左侧那条裸露的长手臂。她是独臂少女，右臂从肩下缺失。彻底移除画面左侧的整条右臂、右手、右侧药袋，改成一只自然垂下的短小空衣袖，空袖末端在右肩下方用细麻绳束起。画面左侧的空袖不可有手掌、手指、前臂或任何裸露皮肤伸出来。她的左臂，也就是画面右侧拿药草的手，保持完好。保持参考图的脸、五官、发髻、身材、暖棕色交领粗布衣裤、绘画笔触、全身构图和柔光完全不变。背景为均匀纯亮绿色色键背景 #00FF00，无地面、无投影，无文字。非血腥，已愈合，只有束起的空袖。Portrait only, exactly ONE arm and ONE hand visible: the surviving left hand on viewer's RIGHT. Viewer LEFT has a short tied EMPTY sleeve at the shoulder; no arm exists under it.",
+      "outputs": [
+        "public/art/portrait-xua-sad.webp",
+        "public/art/portrait-xua-sad.avif",
+        "public/art/portrait-xua-sad-m.webp",
+        "public/art/portrait-xua-sad-m.avif",
+        "resources/art-src/expressions/portrait-xua-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130015,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00005_.png",
+        "sha256": "d9aacf49b594c80f29ee7c5c44fc6f58d5444b3541141188fa0b2bc937754be0",
+        "seed": 1113004,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/xua"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-yu-smile",
+      "character": "yu",
+      "expression": "smile",
+      "reference": "public/art/portrait-yu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中雩面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。她是蒙眼少女，米白蒙眼布永远完整保留，不画出双眼，不移动布条；仅用下半张脸、嘴角和布下眉骨的细小变化表达情绪。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "雩，十五岁战国楚地中国少女，黑色长发低低束在背后，米白色柔软布条自然蒙住双眼，安静地侧头倾听，浅灰蓝色古朴宽袖麻衣，衣领完整，腰系细绳，一只手轻轻向前伸出，另一只手扶细木杖，温柔、冷静、有主见。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-yu-smile.webp",
+        "public/art/portrait-yu-smile.avif",
+        "public/art/portrait-yu-smile-m.webp",
+        "public/art/portrait-yu-smile-m.avif",
+        "resources/art-src/expressions/portrait-yu-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130016,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00006_.png",
+        "sha256": "734713ec341000155c456375f892cfa8fbf16dc9cb051b8f94f436e0eeff7556",
+        "seed": 1113005,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/yu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-yu-surprised",
+      "character": "yu",
+      "expression": "surprised",
+      "reference": "public/art/portrait-yu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中雩面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。她是蒙眼少女，米白蒙眼布永远完整保留，不画出双眼，不移动布条；仅用下半张脸、嘴角和布下眉骨的细小变化表达情绪。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "雩，十五岁战国楚地中国少女，黑色长发低低束在背后，米白色柔软布条自然蒙住双眼，安静地侧头倾听，浅灰蓝色古朴宽袖麻衣，衣领完整，腰系细绳，一只手轻轻向前伸出，另一只手扶细木杖，温柔、冷静、有主见。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-yu-surprised.webp",
+        "public/art/portrait-yu-surprised.avif",
+        "public/art/portrait-yu-surprised-m.webp",
+        "public/art/portrait-yu-surprised-m.avif",
+        "resources/art-src/expressions/portrait-yu-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130017,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00006_.png",
+        "sha256": "734713ec341000155c456375f892cfa8fbf16dc9cb051b8f94f436e0eeff7556",
+        "seed": 1113005,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/yu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-yu-sad",
+      "character": "yu",
+      "expression": "sad",
+      "reference": "public/art/portrait-yu.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中雩面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。她是蒙眼少女，米白蒙眼布永远完整保留，不画出双眼，不移动布条；仅用下半张脸、嘴角和布下眉骨的细小变化表达情绪。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "雩，十五岁战国楚地中国少女，黑色长发低低束在背后，米白色柔软布条自然蒙住双眼，安静地侧头倾听，浅灰蓝色古朴宽袖麻衣，衣领完整，腰系细绳，一只手轻轻向前伸出，另一只手扶细木杖，温柔、冷静、有主见。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-yu-sad.webp",
+        "public/art/portrait-yu-sad.avif",
+        "public/art/portrait-yu-sad-m.webp",
+        "public/art/portrait-yu-sad-m.avif",
+        "resources/art-src/expressions/portrait-yu-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130018,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00006_.png",
+        "sha256": "734713ec341000155c456375f892cfa8fbf16dc9cb051b8f94f436e0eeff7556",
+        "seed": 1113005,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/yu"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-amao-smile",
+      "character": "amao",
+      "expression": "smile",
+      "reference": "public/art/portrait-amao.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中阿媪面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "阿媪，七十岁左右的战国楚地中国老妇人，面容慈祥有细密皱纹，花白头发盘成简单低髻，穿褪色靛蓝与灰褐色的古朴麻衣，膝上搭一件缝到一半的素色冬衣，一只手握针线，动作温暖，低垂的眼睛含笑，真实而亲切。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-amao-smile.webp",
+        "public/art/portrait-amao-smile.avif",
+        "public/art/portrait-amao-smile-m.webp",
+        "public/art/portrait-amao-smile-m.avif",
+        "resources/art-src/expressions/portrait-amao-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130019,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00007_.png",
+        "sha256": "29ccb59b675111d83987affd971a7409a7ae6461700a49fde8053b9aec253996",
+        "seed": 1113006,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/amao"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-amao-surprised",
+      "character": "amao",
+      "expression": "surprised",
+      "reference": "public/art/portrait-amao.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中阿媪面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "阿媪，七十岁左右的战国楚地中国老妇人，面容慈祥有细密皱纹，花白头发盘成简单低髻，穿褪色靛蓝与灰褐色的古朴麻衣，膝上搭一件缝到一半的素色冬衣，一只手握针线，动作温暖，低垂的眼睛含笑，真实而亲切。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-amao-surprised.webp",
+        "public/art/portrait-amao-surprised.avif",
+        "public/art/portrait-amao-surprised-m.webp",
+        "public/art/portrait-amao-surprised-m.avif",
+        "resources/art-src/expressions/portrait-amao-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130020,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00007_.png",
+        "sha256": "29ccb59b675111d83987affd971a7409a7ae6461700a49fde8053b9aec253996",
+        "seed": 1113006,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/amao"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-amao-sad",
+      "character": "amao",
+      "expression": "sad",
+      "reference": "public/art/portrait-amao.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中阿媪面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "阿媪，七十岁左右的战国楚地中国老妇人，面容慈祥有细密皱纹，花白头发盘成简单低髻，穿褪色靛蓝与灰褐色的古朴麻衣，膝上搭一件缝到一半的素色冬衣，一只手握针线，动作温暖，低垂的眼睛含笑，真实而亲切。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-amao-sad.webp",
+        "public/art/portrait-amao-sad.avif",
+        "public/art/portrait-amao-sad-m.webp",
+        "public/art/portrait-amao-sad-m.avif",
+        "resources/art-src/expressions/portrait-amao-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130021,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00007_.png",
+        "sha256": "29ccb59b675111d83987affd971a7409a7ae6461700a49fde8053b9aec253996",
+        "seed": 1113006,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/amao"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-tang-smile",
+      "character": "tang",
+      "expression": "smile",
+      "reference": "public/art/portrait-tang.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中唐瑾面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "唐瑾，十六岁的中国高中女生，柔顺黑发扎低马尾，清晰有神的眼睛，冷静而温柔的神情，穿整洁蓝白色宽松运动校服外套和深色长裤，怀里抱一本笔记本，书包上挂一只小旧毛绒兔，学生日常自然姿态。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-tang-smile.webp",
+        "public/art/portrait-tang-smile.avif",
+        "public/art/portrait-tang-smile-m.webp",
+        "public/art/portrait-tang-smile-m.avif",
+        "resources/art-src/expressions/portrait-tang-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130022,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00008_.png",
+        "sha256": "4b2b89202e2efcf208bf94524880dab607876095a6f7031e07c6171bb53428b9",
+        "seed": 1113007,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/tang"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-tang-surprised",
+      "character": "tang",
+      "expression": "surprised",
+      "reference": "public/art/portrait-tang.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中唐瑾面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "唐瑾，十六岁的中国高中女生，柔顺黑发扎低马尾，清晰有神的眼睛，冷静而温柔的神情，穿整洁蓝白色宽松运动校服外套和深色长裤，怀里抱一本笔记本，书包上挂一只小旧毛绒兔，学生日常自然姿态。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-tang-surprised.webp",
+        "public/art/portrait-tang-surprised.avif",
+        "public/art/portrait-tang-surprised-m.webp",
+        "public/art/portrait-tang-surprised-m.avif",
+        "resources/art-src/expressions/portrait-tang-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130023,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00008_.png",
+        "sha256": "4b2b89202e2efcf208bf94524880dab607876095a6f7031e07c6171bb53428b9",
+        "seed": 1113007,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/tang"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-tang-sad",
+      "character": "tang",
+      "expression": "sad",
+      "reference": "public/art/portrait-tang.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中唐瑾面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "唐瑾，十六岁的中国高中女生，柔顺黑发扎低马尾，清晰有神的眼睛，冷静而温柔的神情，穿整洁蓝白色宽松运动校服外套和深色长裤，怀里抱一本笔记本，书包上挂一只小旧毛绒兔，学生日常自然姿态。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-tang-sad.webp",
+        "public/art/portrait-tang-sad.avif",
+        "public/art/portrait-tang-sad-m.webp",
+        "public/art/portrait-tang-sad-m.avif",
+        "resources/art-src/expressions/portrait-tang-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130024,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00008_.png",
+        "sha256": "4b2b89202e2efcf208bf94524880dab607876095a6f7031e07c6171bb53428b9",
+        "seed": 1113007,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/tang"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-yuan-smile",
+      "character": "yuan",
+      "expression": "smile",
+      "reference": "public/art/portrait-yuan.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沅面部的表情。目标情绪：一个克制、温暖、可以看清的微笑，嘴角轻轻上扬，面颊放松；不张嘴大笑，不改变年龄。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沅，八岁战国楚地中国小男孩，脸圆，头发乱乱地扎成小发髻，眼睛大而好奇，穿洗得发白的灰米色长袖宽松麻衣、深褐色裤子，手腕上系一小颗木珠红绳，一只手捏白色小石头，略带腼腆又倔强的神情。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-yuan-smile.webp",
+        "public/art/portrait-yuan-smile.avif",
+        "public/art/portrait-yuan-smile-m.webp",
+        "public/art/portrait-yuan-smile-m.avif",
+        "resources/art-src/expressions/portrait-yuan-smile.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130025,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00009_.png",
+        "sha256": "2f810ee6aab0c41f2b2ffef229a003a3c97f8f32dd15b8bc32907dcfb443d734",
+        "seed": 1113008,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/yuan"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-yuan-surprised",
+      "character": "yuan",
+      "expression": "surprised",
+      "reference": "public/art/portrait-yuan.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沅面部的表情。目标情绪：短暂而真实的惊讶，眉峰微抬，眼睛稍睁大，嘴唇轻轻分开；不夸张变形，不改变头的角度。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沅，八岁战国楚地中国小男孩，脸圆，头发乱乱地扎成小发髻，眼睛大而好奇，穿洗得发白的灰米色长袖宽松麻衣、深褐色裤子，手腕上系一小颗木珠红绳，一只手捏白色小石头，略带腼腆又倔强的神情。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-yuan-surprised.webp",
+        "public/art/portrait-yuan-surprised.avif",
+        "public/art/portrait-yuan-surprised-m.webp",
+        "public/art/portrait-yuan-surprised-m.avif",
+        "resources/art-src/expressions/portrait-yuan-surprised.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130026,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00009_.png",
+        "sha256": "2f810ee6aab0c41f2b2ffef229a003a3c97f8f32dd15b8bc32907dcfb443d734",
+        "seed": 1113008,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/yuan"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-yuan-sad",
+      "character": "yuan",
+      "expression": "sad",
+      "reference": "public/art/portrait-yuan.webp",
+      "role": "edit target; identity, composition and body lock",
+      "workflow": "edit",
+      "state": "exported",
+      "prompt": "仅编辑参考图中沅面部的表情。目标情绪：悲伤但仍认真听人说话，眉尾稍落，眼眶微润，嘴角微微下垂；不嚎哭，不添加夸张泪流。保留参考图的脸型、年龄、五官间距、头部角度、发型与发丝轮廓、身体、衣着、双手位置、道具、光照、笔触、人物位置、画布尺寸和透明轮廓完全不变，只改变必要的眉眼与嘴角像素。不要新增装饰、文字或水印。背景沿用参考图，不新增景物。严格同一角色、同一姿势、同一服装的表情差分。",
+      "sourceDescription": "沅，八岁战国楚地中国小男孩，脸圆，头发乱乱地扎成小发髻，眼睛大而好奇，穿洗得发白的灰米色长袖宽松麻衣、深褐色裤子，手腕上系一小颗木珠红绳，一只手捏白色小石头，略带腼腆又倔强的神情。视觉小说游戏角色立绘素材，竖版2:3，膝盖以上完整半身，人物居中，正面略微侧身，精致中国手绘动画与细腻厚涂融合，写实可信的五官与衣服褶皱，细腻水彩笔触、低饱和配色，电影柔光，温柔克制的人物情绪，单个人物，头顶与手都完整保留。人物正常穿着完整衣服，无文字、无logo、无边框。背景必须完全纯平、鲜艳的纯绿色色键幕布（#00ff00），便于后期抠像，绝无渐变、阴影、地面或装饰，绿幕的绿色不能反射到人物身上，人物服装不使用绿色。",
+      "outputs": [
+        "public/art/portrait-yuan-sad.webp",
+        "public/art/portrait-yuan-sad.avif",
+        "public/art/portrait-yuan-sad-m.webp",
+        "public/art/portrait-yuan-sad-m.avif",
+        "resources/art-src/expressions/portrait-yuan-sad.png"
+      ],
+      "registered": true,
+      "planningSeed": 9130027,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/edit_00009_.png",
+        "sha256": "2f810ee6aab0c41f2b2ffef229a003a3c97f8f32dd15b8bc32907dcfb443d734",
+        "seed": 1113008,
+        "workflow": "edit",
+        "width": 1024,
+        "height": 1024,
+        "metadataRecord": "source-manifest.json#expressions/yuan"
+      },
+      "missingOutputs": []
+    }
+  ],
+  "cgs": [
+    {
+      "key": "cg-e1-blade",
+      "cgId": "e1-blade",
+      "title": "天亮以前",
+      "source": "A-E1-2",
+      "trigger": {
+        "endingId": "blade"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/e1-blade-scene.png",
+        "artifacts/ui-fix-3/cg-references/e1-blade-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "寿春宗庙后巷的破晓。墙间只露一角苍白天光，手持小铜铃的十五岁楚地白衣少年被押送离开，镜头在远处，以背影和手部叙事，不展示伤口。巷口隐约有提菜筐的少女与逃离的人影，他们终于活到天亮。墙外粥铺的白汽上升，压住悲剧而保留日常。少年外观以戌参考图为准，绝不是现代校服。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-e1-blade.webp",
+        "public/art/cg-e1-blade.avif",
+        "public/art/cg-e1-blade-thumb.webp",
+        "public/art/cg-e1-blade-thumb.avif",
+        "resources/art-src/cgs/e1-blade.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140000,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00015_.png",
+        "sha256": "b9ce032899c0ecdc9837cc3024f84c6b867fa28e3685c6f361919745c43e3589",
+        "seed": 9140090,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/e1-blade"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-e2-mercy",
+      "cgId": "e2-mercy",
+      "title": "亭外无人",
+      "source": "A-E2-4",
+      "trigger": {
+        "endingId": "mercy"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/e2-mercy-scene.png",
+        "artifacts/ui-fix-3/cg-references/e2-mercy-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "冷雨中的荒野废亭，十五岁楚地少年裹着旧冬衣安静坐在柱脚，十根旧竹名简在膝上，一根歪着，破骨笛与接雨的碎陶罐底放在手边。亭外空无一人，芦苇与黎明淡光从远处进入。以全景和人物侧背影表现无人再催他说话的寂静，不显示血、伤口或死亡特写。戌参考外貌、旧麻衣与白疤保持一致。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-e2-mercy.webp",
+        "public/art/cg-e2-mercy.avif",
+        "public/art/cg-e2-mercy-thumb.webp",
+        "public/art/cg-e2-mercy-thumb.avif",
+        "resources/art-src/cgs/e2-mercy.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140001,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00001_.png",
+        "sha256": "244a68f8e3db3a26e828768e3eecf7778df935ce76c6d5f54ee7a2c63e280e33",
+        "seed": 9140001,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/e2-mercy"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-e3-leave",
+      "cgId": "e3-leave",
+      "title": "我叫戌",
+      "source": "A-E3-3",
+      "trigger": {
+        "endingId": "leave"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/e3-leave-scene.png",
+        "artifacts/ui-fix-3/cg-references/e3-leave-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "寿春护城河清晨，楚地少年穿普通旧巫衣站在灰白石岸，背影小而挺直，手腕的束绳只作远景暗示，绝不描绘痛苦或暴力。河上一只布鞋开口向上，接住一小片晨光，岸鸟掠过上方。远处登记的人与竹简虚化，焦点在少年抬起的头和真实河水；不是逃离庆功，不画热闹宫殿或胜利姿态。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-e3-leave.webp",
+        "public/art/cg-e3-leave.avif",
+        "public/art/cg-e3-leave-thumb.webp",
+        "public/art/cg-e3-leave-thumb.avif",
+        "resources/art-src/cgs/e3-leave.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140002,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00003_.png",
+        "sha256": "27ee145dd2782627364f654727255e8a806dedee4cf52978fea15f9eb14cc91f",
+        "seed": 9140002,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/e3-leave"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-e4-names",
+      "cgId": "e4-names",
+      "title": "没有说完的名字",
+      "source": "A-H-1",
+      "trigger": {
+        "endingId": "names"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/e4-names-scene.png",
+        "artifacts/ui-fix-3/cg-references/e4-names-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "宗庙西墙化入一条安静星河，暮色高台上三块拼合玉放在祭案，白衣楚地少年握着木鸟和卜骨，正走向河边低灯。蒙眼少女在船上侧头听脚步，为他把包袱挪开一个位置；老臣屈衡拄杖立在远处台阶。人物都以参考立绘为准，重点是留出的空位与微弱暖灯，不画文字显影。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-e4-names.webp",
+        "public/art/cg-e4-names.avif",
+        "public/art/cg-e4-names-thumb.webp",
+        "public/art/cg-e4-names-thumb.avif",
+        "resources/art-src/cgs/e4-names.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140003,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00004_.png",
+        "sha256": "419f36edc7d813d8ee0d34c59e5953ce50176ad8666bb42de5dee321376ddf3a",
+        "seed": 9140003,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/e4-names"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-e5-kunlun",
+      "cgId": "e5-kunlun",
+      "title": "两片夜之间",
+      "source": "B-13",
+      "trigger": {
+        "endingId": "kunlun"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/e5-kunlun-scene.png",
+        "artifacts/ui-fix-3/cg-references/e5-kunlun-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "无时的光河，两片深蓝星空之间流着宽河，水底的星光柔和照亮一块坐得下许多人的平石。楚地孩子在岸边休息：蒙眼少女循笛声侧头，独臂少女用唯一左手编绳，幼小男孩蹲着捞星，一旁女孩护着双耳陶罐，白衣少年静静坐下。用中远景避免密集面部，身体完整自然，缺臂和蒙眼设定严格保留。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-e5-kunlun.webp",
+        "public/art/cg-e5-kunlun.avif",
+        "public/art/cg-e5-kunlun-thumb.webp",
+        "public/art/cg-e5-kunlun-thumb.avif",
+        "resources/art-src/cgs/e5-kunlun.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140004,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00005_.png",
+        "sha256": "65825a7b34f8d7d4c3d1d51c851bf3ad1bc2869585544c04df799d0300c9f627",
+        "seed": 9140004,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/e5-kunlun"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-e6-home",
+      "cgId": "e6-home",
+      "title": "再添半碗",
+      "source": "终-5",
+      "trigger": {
+        "endingId": "home"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/e6-home-scene.png",
+        "artifacts/ui-fix-3/cg-references/e6-home-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "现代宜昌普通家庭夜晚厨房与餐桌，暖灯穿过排骨藕汤热气，母亲拿汤勺为十六岁蓝白校服男生再添半碗，父亲坐一旁剥蒜，低马尾校服女孩挑葱，桌边手机仅以模糊影像暗示家人通话，屏幕无文字。镜头平视略远，碗、手、蒸汽同一种暖。远处门缝内古图盒只留一点茶色纸边，不出现明确魔法。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-e6-home.webp",
+        "public/art/cg-e6-home.avif",
+        "public/art/cg-e6-home-thumb.webp",
+        "public/art/cg-e6-home-thumb.avif",
+        "resources/art-src/cgs/e6-home.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140005,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00016_.png",
+        "sha256": "722d60bc1faac33b766489f5eed3c5a986f10d991712c5634195f0df61a0eff8",
+        "seed": 9140095,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/e6-home"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s01-dream-boat",
+      "cgId": "s01-dream-boat",
+      "title": "船底的敲击",
+      "source": "0-1:3:0—0-1:4:0",
+      "trigger": {
+        "sceneId": "0-1",
+        "fromBeat": "0-1:3:0",
+        "toBeat": "0-1:4:0"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s01-dream-boat-scene.png",
+        "artifacts/ui-fix-3/cg-references/s01-dream-boat-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "第一人称贴近一条夜航旧木船，湿衣袖与一只小手攥紧船沿，船底积水映出一张遥远的青铜脸，芦苇擦过低低船灯。船板缝间的水影像许多伸来的手，但不画断肢、伤口或血，未知感来自水纹、倾斜构图与远处的鼓影。深蓝黑与一盏旧金，光从船底缓慢透入。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s01-dream-boat.webp",
+        "public/art/cg-s01-dream-boat.avif",
+        "public/art/cg-s01-dream-boat-thumb.webp",
+        "public/art/cg-s01-dream-boat-thumb.avif",
+        "resources/art-src/cgs/s01-dream-boat.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140006,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00007_.png",
+        "sha256": "2ec56e7f1778096daa0284c95841c9ac73b12bb57a64c1534c95244554e2d8cc",
+        "seed": 9140006,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s01-dream-boat"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s02-first-crossing",
+      "cgId": "s02-first-crossing",
+      "title": "河拐弯以前",
+      "source": "B-1:21:0—B-1:22:3",
+      "trigger": {
+        "sceneId": "B-1",
+        "fromBeat": "B-1:21:0",
+        "toBeat": "B-1:22:3"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s02-first-crossing-scene.png",
+        "artifacts/ui-fix-3/cg-references/s02-first-crossing-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "破晓渡口，鸟首旧木舟缓缓离岸。穿旧象牙白麻衣的十五岁少年扑在船尾，高举手臂向河岸挥；柳树旁的老妇阿媪夹着一只小陶罐，也举起手。河转弯前，两个人都没有放下。薄雾、低船灯、温灰蓝天光，中远景把河面距离作为画面核心，不画拥抱团圆。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s02-first-crossing.webp",
+        "public/art/cg-s02-first-crossing.avif",
+        "public/art/cg-s02-first-crossing-thumb.webp",
+        "public/art/cg-s02-first-crossing-thumb.avif",
+        "resources/art-src/cgs/s02-first-crossing.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140007,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00008_.png",
+        "sha256": "142863fd44075e171b9a2eefec545ac73f57f84546572b0b9d280183ea438c08",
+        "seed": 9140007,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s02-first-crossing"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s03-ritual",
+      "cgId": "s03-ritual",
+      "title": "也叫他们",
+      "source": "A-8:8:1—A-8:11:1",
+      "trigger": {
+        "sceneId": "A-8",
+        "fromBeat": "A-8:8:1",
+        "toBeat": "A-8:11:1"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s03-ritual-scene.png",
+        "artifacts/ui-fix-3/cg-references/s03-ritual-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "楚国宗庙大祭高台，瘦老臣屈衡跪在白衣少年旁，把一片旧名帛展开，祭案三玉在火光里微亮。台外老妇从人群中抬头，远处赤足的模糊人影从深处走来。火光压低、风突然安静，神秘来自空席和被认真叫到的名字，帛上仅抽象刻痕不能可读。老臣左手缺两指，不作恐怖特写。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s03-ritual.webp",
+        "public/art/cg-s03-ritual.avif",
+        "public/art/cg-s03-ritual-thumb.webp",
+        "public/art/cg-s03-ritual-thumb.avif",
+        "resources/art-src/cgs/s03-ritual.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140008,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00009_.png",
+        "sha256": "ad5d1caa297caf395ec43dd1e3947e022287ce9ba56f4be4173363e2adb3b7ff",
+        "seed": 9140008,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s03-ritual"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s04-old-names",
+      "cgId": "s04-old-names",
+      "title": "旧箱与断笛",
+      "source": "A-6a:3:0—A-6a:6:0",
+      "trigger": {
+        "sceneId": "A-6a",
+        "fromBeat": "A-6a:3:0",
+        "toBeat": "A-6a:6:0"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s04-old-names-scene.png",
+        "artifacts/ui-fix-3/cg-references/s04-old-names-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "古朴书房夜灯，一只旧木箱打开，十根有水渍的竹名简在案上摊开，旧断笛与一卷写到半途的新简在旁。六十多岁清瘦老臣低头，缺指左手搁在一根名简边，白衣少年站在对面安静等他开口。用手部、灯、木纹与两个人的空隙表达迟来的追问，不画任何可读字。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s04-old-names.webp",
+        "public/art/cg-s04-old-names.avif",
+        "public/art/cg-s04-old-names-thumb.webp",
+        "public/art/cg-s04-old-names-thumb.avif",
+        "resources/art-src/cgs/s04-old-names.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140009,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00010_.png",
+        "sha256": "2662635cb83f3f3269d2a32c2af0ad4f190d78035f00626a119537821181fe62",
+        "seed": 9140009,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s04-old-names"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s05-mi-flute",
+      "cgId": "s05-mi-flute",
+      "title": "没吹完的一声笛",
+      "source": "B-13:8:2",
+      "trigger": {
+        "beatIds": [
+          "B-13:8:2"
+        ]
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s05-mi-flute-scene.png",
+        "artifacts/ui-fix-3/cg-references/s05-mi-flute-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "芈在光河岸上试吹一支缠过布的破骨笛。十四岁楚地少年黑发略蓬松、小发束，旧米白麻衣，嘴唇自然贴近笛口，笑意克制而认真；一群小乌鸦从两片星空之间落下，停在肩头和石边，仿佛愿意为每个漏音多等一会儿。蒙眼少女在旁伸手接他。没有血、舌头或创伤展示，身份以芈既有参考立绘为准。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s05-mi-flute.webp",
+        "public/art/cg-s05-mi-flute.avif",
+        "public/art/cg-s05-mi-flute-thumb.webp",
+        "public/art/cg-s05-mi-flute-thumb.avif",
+        "resources/art-src/cgs/s05-mi-flute.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140010,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00011_.png",
+        "sha256": "1cec9134402930a8f38f2610a2c7cb79c4bbe90b3a2d0fd6a41f6822625fcd18",
+        "seed": 9140010,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s05-mi-flute"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s06-snow-hands",
+      "cgId": "s06-snow-hands",
+      "title": "不松",
+      "source": "B-12-2:3:1—B-12-2:9:7",
+      "trigger": {
+        "sceneId": "B-12-2",
+        "fromBeat": "B-12-2:3:1",
+        "toBeat": "B-12-2:9:7"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s06-snow-hands-scene.png",
+        "artifacts/ui-fix-3/cg-references/s06-snow-hands-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "盐客旧洞雪夜，最后一段木头仅有一点暖红，三个孩子裹在同一件旧冬衣下依靠坐着：白衣少年居中，蒙眼少女与握破笛的少年从两侧靠进来，六只手轮着藏进尚暖处。洞外细雪和黎明淡光，景深柔和，重点是衣襟里没有松开的手。安静、有尊严，不显示死亡面孔，不煽情张口哭喊。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s06-snow-hands.webp",
+        "public/art/cg-s06-snow-hands.avif",
+        "public/art/cg-s06-snow-hands-thumb.webp",
+        "public/art/cg-s06-snow-hands-thumb.avif",
+        "resources/art-src/cgs/s06-snow-hands.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140011,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00012_.png",
+        "sha256": "b3e8052c781f681d219b1c2e66a0b5bb60069fdaa91dad68a5562b2e9b363198",
+        "seed": 9140011,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s06-snow-hands"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s07-light-river",
+      "cgId": "s07-light-river",
+      "title": "把旅程留下",
+      "source": "B-13:3:1—B-13:3:2",
+      "trigger": {
+        "sceneId": "B-13",
+        "fromBeat": "B-13:3:1",
+        "toBeat": "B-13:3:3"
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s07-light-river-scene.png",
+        "artifacts/ui-fix-3/cg-references/s07-light-river-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "视角从平凉的河岸石面抬起，脚下与头顶各一片星夜，宽河横在两片夜之间，光从水底慢慢长上来。一块平石坐得下许多人，幼小的沅在岸边把脚伸进水又拿出来，好奇看水从趾缝漏去；白衣少年刚坐起，只留侧背影。星光是水与纸上的轻光，不是霓虹或科幻光束。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s07-light-river.webp",
+        "public/art/cg-s07-light-river.avif",
+        "public/art/cg-s07-light-river-thumb.webp",
+        "public/art/cg-s07-light-river-thumb.avif",
+        "resources/art-src/cgs/s07-light-river.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140012,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00013_.png",
+        "sha256": "98a1c7cf51c7e8a6427fa399b64765acfe1fc5e0368baf88eb7a9cd7d2be456d",
+        "seed": 9140012,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s07-light-river"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "cg-s08-farewell",
+      "cgId": "s08-farewell",
+      "title": "掌心的两下",
+      "source": "终-1:22:2 / 终-1:27:1",
+      "trigger": {
+        "beatIds": [
+          "终-1:22:2",
+          "终-1:27:1"
+        ]
+      },
+      "references": [
+        "artifacts/ui-fix-3/cg-references/s08-farewell-scene.png",
+        "artifacts/ui-fix-3/cg-references/s08-farewell-cast.png"
+      ],
+      "workflow": "multiref or txt2img after reference review",
+      "state": "exported",
+      "prompt": "光河岸的近景，芈将破骨笛放低，伸手轻敲沈辞掌心两下，然后慢慢张开。两位少年的手是焦点；白衣戌在不远处蹲到石旁，为缺翅的小木鸟找垫石，蒙眼少女侧耳，其他孩子轮廓安静。现代校服沈辞与古代白衣戌此刻是两个人，不可画成同一人。没有文字或夸张哭泣，告别靠光和手的停顿。16:9视觉小说叙事CG，精致中国手绘厚涂与细腻水墨融合，可信人物结构、克制的电影构图和清晰手部；低饱和青黛、旧金、灰蓝、少量暖琥珀光，真实纸张与柔软笔触。叙事情绪细腻，不摆拍。下方三分之一保留暗色低细节空间供正文，右侧四分之一避免脸部主角以便竖排标题。无任何可读文字、字母、标志、签名、水印、边框，无夸张光效，无血腥创口。",
+      "outputs": [
+        "public/art/cg-s08-farewell.webp",
+        "public/art/cg-s08-farewell.avif",
+        "public/art/cg-s08-farewell-thumb.webp",
+        "public/art/cg-s08-farewell-thumb.avif",
+        "resources/art-src/cgs/s08-farewell.png"
+      ],
+      "registered": true,
+      "planningSeed": 9140013,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/multiref_00014_.png",
+        "sha256": "1fc530e56f506ec01fe5410e3d11cda7e76c05df3d1ab02969137343aa1ac4dd",
+        "seed": 9140013,
+        "workflow": "multiref",
+        "width": 1376,
+        "height": 768,
+        "metadataRecord": "source-manifest.json#cgs/s08-farewell"
+      },
+      "missingOutputs": []
+    }
+  ],
+  "extras": [
+    {
+      "key": "portrait-mother",
+      "character": "mother",
+      "state": "exported",
+      "workflow": "txt2img",
+      "prompt": "现代中国普通母亲，四十岁上下为美术制作取值（原文未规定年龄），黑发简单扎起，穿家常长袖与旧围裙，刚端起一碗早餐，神情温暖而有生活劳累感；不要奢华装扮。原文依据：0-2立绘明确围裙；0-8搓洗校服；终-5拿汤勺。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "outputs": [
+        "public/art/portrait-mother.webp",
+        "public/art/portrait-mother.avif",
+        "public/art/portrait-mother-m.webp",
+        "public/art/portrait-mother-m.avif",
+        "public/art/portrait-mother-face.webp",
+        "resources/art-src/extras/portrait-mother.png"
+      ],
+      "registered": true,
+      "planningSeed": 9150000,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00043_.png",
+        "sha256": "69713907c60e123198bbe8d29bf487e3747f6318ee1911de4c6b7a608eb84f87",
+        "seed": 9150000,
+        "workflow": "txt2img",
+        "width": 768,
+        "height": 1152,
+        "metadataRecord": "source-manifest.json#extras/mother"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-gouzi",
+      "character": "gouzi",
+      "state": "exported",
+      "workflow": "txt2img",
+      "prompt": "战国楚地巫村少年，身材略高，晒过的皮肤，束起的乱黑发，朴素灰褐麻衣，手扶一支鱼叉，嘴快而带一点逞强的神情；年龄十五岁上下为制作取值。原文依据：1-3河滩少年群、扛鱼叉；1-7老觋叫狗子掌灯。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "outputs": [
+        "public/art/portrait-gouzi.webp",
+        "public/art/portrait-gouzi.avif",
+        "public/art/portrait-gouzi-m.webp",
+        "public/art/portrait-gouzi-m.avif",
+        "public/art/portrait-gouzi-face.webp",
+        "resources/art-src/extras/portrait-gouzi.png"
+      ],
+      "registered": true,
+      "planningSeed": 9150001,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00044_.png",
+        "sha256": "6dd493c85f3066ab66ad264697d9d28c868f591cf59b130b01466365b1606fbe",
+        "seed": 9150001,
+        "workflow": "txt2img",
+        "width": 768,
+        "height": 1152,
+        "metadataRecord": "source-manifest.json#extras/gouzi"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-zhou",
+      "character": "zhou",
+      "state": "exported",
+      "workflow": "txt2img",
+      "prompt": "现代中国高中女老师，三十多岁为制作取值，素色衬衫、深蓝开衫与长裤，手持课本和一小截粉笔，清醒而耐心的目光。原文依据：0-4课堂敲书；0-9讲楚地巫祭、在黑板敲归字，叙述使用她。不要在画面写字。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "outputs": [
+        "public/art/portrait-zhou.webp",
+        "public/art/portrait-zhou.avif",
+        "public/art/portrait-zhou-m.webp",
+        "public/art/portrait-zhou-m.avif",
+        "public/art/portrait-zhou-face.webp",
+        "resources/art-src/extras/portrait-zhou.png"
+      ],
+      "registered": true,
+      "planningSeed": 9150002,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00045_.png",
+        "sha256": "9748e952f61a50b98ef37a183cdcc321d29cd415289986fa1684cb59a66038a4",
+        "seed": 9150002,
+        "workflow": "txt2img",
+        "width": 768,
+        "height": 1152,
+        "metadataRecord": "source-manifest.json#extras/zhou"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-daoist",
+      "character": "daoist",
+      "state": "exported",
+      "workflow": "txt2img",
+      "prompt": "现代中国校门外的邋遢年长男道士，能看出老人气质，略乱发髻、短胡茬，穿旧灰布道袍，下摆沾少许湿泥，一只手拿几颗旧螺丝，眼神清醒而随意，不神化、不加法术。原文依据：0-6低头收螺丝、0-8道袍下摆湿泥。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "outputs": [
+        "public/art/portrait-daoist.webp",
+        "public/art/portrait-daoist.avif",
+        "public/art/portrait-daoist-m.webp",
+        "public/art/portrait-daoist-m.avif",
+        "public/art/portrait-daoist-face.webp",
+        "resources/art-src/extras/portrait-daoist.png"
+      ],
+      "registered": true,
+      "planningSeed": 9150003,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00046_.png",
+        "sha256": "e9374bd25a7943e93e87b9b51acdcfaa493581fd890d94b01d2032304b5abce8",
+        "seed": 9150003,
+        "workflow": "txt2img",
+        "width": 768,
+        "height": 1152,
+        "metadataRecord": "source-manifest.json#extras/daoist"
+      },
+      "missingOutputs": []
+    },
+    {
+      "key": "portrait-aheng",
+      "character": "aheng",
+      "state": "exported",
+      "workflow": "txt2img",
+      "prompt": "战国楚地成年女采药人，背着比肩还宽的竹药篓，裤腿沾泥，腰边系一小串红果，旧长袖袖口被荆条拉出细线；头发实用扎起，笑意爽朗，身体有力量感。年龄三十岁上下为制作取值。原文依据：B-8:9:0—:11:1，女人、宽篓、泥裤腿、红果、荆条袖口。不要神仙服饰，不加兽耳。竖版2:3视觉小说人物立绘，人物居中，膝上半身，头顶、手和道具完整。与现有立绘一致的中国手绘动画融合厚涂水彩风，真实可信结构、低饱和配色、左上方柔光。单个人物，服装完整。背景完全均匀鲜亮绿色#00FF00，禁止渐变、地面与投影，绿色不反光到人物。无文字、logo、水印、边框。",
+      "outputs": [
+        "public/art/portrait-aheng.webp",
+        "public/art/portrait-aheng.avif",
+        "public/art/portrait-aheng-m.webp",
+        "public/art/portrait-aheng-m.avif",
+        "public/art/portrait-aheng-face.webp",
+        "resources/art-src/extras/portrait-aheng.png"
+      ],
+      "registered": true,
+      "planningSeed": 9150004,
+      "generation": {
+        "source": "D:/Comfy-Desktop/ComfyUI-Shared/output/Qwen2.1/Codex/txt2img_00047_.png",
+        "sha256": "7c934f7e3f3d9d73b5fee263d4990ce3b81032a1105d46cba8827b4c438609eb",
+        "seed": 9150004,
+        "workflow": "txt2img",
+        "width": 768,
+        "height": 1152,
+        "metadataRecord": "source-manifest.json#extras/aheng"
+      },
+      "missingOutputs": []
+    }
+  ]
+}

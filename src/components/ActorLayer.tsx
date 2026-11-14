@@ -3,8 +3,8 @@ import type { CSSProperties } from 'react';
 import { actorForBeat, actorInCast } from '../actors';
 import type { StageActor } from '../actors';
 import { ACTOR_LIGHT } from '../data/actorLight';
-import { portraitAsset } from '../data/world';
-import { portraitName } from '../assets';
+import { asset } from '../assets';
+import { portraitNameFor } from '../data/expressions';
 import { ArtImage } from './ArtImage';
 import { isDecoded, preloadImage } from '../preload';
 import type { Beat, Scene } from '../types';
@@ -16,8 +16,14 @@ function ActorFigure({ layer, background, onReady, onError }: {
   layer: Layer; background: string; onReady: (id: number, delayed: boolean) => void; onError: (id: number) => void;
 }) {
   const { actor, id } = layer;
-  const url = portraitAsset(actor.character.key);
+  const defaultName = portraitNameFor(actor.character.key);
+  const desiredName = portraitNameFor(actor.character.key, actor.expression);
+  const url = asset(defaultName);
+  const desiredUrl = asset(desiredName);
   const figure = useRef<HTMLDivElement>(null);
+  const currentPortrait = useRef(defaultName);
+  const request = useRef(0);
+  const [portrait, setPortrait] = useState({ current: defaultName, outgoing: '' });
   useLayoutEffect(() => {
     let cancelled = false;
     const started = performance.now();
@@ -31,12 +37,38 @@ function ActorFigure({ layer, background, onReady, onError }: {
     else void preloadImage(url).then(() => { if (!cancelled) ready(); }, () => { if (!cancelled) onError(id); });
     return () => { cancelled = true; };
   }, [id, url, onReady, onError]);
+  useEffect(() => {
+    const generation = ++request.current;
+    if (currentPortrait.current === desiredName) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const commit = (name: string) => {
+      if (generation !== request.current) return;
+      if (currentPortrait.current === name) { setPortrait({ current: name, outgoing: '' }); return; }
+      const outgoing = currentPortrait.current;
+      currentPortrait.current = name;
+      setPortrait({ current: name, outgoing });
+      timer = setTimeout(() => {
+        if (generation === request.current) setPortrait({ current: name, outgoing: '' });
+      }, layer.instant ? 0 : 160);
+    };
+    void preloadImage(desiredUrl).then(() => commit(desiredName), () => {
+      if (desiredName === defaultName) { onError(id); return; }
+      const fallbackUrl = asset(defaultName);
+      void preloadImage(fallbackUrl).then(() => commit(defaultName), () => onError(id));
+    });
+    return () => {
+      ++request.current;
+      if (timer) clearTimeout(timer);
+    };
+  }, [desiredName, desiredUrl, defaultName, id, onError]);
   const duration = layer.instant ? '0ms' : layer.returning ? '180ms' : layer.phase === 'exit' || layer.cross ? '220ms' : layer.idle ? '180ms' : '400ms';
   const light = ACTOR_LIGHT[background];
   return <div ref={figure} className={`actor actor--${actor.character.key} actor--${layer.phase} ${layer.idle ? 'actor--idle' : 'actor--speaking'} ${layer.cross ? 'actor--cross' : ''} ${light ? `actor--${light}` : ''}`}
     data-mount-id={id} data-actor-state={layer.phase} data-actor-label={actor.label}
-    style={{ '--actor-tint': actor.character.color, '--actor-duration': duration } as CSSProperties} aria-hidden="true">
-    <div className="actor-glow" /><ArtImage name={portraitName(actor.character.key)} alt="" decoding="async" />
+    style={{ '--actor-tint': actor.character.color, '--actor-duration': duration, '--expression-duration': layer.instant ? '0ms' : '150ms' } as CSSProperties} aria-hidden="true">
+    <div className="actor-glow" />
+    {portrait.outgoing && <ArtImage className="actor-portrait actor-portrait--outgoing" name={portrait.outgoing} alt="" decoding="async" />}
+    <ArtImage className={`actor-portrait ${portrait.outgoing ? 'actor-portrait--incoming' : ''}`} name={portrait.current} alt="" decoding="async" />
     <span className="actor-vertical-name">{actor.label}</span>
   </div>;
 }

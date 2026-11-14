@@ -5,6 +5,10 @@ import { chromium } from 'playwright';
 import { advance, choose, completeEnding, continueEnding, currentBeat, newGame, newProfile, recordProgress } from '../src/engine.ts';
 import { BACKGROUNDS, CHARACTERS } from '../src/data/world.ts';
 import { loadStory } from '../src/story.ts';
+import { CGS, cgForBeat } from '../src/data/cgs.ts';
+import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
+import { AVAILABLE_EXTRAS } from '../src/data/extras.ts';
+import { portraitName } from '../src/assets.ts';
 
 await loadStory();
 
@@ -17,6 +21,7 @@ await mkdir(output, { recursive: true });
 const errors = [];
 const browser = await chromium.launch({ headless: true });
 const contexts = [];
+const imageManifest = JSON.parse(await readFile(new URL('../src/data/art-manifest.json', import.meta.url), 'utf8'));
 
 function walk(until, selections, state = newGame(newProfile()), profile = newProfile()) {
   for (let step = 0; step < 3000; step++) {
@@ -51,10 +56,12 @@ async function open(fixture, viewport = { width: 1440, height: 900 }) {
   await page.goto(gameUrl);
   await page.evaluate(() => document.fonts.ready);
   if (fixture) await page.getByRole('button', { name: /^续梦/ }).click();
-  const background = fixture ? currentBeat(fixture.state, fixture.profile).background : 'hero';
+  const beat = fixture ? currentBeat(fixture.state, fixture.profile) : null;
+  const background = beat ? cgForBeat(beat, fixture.state.sceneId)?.file || beat.background : 'hero';
   await page.waitForFunction(name => {
     const stage = document.querySelector('.scene-image--current');
-    return stage?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__[name])
+    const assets = globalThis.__HETEROTOPIA_ORIGINALS__?.[name] ?? globalThis.__HETEROTOPIA_ASSETS__[name];
+    return stage?.style.backgroundImage.includes(assets)
       && Number(getComputedStyle(stage).opacity) > 0.99;
   }, background);
   await page.evaluate(() => Promise.all(document.getAnimations().filter(animation => animation.effect?.getTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {}))));
@@ -68,6 +75,9 @@ try {
     ...Object.keys(BACKGROUNDS).flatMap(name => [name, `${name}-thumb`]),
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
     ...CHARACTERS.map(c => `portrait-${c.key}-face`),
+    ...Object.entries(AVAILABLE).flatMap(([key, states]) => states.map(state => portraitNameFor(key, state))),
+    ...[...AVAILABLE_EXTRAS].map(portraitName),
+    ...CGS.filter(cg => cg.file).flatMap(cg => [cg.file, ...(cg.thumbnail ? [cg.thumbnail] : [])]),
   ];
   const integrity = await page.evaluate(async expectedNames => {
     const assets = globalThis.__HETEROTOPIA_ASSETS__;
@@ -90,6 +100,32 @@ try {
   assert.equal(integrity.fonts.length, 6);
   assert.ok(integrity.fonts.some(font => font.family === 'StoryHand'));
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
+  const originalIntegrity = await page.evaluate(async expectedNames => {
+    const originals = globalThis.__HETEROTOPIA_ORIGINALS__ ?? {};
+    const missingOriginals = expectedNames.filter(name => !originals[name]?.startsWith('data:image/'));
+    const brokenOriginals = [];
+    for (const name of expectedNames) {
+      const image = new Image(); image.src = originals[name] ?? '';
+      try { await image.decode(); } catch { brokenOriginals.push(name); }
+    }
+    return { missingOriginals, brokenOriginals, originalAssets: Object.keys(originals).length };
+  }, Object.keys(imageManifest.originals ?? {}));
+  assert.deepEqual(originalIntegrity.missingOriginals, []);
+  assert.deepEqual(originalIntegrity.brokenOriginals, []);
+  // Both quality modes must remain functional with networking disabled,
+  // including the stored setting after reopening the single HTML file.
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  const quality = page.getByRole('switch', { name: '轻量模式', exact: true });
+  assert.equal(await quality.getAttribute('aria-checked'), 'false');
+  await quality.click();
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
+  await page.reload();
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  assert.equal(await quality.getAttribute('aria-checked'), 'true');
+  await quality.click();
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ORIGINALS__.hero));
+  await page.getByRole('button', { name: '关闭', exact: true }).click();
   const expectedAudio = JSON.parse(await readFile(new URL('../public/audio/manifest.json', import.meta.url), 'utf8')).files;
   const audioIntegrity = await page.evaluate(async expectedFiles => {
     const assets = globalThis.__HETEROTOPIA_AUDIO__ ?? {};
@@ -182,8 +218,8 @@ try {
   await endingPage.getByRole('button', { name: '循光归来' }).click();
   assert.equal(await endingPage.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).sceneId), '终-1');
   assert.deepEqual(errors, []);
-  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...audioIntegrity, errors }, null, 2));
-  console.log('Offline checks passed: embedded art, fonts and all 51 decoded audio files; saves and reload, export/import, corrected portraits, mobile choices, ending and final return. No network requests.');
+  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, ...audioIntegrity, errors }, null, 2));
+  console.log('Offline checks passed: original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
 } catch (error) {
   await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), errors, failure: String(error) }, null, 2));
   if (errors.length) console.error(errors);

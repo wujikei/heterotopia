@@ -994,6 +994,89 @@
   text-align: right;
 }
 
+/* 绘卷的图面承接点击和横向手势，控制层不截断图像。 */
+.gallery-art-toggle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+}
+.gallery-art-toggle:focus-visible {
+  border-radius: 0;
+  box-shadow: inset 0 0 0 2px var(--brass);
+}
+.gallery-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: auto;
+  min-width: 74px;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+.gallery-arrows .icon-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.gallery-gesture-hint {
+  display: block;
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #95a79c;
+}
+.gallery-tabs {
+  margin-bottom: 10px;
+}
+.gallery-viewer--clean {
+  background: #020a0d;
+}
+.gallery-viewer--clean .gallery-caption,
+.gallery-viewer--clean .gallery-arrows,
+.gallery-viewer--clean .gallery-back {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.modal-backdrop:has(.gallery-viewer--clean) {
+  padding: 0;
+}
+.modal-frame:has(.gallery-viewer--clean) {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-height: none;
+  max-width: none;
+}
+.modal:has(.gallery-viewer--clean) {
+  position: absolute;
+  inset: 0;
+  max-height: none;
+  max-width: none;
+  background: #020a0d;
+  box-shadow: none;
+  clip-path: none;
+  animation: none;
+}
+.modal:has(.gallery-viewer--clean) > .modal-header,
+.modal-frame:has(.gallery-viewer--clean) > .scroll-rod {
+  display: none;
+}
+.modal:has(.gallery-viewer--clean) > .gallery-viewer {
+  animation: none;
+}
+.gallery-viewer--clean .gallery-art-toggle:focus-visible {
+  box-shadow: none;
+}
+
 /* ---------- 手机 ---------- */
 @media (max-width: 760px) {
   .home-footer .about-link {
@@ -1132,23 +1215,42 @@
   }
   .character-scroll {
     overflow: visible;
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(108px, 0.8fr) minmax(0, 1.2fr);
+    align-items: start;
+    gap: 14px;
     padding: 18px 16px 24px;
   }
   .character-portrait-frame {
-    height: 44dvh;
-    min-height: 260px;
+    height: min(32dvh, 260px);
+    min-height: 0;
+  }
+  .character-biography {
+    align-self: start;
+    padding-top: 3px;
+  }
+  .character-biography > .eyebrow {
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.06em;
   }
   .character-biography h3 {
-    font-size: 32px;
-    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 5px 9px;
+    font-size: clamp(25px, 7vw, 32px);
+    margin-bottom: 10px;
+    letter-spacing: 0.12em;
+  }
+  .character-biography h3 small {
+    font-size: 12px;
   }
   .character-description {
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 1.85;
   }
   .character-biography blockquote {
-    font-size: 17px;
+    margin-top: 16px;
+    padding-left: 10px;
+    font-size: 15px;
   }
 
   .journal-content {

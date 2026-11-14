@@ -1,13 +1,22 @@
-import { characterFor } from './data/world';
+import { characterFor, CHARACTERS } from './data/world';
+import { extraFor } from './data/extras';
+import { expressionForBeat, type Expression } from './data/expressions';
+import { presenceForBeat } from './data/presence';
 import type { Beat, Character, Scene } from './types';
 
-export type StageActor = { character: Character; label: string; castKey: string };
+export type StageActor = { character: Character; label: string; castKey: string; expression: Expression };
 
 /** Presentation only: the speaker and the story state stay untouched. */
 export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActor | undefined {
   if (beat.kind !== 'text') return;
   let character = characterFor(beat.speaker);
-  if (!character) return;
+  const extra = character ? undefined : extraFor(beat.speaker);
+  if (!character && extra) character = extra;
+  if (!character) {
+    character = CHARACTERS.find(item => presenceForBeat(beat.id).includes(item.key));
+    if (!character) return;
+    return { character, label: character.name, castKey: character.key, expression: 'default' };
+  }
   const castKey = character.key;
   let borrowed = beat.speaker.includes('戌（沈辞）');
   if (character.key === 'shen' && (['royal', 'kunlun', 'common'].includes(scene.route) || scene.id === '终-1')) {
@@ -17,7 +26,7 @@ export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActo
       borrowed = true;
     }
   }
-  return { character, label: borrowed ? '戌（沈辞）' : character.name, castKey };
+  return { character, label: borrowed ? '戌（沈辞）' : character.name, castKey, expression: expressionForBeat(beat) };
 }
 
 export function actorInCast(actor: StageActor, cast: string[]): boolean {

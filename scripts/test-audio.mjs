@@ -169,7 +169,7 @@ try {
     await page.waitForFunction(paused => Number(document.querySelector('progress[aria-label="试听进度"]')?.getAttribute('value')) > paused, paused, { timeout: 5000 });
   }
   const downloading = page.waitForEvent('download');
-  await page.getByRole('link', { name: '收藏此曲' }).click();
+  await page.getByRole('link', { name: '下载此曲' }).click();
   const download = await downloading;
   assert.ok(download.suggestedFilename().endsWith('循水归来.mp3'));
   assert.equal(await download.failure(), null);

@@ -1,0 +1,27 @@
+.sound-unlock-hint {
+  display: block;
+  margin-top: 4px;
+  color: var(--gold, #c1aa7b);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: .12em;
+}
+
+.auto-reading-countdown {
+  position: absolute;
+  right: clamp(28px, 7vw, 120px);
+  bottom: 10px;
+  width: clamp(80px, 18vw, 180px);
+  height: 1px;
+  pointer-events: none;
+  background: rgb(194 166 109 / 48%);
+  transform-origin: right;
+  animation: auto-reading-countdown linear forwards;
+}
+
+@keyframes auto-reading-countdown {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+.reduced-motion .auto-reading-countdown { display: none; }

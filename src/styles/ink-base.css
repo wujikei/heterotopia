@@ -75,13 +75,15 @@ button:hover:not(:disabled) {
 .item-seal,
 .about-seal,
 .ending-seal {
-  --seal-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1 1 1 1 1 1 0 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23r)'/%3E%3C/svg%3E");
+  --seal-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1 1 1 1 1 1 0 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23r)'/%3E%3Crect x='6' y='6' width='108' height='108' fill='white'/%3E%3C/svg%3E");
   background-color: var(--cinnabar);
   color: #f6e6cf;
   -webkit-mask-image: var(--seal-edge);
   mask-image: var(--seal-edge);
-  -webkit-mask-size: 90px;
-  mask-size: 90px;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 /* ---------- 按钮三级：灯（主）· 纸框（次）· 墨字（文字） ---------- */

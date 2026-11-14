@@ -30,9 +30,9 @@
 
 ## 美术、声音与授权
 
-主视觉、场景与人物由本机 ComfyUI / Qwen-Image 2.1 制作。人物采用透明背景 WebP；完整提示词与任务记录见 `art-prompts.json`。11 首器乐配乐由本机 ComfyUI / ACE-Step 1.5 Turbo 生成，提示词、种子与任务记录见 `audio-prompts.json`。环境声与音效由本作程序化声音设计制作，源码见 `scripts/produce_audio.py`；没有使用第三方声音采样或角色配音。
+主视觉、场景、人物表情差分与叙事 CG 由本机 ComfyUI / Qwen-Image 2.1 制作；人物采用透明背景 WebP。生成依据、来源元数据、交付和表情覆盖记录见 `docs/art/generation-plan.json`、`docs/art/source-manifest.json`、`docs/art/delivery.md`、`docs/art/expression-usage.md` 与 `art-prompts.json`。11 首器乐配乐由本机 ComfyUI / ACE-Step 1.5 Turbo 生成，提示词、种子与任务记录见 `audio-prompts.json`。环境声与音效由本作程序化声音设计制作，源码见 `scripts/produce_audio.py`；没有使用第三方声音采样或角色配音。
 
-网站优先使用 AVIF，并提供 WebP 回退；手机立绘使用 640×960 版本。原始背景、旧立绘和字体母版保存在 `resources/`，不随网站发布。`npm run art:compress` 用 Pillow 重新编码现有画面；`npm run fonts:prepare` 用 fontTools 从字形相同的母版生成互不重叠的首页、场景标题与正文字体。两种命令仅在修改对应资源时执行，CI 使用已提交的编码产物。
+背景默认呈现与原 PNG 像素逐点相同的无损 WebP 原画；在“阅读设置”开启“轻量模式”后使用 AVIF/WebP 压缩图。原画随网站提供，并在实际选择时才下载和缓存；安装站点缓存不会预先拉取整套原画。人物立绘与表情差分同时提供桌面版和 640×960 移动版。离线单文件会内嵌原画和压缩图，因此体积明显大于仅含轻量资源的版本。`npm run art:compress` 用 Pillow 从已登记的原画生成轻量变体，`npm run art:originals` 将原画转为像素完全一致的无损 WebP 并更新清单；`npm run fonts:prepare` 用 fontTools 从字形相同的母版生成互不重叠的首页、场景标题与正文字体。这些命令仅在修改对应资源时执行，CI 使用已提交的编码产物。
 
 网站使用 44.1 kHz 立体声 MP3，配乐为 192 kbps，目标约 -18 LUFS；技术数据与来源见 `public/audio/manifest.json`。游玩和重听均不需要启动 ComfyUI。音频按场景加载，解码缓存设有容量上限，避免一次加载整张原声。
 
@@ -48,7 +48,7 @@
 
 `test:sprites` 默认在本机 Chromium 检查 250ms 人物恢复、300ms 缓存换人门限。共享 CI 设置 `VN_TEST_TIMINGS=record` 记录实际帧时，并继续检查过渡时长和全部功能，避免共享机器负载影响验收。
 
-`npm run assets:check` 审计动态和静态资源引用；`npm run test:assets` 检查手机图、透明边缘、缺失 AVIF 的 WebP 回退及剧情下载失败。普通浏览器回归阻止 Service Worker，独立的 `npm run test:cache` 用真实 `/heterotopia/` 子路径与临时持久化浏览器，验证 HTTP 缓存过期后的重开、断网续读、音频 Range、版本更新和紧急注销。
+`npm run assets:check` 审计动态和静态资源引用、原画、表情、配角和 CG；`npm run test:assets` 检查手机图、透明边缘、缺失 AVIF 的 WebP 回退及剧情下载失败。`npm run test:ui-polish` 检查人物志、书签、回看、绘卷沉浸浏览与六个结局的桌面/手机排版；可用 `VN_TEST_BROWSER=firefox` 或 `webkit` 重复检查。普通浏览器回归阻止 Service Worker，独立的 `npm run test:cache` 用真实 `/heterotopia/` 子路径与临时持久化浏览器，验证 HTTP 缓存过期后的重开、断网续读、音频 Range、版本更新和紧急注销。
 
 生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查全部内嵌美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
 
