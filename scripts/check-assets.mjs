@@ -5,11 +5,13 @@ import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
 import { AVAILABLE_EXTRAS } from '../src/data/extras.ts';
 import { CGS } from '../src/data/cgs.ts';
 import { ACTOR_VARIANTS, actorPortraitName } from '../src/data/actorVariants.ts';
+import { RELIC_ART } from '../src/data/relics.ts';
 
 const root = new URL('../', import.meta.url);
 const imageManifest = JSON.parse(await readFile(new URL('src/data/art-manifest.json', root), 'utf8'));
 const audio = JSON.parse(await readFile(new URL('public/audio/manifest.json', root), 'utf8'));
 const requiredArt = new Set([
+  ...RELIC_ART.map(name => `${name}.webp`),
   ...Object.keys(BACKGROUNDS).flatMap(name => [`${name}.webp`, `${name}-thumb.webp`]),
   ...CHARACTERS.flatMap(character => [`${portraitName(character.key)}.webp`, `portrait-${character.key}-face.webp`]),
   ...imageManifest.avif.map(name => `${name}.avif`),

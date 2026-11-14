@@ -1,0 +1,405 @@
+{
+  "sources": [
+    {
+      "id": "jade",
+      "source": "resources/art-src/props/generated/jade.png",
+      "sha256": "17a2acdff9a8b5c73cd0faa8dce9765915711e72148567b11ae2a65e0b33f8ca",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "bone",
+      "source": "resources/art-src/props/generated/bone.png",
+      "sha256": "4c118986bde8c53a05d4d8800a924fdde82d9c440214affc8205f84b8958616f",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "birds",
+      "source": "resources/art-src/props/generated/birds.png",
+      "sha256": "49db29589c4f89a58f79a8c607639e7abbbdfd66f3e0b4345bbb34bba4542553",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "map",
+      "source": "resources/art-src/props/generated/map.png",
+      "sha256": "e52590e8f5a1f7f968b6434c12d0a88c4b6217cd8333da4de9836824e04c8aa4",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "flute-old",
+      "source": "resources/art-src/props/generated/flute-old.png",
+      "sha256": "bf8bf53652ebf142cd2e1329b59dc95d287e8435cb07ed362c68bc9d74eb49f2",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "flute-mi",
+      "source": "resources/art-src/props/generated/flute-mi.png",
+      "sha256": "602fa07371c6c4edc69b44d82ba58416af3f5348d406ff83815527588a7ca015",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "bamboo-slip",
+      "source": "resources/art-src/props/generated/bamboo-slip.png",
+      "sha256": "a826c03b5c3c6c89a2f6546c9ff74a0d713926d68664e9cea96d9e23b7378743",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "flute-mi-broken",
+      "source": "resources/art-src/props/generated/flute-mi-broken.png",
+      "sha256": "b88e73367ff1262230602f2d105c0b07bc19d5b36488f453990d86d656f7fab4",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    }
+  ],
+  "processing": "scripts/process-relics.py",
+  "jadeCuts": "tail x < 350 + .10*(y-512) -3; head x > 730 - .10*(y-512) +3; body between; 6px saw gaps. Fragments crop and center; joined retains original coordinates. Celadon edge spill is clamped within 3px of alpha edges, leaving interior pigments unchanged.",
+  "names": "10 copies of one generated bamboo master with varied wear/rotation. Only 衡 is typeset in shipped OFL Noto Serif SC; a separate horizontal stroke is at its side. Other names remain illegible incisions.",
+  "boneLight": "The incidental generated center fissure is locally retouched (52px-wide mask; nearby grain sampled at horizontal offsets -35 and +55, excluding transparent pixels; OpenCV NORMAL_CLONE gradient blend); two authored branches replace it. The exact branch vertices are also used by the royal/Kunlun gold overlay in RelicStudy.tsx. Silhouette, alpha, polished edges and surrounding pigment are preserved.",
+  "rejected": [
+    {
+      "source": "resources/art-src/references/art-direction-3/birds-rejected.png",
+      "reason": "Near wing was intact; feet too lifelike. Replaced with edit_00028_.png."
+    }
+  ],
+  "boneCracks": {
+    "royal": [
+      [
+        515,
+        573
+      ],
+      [
+        490,
+        533
+      ],
+      [
+        466,
+        506
+      ],
+      [
+        474,
+        480
+      ],
+      [
+        440,
+        444
+      ],
+      [
+        432,
+        411
+      ],
+      [
+        403,
+        390
+      ]
+    ],
+    "kunlun": [
+      [
+        515,
+        573
+      ],
+      [
+        548,
+        608
+      ],
+      [
+        540,
+        641
+      ],
+      [
+        565,
+        675
+      ],
+      [
+        550,
+        715
+      ],
+      [
+        560,
+        744
+      ]
+    ]
+  },
+  "referenceInputs": [
+    {
+      "comfyName": "codex-reference-193a864694e348e6bf1ff41ee06c7b94.png",
+      "source": "resources/art-src/references/art-direction-3/birds-rejected.png",
+      "role": "edit target: restore missing wing and replace lifelike feet with carved blocks"
+    },
+    {
+      "comfyName": "codex-reference-b734d114c89c470bb27d8801a93a725d.png",
+      "source": "resources/art-src/references/art-direction-3/mi-flute-reference.png",
+      "role": "edit target: preserve original contour and five finger-hole positions outside the wrap"
+    }
+  ],
+  "fontInputs": {
+    "glyphs": "式笺赭较",
+    "serif": {
+      "source": "resources/fonts/NotoSerifSC-Variable.ttf",
+      "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9",
+      "delivery": "public/fonts/story-relics-serif.woff2"
+    },
+    "hand": {
+      "source": "resources/fonts/web-masters/relic-hand-source.woff2",
+      "download": "https://github.com/lxgw/LxgwWenKai/releases/latest/download/LXGWWenKai-Regular.ttf",
+      "fullSourceVersion": "Version 1.530; October 18, 2026",
+      "sha256": "2d70bf4e8347cf287efb3b16b256849e38d1ac5d8474fb2be1eed09794a66a2a",
+      "delivery": "public/fonts/story-relics-hand.woff2"
+    },
+    "license": "Existing SIL OFL licenses in public/fonts; only these four added glyphs are delivered and embedded."
+  },
+  "deliveries": {
+    "prop-map": {
+      "master": "resources/art-src/props/prop-map.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "9c19177d07ad75957fbc7e6c8346bd65fda6c62f48e1f26d5a812f5950843d77",
+      "bytes": 1581057,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-map.avif",
+          "bytes": 111648,
+          "sha256": "6504b12c15262705a87f81366800bdc224894af4fc08e0c38ed9a2fb7cbe7735"
+        },
+        "webp": {
+          "path": "public/art/prop-map.webp",
+          "bytes": 176708,
+          "sha256": "63c221b242aa08c88b5b191a05583cc53e401ad794017911e5bf915da7fdd73e"
+        }
+      }
+    },
+    "prop-birds": {
+      "master": "resources/art-src/props/prop-birds.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "b4acf2d2f92ac3857c3b8e4a2857a2c87f20bbe8c0b00bd5be2cf07d2728b764",
+      "bytes": 996215,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-birds.avif",
+          "bytes": 43365,
+          "sha256": "cbaa5fe66a0f649d9d82593b1196e35360bbc05dbbcd77e3bb2d7427a1af79e5"
+        },
+        "webp": {
+          "path": "public/art/prop-birds.webp",
+          "bytes": 69582,
+          "sha256": "61be3050fae226f5fa753195dfae76c6dfc619f527f08062b923d58cddd22514"
+        }
+      }
+    },
+    "prop-bone": {
+      "master": "resources/art-src/props/prop-bone.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "27a018cc02575f9e146301eb638d0c6d0f1fee192c6d0e165a7b8f6c514d89a0",
+      "bytes": 762620,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-bone.avif",
+          "bytes": 39744,
+          "sha256": "00169428e6d37ce0f644fea51d335cef24dbfcbc9c16b4da4bb7f71e4b6dd619"
+        },
+        "webp": {
+          "path": "public/art/prop-bone.webp",
+          "bytes": 65014,
+          "sha256": "71bdea5c8c7fb0d9ed01a1a47fe391c71100060dc479312d3284d61082cb4bb9"
+        }
+      }
+    },
+    "prop-flute-old": {
+      "master": "resources/art-src/props/prop-flute-old.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "4c0d41312218d7244bc543d65cd921927e00461c331541e21f5e077a12b31a2c",
+      "bytes": 747140,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-flute-old.avif",
+          "bytes": 37543,
+          "sha256": "546371729c7a175b4a92315ce016ff34edfbc646e41430e5834abee24fece5fd"
+        },
+        "webp": {
+          "path": "public/art/prop-flute-old.webp",
+          "bytes": 50432,
+          "sha256": "d06b5f8126db20398765a4b5f5e111dcfce83339b56a97d3fcd73d40a00e3999"
+        }
+      }
+    },
+    "prop-flute-mi": {
+      "master": "resources/art-src/props/prop-flute-mi.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "89ac07b1dc7369fd0f9bc561d47ee2a35cc19e0e7aee654a958a092e18188628",
+      "bytes": 567114,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-flute-mi.avif",
+          "bytes": 25727,
+          "sha256": "6cf2727ce872268124e2436303fb6c5521ee353ee835a8ec84e0f3822c9c3f73"
+        },
+        "webp": {
+          "path": "public/art/prop-flute-mi.webp",
+          "bytes": 32422,
+          "sha256": "7bfa764e58501a69bf7e33ec81240ce66c234a926815a224a01ec1f56e3e4285"
+        }
+      }
+    },
+    "prop-flute-mi-broken": {
+      "master": "resources/art-src/props/prop-flute-mi-broken.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "d6f4e0c177c149c5e288351705fb4878e7677409be3b596dc62f12b4fb2ef1f8",
+      "bytes": 980991,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-flute-mi-broken.avif",
+          "bytes": 35915,
+          "sha256": "edd8a742bdb7f7a19118d38e46b1f078be17a3b404d0e4f948fa714f9ed50ecd"
+        },
+        "webp": {
+          "path": "public/art/prop-flute-mi-broken.webp",
+          "bytes": 45752,
+          "sha256": "b0bf3e539769a558aae458798aeb7124c3c1b3abc5a78fe1f41a27a0e7d548c3"
+        }
+      }
+    },
+    "prop-jade-tail": {
+      "master": "resources/art-src/props/prop-jade-tail.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "5fb6fb6e3e554f77c955c8fb26d956bc9f3aebe6b870b8868eacba0b5031632c",
+      "bytes": 416380,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-jade-tail.avif",
+          "bytes": 41206,
+          "sha256": "9c2a9788ce14eaf88124bf880ce335bf9f686c949f1ab27ef03ea11a3965f0b5"
+        },
+        "webp": {
+          "path": "public/art/prop-jade-tail.webp",
+          "bytes": 65188,
+          "sha256": "aa646d8af7de5e0c8b2388ed41d83efe1eeb9d1d4dbca7642e43facba1905faf"
+        }
+      }
+    },
+    "prop-jade-body": {
+      "master": "resources/art-src/props/prop-jade-body.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "42b6f9c4144de279e1e2318092e9290a9fc4156201e6334ec3cff3e2ff9cde3e",
+      "bytes": 575926,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-jade-body.avif",
+          "bytes": 45764,
+          "sha256": "e3224f6bd5e079ad6ffbb935bed34be1afd4344fdf1f868972d4690183633451"
+        },
+        "webp": {
+          "path": "public/art/prop-jade-body.webp",
+          "bytes": 73740,
+          "sha256": "2aaef90daa379d3efe7f8c6b501f200a74afb0e1de9008c2229d01d71c73d70f"
+        }
+      }
+    },
+    "prop-jade-head": {
+      "master": "resources/art-src/props/prop-jade-head.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "c9e265a77a8bf996d1a98a0229103ea7ac770f539f7727df60a948c48cfc5807",
+      "bytes": 341141,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-jade-head.avif",
+          "bytes": 33251,
+          "sha256": "2c9f53b2f1cfa8b215052f0cfa6e2f7ab76b2e4ed4e9b3077eb2e6098a0d42b4"
+        },
+        "webp": {
+          "path": "public/art/prop-jade-head.webp",
+          "bytes": 55110,
+          "sha256": "5e590ed5efeb76523a7d5332529b4e738dfdd4f43b2e76101c70834fe8dca151"
+        }
+      }
+    },
+    "prop-jade-joined": {
+      "master": "resources/art-src/props/prop-jade-joined.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "fe1a3855f34ac35ec59109456215a708dcdd7fcee3bda009341c01f180dbe915",
+      "bytes": 399464,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-jade-joined.avif",
+          "bytes": 37057,
+          "sha256": "dd46fd4df974f8616b678934cfe2f7f363fe7e770447f26122788a16853f7f49"
+        },
+        "webp": {
+          "path": "public/art/prop-jade-joined.webp",
+          "bytes": 49556,
+          "sha256": "12ce1644c4bb6df7b6736d9c132ac6958822718fda1654248127f1d7d0149273"
+        }
+      }
+    },
+    "prop-names": {
+      "master": "resources/art-src/props/prop-names.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "9b5226ba62b965799a9afa89985c4d11253826ad931540f8792dfdfe0e5ebb0e",
+      "bytes": 693187,
+      "runtime": {
+        "avif": {
+          "path": "public/art/prop-names.avif",
+          "bytes": 63671,
+          "sha256": "cd169b5a5d7ccb9113d3e82b16a635e111eb30a0308dc2e282e9a32c882d1515"
+        },
+        "webp": {
+          "path": "public/art/prop-names.webp",
+          "bytes": 114906,
+          "sha256": "7bba1c30d94c4459ca398ae524345d3a077e6cc68c3db1b60c1e0034e7774ea3"
+        }
+      }
+    }
+  }
+}

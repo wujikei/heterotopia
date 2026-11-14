@@ -65,7 +65,7 @@ export const ITEMS: Record<string, { name: string; mark: string; detail: string 
   jadeTail: { name: '鸟尾残玉', mark: '玉', detail: '从戌的小木匣中取出，贴着胸口，微凉。' },
   jadeHead: { name: '鸟首残玉', mark: '玉', detail: '屈衡保管的第二角，鸟眼还在。' },
   jadeBody: { name: '鸟身残玉', mark: '玉', detail: '三处早年锯开的断口，终于相合。' },
-  birds: { name: '两只木鸟', mark: '鸟', detail: '一只完好，一只缺翅。都是戌做的。' },
+  birds: { name: '两只木鸟', mark: '鸟', detail: '一只尾歪，一只缺翅。都是戌做的。' },
   box: { name: '月相木匣', mark: '匣', detail: '用红绳扎着，曾藏过这个少年的来历。' },
   bone: { name: '卜骨', mark: '卜', detail: '两道裂纹，各自通往一种命运。' },
   coat: { name: '阿媪的冬衣', mark: '衣', detail: '袖口接了一圈错色的靛青布，针脚很齐。' },

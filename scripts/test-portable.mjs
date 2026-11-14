@@ -10,6 +10,7 @@ import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
 import { ACTOR_VARIANTS, actorPortraitName } from '../src/data/actorVariants.ts';
 import { AVAILABLE_EXTRAS } from '../src/data/extras.ts';
 import { portraitName } from '../src/assets.ts';
+import { RELIC_ART } from '../src/data/relics.ts';
 
 await loadStory();
 
@@ -74,6 +75,7 @@ try {
   const page = await open();
   await page.getByRole('heading', { name: '异托邦' }).waitFor();
   const expected = [
+    ...RELIC_ART,
     ...Object.keys(BACKGROUNDS).flatMap(name => [name, `${name}-thumb`]),
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
     ...CHARACTERS.map(c => `portrait-${c.key}-face`),
@@ -101,7 +103,7 @@ try {
   }, expected);
   assert.deepEqual(integrity.missing, []);
   assert.deepEqual(integrity.broken, []);
-  assert.equal(integrity.fonts.length, 6);
+  assert.equal(integrity.fonts.length, 8);
   assert.ok(integrity.fonts.some(font => font.family === 'StoryHand'));
   assert.ok(integrity.fonts.every(font => font.status === 'loaded'));
   for (const [sceneId, beatId, portrait] of [
@@ -243,6 +245,20 @@ try {
   await endingPage.screenshot({ path: artifact('15-ending-desktop.png') });
   await endingPage.getByRole('button', { name: '循光归来' }).click();
   assert.equal(await endingPage.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).sceneId), '终-1');
+
+  // Display an actual new study from file:// in airplane mode as well as
+  // decoding every embedded drawing in the integrity pass above.
+  const relicPage = await open({ ...royal, state: { ...royal.state, sceneId: 'A-6', beatId: 'A-6:25:0' } }, { width: 390, height: 844 });
+  await relicPage.locator('.relic-cue').click();
+  await relicPage.locator('[data-relic-study="jade-joined"]').waitFor();
+  await relicPage.locator('.relic-study-plate img').evaluate(img => img.decode());
+  assert.match(await relicPage.locator('.relic-study-plate img').evaluate(img => img.currentSrc), /^data:image\/webp;base64,/);
+  await relicPage.screenshot({ path: artifact('16-relic-study-offline-mobile.png') });
+  await relicPage.keyboard.press('Escape');
+  await relicPage.getByRole('tab', { name: '途中物笺' }).click();
+  await relicPage.getByRole('button', { name: '细看十根旧队名简', exact: true }).click();
+  await relicPage.locator('.relic-study-plate img').evaluate(img => img.decode());
+  await relicPage.screenshot({ path: artifact('17-name-slips-offline-mobile.png') });
   assert.deepEqual(errors, []);
   await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, ...audioIntegrity, errors }, null, 2));
   console.log('Offline checks passed: original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');

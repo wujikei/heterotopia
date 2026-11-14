@@ -63,10 +63,11 @@ def build_images(root: Path = ROOT, plan_only: bool = False, only: set[str] | No
         with Image.open(master) as image:
             destination = art / f'{name}.avif'
             is_cg = name.startswith('cg-')
-            image.save(destination, 'AVIF', quality=62 if is_cg else 55, speed=6, max_threads=2)
+            is_prop = name.startswith('prop-')
+            image.save(destination, 'AVIF', quality=70 if is_prop else 62 if is_cg else 55, speed=6, max_threads=2)
             # Existing portrait WebPs without a master retain their pixel data.
             if original or name not in portraits or name in masters:
-                image.save(source, 'WEBP', quality=91 if is_cg else 85 if name in portraits else 80, method=6)
+                image.save(source, 'WEBP', quality=92 if is_prop else 91 if is_cg else 85 if name in portraits else 80, method=6)
             entry = {'name': name, 'master': str(master.relative_to(root)),
                      'master_bytes': master.stat().st_size,
                      'webp': source.stat().st_size, 'avif': destination.stat().st_size}
