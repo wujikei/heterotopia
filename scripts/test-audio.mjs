@@ -40,13 +40,19 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
     // The permitted-autoplay device below does not install this boundary.
     if (gateAutoplay) {
       let activated = false;
+      const contexts = new Set();
       for (const event of ['pointerdown', 'keydown']) document.addEventListener(event, input => {
-        if (input.isTrusted) activated = true;
+        if (input.isTrusted) {
+          activated = true;
+          // Native browsers can also release a pending page-load resume before
+          // click, even when our global activation listener leaves controls alone.
+          for (const context of contexts) void context.resume();
+        }
       }, true);
       const Original = window.AudioContext ?? window.webkitAudioContext;
       if (Original) {
         class GestureContext extends Original {
-          constructor(...args) { super(...args); void super.suspend(); }
+          constructor(...args) { super(...args); contexts.add(this); void super.suspend(); }
           get state() { return activated ? super.state : 'suspended'; }
           resume() { return activated ? super.resume() : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError')); }
         }
