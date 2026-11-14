@@ -1,3 +1,4 @@
+import { AudioButton } from './components/AudioButton';
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { ArrowRight, Check, ChevronDown, ChevronRight, CircleHelp, Feather, Pause, Play, SkipForward, X } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
@@ -79,7 +80,8 @@ function useTypewriter(id: string | undefined, text: string, speed: number, paus
 }
 
 function IconButton({ label, children, onClick, className = '', active = false, audioControl = false }: { label: string; children: ReactNode; onClick: () => void; className?: string; active?: boolean; audioControl?: boolean }) {
-  return <button className={`icon-button ${className} ${active ? 'active' : ''}`} onClick={onClick} data-audio-control={audioControl ? '' : undefined} aria-label={label} title={label}>{children}</button>;
+  const Button = audioControl ? AudioButton : 'button';
+  return <Button className={`icon-button ${className} ${active ? 'active' : ''}`} onClick={onClick} aria-label={label} title={label}>{children}</Button>;
 }
 
 export default function App() {

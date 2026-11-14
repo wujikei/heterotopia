@@ -57,10 +57,10 @@ https://github.com/wujikei/heterotopia/actions/runs/43558729355
 
 根因是同一个手势被处理两次：document 捕获 `pointerdown/keydown` 先恢复 AudioContext，React 在 `click` 前把 needsGesture 更新为 false；按钮随后收到 click，把原本「开启声音」的意图解释成「静音」。持久化 muted 被意外写为 true，因此之后播放按钮又会把它解除。引擎在静音时保留音乐时钟（bus gain 归零，不暂停源），所以进度推进本身不证明当时有声音；这组观察不足以声称听到了 BGM。引擎订阅使用稳定 getSnapshot + 新对象通知，并非未重绘的 UI 本地布尔值。
 
-修复在最先出错的事件所有权边界：显式声音/播放按钮标记 `data-audio-control`，document 通用首手势监听不再抢先处理它们，改由按钮原有 click 完成唯一动作；其他位置的首次指针/键盘解锁仍保留。覆盖首页、剧情声音按钮及听水集静音、曲目行、主播放和切曲。
+修复在最先出错的事件所有权边界：显式声音/播放按钮标记 `data-audio-control`，document 通用首手势监听不再抢先处理它们；`AudioButton` 在 pointerdown / 首次 Space、Enter keydown 保存用户当时看到的动作，click 执行该动作一次，取消、失焦或执行后清除。单独跳过 document 还不够：原生浏览器也可能在按下与 click 之间自行释放页面启动时待定的 resume，所以必须保留意图，不能在 click 用已经变过的状态重新解释用户。其他位置的首次指针/键盘解锁仍保留。覆盖首页、剧情声音按钮及听水集静音、曲目行、主播放和切曲。
 
-追加回归覆盖鼠标长按和 Space 长按首个声音按钮、随后首次打开听水集、运行中 context 再被挂起后直接点击房间声音/播放按钮；要求 muted 不被反转、主按钮和行立即显示暂停、只保留一次音乐 start。保留原有允许自动播放、body 首键、静音持久化、暂停、定位、重开和原生媒体测试。
+测试边界仍要求可信手势；在手势到来时额外模拟浏览器自行释放待定 resume，继续使用真实 context、source、decode 和时钟。追加回归覆盖鼠标长按和 Space 长按首个声音按钮、随后首次打开听水集、运行中 context 再被挂起后直接点击房间声音/播放按钮；要求 muted 不被反转、主按钮和行立即显示暂停、只保留一次音乐 start。保留原有允许自动播放、body 首键、静音持久化、暂停、定位、重开和原生媒体测试。
 
 本机重新通过 44 项单测、TypeScript 和生产构建；最终浏览器结果以 PR 最新 head 的 CI 为准，手动普通桌面需父代理复核，不能用测试替代听音。
 
-父代理使用新端口 `http://127.0.0.1:4182/` 隔离旧 origin 的 localStorage/SW。此补丁构建入口为 `assets/index-CHo6fgg7.js`，MusicRoom 为 `assets/MusicRoom-DnEY5tKt.js`（若后续仅改文档/测试，这两者不变）。原 4181 构建入口曾为 `index-BYvdM9Rg.js`，确实包含 ca757ea 的修复，但无法从服务器读取父代理页面当时是否由旧 SW 控制；新回归在禁止 SW 的隔离浏览器同样复现，足以排除「只有缓存才会发生」。
+父代理使用新端口 `http://127.0.0.1:4183/` 隔离旧 origin 的 localStorage/SW。此补丁构建入口为 `assets/index-36pTppk5.js`，MusicRoom 为 `assets/MusicRoom-Cv8B43mQ.js`（若后续仅改文档/测试，这两者不变）。原 4181 构建入口曾为 `index-BYvdM9Rg.js`，确实包含 ca757ea 的修复，但无法从服务器读取父代理页面当时是否由旧 SW 控制；新回归在禁止 SW 的隔离浏览器同样复现，足以排除「只有缓存才会发生」。
