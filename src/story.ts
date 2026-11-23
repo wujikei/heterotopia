@@ -1,19 +1,36 @@
 import index from './data/scene-index.json';
-import type { Scene } from './types';
+import modernIndex from './data/modern-index.json';
+import type { Campaign, Scene } from './types';
 
 export let SCENES: Scene[] = index.scenes.map(scene => ({ ...scene, blocks: [] })) as Scene[];
 export let STORY = { ...index, scenes: SCENES };
+export let MODERN_SCENES: Scene[] = modernIndex.scenes.map(scene => ({ ...scene, blocks: [] })) as Scene[];
+export const MODERN_STORY = modernIndex;
 let ready = false;
+let modernReady = false;
 let loading: Promise<void> | undefined;
+let modernLoading: Promise<void> | undefined;
 
-export const isStoryReady = () => ready;
+export const isStoryReady = (campaign: Campaign = 'original') => campaign === 'overseas' ? modernReady : ready;
 
-/** Coalesce idle prefetch and a reader's click; a failed download can be retried. */
-export function loadStory(): Promise<void> {
+function loadOriginalStory(): Promise<void> {
   if (ready) return Promise.resolve();
   return loading ??= import('./data/story.json').then(module => {
     STORY = module.default as typeof STORY;
     SCENES = STORY.scenes;
     ready = true;
   }).catch(error => { loading = undefined; throw error; });
+}
+
+function loadModernStory(): Promise<void> {
+  if (modernReady) return Promise.resolve();
+  return modernLoading ??= import('./data/modern-story.json').then(module => {
+    MODERN_SCENES = module.default.scenes as Scene[];
+    modernReady = true;
+  }).catch(error => { modernLoading = undefined; throw error; });
+}
+
+/** Coalesce idle prefetch and a reader's click; failed downloads can be retried. */
+export function loadStory(campaign: Campaign = 'original'): Promise<void> {
+  return campaign === 'overseas' ? loadModernStory() : loadOriginalStory();
 }

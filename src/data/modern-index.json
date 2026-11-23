@@ -1,0 +1,2829 @@
+{
+  "title": "异托邦·海外现代线",
+  "edition": "modern-2026-11",
+  "sceneCount": 281,
+  "sourceSha256": "e340adcdec0b772f42bc6faff7ce47d18ff3fffecd29f005231c661d48b878d4",
+  "modernSourceSha256": "994f6b31a669fe529e40e97ea479f8c77c59bcbdd2a7898e8dadc4b74524686c",
+  "pageCount": 2932,
+  "scenes": [
+    {
+      "id": "modern-o-0-1",
+      "sourceId": "0-1",
+      "title": "问字摊",
+      "chapter": "现代卷 出发之前",
+      "route": "prologue",
+      "script": "modern",
+      "background": "cg-modern-word-stall",
+      "next": "modern-o-0-2"
+    },
+    {
+      "id": "modern-o-0-2",
+      "sourceId": "0-2",
+      "title": "宿舍·何",
+      "chapter": "现代卷 出发之前",
+      "route": "prologue",
+      "script": "modern",
+      "background": "modern-dorm",
+      "next": "modern-o-0-3"
+    },
+    {
+      "id": "modern-o-4-1",
+      "sourceId": "4-1",
+      "title": "国殇之后",
+      "chapter": "线间 这边的日子",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-dorm"
+    },
+    {
+      "id": "modern-o-4-2",
+      "sourceId": "4-2",
+      "title": "九歌之后",
+      "chapter": "线间 这边的日子",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-library"
+    },
+    {
+      "id": "modern-o-5-1",
+      "sourceId": "5-1",
+      "title": "被叫去谈话",
+      "chapter": "尾声 半规落日",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-office",
+      "next": "modern-o-5-2"
+    },
+    {
+      "id": "modern-o-5-2",
+      "sourceId": "5-2",
+      "title": "关于方向",
+      "chapter": "尾声 半规落日",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-office",
+      "next": "modern-o-5-3"
+    },
+    {
+      "id": "modern-o-5-3",
+      "sourceId": "5-3",
+      "title": "一个人上山",
+      "chapter": "尾声 半规落日",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-mountain-path",
+      "next": "modern-o-5-4"
+    },
+    {
+      "id": "modern-o-5-4",
+      "sourceId": "5-4",
+      "title": "离骚默写",
+      "chapter": "尾声 半规落日",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-mountain-path",
+      "next": "modern-o-5-5"
+    },
+    {
+      "id": "modern-o-5-5",
+      "sourceId": "5-5",
+      "title": "半山腰·一瞬",
+      "chapter": "尾声 半规落日",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-mountain-path",
+      "next": "modern-o-5-6"
+    },
+    {
+      "id": "modern-o-5-6",
+      "sourceId": "5-6",
+      "title": "山顶·沈辞",
+      "chapter": "尾声 半规落日",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-sunset",
+      "next": "modern-o-5-7"
+    },
+    {
+      "id": "modern-o-5-7",
+      "sourceId": "5-7",
+      "title": "半规落日",
+      "chapter": "尾声 半规落日",
+      "route": "return",
+      "script": "modern",
+      "background": "modern-sunset",
+      "ending": "modern-home"
+    },
+    {
+      "id": "modern-o-0-3",
+      "sourceId": "0-3",
+      "title": "土岸·跪着的人",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-o-0-4"
+    },
+    {
+      "id": "modern-o-0-4",
+      "sourceId": "0-4",
+      "title": "选巫·坏了的器皿",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-o-0-5"
+    },
+    {
+      "id": "modern-o-0-5",
+      "sourceId": "0-5",
+      "title": "阿媪·带回去的命名",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-o-0-6"
+    },
+    {
+      "id": "modern-o-0-6",
+      "sourceId": "0-6",
+      "title": "镇上·话是怎么活的",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-o-0-7"
+    },
+    {
+      "id": "modern-o-0-7",
+      "sourceId": "0-7",
+      "title": "河滩·那个“停”",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-o-0-8"
+    },
+    {
+      "id": "modern-o-0-8",
+      "sourceId": "0-8",
+      "title": "木匣·死则又育",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-o-2-1"
+    },
+    {
+      "id": "modern-o-2-1",
+      "sourceId": "2-1",
+      "title": "第一夜·遂古之初",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-o-2-2"
+    },
+    {
+      "id": "modern-o-2-2",
+      "sourceId": "2-2",
+      "title": "第二夜·圜则九重",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-o-2-3"
+    },
+    {
+      "id": "modern-o-2-3",
+      "sourceId": "2-3",
+      "title": "第三夜·夜光何德",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-o-2-4"
+    },
+    {
+      "id": "modern-o-2-4",
+      "sourceId": "2-4",
+      "title": "第四夜·九河应龙",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-o-2-5"
+    },
+    {
+      "id": "modern-o-2-5",
+      "sourceId": "2-5",
+      "title": "第五夜·焉有石林",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-o-2-6"
+    },
+    {
+      "id": "modern-o-2-6",
+      "sourceId": "2-6",
+      "title": "第六夜·禹与鲧",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-o-2-7"
+    },
+    {
+      "id": "modern-o-2-7",
+      "sourceId": "2-7",
+      "title": "第七夜·路漫漫其修远兮",
+      "chapter": "共通卷 天问七夜",
+      "route": "common",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-c-1-13"
+    },
+    {
+      "id": "modern-c-1-13",
+      "sourceId": "1-13",
+      "title": "马车·与谁说话",
+      "chapter": "分路 一样清晨",
+      "route": "common",
+      "script": "modern",
+      "background": "village"
+    },
+    {
+      "id": "modern-c-1-13a",
+      "sourceId": "【选①】",
+      "title": "接过烤薯",
+      "chapter": "分路 一样清晨",
+      "route": "common",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-A-1"
+    },
+    {
+      "id": "modern-c-1-13b",
+      "sourceId": "【选②】",
+      "title": "接过饼",
+      "chapter": "分路 一样清晨",
+      "route": "common",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-k-A-1"
+    },
+    {
+      "id": "modern-r-A-1",
+      "sourceId": "A-1",
+      "title": "官道与渡口",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-A-2"
+    },
+    {
+      "id": "modern-r-A-2",
+      "sourceId": "A-2",
+      "title": "抵达当夜·寿春屈宅",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "study",
+      "next": "modern-r-A-3"
+    },
+    {
+      "id": "modern-r-A-3",
+      "sourceId": "A-3",
+      "title": "翌晨·试衣与饴糖",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "study",
+      "next": "modern-r-A-3a"
+    },
+    {
+      "id": "modern-r-A-3a",
+      "sourceId": "A-3a",
+      "title": "市集·人间烟火",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-A-4"
+    },
+    {
+      "id": "modern-r-A-4",
+      "sourceId": "A-4",
+      "title": "白天·楚宫偏殿",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-A-5"
+    },
+    {
+      "id": "modern-r-A-5",
+      "sourceId": "A-5",
+      "title": "大祭前十二日·屈衡的旧箱",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "study",
+      "next": "modern-r-A-6"
+    },
+    {
+      "id": "modern-r-A-6",
+      "sourceId": "A-6",
+      "title": "大祭前三夜·宗庙地宫",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "tomb",
+      "next": "modern-r-A-6a"
+    },
+    {
+      "id": "modern-r-A-6a",
+      "sourceId": "A-6a",
+      "title": "大祭前夜·请止西行",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-A-7"
+    },
+    {
+      "id": "modern-r-A-7",
+      "sourceId": "A-7",
+      "title": "大祭之夜·宗庙高台",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-A-8"
+    },
+    {
+      "id": "modern-r-A-8",
+      "sourceId": "A-8",
+      "title": "夜续·归来的声音",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-1"
+    },
+    {
+      "id": "modern-r-B-1",
+      "sourceId": "B-1",
+      "title": "密室·多出来的一个",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "tomb",
+      "next": "modern-r-B-2"
+    },
+    {
+      "id": "modern-r-B-2",
+      "sourceId": "B-2",
+      "title": "认尸·屈衡的手",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "tomb",
+      "next": "modern-r-B-3"
+    },
+    {
+      "id": "modern-r-B-3",
+      "sourceId": "B-3",
+      "title": "日记·笑着的恶棍",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-4"
+    },
+    {
+      "id": "modern-r-B-4",
+      "sourceId": "B-4",
+      "title": "朝会·装疯第一日",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-B-5"
+    },
+    {
+      "id": "modern-r-B-5",
+      "sourceId": "B-5",
+      "title": "装疯的代价",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-5a"
+    },
+    {
+      "id": "modern-r-B-5a",
+      "sourceId": "B-5a",
+      "title": "夜谈·屈衡",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-6"
+    },
+    {
+      "id": "modern-r-B-6",
+      "sourceId": "B-6",
+      "title": "影戏《章华台》",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-B-7"
+    },
+    {
+      "id": "modern-r-B-7",
+      "sourceId": "B-7",
+      "title": "\"吾知兮，吾饮之\"",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-7a"
+    },
+    {
+      "id": "modern-r-B-7a",
+      "sourceId": "B-7a",
+      "title": "太后·召见",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-8"
+    },
+    {
+      "id": "modern-r-B-8",
+      "sourceId": "B-8",
+      "title": "地宫独白·活下去，还是走",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "tomb",
+      "next": "modern-r-B-9"
+    },
+    {
+      "id": "modern-r-B-9",
+      "sourceId": "B-9",
+      "title": "罗与盖·两个同学",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-9a"
+    },
+    {
+      "id": "modern-r-B-9a",
+      "sourceId": "B-9a",
+      "title": "宫廊·两个少年",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-B-10"
+    },
+    {
+      "id": "modern-r-B-10",
+      "sourceId": "B-10",
+      "title": "祷告·不下手",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-11"
+    },
+    {
+      "id": "modern-r-B-11",
+      "sourceId": "B-11",
+      "title": "误杀·帷幕后的人",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-12"
+    },
+    {
+      "id": "modern-r-B-12",
+      "sourceId": "B-12",
+      "title": "棠唱谣",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-B-13"
+    },
+    {
+      "id": "modern-r-B-13",
+      "sourceId": "B-13",
+      "title": "送信·伪造的王命",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-B-14"
+    },
+    {
+      "id": "modern-r-B-14",
+      "sourceId": "B-14",
+      "title": "棠的铜钱",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-C-1"
+    },
+    {
+      "id": "modern-r-C-1",
+      "sourceId": "C-1",
+      "title": "请戏班",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-C-1a"
+    },
+    {
+      "id": "modern-r-C-1a",
+      "sourceId": "C-1a",
+      "title": "走访·看清这满朝的人",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-C-2"
+    },
+    {
+      "id": "modern-r-C-2",
+      "sourceId": "C-2",
+      "title": "排演·学不出的停",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-C-3"
+    },
+    {
+      "id": "modern-r-C-3",
+      "sourceId": "C-3",
+      "title": "棠的橘",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-C-4"
+    },
+    {
+      "id": "modern-r-C-4",
+      "sourceId": "C-4",
+      "title": "大典前夜·请止西行",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-C-4a"
+    },
+    {
+      "id": "modern-r-C-4a",
+      "sourceId": "C-4a",
+      "title": "王·剥橘的夜",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-C-5"
+    },
+    {
+      "id": "modern-r-C-5",
+      "sourceId": "C-5",
+      "title": "大典·高台",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-C-6"
+    },
+    {
+      "id": "modern-r-C-6",
+      "sourceId": "C-6",
+      "title": "招魂·喊出的名字",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-C-7"
+    },
+    {
+      "id": "modern-r-C-7",
+      "sourceId": "C-7",
+      "title": "指认·当众",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-C-8"
+    },
+    {
+      "id": "modern-r-C-8",
+      "sourceId": "C-8",
+      "title": "祷告的两难·第二次",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-C-9"
+    },
+    {
+      "id": "modern-r-C-9",
+      "sourceId": "C-9",
+      "title": "政变·推举",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-C-10"
+    },
+    {
+      "id": "modern-r-C-10",
+      "sourceId": "C-10",
+      "title": "称王·第一道令",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-C-11"
+    },
+    {
+      "id": "modern-r-C-11",
+      "sourceId": "C-11",
+      "title": "守城·秦军压境",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-C-12"
+    },
+    {
+      "id": "modern-r-C-12",
+      "sourceId": "C-12",
+      "title": "城破·岔口",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-D-1"
+    },
+    {
+      "id": "modern-r-D-1",
+      "sourceId": "D-1",
+      "title": "城墙·最后一个橘",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-D-2"
+    },
+    {
+      "id": "modern-r-D-2",
+      "sourceId": "D-2",
+      "title": "数到第三百那个名字",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-3"
+    },
+    {
+      "id": "modern-r-D-3",
+      "sourceId": "D-3",
+      "title": "另一个戌的名字",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-4"
+    },
+    {
+      "id": "modern-r-D-4",
+      "sourceId": "D-4",
+      "title": "屈衡的坦白",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-5"
+    },
+    {
+      "id": "modern-r-D-5",
+      "sourceId": "D-5",
+      "title": "大巫祝的账",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-6"
+    },
+    {
+      "id": "modern-r-D-6",
+      "sourceId": "D-6",
+      "title": "河滩·捞尸人",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-7"
+    },
+    {
+      "id": "modern-r-D-7",
+      "sourceId": "D-7",
+      "title": "棠的铜钱·第二次",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-8"
+    },
+    {
+      "id": "modern-r-D-8",
+      "sourceId": "D-8",
+      "title": "狗子的歌",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-9"
+    },
+    {
+      "id": "modern-r-D-9",
+      "sourceId": "D-9",
+      "title": "媭的药檐",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-10"
+    },
+    {
+      "id": "modern-r-D-10",
+      "sourceId": "D-10",
+      "title": "茶·最后一眼",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-11"
+    },
+    {
+      "id": "modern-r-D-11",
+      "sourceId": "D-11",
+      "title": "三条消息",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-D-12"
+    },
+    {
+      "id": "modern-r-D-12",
+      "sourceId": "D-12",
+      "title": "门",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E1-1"
+    },
+    {
+      "id": "modern-r-E1-1",
+      "sourceId": "E1-1",
+      "title": "东门",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E1-2"
+    },
+    {
+      "id": "modern-r-E1-2",
+      "sourceId": "E1-2",
+      "title": "城破",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-E1-3"
+    },
+    {
+      "id": "modern-r-E1-3",
+      "sourceId": "E1-3",
+      "title": "最后的名册",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E1-4"
+    },
+    {
+      "id": "modern-r-E1-4",
+      "sourceId": "E1-4",
+      "title": "棠的敲门声",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E1-5"
+    },
+    {
+      "id": "modern-r-E1-5",
+      "sourceId": "E1-5",
+      "title": "战",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-E1-6"
+    },
+    {
+      "id": "modern-r-E1-6",
+      "sourceId": "E1-6",
+      "title": "倒下",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-E1-7"
+    },
+    {
+      "id": "modern-r-E1-7",
+      "sourceId": "E1-7",
+      "title": "尾声·木牌",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-e1"
+    },
+    {
+      "id": "modern-r-E2-1",
+      "sourceId": "E2-1",
+      "title": "随队",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E2-2"
+    },
+    {
+      "id": "modern-r-E2-2",
+      "sourceId": "E2-2",
+      "title": "管粮",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E2-3"
+    },
+    {
+      "id": "modern-r-E2-3",
+      "sourceId": "E2-3",
+      "title": "棠跟来了",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E2-4"
+    },
+    {
+      "id": "modern-r-E2-4",
+      "sourceId": "E2-4",
+      "title": "争粮",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E2-5"
+    },
+    {
+      "id": "modern-r-E2-5",
+      "sourceId": "E2-5",
+      "title": "屈衡的终点",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E2-6"
+    },
+    {
+      "id": "modern-r-E2-6",
+      "sourceId": "E2-6",
+      "title": "继续走",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-E2-7"
+    },
+    {
+      "id": "modern-r-E2-7",
+      "sourceId": "E2-7",
+      "title": "尾声·不知何处",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-e2"
+    },
+    {
+      "id": "modern-r-G1-1",
+      "sourceId": "G1-1",
+      "title": "称王",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-G1-2"
+    },
+    {
+      "id": "modern-r-G1-2",
+      "sourceId": "G1-2",
+      "title": "王的第一夜",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-G1-3"
+    },
+    {
+      "id": "modern-r-G1-3",
+      "sourceId": "G1-3",
+      "title": "荒诞的朝会",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-G1-4"
+    },
+    {
+      "id": "modern-r-G1-4",
+      "sourceId": "G1-4",
+      "title": "屈衡的失望",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G1-5"
+    },
+    {
+      "id": "modern-r-G1-5",
+      "sourceId": "G1-5",
+      "title": "守城",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-G1-6"
+    },
+    {
+      "id": "modern-r-G1-6",
+      "sourceId": "G1-6",
+      "title": "棠的幡",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G1-7"
+    },
+    {
+      "id": "modern-r-G1-7",
+      "sourceId": "G1-7",
+      "title": "城破",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-G1-8"
+    },
+    {
+      "id": "modern-r-G1-8",
+      "sourceId": "G1-8",
+      "title": "尾声·鬼雄",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-g1"
+    },
+    {
+      "id": "modern-r-G2-1",
+      "sourceId": "G2-1",
+      "title": "重开册子",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G2-2"
+    },
+    {
+      "id": "modern-r-G2-2",
+      "sourceId": "G2-2",
+      "title": "问大巫祝",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G2-3"
+    },
+    {
+      "id": "modern-r-G2-3",
+      "sourceId": "G2-3",
+      "title": "问屈衡",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G2-4"
+    },
+    {
+      "id": "modern-r-G2-4",
+      "sourceId": "G2-4",
+      "title": "问那个死去的自己",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G2-5"
+    },
+    {
+      "id": "modern-r-G2-5",
+      "sourceId": "G2-5",
+      "title": "朝堂对质",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G2-6"
+    },
+    {
+      "id": "modern-r-G2-6",
+      "sourceId": "G2-6",
+      "title": "不悔",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-G2-7"
+    },
+    {
+      "id": "modern-r-G2-7",
+      "sourceId": "G2-7",
+      "title": "城破前的最后一句话",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ruins",
+      "next": "modern-r-G2-8"
+    },
+    {
+      "id": "modern-r-G2-8",
+      "sourceId": "G2-8",
+      "title": "尾声·两个名字",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-g2"
+    },
+    {
+      "id": "modern-r-L-1",
+      "sourceId": "L-1",
+      "title": "不称王",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "palace",
+      "next": "modern-r-L-2"
+    },
+    {
+      "id": "modern-r-L-2",
+      "sourceId": "L-2",
+      "title": "独行",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-L-3"
+    },
+    {
+      "id": "modern-r-L-3",
+      "sourceId": "L-3",
+      "title": "问河",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-L-4"
+    },
+    {
+      "id": "modern-r-L-4",
+      "sourceId": "L-4",
+      "title": "问山",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "mountain",
+      "next": "modern-r-L-5"
+    },
+    {
+      "id": "modern-r-L-5",
+      "sourceId": "L-5",
+      "title": "棠的来信",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-L-6"
+    },
+    {
+      "id": "modern-r-L-6",
+      "sourceId": "L-6",
+      "title": "幻见",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-L-7"
+    },
+    {
+      "id": "modern-r-L-7",
+      "sourceId": "L-7",
+      "title": "未竟之问",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-L-8"
+    },
+    {
+      "id": "modern-r-L-8",
+      "sourceId": "L-8",
+      "title": "尾声·还在走",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-l"
+    },
+    {
+      "id": "modern-r-S-1",
+      "sourceId": "S-1",
+      "title": "不告而别",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-S-2"
+    },
+    {
+      "id": "modern-r-S-2",
+      "sourceId": "S-2",
+      "title": "西行",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-S-3"
+    },
+    {
+      "id": "modern-r-S-3",
+      "sourceId": "S-3",
+      "title": "船家",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-S-4"
+    },
+    {
+      "id": "modern-r-S-4",
+      "sourceId": "S-4",
+      "title": "两岸",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-S-5"
+    },
+    {
+      "id": "modern-r-S-5",
+      "sourceId": "S-5",
+      "title": "旧木鸟",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-S-6"
+    },
+    {
+      "id": "modern-r-S-6",
+      "sourceId": "S-6",
+      "title": "棠的追与不追",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-S-7"
+    },
+    {
+      "id": "modern-r-S-7",
+      "sourceId": "S-7",
+      "title": "过滩",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-S-8"
+    },
+    {
+      "id": "modern-r-S-8",
+      "sourceId": "S-8",
+      "title": "尾声·不顾",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-s"
+    },
+    {
+      "id": "modern-r-H-1",
+      "sourceId": "H-1",
+      "title": "听说郢都回不去了",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-H-2"
+    },
+    {
+      "id": "modern-r-H-2",
+      "sourceId": "H-2",
+      "title": "把名字还给河",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-H-3"
+    },
+    {
+      "id": "modern-r-H-3",
+      "sourceId": "H-3",
+      "title": "棠的问",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-H-4"
+    },
+    {
+      "id": "modern-r-H-4",
+      "sourceId": "H-4",
+      "title": "最后的橘",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-H-7"
+    },
+    {
+      "id": "modern-r-H-7",
+      "sourceId": "H-7",
+      "title": "走进去",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-H-8"
+    },
+    {
+      "id": "modern-r-H-8",
+      "sourceId": "H-8",
+      "title": "尾声·石头上的字",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-h"
+    },
+    {
+      "id": "modern-r-R-1",
+      "sourceId": "R-1",
+      "title": "政变失败",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-R-2"
+    },
+    {
+      "id": "modern-r-R-2",
+      "sourceId": "R-2",
+      "title": "把招魂做完",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-r-R-3"
+    },
+    {
+      "id": "modern-r-R-3",
+      "sourceId": "R-3",
+      "title": "棠举幡",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-R-4"
+    },
+    {
+      "id": "modern-r-R-4",
+      "sourceId": "R-4",
+      "title": "狗子的位置",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-R-5"
+    },
+    {
+      "id": "modern-r-R-5",
+      "sourceId": "R-5",
+      "title": "鼓",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-R-6"
+    },
+    {
+      "id": "modern-r-R-6",
+      "sourceId": "R-6",
+      "title": "尾声·传芭",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-r"
+    },
+    {
+      "id": "modern-r-F-1",
+      "sourceId": "F-1",
+      "title": "谁赢跟谁",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-F-2"
+    },
+    {
+      "id": "modern-r-F-2",
+      "sourceId": "F-2",
+      "title": "捞尸人的话",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-F-3"
+    },
+    {
+      "id": "modern-r-F-3",
+      "sourceId": "F-3",
+      "title": "棠走了",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-F-5"
+    },
+    {
+      "id": "modern-r-F-5",
+      "sourceId": "F-5",
+      "title": "镜子",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-F-6"
+    },
+    {
+      "id": "modern-r-F-6",
+      "sourceId": "F-6",
+      "title": "尾声·濯足",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-f"
+    },
+    {
+      "id": "modern-r-O-1",
+      "sourceId": "O-1",
+      "title": "往西渡口",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-2"
+    },
+    {
+      "id": "modern-r-O-2",
+      "sourceId": "O-2",
+      "title": "棠在等",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-3"
+    },
+    {
+      "id": "modern-r-O-3",
+      "sourceId": "O-3",
+      "title": "过河",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-4"
+    },
+    {
+      "id": "modern-r-O-4",
+      "sourceId": "O-4",
+      "title": "失散的弟弟",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-5"
+    },
+    {
+      "id": "modern-r-O-5",
+      "sourceId": "O-5",
+      "title": "一间屋",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-r-O-6"
+    },
+    {
+      "id": "modern-r-O-6",
+      "sourceId": "O-6",
+      "title": "挂药",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-7"
+    },
+    {
+      "id": "modern-r-O-7",
+      "sourceId": "O-7",
+      "title": "橘",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-8"
+    },
+    {
+      "id": "modern-r-O-8",
+      "sourceId": "O-8",
+      "title": "门",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-9"
+    },
+    {
+      "id": "modern-r-O-9",
+      "sourceId": "O-9",
+      "title": "唱谣",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "next": "modern-r-O-10"
+    },
+    {
+      "id": "modern-r-O-10",
+      "sourceId": "O-10",
+      "title": "相拥二眠",
+      "chapter": "王裔卷 旧名与城破",
+      "route": "royal",
+      "script": "modern",
+      "background": "village",
+      "ending": "modern-royal-o"
+    },
+    {
+      "id": "modern-k-A-1",
+      "sourceId": "A-1",
+      "title": "抢被窝",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-k-A-2"
+    },
+    {
+      "id": "modern-k-A-2",
+      "sourceId": "A-2",
+      "title": "起外号",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-3"
+    },
+    {
+      "id": "modern-k-A-3",
+      "sourceId": "A-3",
+      "title": "偷藏的饴糖",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-4"
+    },
+    {
+      "id": "modern-k-A-4",
+      "sourceId": "A-4",
+      "title": "学手语",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-5"
+    },
+    {
+      "id": "modern-k-A-5",
+      "sourceId": "A-5",
+      "title": "河边抓鱼",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-6"
+    },
+    {
+      "id": "modern-k-A-6",
+      "sourceId": "A-6",
+      "title": "烤薯",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-7"
+    },
+    {
+      "id": "modern-k-A-7",
+      "sourceId": "A-7",
+      "title": "雩的耳朵",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-8"
+    },
+    {
+      "id": "modern-k-A-8",
+      "sourceId": "A-8",
+      "title": "媭的药包",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-k-A-9"
+    },
+    {
+      "id": "modern-k-A-9",
+      "sourceId": "A-9",
+      "title": "摘野果",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "mountain",
+      "next": "modern-k-A-10"
+    },
+    {
+      "id": "modern-k-A-10",
+      "sourceId": "A-10",
+      "title": "试面具",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-11"
+    },
+    {
+      "id": "modern-k-A-11",
+      "sourceId": "A-11",
+      "title": "第一场差事",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-A-12"
+    },
+    {
+      "id": "modern-k-A-12",
+      "sourceId": "A-12",
+      "title": "出发前夜",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-1"
+    },
+    {
+      "id": "modern-k-B-1",
+      "sourceId": "B-1",
+      "title": "下山",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "mountain",
+      "next": "modern-k-B-2"
+    },
+    {
+      "id": "modern-k-B-2",
+      "sourceId": "B-2",
+      "title": "第一座村·戴面具",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-3"
+    },
+    {
+      "id": "modern-k-B-3",
+      "sourceId": "B-3",
+      "title": "扮神",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-4"
+    },
+    {
+      "id": "modern-k-B-4",
+      "sourceId": "B-4",
+      "title": "排队",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-5"
+    },
+    {
+      "id": "modern-k-B-5",
+      "sourceId": "B-5",
+      "title": "\"他会有饭吃吗\"",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-6"
+    },
+    {
+      "id": "modern-k-B-6",
+      "sourceId": "B-6",
+      "title": "\"生活会变好吗\"",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-7"
+    },
+    {
+      "id": "modern-k-B-7",
+      "sourceId": "B-7",
+      "title": "断臂的新娘",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-8"
+    },
+    {
+      "id": "modern-k-B-8",
+      "sourceId": "B-8",
+      "title": "井水的病",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-9"
+    },
+    {
+      "id": "modern-k-B-9",
+      "sourceId": "B-9",
+      "title": "赶集",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-10"
+    },
+    {
+      "id": "modern-k-B-10",
+      "sourceId": "B-10",
+      "title": "和村里的孩子玩",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-11"
+    },
+    {
+      "id": "modern-k-B-11",
+      "sourceId": "B-11",
+      "title": "分粮的规矩",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-12"
+    },
+    {
+      "id": "modern-k-B-12",
+      "sourceId": "B-12",
+      "title": "那张要饭的纸条",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-13"
+    },
+    {
+      "id": "modern-k-B-13",
+      "sourceId": "B-13",
+      "title": "美德的样子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-14"
+    },
+    {
+      "id": "modern-k-B-14",
+      "sourceId": "B-14",
+      "title": "少年明白了希望",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-B-15"
+    },
+    {
+      "id": "modern-k-B-15",
+      "sourceId": "B-15",
+      "title": "发完最后一袋",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-C-1"
+    },
+    {
+      "id": "modern-k-C-1",
+      "sourceId": "C-1",
+      "title": "郢都破",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-C-2"
+    },
+    {
+      "id": "modern-k-C-2",
+      "sourceId": "C-2",
+      "title": "名牍与红绳",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-C-3"
+    },
+    {
+      "id": "modern-k-C-3",
+      "sourceId": "C-3",
+      "title": "谁来送",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-C-4"
+    },
+    {
+      "id": "modern-k-C-4",
+      "sourceId": "C-4",
+      "title": "推下水",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-C-5"
+    },
+    {
+      "id": "modern-k-C-5",
+      "sourceId": "C-5",
+      "title": "岸上的人怎么想",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-C-6"
+    },
+    {
+      "id": "modern-k-C-6",
+      "sourceId": "C-6",
+      "title": "巫阳不上船",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-1"
+    },
+    {
+      "id": "modern-k-D-1",
+      "sourceId": "D-1",
+      "title": "放舟",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-2"
+    },
+    {
+      "id": "modern-k-D-2",
+      "sourceId": "D-2",
+      "title": "船上的游戏",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-k-D-3"
+    },
+    {
+      "id": "modern-k-D-3",
+      "sourceId": "D-3",
+      "title": "连游戏也无趣",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "ritual",
+      "next": "modern-k-D-4"
+    },
+    {
+      "id": "modern-k-D-4",
+      "sourceId": "D-4",
+      "title": "风囊",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-5"
+    },
+    {
+      "id": "modern-k-D-5",
+      "sourceId": "D-5",
+      "title": "风起",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-6"
+    },
+    {
+      "id": "modern-k-D-6",
+      "sourceId": "D-6",
+      "title": "搏斗",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-7"
+    },
+    {
+      "id": "modern-k-D-7",
+      "sourceId": "D-7",
+      "title": "风停之后",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-8"
+    },
+    {
+      "id": "modern-k-D-8",
+      "sourceId": "D-8",
+      "title": "头一个饿肚子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-9"
+    },
+    {
+      "id": "modern-k-D-9",
+      "sourceId": "D-9",
+      "title": "饿出来的东西",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-10"
+    },
+    {
+      "id": "modern-k-D-10",
+      "sourceId": "D-10",
+      "title": "分最后的药",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-11"
+    },
+    {
+      "id": "modern-k-D-11",
+      "sourceId": "D-11",
+      "title": "青米",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-12"
+    },
+    {
+      "id": "modern-k-D-12",
+      "sourceId": "D-12",
+      "title": "水底的歌",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-D-13"
+    },
+    {
+      "id": "modern-k-D-13",
+      "sourceId": "D-13",
+      "title": "漂进蓝色",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-E-1"
+    },
+    {
+      "id": "modern-k-E-1",
+      "sourceId": "E-1",
+      "title": "云中君·湿衣裳的神",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-E-2"
+    },
+    {
+      "id": "modern-k-E-2",
+      "sourceId": "E-2",
+      "title": "青米的味道回来了",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-E-3"
+    },
+    {
+      "id": "modern-k-E-3",
+      "sourceId": "E-3",
+      "title": "湘君·逆流而来的舟",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-E-4"
+    },
+    {
+      "id": "modern-k-E-4",
+      "sourceId": "E-4",
+      "title": "湘夫人·水底的屋子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-k-E-5"
+    },
+    {
+      "id": "modern-k-E-5",
+      "sourceId": "E-5",
+      "title": "大司命·掌生死的老者",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-E-6"
+    },
+    {
+      "id": "modern-k-E-6",
+      "sourceId": "E-6",
+      "title": "少司命·抱孩子的神",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-E-7"
+    },
+    {
+      "id": "modern-k-E-7",
+      "sourceId": "E-7",
+      "title": "东君·太阳落进水里",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-E-8"
+    },
+    {
+      "id": "modern-k-E-8",
+      "sourceId": "E-8",
+      "title": "山鬼·影子换了兽形",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "mountain",
+      "next": "modern-k-E-9"
+    },
+    {
+      "id": "modern-k-E-9",
+      "sourceId": "E-9",
+      "title": "河伯·九河问路",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-E-10"
+    },
+    {
+      "id": "modern-k-E-10",
+      "sourceId": "E-10",
+      "title": "巫阳·另一种样子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-E-11"
+    },
+    {
+      "id": "modern-k-E-11",
+      "sourceId": "E-11",
+      "title": "文人·河畔的那个人",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-E-12"
+    },
+    {
+      "id": "modern-k-E-12",
+      "sourceId": "E-12",
+      "title": "礼魂·热闹散场",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-F-1"
+    },
+    {
+      "id": "modern-k-F-1",
+      "sourceId": "F-1",
+      "title": "没有黑的地方",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-F-2"
+    },
+    {
+      "id": "modern-k-F-2",
+      "sourceId": "F-2",
+      "title": "媭的屋檐",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-k-F-3"
+    },
+    {
+      "id": "modern-k-F-3",
+      "sourceId": "F-3",
+      "title": "芈的完整曲子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-F-4"
+    },
+    {
+      "id": "modern-k-F-4",
+      "sourceId": "F-4",
+      "title": "戌的那颗青米",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-F-5"
+    },
+    {
+      "id": "modern-k-F-5",
+      "sourceId": "F-5",
+      "title": "东皇太一·最高的神坐下来",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-F-6"
+    },
+    {
+      "id": "modern-k-F-6",
+      "sourceId": "F-6",
+      "title": "视角悬置",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-G-1",
+      "sourceId": "G-1",
+      "title": "小舟",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-2"
+    },
+    {
+      "id": "modern-k-G-2",
+      "sourceId": "G-2",
+      "title": "岸上那碗粥",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-3"
+    },
+    {
+      "id": "modern-k-G-3",
+      "sourceId": "G-3",
+      "title": "数不清",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-4"
+    },
+    {
+      "id": "modern-k-G-4",
+      "sourceId": "G-4",
+      "title": "九歌线完",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "ending": "modern-kunlun"
+    },
+    {
+      "id": "modern-k-X-1",
+      "sourceId": "X-1",
+      "title": "屋檐下",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-k-X-2"
+    },
+    {
+      "id": "modern-k-X-2",
+      "sourceId": "X-2",
+      "title": "别头发",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-X-3"
+    },
+    {
+      "id": "modern-k-X-3",
+      "sourceId": "X-3",
+      "title": "没说出口",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-X-4"
+    },
+    {
+      "id": "modern-k-X-4",
+      "sourceId": "X-4",
+      "title": "没有地",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-X-5"
+    },
+    {
+      "id": "modern-k-X-5",
+      "sourceId": "X-5",
+      "title": "最后一件东西",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-X-6"
+    },
+    {
+      "id": "modern-k-X-6",
+      "sourceId": "X-6",
+      "title": "尾声·兰草",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-N-1",
+      "sourceId": "N-1",
+      "title": "小衣服",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "hut",
+      "next": "modern-k-N-2"
+    },
+    {
+      "id": "modern-k-N-2",
+      "sourceId": "N-2",
+      "title": "再抱一次",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-N-3"
+    },
+    {
+      "id": "modern-k-N-3",
+      "sourceId": "N-3",
+      "title": "荼的声音",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-N-4"
+    },
+    {
+      "id": "modern-k-N-4",
+      "sourceId": "N-4",
+      "title": "名册",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-N-5"
+    },
+    {
+      "id": "modern-k-N-5",
+      "sourceId": "N-5",
+      "title": "靠岸",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-N-6"
+    },
+    {
+      "id": "modern-k-N-6",
+      "sourceId": "N-6",
+      "title": "尾声·两个耳",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-Y-1",
+      "sourceId": "Y-1",
+      "title": "云里的地方",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Y-2"
+    },
+    {
+      "id": "modern-k-Y-2",
+      "sourceId": "Y-2",
+      "title": "没有影子的神",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Y-3"
+    },
+    {
+      "id": "modern-k-Y-3",
+      "sourceId": "Y-3",
+      "title": "雩的歌",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Y-4"
+    },
+    {
+      "id": "modern-k-Y-4",
+      "sourceId": "Y-4",
+      "title": "抓不住",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Y-5"
+    },
+    {
+      "id": "modern-k-Y-5",
+      "sourceId": "Y-5",
+      "title": "东边的水",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Y-6"
+    },
+    {
+      "id": "modern-k-Y-6",
+      "sourceId": "Y-6",
+      "title": "尾声·敲桌子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-J-1",
+      "sourceId": "J-1",
+      "title": "掉头",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-J-2"
+    },
+    {
+      "id": "modern-k-J-2",
+      "sourceId": "J-2",
+      "title": "回来的村",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-J-3"
+    },
+    {
+      "id": "modern-k-J-3",
+      "sourceId": "J-3",
+      "title": "不认",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-J-4"
+    },
+    {
+      "id": "modern-k-J-4",
+      "sourceId": "J-4",
+      "title": "折桨",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-J-5"
+    },
+    {
+      "id": "modern-k-J-5",
+      "sourceId": "J-5",
+      "title": "走还是留",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-J-6"
+    },
+    {
+      "id": "modern-k-J-6",
+      "sourceId": "J-6",
+      "title": "尾声·参差",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-S-1",
+      "sourceId": "S-1",
+      "title": "鸟",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-S-2"
+    },
+    {
+      "id": "modern-k-S-2",
+      "sourceId": "S-2",
+      "title": "没有停的曲子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-S-3"
+    },
+    {
+      "id": "modern-k-S-3",
+      "sourceId": "S-3",
+      "title": "乌鸦回来",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-S-4"
+    },
+    {
+      "id": "modern-k-S-4",
+      "sourceId": "S-4",
+      "title": "山鬼的笑",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "mountain",
+      "next": "modern-k-S-5"
+    },
+    {
+      "id": "modern-k-S-5",
+      "sourceId": "S-5",
+      "title": "把笛子给人",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-S-6"
+    },
+    {
+      "id": "modern-k-S-6",
+      "sourceId": "S-6",
+      "title": "尾声·半截笛",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-M-1",
+      "sourceId": "M-1",
+      "title": "翻开册子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-M-2"
+    },
+    {
+      "id": "modern-k-M-2",
+      "sourceId": "M-2",
+      "title": "不认",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-M-3"
+    },
+    {
+      "id": "modern-k-M-3",
+      "sourceId": "M-3",
+      "title": "把名字刻回来",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-M-4"
+    },
+    {
+      "id": "modern-k-M-4",
+      "sourceId": "M-4",
+      "title": "雩的话",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-M-5"
+    },
+    {
+      "id": "modern-k-M-5",
+      "sourceId": "M-5",
+      "title": "老者走",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-M-6"
+    },
+    {
+      "id": "modern-k-M-6",
+      "sourceId": "M-6",
+      "title": "尾声·船板上的字",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-T-1",
+      "sourceId": "T-1",
+      "title": "19:37",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-T-2"
+    },
+    {
+      "id": "modern-k-T-2",
+      "sourceId": "T-2",
+      "title": "问东君",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-T-3"
+    },
+    {
+      "id": "modern-k-T-3",
+      "sourceId": "T-3",
+      "title": "数日子",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-T-4"
+    },
+    {
+      "id": "modern-k-T-4",
+      "sourceId": "T-4",
+      "title": "不老的人",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-T-5"
+    },
+    {
+      "id": "modern-k-T-5",
+      "sourceId": "T-5",
+      "title": "把钟砸了",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-T-6"
+    },
+    {
+      "id": "modern-k-T-6",
+      "sourceId": "T-6",
+      "title": "尾声·天亮",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-H-1",
+      "sourceId": "H-1",
+      "title": "九条水",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-H-2"
+    },
+    {
+      "id": "modern-k-H-2",
+      "sourceId": "H-2",
+      "title": "都想选",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-H-3"
+    },
+    {
+      "id": "modern-k-H-3",
+      "sourceId": "H-3",
+      "title": "河伯的笑",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-H-4"
+    },
+    {
+      "id": "modern-k-H-4",
+      "sourceId": "H-4",
+      "title": "选一条",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-H-5"
+    },
+    {
+      "id": "modern-k-H-5",
+      "sourceId": "H-5",
+      "title": "顺流",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-H-6"
+    },
+    {
+      "id": "modern-k-H-6",
+      "sourceId": "H-6",
+      "title": "尾声·九河归一",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-L-1",
+      "sourceId": "L-1",
+      "title": "只剩六个",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-L-2"
+    },
+    {
+      "id": "modern-k-L-2",
+      "sourceId": "L-2",
+      "title": "接着传",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-L-3"
+    },
+    {
+      "id": "modern-k-L-3",
+      "sourceId": "L-3",
+      "title": "代舞",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-L-4"
+    },
+    {
+      "id": "modern-k-L-4",
+      "sourceId": "L-4",
+      "title": "鼓自己响",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-L-5"
+    },
+    {
+      "id": "modern-k-L-5",
+      "sourceId": "L-5",
+      "title": "收芭",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-L-6"
+    },
+    {
+      "id": "modern-k-L-6",
+      "sourceId": "L-6",
+      "title": "尾声·终古",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    },
+    {
+      "id": "modern-k-Z-1",
+      "sourceId": "Z-1",
+      "title": "愿轻举而远游",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Z-2"
+    },
+    {
+      "id": "modern-k-Z-2",
+      "sourceId": "Z-2",
+      "title": "驾龙车，游四方",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Z-3"
+    },
+    {
+      "id": "modern-k-Z-3",
+      "sourceId": "Z-3",
+      "title": "与诸神同游",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "light-river",
+      "next": "modern-k-Z-4"
+    },
+    {
+      "id": "modern-k-Z-4",
+      "sourceId": "Z-4",
+      "title": "下峥嵘而无地",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Z-5"
+    },
+    {
+      "id": "modern-k-Z-5",
+      "sourceId": "Z-5",
+      "title": "上寥廓而无天",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-Z-6"
+    },
+    {
+      "id": "modern-k-Z-6",
+      "sourceId": "Z-6",
+      "title": "与泰初为邻",
+      "chapter": "昆仑卷 诸神与水声",
+      "route": "kunlun",
+      "script": "modern",
+      "background": "river",
+      "next": "modern-k-G-1"
+    }
+  ],
+  "royalEndings": {
+    "E1-7": "哀郢·战死",
+    "E2-7": "哀郢·随队",
+    "G1-8": "国殇·鬼雄",
+    "G2-8": "招魂·两个名字",
+    "L-8": "离骚·还在走",
+    "S-8": "涉江·不顾",
+    "H-8": "怀沙·石头上的字",
+    "R-6": "礼魂·传芭",
+    "F-6": "渔父·濯足",
+    "O-10": "橘颂·相拥二眠"
+  }
+}

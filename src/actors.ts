@@ -11,6 +11,9 @@ export type StageActor = { character: Character; label: string; castKey: string;
 export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActor | undefined {
   if (beat.kind !== 'text') return;
   let character = characterFor(beat.speaker);
+  // In the overseas ancient chapters Lin Yue speaks through Xu's body.
+  const modernBorrowed = scene.script === 'modern' && character?.key === 'linyue' && scene.route === 'common';
+  if (modernBorrowed) character = characterFor('戌');
   const extra = character ? undefined : extraFor(beat.speaker);
   if (!character && extra) character = extra;
   let silent = false;
@@ -29,7 +32,7 @@ export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActo
       borrowed = true;
     }
   }
-  return { character, label: borrowed ? '戌（沈辞）' : character.name, castKey, expression: silent ? BEAT_OVERRIDES[beat.id] ?? 'default' : expressionForBeat(beat), variant: variantForBeat(character.key, beat, scene) };
+  return { character, label: modernBorrowed ? '林越（戌身）' : borrowed ? '戌（沈辞）' : character.name, castKey, expression: silent ? BEAT_OVERRIDES[beat.id] ?? 'default' : expressionForBeat(beat), variant: variantForBeat(character.key, beat, scene) };
 }
 
 export function actorInCast(actor: StageActor, cast: string[]): boolean {

@@ -1,10 +1,12 @@
 import type { Beat, EndingId, Profile } from '../types';
+import { MODERN_CGS } from '../modern';
 
 export type CGTrigger = { endingId: EndingId } | { beatIds: string[] } | { sceneId: string; fromBeat?: string; toBeat?: string };
 export type CG = { id: string; title: string; caption: string; file: string; thumbnail?: string; trigger: CGTrigger };
 
 // Reviewed ComfyUI exports. The trigger register also controls gallery unlocking.
 export const CGS: CG[] = [
+  ...MODERN_CGS,
   { id: 'e1-blade', title: '天亮以前', caption: '那些被他们从人脚下拖出来的人，也确实活到了天亮。', file: 'cg-e1-blade', thumbnail: 'cg-e1-blade-thumb', trigger: { endingId: 'blade' } },
   { id: 'e2-mercy', title: '亭外无人', caption: '亭外无人等他，他终于不用怕说得慢。', file: 'cg-e2-mercy', thumbnail: 'cg-e2-mercy-thumb', trigger: { endingId: 'mercy' } },
   { id: 'e3-leave', title: '我叫戌', caption: '岸上的鸟，和学校操场后面几乎一样。', file: 'cg-e3-leave', thumbnail: 'cg-e3-leave-thumb', trigger: { endingId: 'leave' } },
@@ -32,9 +34,16 @@ function matches(cg: CG, beat: Beat, sceneId: string): boolean {
   return trigger.sceneId === sceneId && (!trigger.fromBeat || pageOrder(beat.id) >= pageOrder(trigger.fromBeat)) && (!trigger.toBeat || pageOrder(beat.id) <= pageOrder(trigger.toBeat));
 }
 
-export const cgForBeat = (beat: Beat, sceneId: string): CG | undefined => CGS.find(cg => !!cg.file && matches(cg, beat, sceneId));
+export const cgForBeat = (beat: Beat, sceneId: string): CG | undefined => {
+  if (sceneId.startsWith('modern-') && beat.background.startsWith('cg-')) {
+    const cg = CGS.find(item => item.file === beat.background);
+    return cg ?? { id: beat.background, title: '旅途留影', caption: '', file: beat.background, trigger: { sceneId } };
+  }
+  return CGS.find(cg => !!cg.file && matches(cg, beat, sceneId));
+};
 export const cgForEnding = (endingId: EndingId): CG | undefined => CGS.find(cg => !!cg.file && 'endingId' in cg.trigger && cg.trigger.endingId === endingId);
 export function cgUnlocked(cg: CG, profile: Profile): boolean {
+  if (cg.id.startsWith('modern-') && profile.art.includes(cg.file)) return true;
   const trigger = cg.trigger;
   if ('endingId' in trigger) return profile.endings.includes(trigger.endingId);
   if ('beatIds' in trigger) return trigger.beatIds.some(id => profile.read.includes(id));

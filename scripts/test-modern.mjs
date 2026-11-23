@@ -1,0 +1,51 @@
+import assert from 'node:assert/strict';
+import { chromium } from 'playwright';
+
+const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4179';
+const browser = await chromium.launch({ headless: true });
+const context = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+await context.addInitScript(() => localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted: true, showSprites: true })));
+const page = await context.newPage();
+const errors = [];
+page.on('pageerror', error => errors.push(error.message));
+page.on('response', response => { if (response.status() >= 400 && !response.url().includes('favicon.ico')) errors.push(`${response.status()} ${response.url()}`); });
+try {
+  await page.goto(base);
+  await page.getByRole('button', { name: /林越.*现代新卷/ }).click();
+  await page.getByRole('button', { name: /关于此梦/ }).click();
+  const aboutText = await page.locator('.about-content').innerText();
+  assert.match(aboutText, /两条古代旅程/);
+  assert.doesNotMatch(aboutText, /81场故事|异托邦 V6 完整剧本/);
+  assert.match(await page.locator('.about-source').getAttribute('href'), /原著剧本-海外现代线\.txt/);
+  await page.keyboard.press('Escape');
+  await page.locator('.about-content').waitFor({ state: 'detached' });
+  await page.getByRole('button', { name: '去问', exact: true }).click();
+  await page.locator('.game-screen').waitFor();
+  await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
+  await page.getByTestId('dialogue-text').waitFor();
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'cg-modern-word-stall');
+  await page.locator('.game-location').click();
+  const routeMemory = await page.locator('.route-memory').innerText();
+  assert.match(routeMemory, /回到现代线/);
+  assert.doesNotMatch(routeMemory, /卜骨/);
+  await page.keyboard.press('Escape');
+  await page.locator('.route-memory').waitFor({ state: 'detached' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.waitForTimeout(300);
+  assert.match(await page.locator('.game-location').innerText(), /现代卷/);
+  await page.keyboard.press('s');
+  await page.getByRole('button', { name: /空白书签/ }).first().click();
+  await page.waitForFunction(() => {
+    const state = JSON.parse(localStorage.getItem('heterotopia.v1.overseas.autosave') || 'null');
+    const profile = JSON.parse(localStorage.getItem('heterotopia.v1.overseas.profile') || 'null');
+    return state?.campaign === 'overseas' && state?.sceneId === 'modern-o-0-1' && profile?.campaign === 'overseas';
+  });
+  await page.evaluate(() => { localStorage.setItem('heterotopia.v1.campaign', JSON.stringify('original')); location.reload(); });
+  await page.waitForLoadState('domcontentloaded');
+  await page.getByRole('button', { name: /沈辞.*原篇/ }).waitFor();
+  const separated = await page.evaluate(() => ({ modern: JSON.parse(localStorage.getItem('heterotopia.v1.overseas.autosave') || 'null'), original: JSON.parse(localStorage.getItem('heterotopia.v1.autosave') || 'null') }));
+  assert.equal(separated.modern?.campaign, 'overseas');
+  assert.equal(separated.original, null);
+  assert.deepEqual(errors, []);
+  console.log(JSON.stringify({ modernEntry: 'ok', campaignAboutAndSource: 'ok', openingArtwork: 'ok', modernRouteMemory: 'ok', scopedAutosave: 'ok', originalSaveIsolation: 'ok', browserErrors: errors }, null, 2));
+} finally { await context.close(); await browser.close(); }

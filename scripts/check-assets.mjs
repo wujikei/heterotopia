@@ -1,11 +1,12 @@
 import { readFile, readdir, mkdir, writeFile, stat } from 'node:fs/promises';
-import { BACKGROUNDS, CHARACTERS } from '../src/data/world.ts';
+import { BACKGROUNDS, CHARACTERS, MODERN_CHARACTERS } from '../src/data/world.ts';
 import { portraitName } from '../src/assets.ts';
 import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
 import { AVAILABLE_EXTRAS } from '../src/data/extras.ts';
 import { CGS } from '../src/data/cgs.ts';
 import { ACTOR_VARIANTS, actorPortraitName } from '../src/data/actorVariants.ts';
 import { RELIC_ART } from '../src/data/relics.ts';
+import { MODERN_SCENE_ART } from '../src/modern.ts';
 
 const root = new URL('../', import.meta.url);
 const imageManifest = JSON.parse(await readFile(new URL('src/data/art-manifest.json', root), 'utf8'));
@@ -13,7 +14,8 @@ const audio = JSON.parse(await readFile(new URL('public/audio/manifest.json', ro
 const requiredArt = new Set([
   ...RELIC_ART.map(name => `${name}.webp`),
   ...Object.keys(BACKGROUNDS).flatMap(name => [`${name}.webp`, `${name}-thumb.webp`]),
-  ...CHARACTERS.flatMap(character => [`${portraitName(character.key)}.webp`, `portrait-${character.key}-face.webp`]),
+  ...[...new Set(Object.values(MODERN_SCENE_ART))].flatMap(name => [`${name}.webp`, `${name}-thumb.webp`]),
+  ...[...CHARACTERS, ...MODERN_CHARACTERS].flatMap(character => [`${portraitName(character.key)}.webp`, `portrait-${character.key}-face.webp`]),
   ...imageManifest.avif.map(name => `${name}.avif`),
   ...imageManifest.mobile.flatMap(name => [`${name}-m.avif`, `${name}-m.webp`]),
   ...Object.keys(imageManifest.originals ?? {}).map(name => `${name}.webp`),

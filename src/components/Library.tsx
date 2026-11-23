@@ -1,7 +1,8 @@
 import { dateLocale, getLanguage, LANGUAGES, localizePage, t, tr, useLocale } from '../i18n';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Download, Headphones, Image as ImageIcon, LockKeyhole, RotateCcw, Upload, X } from 'lucide-react';
-import { asset, assetSources, BACKGROUNDS, CHARACTERS, ENDINGS, ITEMS, portraitFace, sourceDocument } from '../data/world';
+import { asset, assetSources, BACKGROUNDS, charactersForCampaign, endingsForCampaign, ITEMS, portraitFace, sourceDocument } from '../data/world';
+import { campaignOf } from '../modern';
 import { portraitName } from '../assets';
 import { ArtImage } from './ArtImage';
 import { RelicArt, RelicCard, RelicStudy } from './RelicStudy';
@@ -11,11 +12,11 @@ import { useModalBack } from './Modal';
 import { sound } from '../audio';
 import { CGS, cgUnlocked } from '../data/cgs';
 import { AVAILABLE_EXTRAS, EXTRAS } from '../data/extras';
-import { canReturn, hasKunlun, hasRoyal, SCENES, sceneById } from '../engine';
+import { campaignScenes, canReturn, hasKunlun, hasRoyal, sceneById } from '../engine';
 import { isStoryReady, loadStory } from '../story';
 import { BoneMark } from './Atmosphere';
 import { slotPresentation } from '../savePresentation';
-import type { GameState, Profile, Route, SaveSlot, Settings } from '../types';
+import type { Campaign, EndingId, GameState, Profile, Route, SaveSlot, Settings } from '../types';
 
 const ROUTES: { key: Route; name: string; subtitle: string; art: string; number: string }[] = [
   { key: 'prologue', name: '水声之前', subtitle: '序章', art: 'school', number: '序' },
@@ -27,14 +28,16 @@ const ROUTES: { key: Route; name: string; subtitle: string; art: string; number:
 
 export function ChaptersView({ profile, currentScene, onJump }: { profile: Profile; currentScene?: string; onJump: (id: string) => void }) {
   useLocale();
+  const SCENES = campaignScenes(campaignOf(profile));
+  const routes = campaignOf(profile) === 'overseas' ? ROUTES.map(item => item.key === 'prologue' ? { ...item, name: '问字，不问命', subtitle: '现代卷', art: 'modern-dorm' } : item.key === 'common' ? { ...item, name: '天问七夜', art: 'river' } : item.key === 'return' ? { ...item, name: '这边的日子', subtitle: '现代返场与尾声', art: 'modern-sunset' } : item) : ROUTES;
   const [route, setRoute] = useState<Route>(currentScene ? sceneById(currentScene).route : 'prologue');
-  const selected = ROUTES.find(item => item.key === route)!;
+  const selected = routes.find(item => item.key === route)!;
   const scenes = SCENES.filter(scene => scene.route === route);
   const visited = scenes.filter(scene => profile.visited.includes(scene.id));
   return <div className="chapter-layout">
     <nav className="route-river" aria-label={t("路线")}>
       <svg className="route-river-line" viewBox="0 0 40 500" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0C34 50 6 80 20 125S34 200 20 250 6 330 20 375 34 450 20 500" /></svg>
-      {tr(ROUTES.map(item => {
+      {tr(routes.map(item => {
         const all = SCENES.filter(scene => scene.route === item.key);
         const seen = all.filter(scene => profile.visited.includes(scene.id)).length;
         return <button key={item.key} className={`route-stop ${route === item.key ? 'selected' : ''} ${seen ? '' : 'route-stop--unseen'}`} onClick={() => setRoute(item.key)} aria-pressed={route === item.key}>
@@ -42,7 +45,7 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
           <span className="route-copy"><small>{tr(item.subtitle)}</small><strong>{tr(item.name)}</strong><em>{tr(seen ? t("{0} / {1} 场", seen, all.length) : '尚未行至')}</em></span>
         </button>;
       }))}
-      <div className="route-memory"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><p>{t("两条路，同一夜。")}<br />{t("经历会留在卜骨里。")}</p></div>
+      <div className="route-memory">{campaignOf(profile) === 'overseas' ? <span className="modern-seal-mark" role="img" aria-label="何字玉扣">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small />}<p>{campaignOf(profile) === 'overseas' ? <>第一段旅程结束后，回到现代线。<br />两条路都走完，抵达山顶尾声。</> : <>{t("两条路，同一夜。")}<br />{t("经历会留在卜骨里。")}</>}</p></div>
     </nav>
     <div className="chapter-content">
       <div className="chapter-banner" key={route}>
@@ -52,7 +55,7 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
       </div>
       <ol className="scene-list">
         {tr(scenes.map((scene, index) => {
-          const unlocked = profile.visited.includes(scene.id) || scene.id === '0-1';
+          const unlocked = profile.visited.includes(scene.id) || scene.id === '0-1' || scene.id === 'modern-o-0-1';
           const current = currentScene === scene.id;
           const [time, ...place] = t(scene.title).split('·');
           return <li key={scene.id}><button className={`scene-row ${current ? 'scene-row--current' : ''} ${unlocked ? '' : 'scene-row--locked'}`} disabled={!unlocked} onClick={() => onJump(scene.id)}>
@@ -66,14 +69,17 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
 
 export function CharactersView({ profile }: { profile: Profile }) {
   useLocale();
+  const CHARACTERS = charactersForCampaign(campaignOf(profile));
+  const SCENES = campaignScenes(campaignOf(profile));
   const [selected, setSelected] = useState(CHARACTERS[0]);
-  const [storyReady, setStoryReady] = useState(isStoryReady);
+  const campaign = campaignOf(profile);
+  const [storyReady, setStoryReady] = useState(isStoryReady(campaign));
   useEffect(() => {
     if (storyReady || !profile.read.length) return;
     let active = true;
-    void loadStory().then(() => { if (active) setStoryReady(true); }).catch(() => {});
+    void loadStory(campaign).then(() => { if (active) setStoryReady(true); }).catch(() => {});
     return () => { active = false; };
-  }, [storyReady, profile.read.length]);
+  }, [storyReady, profile.read.length, campaign]);
   const characters = [...CHARACTERS, ...EXTRAS.filter(character => AVAILABLE_EXTRAS.has(character.key))];
   const heardExtras = useMemo(() => {
     const readBlocks = new Set(profile.read.map(id => id.slice(0, id.lastIndexOf(':'))));
@@ -86,7 +92,7 @@ export function CharactersView({ profile }: { profile: Profile }) {
     });
     return heard;
   }, [profile.read, storyReady]);
-  const known = (key: string) => profile.met.includes(key) || key === 'shen' || heardExtras.has(key);
+  const known = (key: string) => profile.met.includes(key) || key === (campaignOf(profile) === 'overseas' ? 'linyue' : 'shen') || heardExtras.has(key);
   const count = characters.filter(character => known(character.key)).length;
   return <div className="characters-layout">
     <div className="character-gallery">
@@ -115,8 +121,8 @@ export function GalleryView({ profile }: { profile: Profile }) {
   useLocale();
   const [tab, setTab] = useState<'landscapes' | 'cgs'>('landscapes');
   const entries = tab === 'landscapes'
-    ? Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day').map(([key, info]) => ({ key, art: key, thumbnail: `${key}-thumb`, ...info, known: profile.art.includes(key) }))
-    : CGS.filter(cg => !!cg.file).map(cg => ({ key: cg.id, art: cg.file, thumbnail: cg.thumbnail || cg.file, name: cg.title, subtitle: cg.caption, chapter: '旅途留影', known: cgUnlocked(cg, profile) }));
+    ? Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day' && (campaignOf(profile) === 'overseas' || !key.includes('modern'))).map(([key, info]) => ({ key, art: key, thumbnail: `${key}-thumb`, ...info, known: profile.art.includes(key) }))
+    : CGS.filter(cg => !!cg.file && cg.id.startsWith('modern-') === (campaignOf(profile) === 'overseas')).map(cg => ({ key: cg.id, art: cg.file, thumbnail: cg.thumbnail || cg.file, name: cg.title, subtitle: cg.caption, chapter: '旅途留影', known: cgUnlocked(cg, profile) }));
   const unlocked = entries.filter(entry => entry.known);
   const [viewing, setViewing] = useState<string | null>(null);
   const [hideCaption, setHideCaption] = useState(false);
@@ -175,6 +181,7 @@ export function GalleryView({ profile }: { profile: Profile }) {
 
 export function JournalView({ state, profile, initialRelic }: { state: GameState | null; profile: Profile; initialRelic?: RelicId }) {
   useLocale();
+  const ENDINGS = endingsForCampaign(campaignOf(profile));
   const [tab, setTab] = useState<'bag' | 'relics' | 'endings'>('bag');
   const [selected, setSelected] = useState<Relic | undefined>(() => {
     const relic = initialRelic && relicById(initialRelic);
@@ -206,10 +213,10 @@ export function JournalView({ state, profile, initialRelic }: { state: GameState
   const ghosts = Math.max(0, 4 - items.length);
   return <div className="journal-content" ref={scroll}>
     <div className="notebook">
-      <div className="tab-bar notebook-tabs" role="tablist"><button role="tab" aria-selected={tab === 'bag'} className={tab === 'bag' ? 'selected' : ''} onClick={() => { setTab('bag'); setSelected(undefined); }}>{t("随身之物")}</button><button role="tab" aria-selected={tab === 'relics'} className={tab === 'relics' ? 'selected' : ''} onClick={() => { setTab('relics'); setSelected(undefined); }}>{t("途中物笺")}</button><button role="tab" aria-selected={tab === 'endings'} className={tab === 'endings' ? 'selected' : ''} onClick={() => { setTab('endings'); setSelected(undefined); }}>{t("命运的回声")}<span>{tr(profile.endings.length)} / 6</span></button></div>
+      <div className="tab-bar notebook-tabs" role="tablist"><button role="tab" aria-selected={tab === 'bag'} className={tab === 'bag' ? 'selected' : ''} onClick={() => { setTab('bag'); setSelected(undefined); }}>{t("随身之物")}</button><button role="tab" aria-selected={tab === 'relics'} className={tab === 'relics' ? 'selected' : ''} onClick={() => { setTab('relics'); setSelected(undefined); }}>{t("途中物笺")}</button><button role="tab" aria-selected={tab === 'endings'} className={tab === 'endings' ? 'selected' : ''} onClick={() => { setTab('endings'); setSelected(undefined); }}>{t("命运的回声")}<span>{tr(profile.endings.length)} / {Object.keys(ENDINGS).length}</span></button></div>
       <div className={`notebook-page ${selected ? 'notebook-page--study' : tab === 'relics' ? 'notebook-page--relic-index' : ''}`} key={tab}>
         {tr(selected ? <RelicStudy relic={selected} state={state} profile={profile} onSelect={setSelected} onBack={back} /> : tab === 'bag' ? <>
-          <div className="bone-panel"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><div><span className="eyebrow">{t("卜骨上的两道裂纹")}</span><h3>{tr(canReturn(profile) ? '来处与归处，终于相合。' : hasRoyal(profile) || hasKunlun(profile) ? '另一条路，仍在等你。' : '两条路，共享这一夜。')}</h3><p>{t("记忆留存，物件归于此夜原样。")}<br />{tr(profile.oldNames ? '那十根旧队名简，你已经问过。' : '有些名字，还没有被听见。')}</p><div className="bone-legend"><span className={hasRoyal(profile) ? 'is-lit' : ''}>{t("第一道 · 王裔")}{' '}{tr(hasRoyal(profile) && <Check size={12} />)}</span><span className={hasKunlun(profile) ? 'is-lit' : ''}>{t("第二道 · 昆仑")}{' '}{tr(hasKunlun(profile) && <Check size={12} />)}</span></div></div></div>
+          <div className="bone-panel">{campaignOf(profile) === 'overseas' ? <span className="modern-seal-mark modern-seal-mark--large">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} />}<div><span className="eyebrow">{tr(campaignOf(profile) === 'overseas' ? '两条远行，各自留下记忆' : '卜骨上的两道裂纹')}</span><h3>{tr(canReturn(profile) ? '来处与归处，终于相合。' : hasRoyal(profile) || hasKunlun(profile) ? '另一条路，仍在等你。' : '两条路，共享这一夜。')}</h3><p>{campaignOf(profile) === 'overseas' ? '回到宿舍，掌心仍留着“何”字。' : t("记忆留存，物件归于此夜原样。")}<br />{campaignOf(profile) === 'overseas' ? (profile.endings.some(id => id.startsWith('modern-royal-')) ? '王裔那条路，你已经走过。' : '王裔那条路，还没有走过。') : tr(profile.oldNames ? '那十根旧队名简，你已经问过。' : '有些名字，还没有被听见。')}</p><div className="bone-legend"><span className={hasRoyal(profile) ? 'is-lit' : ''}>{tr(campaignOf(profile) === 'overseas' ? '第一条 · 王裔' : '第一道 · 王裔')}{' '}{tr(hasRoyal(profile) && <Check size={12} />)}</span><span className={hasKunlun(profile) ? 'is-lit' : ''}>{tr(campaignOf(profile) === 'overseas' ? '第二条 · 昆仑' : '第二道 · 昆仑')}{' '}{tr(hasKunlun(profile) && <Check size={12} />)}</span></div></div></div>
           <h4 className="section-label">{t("此刻，行囊里")}</h4>
           <div className="inventory-grid">
             {tr(items.map(id => {
@@ -221,7 +228,7 @@ export function JournalView({ state, profile, initialRelic }: { state: GameState
           </div>
           {tr(!items.length && <p className="empty-note">{t("行囊还轻。先走到故事里去吧。")}</p>)}
         </> : tab === 'relics' ? <><div className="relic-index-heading"><span className="eyebrow">{t("所见，所记")}</span><h3>{t("让旧物，留住人的温度。")}</h3><p>{t("行囊会变，见过的模样留在这里。")}</p></div><div className="relic-grid">{tr(relics.map(relic => <RelicCard key={relic.group} relic={relic} state={state} profile={profile} onOpen={() => openRelic(relic)} />))}</div>{tr(!relics.length && <p className="empty-note">{t("还没有记下的物件。")}<br />{t("先走到故事里去吧。")}</p>)}</> : <div className="endings-grid">{tr(Object.entries(ENDINGS).map(([id, ending]) => {
-          const known = profile.endings.includes(id as keyof typeof ENDINGS);
+          const known = profile.endings.includes(id as EndingId);
           return <div className={`ending-card ${known ? 'ending-card--known' : ''}`} key={id} style={{ '--glimpse': `url("${asset(`${ending.background}-thumb`)}")` } as React.CSSProperties}><span className="ending-roman" aria-hidden="true">{tr(ending.index)}</span>{tr(!known && <LockKeyhole className="ending-lock" size={16} strokeWidth={1.2} />)}<small>{tr(known ? ending.subtitle : '一页未尽的命运')}</small><h3>{tr(known ? ending.title : '未闻')}</h3><p>{tr(known ? ending.quote : '亲历之后，才能记住。')}</p></div>;
         }))}</div>)}
       </div>
@@ -264,16 +271,16 @@ export function SettingsView({ settings, onChange, onExport, onImport, onReset, 
   return <div className="settings-content"><div className="setting-language"><label htmlFor="reading-language">{t('语言')}</label><select id="reading-language" value={languagePending ?? settings.language} disabled={!!languagePending} onChange={event => onChange({ ...settings, language: event.target.value as Settings['language'] })}>{LANGUAGES.map(item => <option key={item.id} value={item.id} lang={item.html}>{item.name}</option>)}</select><span role={languageError ? 'alert' : 'status'}>{languagePending ? t('正在切换语言…') : languageError ? t('语言切换失败，请重试。') : ''}</span></div><div className="settings-columns"><section><h3 className="section-label">{t("阅读 · 按自己的节奏")}</h3>{tr(slider('textSpeed', '文字显现', 0, 65, '调到最左侧可立即显示全文', '字/秒'))}{tr(slider('autoDelay', '自动节奏', 2, 10, '快 ↔ 慢，长句会多留一点时间', ''))}{tr(toggle('autoAfterChoice', '选择后继续自动阅读', '作出选择后，沿用之前的自动阅读节奏'))}{tr(slider('fontSize', '正文字号', 17, 29, '把字调到舒服的大小', 'px'))}{tr(toggle('showSprites', '人物立绘', '让说话的人出现在画面中'))}{tr(toggle('reducedMotion', '减弱动态', '减少粒子、镜头移动与转场'))}{tr(toggle('lightweight', '轻量模式', '开启使用较小背景；关闭呈现原画细节'))}</section><section><h3 className="section-label">{t("听觉 · 一条河的声音")}</h3>{tr(slider('musicVolume', '配乐音量', 0, 100, '十一首原声，随旅途渐次展开', '%'))}{tr(slider('ambienceVolume', '环境音量', 0, 100, '水声、风声与灶边的微响', '%'))}{tr(slider('sfxVolume', '音效音量', 0, 100, '纸页、铜铃与脚下的一步', '%'))}{tr(toggle('muted', '静音', '暂时把声音放轻'))}<button className="text-button settings-music-link" onClick={onMusic}><Headphones size={16} strokeWidth={1.2} />{t("听水集 · 原声重听")}<ArrowRight size={14} /></button><div className="settings-note"><span>{t("戴上耳机，")}</span><p>{t("听水从远处来，也听人慢慢说话。")}</p></div></section></div><div className="settings-footer"><div className="settings-transfer"><button className="text-button" onClick={onExport}><Download size={15} />{t("导出旅途")}</button><button className="text-button" onClick={() => input.current?.click()}><Upload size={15} />{t("导入存档")}</button><input ref={input} type="file" accept="application/json,.json" hidden onChange={event => { const file = event.target.files?.[0]; if (file) onImport(file); event.target.value = ''; }} /></div><button className="text-button quiet" onClick={onReset}><RotateCcw size={14} />{t("恢复阅读设置")}</button></div><div className="keyboard-reference" aria-label={t("阅读快捷键")}><span><kbd>Space</kbd> / <kbd>Enter</kbd> {' '}{t("继续 / 显示全文")}</span><span><kbd>←</kbd> / <kbd>PageUp</kbd> {' '}{t("回看 / 上滑")}</span><span><kbd>A</kbd> {' '}{t("自动阅读")}</span><span><kbd>Ctrl</kbd> {' '}{t("按住跳过已读")}</span><span><kbd>1–6</kbd> {' '}{t("选择纸签")}</span><span><kbd>S</kbd> {' '}{t("存档 /")}{' '}<kbd>L</kbd> {' '}{t("读档")}</span><span><kbd>H</kbd> {' '}{t("隐藏界面")}</span><span><kbd>F</kbd> {' '}{t("全屏")}</span><span><kbd>Esc</kbd> {' '}{t("菜单 / 逐层返回")}</span></div></div>;
 }
 
-export function AboutView() {
+export function AboutView({ campaign }: { campaign: Campaign }) {
   useLocale();
   const credits: [string, string][] = [['原著剧本', '用户提供'], ['场景与人物美术', '本机 Qwen-Image 2.1'], ['原声配乐', '本机 ACE-Step 1.5 · 十一首'], ['环境与音效', '本作程序化声音设计'], ['中文字体', 'Noto Serif SC · 霞鹜文楷 LXGW WenKai'], ['字体授权', 'SIL Open Font License']];
   return <div className="about-content">
     <div className="about-hero"><span className="about-seal" aria-hidden="true">{getLanguage() === 'en' || getLanguage() === 'de' ? 'HT' : '异托'}</span><div className="about-title">{t("异托邦")}</div></div>
     <blockquote>{t("看路，也看看走路的人。")}</blockquote>
-    <p>{t("一部关于远行、记忆与回家的楚地奇幻视觉小说。")}</p>
-    <p>{t("改编自《异托邦 V6 完整剧本》，保留序章、共通线、王裔线、昆仑线与归来的完整故事，以及跨路线记忆与四个王裔结局。")}</p>
-    <div className="about-stats"><span><strong>81</strong>{t("场故事")}</span><span><strong>2</strong>{t("条命运")}</span><span><strong>6</strong>{t("页回声")}</span></div>
+    <p>{campaign === 'overseas' ? '一部关于异乡求学、文化隔阂与重新理解自己的现代故事。' : t("一部关于远行、记忆与回家的楚地奇幻视觉小说。")}</p>
+    <p>{campaign === 'overseas' ? '跟随林越从旧街问字摊出发，经历王裔与昆仑两条古代旅程，在现代生活的两次返场后走向山顶尾声。' : t("改编自《异托邦 V6 完整剧本》，保留序章、共通线、王裔线、昆仑线与归来的完整故事，以及跨路线记忆与四个王裔结局。")}</p>
+    <div className="about-stats">{campaign === 'overseas' ? <><span><strong>2</strong>条古代旅程</span><span><strong>2</strong>次现代返场</span><span><strong>1</strong>段山顶尾声</span></> : <><span><strong>81</strong>{t("场故事")}</span><span><strong>2</strong>{t("条命运")}</span><span><strong>6</strong>{t("页回声")}</span></>}</div>
     <dl className="about-credit">{tr(credits.map(([role, name]) => <div key={role}><dt>{tr(role)}</dt><dd>{tr(name)}</dd></div>))}</dl>
-    <a className="text-button about-source" href={sourceDocument()} download="异托邦-V6-原著剧本.txt">{t("阅读原著剧本")}{' '}<ArrowRight size={15} /></a>
+    <a className="text-button about-source" href={sourceDocument(campaign)} download={campaign === 'overseas' ? '林越海外现代线-原著剧本.txt' : '异托邦-V6-原著剧本.txt'}>{t("阅读原著剧本")}{' '}<ArrowRight size={15} /></a>
   </div>;
 }

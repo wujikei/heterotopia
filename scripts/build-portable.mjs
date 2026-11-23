@@ -29,13 +29,14 @@ for (const [name, filename] of Object.entries(manifest.originals ?? {})) {
   originalMap[name] = `data:${mime};base64,${image.toString('base64')}`;
 }
 const source = await readFile(path.join(dist, '原著剧本-V6.txt'));
+const modernSource = await readFile(path.join(root, 'public', '原著剧本-海外现代线.txt'));
 const audioMap = {};
 for (const name of await readdir(path.join(dist, 'audio'))) {
   if (!name.endsWith('.mp3')) continue;
   const audio = await readFile(path.join(dist, 'audio', name));
   audioMap[name] = `data:audio/mpeg;base64,${audio.toString('base64')}`;
 }
-let embedded = `<script>globalThis.__HETEROTOPIA_ASSETS__=${JSON.stringify(assetMap)};globalThis.__HETEROTOPIA_ORIGINALS__={};globalThis.__HETEROTOPIA_AUDIO__={};globalThis.__HETEROTOPIA_SOURCE__="data:text/plain;charset=utf-8;base64,${source.toString('base64')}";</script>`;
+let embedded = `<script>globalThis.__HETEROTOPIA_ASSETS__=${JSON.stringify(assetMap)};globalThis.__HETEROTOPIA_ORIGINALS__={};globalThis.__HETEROTOPIA_AUDIO__={};globalThis.__HETEROTOPIA_SOURCE__="data:text/plain;charset=utf-8;base64,${source.toString('base64')}";globalThis.__HETEROTOPIA_MODERN_SOURCE__="data:text/plain;charset=utf-8;base64,${modernSource.toString('base64')}";</script>`;
 const payloads = [];
 let payload = '';
 const shardBudget = 24 * 1024 * 1024;

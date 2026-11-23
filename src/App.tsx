@@ -11,7 +11,8 @@ import { ActorLayer } from './components/ActorLayer';
 import { UpdateNotice } from './components/UpdateNotice';
 import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
-import { asset, BACKGROUNDS, CHARACTERS, ENDINGS, portraitAsset } from './data/world';
+import { asset, BACKGROUNDS, CHARACTERS, endingsForCampaign, portraitAsset } from './data/world';
+import { campaignOf, modernFinal } from './modern';
 import { actorForBeat } from './actors';
 import { actorPortraitName } from './data/actorVariants';
 import { relicForBeat } from './data/relics';
@@ -22,13 +23,14 @@ import { prefetchWhenIdle, preloadImage } from './preload';
 import { afterFirstScreen } from './idle';
 import { warmReadingFonts } from './fonts';
 import { isStoryReady, loadStory } from './story';
-import { advance, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES, sceneById } from './engine';
-import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist, validState } from './storage';
+import { advance, campaignScenes, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES, sceneById } from './engine';
+import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist as store, validState } from './storage';
 import { scoreFrame } from './score';
 import { replayHistory } from './reading';
 import { autoDelayFor } from './autoReading';
-import type { GameState, Profile, SaveSlot, Settings } from './types';
+import type { Campaign, GameState, Profile, SaveSlot, Settings } from './types';
 import './styles/reading-audio.css';
+import './styles/modern.css';
 
 const Backlog = lazy(() => import('./components/Backlog').then(module => ({ default: module.Backlog })));
 const MusicRoom = lazy(() => import('./components/MusicRoom').then(module => ({ default: module.MusicRoom })));
@@ -95,14 +97,23 @@ function IconButton({ label, children, onClick, className = '', active = false, 
 }
 
 export default function App() {
+  const [campaign, setCampaign] = useState<Campaign>(() => {
+    try { return JSON.parse(localStorage.getItem('heterotopia.v1.campaign') ?? 'null') === 'overseas' ? 'overseas' : 'original'; } catch { return 'original'; }
+  });
+  return <CampaignApp key={campaign} campaign={campaign} onCampaign={next => { store('campaign', next); setCampaign(next); }} />;
+}
+
+function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign: (campaign: Campaign) => void }) {
+  const persist = useCallback((key: string, value: unknown) => store(key, value, campaign), [campaign]);
+  const ENDINGS = endingsForCampaign(campaign);
   const language = useLocale();
-  const [profile, setProfile] = useState<Profile>(loadProfile);
+  const [profile, setProfile] = useState<Profile>(() => loadProfile(campaign));
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const audioState = useSyncExternalStore(sound.subscribe, sound.getSnapshot);
-  const [game, setGame] = useState<GameState | null>(loadAutosave);
-  const [slots, setSlots] = useState<(SaveSlot | null)[]>(loadSlots);
+  const [game, setGame] = useState<GameState | null>(() => loadAutosave(campaign));
+  const [slots, setSlots] = useState<(SaveSlot | null)[]>(() => loadSlots(campaign));
   const [screen, setScreen] = useState<'home' | 'play'>('home');
-  const [storyReady, setStoryReady] = useState(isStoryReady);
+  const [storyReady, setStoryReady] = useState(isStoryReady(campaign));
   const [loadingReading, setLoadingReading] = useState(false);
   const [readingError, setReadingError] = useState(false);
   const readingLoad = useRef(false);
@@ -206,7 +217,7 @@ export default function App() {
   const beats = useMemo(() => game && storyReady ? compileScene(game.sceneId, profile, game) : [], [game, profile, storyReady]);
   const text = beat?.kind === 'text' ? localizePage(beat.id, beat.text) : '';
   const typing = useTypewriter(screen === 'play' ? `${beat?.id}:${language}` : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
-  const background = screen === 'home' ? 'hero' : beat?.background ?? 'hero';
+  const background = screen === 'home' ? campaign === 'overseas' ? 'modern-sunset' : 'hero' : beat?.background ?? 'hero';
   const cg = screen === 'play' && beat ? cgForBeat(beat, scene.id) : undefined;
   const relic = screen === 'play' && beat?.kind === 'text' ? relicForBeat(beat.id) : undefined;
 
@@ -214,8 +225,8 @@ export default function App() {
 
   useEffect(() => {
     if (screen !== 'home' || storyReady || (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
-    return afterFirstScreen(() => { void loadStory().then(() => setStoryReady(true)).catch(() => {}); });
-  }, [screen, storyReady]);
+    return afterFirstScreen(() => { void loadStory(campaign).then(() => setStoryReady(true)).catch(() => {}); });
+  }, [screen, storyReady, campaign]);
 
   useEffect(() => {
     persist('settings', settings); sound.update(settings);
@@ -268,12 +279,13 @@ export default function App() {
     if (!sameChapter && !(game.sceneId === '1-12' && game.cycle > 1)) {
       setIntro(openingIntro(game, currentProfile.current));
     }
-  }, [game?.sceneId, screen, game?.cycle, scene.chapter, scene.title]);
+  }, [game?.sceneId, screen, game?.cycle, scene.chapter, scene.title, campaign]);
 
   useEffect(() => {
     if (screen !== 'play' || !game) return;
     const current = compileScene(game.sceneId, currentProfile.current, game);
-    const next = SCENES[SCENES.findIndex(item => item.id === game.sceneId) + 1];
+    const sceneList = campaignScenes(campaign);
+    const next = scene.script === 'modern' ? scene.next ? sceneById(scene.next) : undefined : sceneList[sceneList.findIndex(item => item.id === game.sceneId) + 1];
     const upcoming = next ? compileScene(next.id, currentProfile.current, game) : [];
     const portraits = new Set<string>();
     // Prefetch the actual costumes and poses selected for these pages.
@@ -303,7 +315,7 @@ export default function App() {
       if (!cancelled) stopIdle = prefetchWhenIdle(CHARACTERS.map(character => portraitAsset(character.key)));
     });
     return () => { cancelled = true; stopIdle?.(); };
-  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight]);
+  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight, campaign]);
 
   useEffect(() => {
     if (!intro) return;
@@ -341,13 +353,13 @@ export default function App() {
 
   const openModal = useCallback((name: ModalName) => {
     if (name === 'journal') setJournalRelic(undefined);
-    if (name === 'saves' && !isStoryReady()) void loadStory().then(() => setStoryReady(true)).catch(() => {});
+    if (name === 'saves' && !isStoryReady(campaign)) void loadStory(campaign).then(() => setStoryReady(true)).catch(() => {});
     if (!document.querySelector('[role="dialog"]')) modalOpener.current = document.activeElement as HTMLElement | null;
     setModalPath(path => path.at(-1) === name ? path : [...path, name]);
     setHidden(false); setHoldingSkip(false);
     clearChoiceTimers(); setStamped(null);
     clearTimeout(toastTimer.current); setToast(''); sound.click('open');
-  }, [clearChoiceTimers]);
+  }, [campaign, clearChoiceTimers]);
   const openSaves = useCallback((mode: 'save' | 'load') => { setSaveMode(mode); openModal('saves'); }, [openModal]);
 
   const toggleFullscreen = useCallback(async () => {
@@ -386,7 +398,7 @@ export default function App() {
     if (readingLoad.current) return null;
     readingLoad.current = true; setLoadingReading(true); setReadingError(false);
     try {
-      await loadStory(); setStoryReady(true);
+      await loadStory(campaign); setStoryReady(true);
       const state = stateForReading();
       const location = sceneById(state.sceneId);
       const items = compileScene(state.sceneId, currentProfile.current, state);
@@ -472,7 +484,7 @@ export default function App() {
   const toggleAuto = () => { sound.click('toggle'); setAuto(value => !value); stopSkipping(); };
 
   const jump = async (id: string) => {
-    if (id === '0-1' && !profile.visited.includes(id)) { start(); return; }
+    if ((id === '0-1' || id === 'modern-o-0-1') && !profile.visited.includes(id)) { start(); return; }
     void sound.unlock(settings);
     const jumped = await prepareReading(() => revisitScene(game ?? newGame(currentProfile.current), currentProfile.current, id));
     if (!jumped) return;
@@ -508,11 +520,12 @@ export default function App() {
       if (file.size > 8_000_000) throw new Error('size');
       const data = JSON.parse(await file.text());
       if (data?.format !== 'heterotopia-save' || data.version !== 1 || data.profile?.version !== 1) throw new Error('format');
+      if (campaignOf(data.profile) !== campaign) { notify('请先切换到这份存档对应的故事卷，再导入。'); return; }
       const incoming = data.profile as Profile;
       if (!['visited', 'read', 'art', 'met', 'endings'].every(key => Array.isArray(incoming[key as keyof Profile]))) throw new Error('profile');
-      const defaults = newProfile();
+      const defaults = newProfile(campaign);
       const merged = { ...defaults, ...profile };
-      merged.visited = [...new Set([...profile.visited, ...incoming.visited.filter(id => SCENES.some(s => s.id === id))])];
+      merged.visited = [...new Set([...profile.visited, ...incoming.visited.filter(id => campaignScenes(campaign).some(s => s.id === id))])];
       merged.read = [...new Set([...profile.read, ...incoming.read.filter(id => typeof id === 'string')])];
       merged.art = [...new Set([...profile.art, ...incoming.art.filter(id => id in BACKGROUNDS)])];
       merged.met = [...new Set([...profile.met, ...incoming.met.filter(id => typeof id === 'string')])];
@@ -521,10 +534,10 @@ export default function App() {
       persist('profile', merged); setProfile(merged);
       const importedSlots = slots.map((slot, i) => {
         const item = Array.isArray(data.slots) ? data.slots[i] : null;
-        return item?.version === 1 && validState(item.state) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? item as SaveSlot : slot;
+        return item?.version === 1 && validState(item.state, campaign) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? item as SaveSlot : slot;
       });
       setSlots(importedSlots); persist('slots', importedSlots);
-      if (validState(data.state)) { audioJump.current = true; persist('autosave', data.state); setGame(data.state); }
+      if (validState(data.state, campaign)) { audioJump.current = true; persist('autosave', data.state); setGame(data.state); }
       notify('旅途已导入，已经历的记忆合在了一处。');
     } catch { notify('这份文件无法识读，请选择从本作导出的 JSON 存档。'); }
   };
@@ -596,8 +609,8 @@ export default function App() {
     chapters: ['行迹', '走过的水路'], characters: ['人物志', '记住他们的名字'], gallery: ['浮生绘卷', '一程山河'], journal: ['旅人手记', '河水记得的事'], settings: ['听风与读字', '按你自己的节奏'], saves: ['一枚书签', '留住一个瞬间'], history: ['方才的话', '水面上的回声'], menu: ['梦间小憩', '在河边歇一歇'], about: ['关于此梦', '水声未散之前'], music: ['听水集', '河上的十一支曲子'],
   };
   const endingSeal = beat?.kind === 'ending'
-    ? beat.ending === 'home' ? language === 'en' ? 'END' : language === 'de' ? 'ENDE' : t('团圆')
-      : t('回声其{0}', language === 'zh' || language === 'ja' ? ENDING_NUMERALS[ENDINGS[beat.ending].index] : ENDINGS[beat.ending].index)
+    ? beat.ending === 'home' || modernFinal(beat.ending) ? language === 'en' ? 'END' : language === 'de' ? 'ENDE' : campaign === 'overseas' ? '问归' : t('团圆')
+      : t('回声其{0}', language === 'zh' || language === 'ja' ? ENDING_NUMERALS[ENDINGS[beat.ending].index] ?? ENDINGS[beat.ending].index : ENDINGS[beat.ending].index)
     : '';
   const toastNotice = toast && <div className={`toast ${modal ? 'toast--inline' : ''}`} key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span><span>{t(toast, ...toastParameters.current)}</span><button onClick={() => setToast('')} aria-label={t("关闭提示")}><X size={13} /></button></div>;
 
@@ -606,23 +619,28 @@ export default function App() {
     <Atmosphere scene={background} reduced={settings.reducedMotion} />
 
     {tr(screen === 'home' ? <div className="home-screen" inert={!!modal}>
-      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label={t("关于异托邦")}><BoatMark /><span>{t("异托邦")}<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />{t("一场未尽的楚地远行")}<span className="tiny-line" /></div><div className="header-tools"><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={tr(fullscreen ? '退出全屏' : '全屏')} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label={t("阅读设置")} onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
+      <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label={t("关于异托邦")}><BoatMark /><span>{t("异托邦")}<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />{campaign === 'overseas' ? '汉字、远行与另一条来处' : t("一场未尽的楚地远行")}<span className="tiny-line" /></div><div className="header-tools"><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={tr(fullscreen ? '退出全屏' : '全屏')} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label={t("阅读设置")} onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
       <div className="home-body">
-        <div className="home-eyebrow"><span className="vermillion-seal">{homeSeal}</span><span>{t("东方奇幻 · 叙事视觉小说")}</span></div>
+        <div className="home-eyebrow"><span className="vermillion-seal">{campaign === 'overseas' ? '何' : homeSeal}</span><span>{campaign === 'overseas' ? '海外现代篇 · 叙事视觉小说' : t("东方奇幻 · 叙事视觉小说")}</span></div>
         <h1 className="home-title">{t("异托邦")}<span className="title-dust">·</span></h1>
         <div className="home-english"><span />H E T E R O T O P I A<span /></div>
-        <div className="home-verse"><span>{t("魂兮归来。")}</span><p>{t("看路，也看看走路的人。")}</p></div>
+        <div className="home-verse"><span>{campaign === 'overseas' ? '问字，不问命。' : t("魂兮归来。")}</span><p>{campaign === 'overseas' ? '念对了，它会带你去问的人面前。' : t("看路，也看看走路的人。")}</p></div>
+        <nav className="campaign-selector" aria-label="选择故事卷">
+          <button aria-pressed={campaign === 'original'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('original')}>沈辞 · 原篇</button>
+          <button aria-pressed={campaign === 'overseas'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('overseas')}>林越 · 现代新卷<span>新</span></button>
+        </nav>
+        {campaign === 'overseas' && <p className="campaign-note">问字，不问命。<span>中文原著 · 两条旅途之后，留在这一边。</span></p>}
         <nav className={`home-main-menu ${game ? 'home-main-menu--resume' : ''}`} aria-label={t("启程菜单")}>
-          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'}`} disabled={loadingReading || !!languagePending} onClick={() => void start()}><span className="cta-glow" aria-hidden="true" /><strong>{tr(game ? '重新启程' : '启程')}</strong><BoatMark className="cta-boat" /></button>
+          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'}`} disabled={loadingReading || !!languagePending} onClick={() => void start()}><span className="cta-glow" aria-hidden="true" /><strong>{tr(game ? (campaign === 'overseas' ? '重走这一程' : '重新启程') : (campaign === 'overseas' ? '去问' : '启程'))}</strong><BoatMark className="cta-boat" /></button>
           <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game || loadingReading || !!languagePending} onClick={() => void resume()}><span className="cta-glow" aria-hidden="true" /><strong>{t("续梦")}</strong><small>{tr(game ? t("{0} · {1}", sceneById(game.sceneId).chapter, t(sceneById(game.sceneId).title)) : '此刻尚无未尽的梦')}</small></button>
         </nav>
         {tr((loadingReading || languagePending) && <p className="reading-load" role="status">{languagePending ? t("正在切换语言…") : t("正在载入旅途…")}</p>)}
         {tr(readingError && <p className="reading-load" role="alert"><button onClick={() => location.reload()}>{t("刷新重试")}</button></p>)}
         <div className="home-library">{tr(LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={18} /><span>{tr(item.text)}</span></button>))}</div>
       </div>
-      <div className="home-side-poem" aria-hidden="true"><span>{t("一条河，两片夜。")}</span><i /><span>{t("循着水声，回家。")}</span></div>
-      <footer className="home-footer"><button className="headphone-note" onClick={() => openModal('music')} aria-label={t("听水集")}><InkDrop size={16} /><span>{t("听水集 · 原声重听")}{tr(audioState.needsGesture && audioState.available && !settings.muted && <small className="sound-unlock-hint">{t("点击开启声音")}</small>)}</span></button><span className="home-edition">{t("八十一场故事")}{' '}<i /> {' '}{t("两条归路")}{' '}<i /> {' '}{t("V6 完整版")}</span><button className="about-link" onClick={() => openModal('about')}>{t("关于此梦")}{' '}<CircleHelp size={13} strokeWidth={1.3} /></button></footer>
-      <div className="home-coordinate" aria-hidden="true"><span>19:37</span><i />THE MOMENT BEFORE THE WATER</div>
+      <div className="home-side-poem" aria-hidden="true"><span>{campaign === 'overseas' ? '曰遂古之初' : t("一条河，两片夜。")}</span><i /><span>{campaign === 'overseas' ? '谁传道之' : t("循着水声，回家。")}</span></div>
+      <footer className="home-footer"><button className="headphone-note" onClick={() => openModal('music')} aria-label={t("听水集")}><InkDrop size={16} /><span>{t("听水集 · 原声重听")}{tr(audioState.needsGesture && audioState.available && !settings.muted && <small className="sound-unlock-hint">{t("点击开启声音")}</small>)}</span></button><span className="home-edition">{campaign === 'overseas' ? '现代出发 · 两次归来 · 山顶落日' : t('八十一场故事')}{' '}<i />{' '}{campaign === 'overseas' ? '林越 · 海外现代篇' : t('V6 完整版')}</span><button className="about-link" onClick={() => openModal('about')}>{t("关于此梦")}{' '}<CircleHelp size={13} strokeWidth={1.3} /></button></footer>
+      <div className="home-coordinate" aria-hidden="true"><span>{campaign === 'overseas' ? '何' : '19:37'}</span><i />{campaign === 'overseas' ? 'THE QUESTION THAT TAKES YOU HOME' : 'THE MOMENT BEFORE THE WATER'}</div>
     </div> : game && beat ? <div className="game-screen" ref={readingRef} tabIndex={-1} inert={!!modal} onClickCapture={event => {
       if (event.detail > 0 && event.target instanceof Element && event.target.closest('button') && !event.target.closest('.dialogue-advance')) readingRef.current?.focus({ preventScroll: true });
     }} onWheel={event => {
@@ -630,7 +648,7 @@ export default function App() {
       if ((language === 'en' || language === 'de') && dialogue && dialogue.scrollHeight > dialogue.clientHeight + 2) return;
       if (event.deltaY < -8 && !modal && !intro && !hidden && beat.kind === 'text') openModal('history');
     }}>
-      {tr(beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label={t("查看行迹")}><span className="location-copy"><span className="location-chapter">{tr(scene.chapter)}</span><span className="location-name">{tr(locationName)}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label={t("打开旅人手记")}><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /></button><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{tr(audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">{t("点击开启声音")}</span>)}<IconButton label={t("打开菜单")} onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>)}
+      {tr(beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label={t("查看行迹")}><span className="location-copy"><span className="location-chapter">{tr(scene.chapter)}</span><span className="location-name">{tr(locationName)}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label={t("打开旅人手记")}>{campaign === 'overseas' ? <span className="modern-seal-mark">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small />}</button><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{tr(audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">{t("点击开启声音")}</span>)}<IconButton label={t("打开菜单")} onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>)}
       <div className="sr-only" aria-live="polite" aria-atomic="true">{tr(!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? t("{0}{1}", beat.speaker ? t("{0}：", beat.speaker) : '', text) : '')}</div>
       {tr(showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label={t("阅读提示")}><CircleHelp size={16} aria-hidden="true" /><p>{t("点击画面继续，点「回看」重读。")}<small>{t("更多操作可在阅读设置中查看。")}</small></p><button onClick={dismissReadingHint}>{t("知道了")}</button></aside>)}
 
@@ -668,17 +686,17 @@ export default function App() {
       {tr(beat.kind === 'ending' && <section className={`ending-screen ending-screen--${beat.ending} ${hidden ? 'ending-screen--clean' : ''}`} aria-label={tr(t("结局 · {0}", ENDINGS[beat.ending].title))}>
         <span className="ending-ink" aria-hidden="true" /><span className="ending-ripple" aria-hidden="true" />
         <div className="ending-content" inert={hidden} aria-hidden={hidden}>
-          <p className="ending-kicker">{tr(beat.ending === 'home' ? '全剧终' : '命运的回声')}</p>
+          <p className="ending-kicker">{tr((beat.ending === 'home' || modernFinal(beat.ending)) ? '全剧终' : '命运的回声')}</p>
           <div className="ending-stage">
             <span className="ending-seal" aria-hidden="true">{language === 'en' || language === 'de' ? endingSeal : [...endingSeal].map((char, index) => <i key={index}>{char}</i>)}</span>
             <h2 className="ending-title">{tr(ENDINGS[beat.ending].title)}</h2>
-            <div className="ending-side"><span className="ending-subtitle">{tr(ENDINGS[beat.ending].subtitle)}</span><div className="ending-emblem"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /></div></div>
+            <div className="ending-side"><span className="ending-subtitle">{tr(ENDINGS[beat.ending].subtitle)}</span><div className="ending-emblem">{campaign === 'overseas' ? <span className="modern-seal-mark modern-seal-mark--large">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} />}</div></div>
           </div>
           <EndingQuote text={tr(ENDINGS[beat.ending].quote)} />
-          <p className="ending-memory">{tr(beat.ending === 'home' ? '故事写到这里，日子还在继续。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。')}</p>
-          <div className="ending-actions"><button className="gold-button" onClick={() => { if (beat.ending === 'home') toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); audioJump.current = true; setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{tr(beat.ending === 'home' ? '回到标题' : canReturn(profile) ? '循光归来' : '再赴灯下')}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>{t("看看留下的记忆")}{' '}<Feather size={14} /></button></div>
+          <p className="ending-memory">{tr((beat.ending === 'home' || modernFinal(beat.ending)) ? '故事写到这里，日子还在继续。' : campaign === 'overseas' ? '回到宿舍，把这一程慢慢写下来。' : canReturn(profile) ? '两道裂纹相合。那节晚自习，还在等你。' : '这一程，卜骨已经记住。另一条路，仍在灯下。')}</p>
+          <div className="ending-actions"><button className="gold-button" onClick={() => { if ((beat.ending === 'home' || modernFinal(beat.ending))) toHome(); else { const nextProfile = completeEnding(game, profile); setProfile(nextProfile); audioJump.current = true; setGame(continueEnding(game, nextProfile)); sound.click('bell'); } }}>{tr((beat.ending === 'home' || modernFinal(beat.ending)) ? '回到标题' : campaign === 'overseas' ? '回到这边' : canReturn(profile) ? '循光归来' : '再赴灯下')}<ArrowRight size={19} strokeWidth={1.2} /></button><button className="ending-secondary text-button" onClick={() => openModal('journal')}>{t("看看留下的记忆")}{' '}<Feather size={14} /></button></div>
         </div>
-        <span className="ending-copyright">{t("异托邦 ·")}{' '}{tr(beat.ending === 'home' ? '谢谢你，记住他们。' : '未完的路，留给下一次启程。')}</span>
+        <span className="ending-copyright">{t("异托邦 ·")}{' '}{tr((beat.ending === 'home' || modernFinal(beat.ending)) ? '谢谢你，记住他们。' : '未完的路，留给下一次启程。')}</span>
         {tr(cg && <button className="ending-art-toggle text-button" aria-pressed={hidden} onClick={() => { sound.click('toggle'); setHidden(value => !value); }}>{tr(hidden ? '返回结局' : '静看此景')}</button>)}
       </section>)}
 
@@ -692,10 +710,10 @@ export default function App() {
       {tr(modal === 'gallery' && <GalleryView profile={profile} />)}
       {tr(modal === 'journal' && <JournalView state={game} profile={profile} initialRelic={journalRelic} />)}
       {tr(modal === 'settings' && <SettingsView languagePending={languagePending} languageError={languageError} settings={settings} onChange={changeSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { changeSettings({ ...DEFAULT_SETTINGS, language: settings.language }); notify('阅读设置已恢复。'); }} />)}
-      {tr(modal === 'saves' && <SaveView slots={slots} state={game} profile={profile} autosave={loadAutosave()} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />)}
+      {tr(modal === 'saves' && <SaveView slots={slots} state={game} profile={profile} autosave={loadAutosave(campaign)} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />)}
       {tr(modal === 'history' && <Backlog state={game} profile={profile} onReplay={replay} />)}
-      {tr(modal === 'menu' && <div className="pause-content"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} /><p>{t("不用急。水也可以慢慢流。")}</p><div className="pause-buttons">{tr(screen === 'play' && <button className="gold-button" onClick={closeModal}>{t("继续此梦")}{' '}<Play size={15} /></button>)}<div className="pause-grid">{tr(LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={24} /><span>{tr(item.text)}</span><small>{tr(item.note)}</small></button>))}</div><div className="pause-rows"><button className="pause-row" onClick={() => openSaves('save')}><InkBookmark />{t("存读档")}<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><InkDrop />{t("听水集")}<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><InkWind />{t("阅读设置")}<ChevronRight size={16} /></button></div>{tr(screen === 'play' && <button className={`pause-row pause-row--home ${confirmHome ? 'is-confirming' : ''}`} onClick={() => { if (confirmHome) toHome(); else setConfirmHome(true); }} aria-live="polite"><InkReturn />{tr(confirmHome ? '再点一次，回到标题' : '回到标题')}<small>{tr(confirmHome ? '此刻已自动留存，可随时续梦' : '此刻已自动留存')}</small></button>)}</div></div>)}
-      {tr(modal === 'about' && <AboutView />)}
+      {tr(modal === 'menu' && <div className="pause-content">{campaign === 'overseas' ? <span className="modern-seal-mark modern-seal-mark--large">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} />}<p>{t("不用急。水也可以慢慢流。")}</p><div className="pause-buttons">{tr(screen === 'play' && <button className="gold-button" onClick={closeModal}>{t("继续此梦")}{' '}<Play size={15} /></button>)}<div className="pause-grid">{tr(LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={24} /><span>{tr(item.text)}</span><small>{tr(item.note)}</small></button>))}</div><div className="pause-rows"><button className="pause-row" onClick={() => openSaves('save')}><InkBookmark />{t("存读档")}<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><InkDrop />{t("听水集")}<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><InkWind />{t("阅读设置")}<ChevronRight size={16} /></button></div>{tr(screen === 'play' && <button className={`pause-row pause-row--home ${confirmHome ? 'is-confirming' : ''}`} onClick={() => { if (confirmHome) toHome(); else setConfirmHome(true); }} aria-live="polite"><InkReturn />{tr(confirmHome ? '再点一次，回到标题' : '回到标题')}<small>{tr(confirmHome ? '此刻已自动留存，可随时续梦' : '此刻已自动留存')}</small></button>)}</div></div>)}
+      {tr(modal === 'about' && <AboutView campaign={campaign} />)}
       {tr(modal === 'music' && <MusicRoom profile={profile} settings={settings} onChange={changeSettings} />)}
       </Suspense>
     </Modal>)}

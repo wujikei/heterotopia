@@ -29,6 +29,7 @@
     "test:scene-direction": "node --import tsx scripts/with-preview.mjs scripts/test-scene-direction.mjs",
     "test:localization": "node --import tsx scripts/with-preview.mjs scripts/test-localization.mjs",
     "test:localization:webkit": "node --import tsx scripts/with-preview.mjs scripts/test-localization.mjs --webkit",
+    "test:modern": "node --import tsx scripts/with-preview.mjs scripts/test-modern.mjs",
     "art:originals": "python scripts/encode-originals.py",
     "import:story": "python scripts/import_story.py"
   },

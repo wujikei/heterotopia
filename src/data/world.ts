@@ -1,8 +1,11 @@
 import type { Character, EndingId } from '../types';
+import { MODERN_BACKGROUNDS, MODERN_ENDINGS } from '../modern';
 
-type EmbeddedAssets = typeof globalThis & { __HETEROTOPIA_ASSETS__?: Record<string, string>; __HETEROTOPIA_SOURCE__?: string };
+type EmbeddedAssets = typeof globalThis & { __HETEROTOPIA_ASSETS__?: Record<string, string>; __HETEROTOPIA_SOURCE__?: string; __HETEROTOPIA_MODERN_SOURCE__?: string };
 export { asset, assetSources, portraitAsset, portraitFace } from '../assets';
-export const sourceDocument = () => (globalThis as EmbeddedAssets).__HETEROTOPIA_SOURCE__ ?? `${import.meta.env.BASE_URL}原著剧本-V6.txt`;
+export const sourceDocument = (campaign = 'original') => campaign === 'overseas'
+  ? (globalThis as EmbeddedAssets).__HETEROTOPIA_MODERN_SOURCE__ ?? `${import.meta.env.BASE_URL}原著剧本-海外现代线.txt`
+  : (globalThis as EmbeddedAssets).__HETEROTOPIA_SOURCE__ ?? `${import.meta.env.BASE_URL}原著剧本-V6.txt`;
 
 export const CHARACTERS: Character[] = [
   { key: 'shen', name: '沈辞', subtitle: '添笔的人', description: '十六岁，高一七班学生，家在宜昌一带，祖籍秭归。爱画地图与九层城，分科在即，常将没说出口的话留给想象。', quote: '如果能离开这里，去另一个地方呢。', first: '0-1', color: '#a4c9d7' },
@@ -21,7 +24,14 @@ export const CHARACTERS: Character[] = [
   { key: 'wuyang', name: '巫阳', subtitle: '不得滞行', description: '奉王令领孩子们西行的老巫。一路留下旧日记忆，身体与命令却越来越陌生。', quote: '他的名字，在我的名牍上。', first: '1-11', color: '#aeb5ad' },
 ];
 
+export const MODERN_CHARACTERS: Character[] = [
+  { key: 'linyue', name: '林越', subtitle: '问字的人', description: '二十岁，海外大学东亚研究专业二年级的中国留学生。朋友叫他 Yue。他读得懂注释，仍想知道自己与这份文化究竟隔着什么。', quote: '还是不懂。但知道，不懂在哪了。', first: 'modern-o-0-1', color: '#a4c0c2' },
+];
+export const charactersForCampaign = (campaign = 'original') => campaign === 'overseas'
+  ? [...MODERN_CHARACTERS, ...CHARACTERS.map(character => character.key === 'xu' ? { ...character, description: '十五六岁的泽边少年，口吃，人称“三停”。林越借用的是他的身体；身体的习惯与林越的意识，各有来处。' } : character)] : CHARACTERS;
+
 export const BACKGROUNDS: Record<string, { name: string; subtitle: string; chapter: string }> = {
+  ...MODERN_BACKGROUNDS,
   hero: { name: '一叶归舟', subtitle: '循着水声，回家', chapter: '梦的入口' },
   'dream-boat': { name: '水声之前', subtitle: '夜梦 · 船底的敲击', chapter: '水声之前' },
   bedroom: { name: '天光未明', subtitle: '05:41 · 沈家卧室', chapter: '水声之前' },
@@ -66,6 +76,7 @@ export const ENDINGS: Record<EndingId, { title: string; index: string; subtitle:
 };
 
 export const ITEMS: Record<string, { name: string; mark: string; detail: string }> = {
+  questionJade: { name: '何字玉扣', mark: '何', detail: '问字摊带回的小圆玉扣。那一个字，仍硌着掌心。' },
   map: { name: '古图', mark: '图', detail: '山与河之间，有一道未尽的淡痕。' },
   jadeTail: { name: '鸟尾残玉', mark: '玉', detail: '从戌的小木匣中取出，贴着胸口，微凉。' },
   jadeHead: { name: '鸟首残玉', mark: '玉', detail: '屈衡保管的第二角，鸟眼还在。' },
@@ -79,6 +90,10 @@ export const ITEMS: Record<string, { name: string; mark: string; detail: string 
 };
 
 export function characterFor(name: string): Character | undefined {
+  if (name === '大巫祝') return CHARACTERS.find(c => c.key === 'wuyang');
+  if (name === '林越') return MODERN_CHARACTERS[0];
   if (name.includes('戌（') || name === '戌（沈辞）') return CHARACTERS.find(c => c.key === 'xu');
   return CHARACTERS.find(c => c.name === name);
 }
+
+export const endingsForCampaign = (campaign = 'original'): Record<string, typeof ENDINGS['blade']> => campaign === 'overseas' ? MODERN_ENDINGS : ENDINGS;

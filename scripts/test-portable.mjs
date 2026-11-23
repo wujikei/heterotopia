@@ -5,7 +5,8 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 import { advance, choose, completeEnding, continueEnding, currentBeat, newGame, newProfile, recordProgress } from '../src/engine.ts';
-import { BACKGROUNDS, CHARACTERS } from '../src/data/world.ts';
+import { BACKGROUNDS, CHARACTERS, MODERN_CHARACTERS } from '../src/data/world.ts';
+import { MODERN_SCENE_ART } from '../src/modern.ts';
 import { loadStory } from '../src/story.ts';
 import { CGS, cgForBeat } from '../src/data/cgs.ts';
 import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
@@ -103,11 +104,28 @@ try {
   } else assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
   const page = await open();
   await page.getByRole('heading', { name: '异托邦' }).waitFor();
+  const modernPage = await open();
+  await modernPage.getByRole('button', { name: /林越.*现代新卷/ }).click();
+  const modernSource = await modernPage.evaluate(async () => {
+    const source = globalThis.__HETEROTOPIA_MODERN_SOURCE__;
+    return source?.startsWith('data:text/plain') ? await fetch(source).then(response => response.text()) : '';
+  });
+  assert.match(modernSource, /现代线|问字摊/);
+  await modernPage.getByRole('button', { name: '去问', exact: true }).click();
+  await modernPage.locator('.game-screen').waitFor();
+  await modernPage.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
+  await modernPage.getByTestId('dialogue-text').waitFor();
+  await modernPage.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'cg-modern-word-stall');
+  await modernPage.setViewportSize({ width: 390, height: 844 });
+  assert.equal(await modernPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await modernPage.context().close();
   const expected = [
     ...RELIC_ART,
     ...Object.keys(BACKGROUNDS).flatMap(name => [name, `${name}-thumb`]),
+    ...[...new Set(Object.values(MODERN_SCENE_ART))].flatMap(name => [name, `${name}-thumb`]),
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
     ...CHARACTERS.map(c => `portrait-${c.key}-face`),
+    ...MODERN_CHARACTERS.flatMap(c => [`portrait-${c.key}`, `portrait-${c.key}-face`]),
     ...Object.entries(AVAILABLE).flatMap(([key, states]) => states.map(state => portraitNameFor(key, state))),
     ...Object.entries(ACTOR_VARIANTS).flatMap(([key, variants]) => Object.entries(variants).flatMap(([variant, states]) => states.map(expression => actorPortraitName({ character: { key }, variant, expression })))),
     ...[...AVAILABLE_EXTRAS].map(portraitName),
@@ -295,7 +313,7 @@ try {
   await relicPage.screenshot({ path: artifact('17-name-slips-offline-mobile.png') });
   assert.deepEqual(errors, []);
   await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), edition, mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, ...audioIntegrity, errors }, null, 2));
-  console.log('Offline checks passed: original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
+  console.log('Offline checks passed: original and overseas stories, original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
 } catch (error) {
   const diagnostics = await Promise.all(contexts.flatMap(context => context.pages()).map(async page => {
     try {
