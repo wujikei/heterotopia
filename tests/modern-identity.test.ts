@@ -38,3 +38,7 @@ test('gods, the king, villagers and Yun keep their own acts and first-person spe
   assert.match(paragraph('modern-k-E-9', 4), /你问河伯/);
   assert.match(paragraph('modern-k-F-4', 5), /你想问我.*我眼睛瞎了，可我脑子没瞎/);
 });
+
+test('the shared royal return opens its eyes only once without changing Lin Yue identity', () => {
+  assert.equal(paragraph('modern-o-4-1', 2), '（再睁开眼时，你（林越）坐在宿舍书桌前。）');
+});
