@@ -33,7 +33,9 @@
     "test:endings": "node --import tsx scripts/with-preview.mjs scripts/test-ending-layout.mjs",
     "art:originals": "python scripts/encode-originals.py",
     "import:modern": "python3 scripts/import_modern.py",
-    "import:story": "python scripts/import_story.py"
+    "import:story": "python scripts/import_story.py",
+    "test:modern-staging": "node --import tsx scripts/with-preview.mjs scripts/test-modern-staging-r2.mjs",
+    "acceptance:modern-r2": "node --import tsx scripts/make-modern-r2-acceptance.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

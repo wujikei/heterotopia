@@ -39,6 +39,7 @@ export const cgForBeat = (beat: Beat, sceneId: string): CG | undefined => {
     const cg = CGS.find(item => item.file === beat.background);
     return cg ?? { id: beat.background, title: '旅途留影', caption: '', file: beat.background, trigger: { sceneId } };
   }
+  if (sceneId === 'modern-o-0-1') return undefined;
   return CGS.find(cg => !!cg.file && matches(cg, beat, sceneId));
 };
 export const cgForEnding = (endingId: EndingId): CG | undefined => CGS.find(cg => !!cg.file && 'endingId' in cg.trigger && cg.trigger.endingId === endingId);

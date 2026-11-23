@@ -10,6 +10,13 @@ export const modernInterlude = (id: string) => id === 'modern-o-4-1' || id === '
 export const modernFinal = (id: string) => id === 'modern-home';
 
 export const MODERN_BACKGROUNDS = {
+  'modern-street-arrival-r2': { name: '字在街上', subtitle: '海外旧街 · 黄昏', chapter: '现代卷' },
+  'modern-dorm-quiet-r2': { name: '日常尚在', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
+  'cg-modern-jade-palm-r2': { name: '掌心的何', subtitle: '海外旧街 · 黄昏', chapter: '现代卷' },
+  'cg-modern-dorm-unease-r2': { name: '第三声之后', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
+  'cg-modern-dorm-carving-r2': { name: '墙上的刻痕', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
+  'cg-modern-dorm-dark-r2': { name: '灯灭之后', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
+  'cg-modern-jade-light-r2': { name: '何字一亮', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
   'modern-dorm': { name: '何字微亮', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
   'modern-library': { name: '自己的句子', subtitle: '海外 · 图书馆', chapter: '现代卷' },
   'modern-office': { name: '把问题写清楚', subtitle: '导师办公室 · 午后', chapter: '现代卷' },
@@ -27,6 +34,9 @@ export const MODERN_BACKGROUNDS = {
 };
 
 export const MODERN_CGS = [
+  { id: 'modern-jade-palm-r2', title: '掌心的何', caption: '刻痕很深，像被人摩挲了很多年。', file: 'cg-modern-jade-palm-r2', thumbnail: 'cg-modern-jade-palm-r2-thumb', trigger: { beatIds: [] } },
+  { id: 'modern-dorm-unease-r2', title: '第三声之后', caption: '日常还在，声音却变了。', file: 'cg-modern-dorm-unease-r2', thumbnail: 'cg-modern-dorm-unease-r2-thumb', trigger: { beatIds: [] } },
+  { id: 'modern-dorm-carving-r2', title: '一笔，一笔', caption: '那只手握着小刀，在竹简上刻字。', file: 'cg-modern-dorm-carving-r2', thumbnail: 'cg-modern-dorm-carving-r2-thumb', trigger: { beatIds: [] } },
   { id: 'modern-word-stall', title: '问字，不问命', caption: '不信，才是问。', file: 'cg-modern-word-stall', thumbnail: 'cg-modern-word-stall-thumb', trigger: { sceneId: 'modern-o-0-1' } },
   { id: 'modern-noodles', title: '心里有个地方', caption: '室友把煮好的面，分了一碗。', file: 'cg-modern-noodles', thumbnail: 'cg-modern-noodles-thumb', trigger: { beatIds: [] as string[] } },
   { id: 'modern-translation', title: '不译', caption: '有些字，译出来，就不是它了。', file: 'cg-modern-translation', thumbnail: 'cg-modern-translation-thumb', trigger: { beatIds: [] as string[] } },
@@ -54,7 +64,19 @@ export const MODERN_ENDINGS = {
 
 /** Exact-source text controls the small number of modern montage cuts. */
 export function modernBackground(scene: Scene, text: string, current: string): string {
-  if (scene.id === 'modern-o-0-2' && /屏幕上不再是人|竹简上刻字|手还在刻|那只手还亮着|玉扣.*亮了一下|玉扣.*亮起/.test(text)) return 'cg-modern-projection';
+  if (scene.id === 'modern-o-0-1') {
+    if (/从图书馆出来|把玉扣揣进口袋/.test(text)) return 'modern-street-arrival-r2';
+    if (/蹲了下去/.test(text)) return 'cg-modern-word-stall';
+    if (/顺手拿起|塞进你手里/.test(text)) return 'cg-modern-jade-palm-r2';
+    return current;
+  }
+  if (scene.id === 'modern-o-0-2') {
+    if (/掌心的玉扣.*亮了一下/.test(text)) return 'cg-modern-jade-light-r2';
+    if (/灯灭了|屋里一片黑/.test(text)) return 'cg-modern-dorm-dark-r2';
+    if (/屏幕上不再是人|竹简上刻字/.test(text)) return 'cg-modern-dorm-carving-r2';
+    if (/听见自己的声音变了/.test(text)) return 'cg-modern-dorm-unease-r2';
+    return current;
+  }
   if (scene.id === 'modern-o-4-1' && /煮好的面|分了一碗/.test(text)) return 'cg-modern-noodles';
   if (scene.id === 'modern-o-4-2' && /最后，你在右边|写下两个字|不译。/.test(text)) return 'cg-modern-translation';
   if (scene.id === 'modern-o-5-1' && /打印稿推过来|稿子推了过来|把打印稿/.test(text)) return 'cg-modern-paper';
@@ -92,6 +114,8 @@ export function modernMusic(sceneId: string, beat: Beat): MusicId {
 }
 
 export const MODERN_SCENE_ART: Record<string, string> = {
+  'modern-o-0-1': 'modern-street-arrival-r2',
+  'modern-o-0-2': 'modern-dorm-quiet-r2',
   'modern-o-0-4': 'cg-modern-selection',
   'modern-c-1-13': 'cg-modern-fork',
   'modern-o-5-6': 'cg-modern-summit',

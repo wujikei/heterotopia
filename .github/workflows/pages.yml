@@ -49,6 +49,7 @@ jobs:
           npm run test:scene-direction
           npm run test:localization
           npm run test:modern
+          npm run test:modern-staging
           mkdir -p artifacts && ENDING_LAYOUT_REPORT=artifacts/ending-layout.json npm run test:endings
       - name: Verify image fallbacks and persistent website cache
         run: |
