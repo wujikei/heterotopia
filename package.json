@@ -35,7 +35,9 @@
     "import:modern": "python3 scripts/import_modern.py",
     "import:story": "python scripts/import_story.py",
     "test:modern-staging": "node --import tsx scripts/with-preview.mjs scripts/test-modern-staging-r2.mjs",
-    "acceptance:modern-r2": "node --import tsx scripts/make-modern-r2-acceptance.mjs"
+    "acceptance:modern-r2": "node --import tsx scripts/make-modern-r2-acceptance.mjs",
+    "test:modern-characters": "node --import tsx scripts/with-preview.mjs scripts/test-modern-characters-r2.mjs",
+    "art:modern-characters": "python3 scripts/process-modern-characters-r2.py && python3 scripts/check-modern-characters-r2.py"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

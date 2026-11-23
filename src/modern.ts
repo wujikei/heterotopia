@@ -77,6 +77,7 @@ export function modernBackground(scene: Scene, text: string, current: string): s
     if (/听见自己的声音变了/.test(text)) return 'cg-modern-dorm-unease-r2';
     return current;
   }
+  if (scene.id === 'modern-o-4-1' && text.includes('夜里，室友看你')) return 'modern-dorm-quiet-r2';
   if (scene.id === 'modern-o-4-1' && /煮好的面|分了一碗/.test(text)) return 'cg-modern-noodles';
   if (scene.id === 'modern-o-4-2' && /最后，你在右边|写下两个字|不译。/.test(text)) return 'cg-modern-translation';
   if (scene.id === 'modern-o-5-1' && /打印稿推过来|稿子推了过来|把打印稿/.test(text)) return 'cg-modern-paper';
@@ -84,8 +85,8 @@ export function modernBackground(scene: Scene, text: string, current: string): s
   if (scene.id === 'modern-o-5-6' && /沈辞！/.test(text)) return 'cg-modern-summit';
   if (scene.id === 'modern-o-5-7' && /拍照|按下快门/.test(text)) return 'cg-modern-photo';
   if (scene.id === 'modern-o-4-1' && (text.includes('去图书馆') || text.includes('课堂上第一次举手'))) return 'modern-library';
-  if (scene.id === 'modern-o-4-1' && text.includes('想再走一趟')) return 'modern-dorm';
-  if (scene.id === 'modern-o-4-2' && (text.includes('睁开眼') || text.includes('给家里打了个视频'))) return 'modern-dorm';
+  if (scene.id === 'modern-o-4-1' && text.includes('想再走一趟')) return 'modern-dorm-quiet-r2';
+  if (scene.id === 'modern-o-4-2' && (text.includes('睁开眼') || text.includes('给家里打了个视频'))) return 'modern-dorm-quiet-r2';
   if (scene.id === 'modern-o-4-2' && text.includes('开始做一件没用的事')) return 'modern-library';
   // These chapters stay in present-day locations even when the narration
   // recalls rivers, boats, old palaces or mountains from the ancient routes.
@@ -116,6 +117,8 @@ export function modernMusic(sceneId: string, beat: Beat): MusicId {
 export const MODERN_SCENE_ART: Record<string, string> = {
   'modern-o-0-1': 'modern-street-arrival-r2',
   'modern-o-0-2': 'modern-dorm-quiet-r2',
+  'modern-o-4-1': 'modern-dorm-quiet-r2',
+  'modern-o-4-2': 'modern-dorm-quiet-r2',
   'modern-o-0-4': 'cg-modern-selection',
   'modern-c-1-13': 'cg-modern-fork',
   'modern-o-5-6': 'cg-modern-summit',

@@ -72,6 +72,10 @@
     bottom: auto;
     background-position: center;
     transform: none;
+    /* The reading region resizes between paragraphs: keep its image painted,
+       rather than coupling its geometry to an opacity animation layer. */
+    animation: none;
+    opacity: 1;
   }
   .scene-art[data-art="cg-modern-dorm-carving-r2"] .scene-image,
   .scene-art[data-art="cg-modern-dorm-dark-r2"] .scene-image { background-position: 30% center; }

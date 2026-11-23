@@ -1,13 +1,15 @@
 import { asset, portraitName } from '../assets';
 import type { Beat } from '../types';
+import { MODERN_CHARACTER_STATES } from './modernPerformance';
 
-export const EXPRESSIONS = ['default', 'smile', 'surprised', 'angry', 'sad', 'closed'] as const;
+export const EXPRESSIONS = ['default', 'smile', 'surprised', 'angry', 'sad', 'closed', 'thoughtful', 'puzzled', 'alert', 'focused', 'concerned'] as const;
 export type Expression = typeof EXPRESSIONS[number];
-export const EXPRESSION_LABELS: Record<Expression, string> = { default: '平静', smile: '笑', surprised: '惊', angry: '怒', sad: '悲', closed: '闭眼' };
+export const EXPRESSION_LABELS: Record<Expression, string> = { default: '平静', smile: '笑', surprised: '惊', angry: '怒', sad: '悲', closed: '闭眼', thoughtful: '思考', puzzled: '困惑', alert: '警觉', focused: '专注', concerned: '关切' };
 
 // This is a delivery register, not a wish list. Add an expression only after its
 // transparent image has been reviewed and exported to public/art.
-export const AVAILABLE: Record<string, Expression[]> = {
+export const AVAILABLE: Record<string, readonly Expression[]> = {
+  ...MODERN_CHARACTER_STATES,
   shen: ['default', 'smile', 'surprised', 'angry', 'sad', 'closed'],
   xu: ['default', 'smile', 'surprised', 'angry', 'sad', 'closed'],
   tang: ['default', 'smile', 'surprised', 'sad'], amao: ['default', 'smile', 'surprised', 'sad'],
@@ -81,7 +83,8 @@ export function availableExpression(key: string, expression: Expression): Expres
 
 export function portraitNameFor(key: string, expression: Expression = 'default'): string {
   const selected = availableExpression(key, expression);
-  return selected === 'default' ? portraitName(key) : `portrait-${key}-${selected}`;
+  const stem = key in MODERN_CHARACTER_STATES ? portraitName(key) : `portrait-${key}`;
+  return selected === 'default' ? portraitName(key) : `${stem}-${selected}`;
 }
 
 export const portraitFor = (key: string, expression: Expression = 'default') => asset(portraitNameFor(key, expression));

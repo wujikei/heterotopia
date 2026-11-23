@@ -29,7 +29,7 @@ export function subscribeArtViewport(listener: () => void) {
   queries.forEach(query => query.addEventListener('change', listener));
   return () => queries.forEach(query => query.removeEventListener('change', listener));
 }
-export const portraitName = (key: string) => `portrait-${key}${key === 'tu' ? '-v2' : key === 'xua' ? '-v3' : ''}`;
+export const portraitName = (key: string) => `portrait-${key}${key === 'linyue' || key === 'roommate' ? '-modern' : key === 'tu' ? '-v2' : key === 'xua' ? '-v3' : ''}`;
 export const imageFailed = (url: string) => failed.has(urlKey(url));
 
 export function assetSources(name: string) {

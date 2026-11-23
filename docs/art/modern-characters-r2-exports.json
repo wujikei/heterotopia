@@ -1,0 +1,206 @@
+[
+  {
+    "character": "linyue",
+    "state": "neutral",
+    "expression": "default",
+    "asset": "portrait-linyue-modern",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-linyue-r2-neutral.png",
+    "eyeAnchors": [
+      [
+        328,
+        183
+      ],
+      [
+        378,
+        176
+      ]
+    ]
+  },
+  {
+    "character": "linyue",
+    "state": "thoughtful",
+    "expression": "thoughtful",
+    "asset": "portrait-linyue-modern-thoughtful",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-linyue-r2-thoughtful.png",
+    "eyeAnchors": [
+      [
+        328,
+        183
+      ],
+      [
+        378,
+        176
+      ]
+    ]
+  },
+  {
+    "character": "linyue",
+    "state": "warm",
+    "expression": "smile",
+    "asset": "portrait-linyue-modern-smile",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-linyue-r2-warm.png",
+    "eyeAnchors": [
+      [
+        328,
+        183
+      ],
+      [
+        378,
+        176
+      ]
+    ]
+  },
+  {
+    "character": "linyue",
+    "state": "puzzled",
+    "expression": "puzzled",
+    "asset": "portrait-linyue-modern-puzzled",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-linyue-r2-puzzled.png",
+    "eyeAnchors": [
+      [
+        328,
+        183
+      ],
+      [
+        378,
+        176
+      ]
+    ]
+  },
+  {
+    "character": "linyue",
+    "state": "alert",
+    "expression": "alert",
+    "asset": "portrait-linyue-modern-alert",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-linyue-r2-alert.png",
+    "eyeAnchors": [
+      [
+        328,
+        183
+      ],
+      [
+        378,
+        176
+      ]
+    ]
+  },
+  {
+    "character": "linyue",
+    "state": "startled",
+    "expression": "surprised",
+    "asset": "portrait-linyue-modern-surprised",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-linyue-r2-startled.png",
+    "eyeAnchors": [
+      [
+        328,
+        183
+      ],
+      [
+        378,
+        176
+      ]
+    ]
+  },
+  {
+    "character": "roommate",
+    "state": "neutral",
+    "expression": "default",
+    "asset": "portrait-roommate-modern",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-neutral.png",
+    "eyeAnchors": [
+      [
+        300,
+        199
+      ],
+      [
+        347.5,
+        190.5
+      ]
+    ]
+  },
+  {
+    "character": "roommate",
+    "state": "focused",
+    "expression": "focused",
+    "asset": "portrait-roommate-modern-focused",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-focused.png",
+    "eyeAnchors": [
+      [
+        300,
+        199
+      ],
+      [
+        347.5,
+        190.5
+      ]
+    ]
+  },
+  {
+    "character": "roommate",
+    "state": "warm",
+    "expression": "smile",
+    "asset": "portrait-roommate-modern-smile",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-warm.png",
+    "eyeAnchors": [
+      [
+        300,
+        199
+      ],
+      [
+        347.5,
+        190.5
+      ]
+    ]
+  },
+  {
+    "character": "roommate",
+    "state": "puzzled",
+    "expression": "puzzled",
+    "asset": "portrait-roommate-modern-puzzled",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-puzzled.png",
+    "eyeAnchors": [
+      [
+        300,
+        199
+      ],
+      [
+        347.5,
+        190.5
+      ]
+    ]
+  },
+  {
+    "character": "roommate",
+    "state": "concerned",
+    "expression": "concerned",
+    "asset": "portrait-roommate-modern-concerned",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-concerned.png",
+    "eyeAnchors": [
+      [
+        300,
+        199
+      ],
+      [
+        347.5,
+        190.5
+      ]
+    ]
+  },
+  {
+    "character": "roommate",
+    "state": "startled",
+    "expression": "surprised",
+    "asset": "portrait-roommate-modern-surprised",
+    "master": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-startled.png",
+    "eyeAnchors": [
+      [
+        300,
+        199
+      ],
+      [
+        347.5,
+        190.5
+      ]
+    ]
+  }
+]

@@ -4,7 +4,7 @@ import { asset } from '../data/world';
 import { backgroundImageForUrl, artQuality, subscribeArtQuality, artViewport, subscribeArtViewport } from '../assets';
 import { preloadImage } from '../preload';
 
-export function SceneArt({ name, motion = true, cg }: { name: string; motion?: boolean; cg?: string }) {
+export function SceneArt({ name, motion = true, cg, readingId }: { name: string; motion?: boolean; cg?: string; readingId: string | null }) {
   useLocale();
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
   useSyncExternalStore(subscribeArtViewport, artViewport, () => 'false:false');
@@ -41,18 +41,25 @@ export function SceneArt({ name, motion = true, cg }: { name: string; motion?: b
     return () => clearTimeout(timer);
   }, [previous, loaded]);
   useEffect(() => {
-    if (!target.endsWith('-r2')) return;
+    if (!target.endsWith('-r2') || readingId === null) return;
     const element = art.current;
     const text = document.querySelector('.dialogue-text');
     if (!element || !text) return;
-    const measure = () => element.style.setProperty('--r2-reading-top', `${Math.max(0, text.getBoundingClientRect().top - element.getBoundingClientRect().top)}px`);
+    // A detached/unlaid-out reading node is not a measured zero-height art region.
+    let active = true;
+    const measure = () => {
+      if (!active || !text.isConnected || !text.getClientRects().length) return;
+      const top = text.getBoundingClientRect().top - element.getBoundingClientRect().top;
+      if (top > 0) element.style.setProperty('--r2-reading-top', `${top}px`);
+    };
     const observer = new ResizeObserver(measure);
     observer.observe(text);
     observer.observe(text.closest('.dialogue') ?? text);
     window.addEventListener('resize', measure);
     const frame = requestAnimationFrame(measure);
-    return () => { observer.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(frame); };
-  }, [target]);
+    void document.fonts.ready.then(measure);
+    return () => { active = false; observer.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(frame); };
+  }, [target, loaded.url, readingId]);
   return <div ref={art} data-art={loaded.name} className={`scene-art ${loaded.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
     {tr(previous && <div className="scene-image scene-image--previous" data-art={previous.name} style={{ backgroundImage: backgroundImageForUrl(previous.url) }} />)}
     <div key={loaded.url} className="scene-image scene-image--current" data-art={loaded.name} style={{ backgroundImage: backgroundImageForUrl(loaded.url) }} />

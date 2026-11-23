@@ -48,7 +48,7 @@ try {
     const dialogue=document.querySelector('.dialogue-text').getBoundingClientRect();
     return {animation:style.animationName,url:style.backgroundImage,x:rect.x,y:rect.y,w:rect.width,h:rect.height,textY:dialogue.y,scroll:document.documentElement.scrollWidth,inner:innerWidth};
    });
-   assert.equal(geometry.animation,viewport.reduced?'none':'modern-r2-arrive','r2 uses one short fade, never a shortened infinite drift');
+   assert.equal(geometry.animation,viewport.reduced||viewport.width/viewport.height<=.75?'none':'modern-r2-arrive','portrait action is statically painted; wide art has one short fade, never infinite drift');
    assert.ok(geometry.scroll<=geometry.inner+1,'no document horizontal overflow');
    if(viewport.width/viewport.height<=.75) {
     assert.match(geometry.url,/-m\.webp/,'original-quality mobile crop must load');
