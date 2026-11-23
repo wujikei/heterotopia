@@ -1,5 +1,6 @@
 import rawSoundtrack from './data/soundtrack.json';
 import type { Beat, EndingId, Profile } from './types';
+import { isModern, modernMusic } from './modern';
 
 export const MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
 export type MusicId = typeof MUSIC_IDS[number];
@@ -146,6 +147,16 @@ const ACCENTS: Record<string, Effect[]> = {
 };
 
 const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
+  'modern-dorm': [['room', .4], ['street', .1]],
+  'modern-library': [['room', .28]],
+  'modern-office': [['room', .3], ['street', .07]],
+  'modern-mountain-path': [['wind', .3]],
+  'modern-sunset': [['wind', .2], ['river', .1]],
+  'cg-modern-word-stall': [['street', .45]],
+  'cg-modern-noodles': [['room', .35]],
+  'cg-modern-translation': [['room', .2]],
+  'cg-modern-glance': [['wind', .28]],
+  'cg-modern-photo': [['wind', .15], ['river', .08]],
   hero: [['river', .65], ['wind', .12]], 'dream-boat': [['river', .7], ['wind', .15]],
   bedroom: [['room', .25], ['street', .18]], home: [['room', .3], ['street', .15]],
   'bedroom-morning': [['room', .25], ['street', .22]],
@@ -175,6 +186,19 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
     ambience: ENVIRONMENTS[beat.background] ?? [['wind', .2]], transition: 4.5,
     events: [{ id: beat.audioCueId, effects: CUE_EFFECTS[beat.audioCueId] ?? [] }],
   };
+  if (isModern(sceneId)) {
+    frame.music = modernMusic(sceneId, beat);
+    frame.transition = 3.5;
+    if (sceneId === 'modern-o-0-2' && block >= 15) {
+      frame.musicGain = .3;
+      frame.ambience = block >= 26 ? [['rain', .48], ['room', .1]] : [['room', .18]];
+    }
+    if (sceneId.startsWith('modern-k-G-')) {
+      frame.music = null;
+      frame.ambience = [['river', .17], ['wind', .1]];
+    }
+    if (sceneId === 'modern-o-5-7') frame.musicGain = .65;
+  }
   if (ACCENTS[beat.id]) frame.events.push({ id: beat.id, effects: ACCENTS[beat.id] });
   if (sceneId === '0-1' && block >= 6) { frame.music = 'paper-note'; frame.transition = .18; }
   if (sceneId === '0-7' && block >= 10) { frame.music = 'paper-note'; frame.ambience = ENVIRONMENTS.bedroom; }

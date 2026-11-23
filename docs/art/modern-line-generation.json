@@ -1,0 +1,412 @@
+{
+  "created": "2026-11-23",
+  "engine": "ComfyUI 0.44.2 / Qwen-Image 2.1",
+  "project": "异托邦海外现代线",
+  "references": "原游戏CG及角色立绘；逐页接入原文现代线。",
+  "jobs": [
+    {
+      "prompt_id": "bed44135-6d32-40eb-9715-c56e3cbc7124",
+      "queue_number": 47,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172301,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png"
+      ],
+      "prompt": "海外大学两人合住宿舍夜间，环境背景，无人物。空间真实有生活痕迹：左侧书桌摊开笔记、一本厚书、一枚小圆玉扣，桌灯很暖；右侧一面浅墙上有投影仪投下的淡蓝模糊光矩形，没字没人脸。后面小厨房锅盖散少量蒸气，远侧室友的游戏显示器暗蓝光，衣服整齐晾在窗边。窗外是城市夜灯和便利店光，有暖灯与冷蓝投影的层次。视线由玉扣和笔记通向投影墙，安静日常里有轻微陌生感，不是豪华公寓。\n同一款《异托邦》中国叙事视觉小说的手绘环境与CG。参考图1只用于现有游戏的细腻厚涂笔触、柔和水墨边缘、低饱和青灰米金色、细纸纹，不照搬参考中的古装和厨房。真实可信透视、东方手绘人物比例、柔和自然光、适度留白、凝练空间。全画幅16:9，画面下方四分之一低细节可叠现有对白，无UI无文字无水印，无排版，不是照片、不用3D渲染。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-dorm_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "7c328b32-02c1-4d3d-9cfb-242883533247"
+      }
+    },
+    {
+      "prompt_id": "0fa819fc-69f3-47a0-8fc7-763399e0160e",
+      "queue_number": 48,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172302,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png"
+      ],
+      "prompt": "现代海外大学图书馆靠窗位置，无人物。午后的柔和漫射天光落在木桌、两本打开的书、空白笔记本、钢笔、很小的圆玉扣上，画面左侧和上方为书架、窗外树枝，几张座椅留着刚有人坐过的生活感。书页用抽象浅笔触，不绘制可读文字。安静地读书与翻译，手绘纸感、可亲近的现代日常，而非古代书斋。\n同一款《异托邦》中国叙事视觉小说的手绘环境与CG。参考图1只用于现有游戏的细腻厚涂笔触、柔和水墨边缘、低饱和青灰米金色、细纸纹，不照搬参考中的古装和厨房。真实可信透视、东方手绘人物比例、柔和自然光、适度留白、凝练空间。全画幅16:9，画面下方四分之一低细节可叠现有对白，无UI无文字无水印，无排版，不是照片、不用3D渲染。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-library_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "12aadd8d-fbb4-46d0-bf7d-e0a545cd4e2c"
+      }
+    },
+    {
+      "prompt_id": "35b8d34e-d679-4db1-b102-01fae7e07f19",
+      "queue_number": 49,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172303,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png"
+      ],
+      "prompt": "海外大学东亚研究导师办公室，午后，空场景环境背景。深色木书桌上几摞装订打印稿、两杯茶、笔，一台打开的笔记电脑斜朝桌后，屏幕只是低亮灰蓝。书墙、窗台一盆叶角略蔫的绿植、旧暖气管、两把不同的椅子。低调、有人生活、温暖而严肃，桌面干净并有审稿痕迹，无可读文字，无人物。真实大学办公室，不是企业会议室。\n同一款《异托邦》中国叙事视觉小说的手绘环境与CG。参考图1只用于现有游戏的细腻厚涂笔触、柔和水墨边缘、低饱和青灰米金色、细纸纹，不照搬参考中的古装和厨房。真实可信透视、东方手绘人物比例、柔和自然光、适度留白、凝练空间。全画幅16:9，画面下方四分之一低细节可叠现有对白，无UI无文字无水印，无排版，不是照片、不用3D渲染。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-office_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "0f44ed79-9313-4765-9d50-1ce0debd9ace"
+      }
+    },
+    {
+      "prompt_id": "c76fea37-bd5f-4918-a5ad-2d801bff3b0e",
+      "queue_number": 50,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172304,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/mountain.jpg"
+      ],
+      "prompt": "中国江边山坡的现代登山石阶，一条不陡的石阶由左下往树荫中折上去。右侧能望见宽江和青苍群山，午后微暖，松树、灌木、磨旧木栏杆，几片落叶，细树影落在步道。无人物，无建筑主角，不下雪不飘花。图2只用原游戏山势与水墨空气透视。画面有独自走长路后终于能喘气的松弛感，山水留白，现代周末登山路线。\n同一款《异托邦》中国叙事视觉小说的手绘环境与CG。参考图1只用于现有游戏的细腻厚涂笔触、柔和水墨边缘、低饱和青灰米金色、细纸纹，不照搬参考中的古装和厨房。真实可信透视、东方手绘人物比例、柔和自然光、适度留白、凝练空间。全画幅16:9，画面下方四分之一低细节可叠现有对白，无UI无文字无水印，无排版，不是照片、不用3D渲染。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-mountain-path_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "74644b59-fbdd-4a7e-8484-9b11b5bce244"
+      }
+    },
+    {
+      "prompt_id": "d08ea8f4-14ef-49ab-9484-23904634316a",
+      "queue_number": 51,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172305,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/mountain.jpg"
+      ],
+      "prompt": "江边山顶现代观景平台空镜，无人物。低木栏杆占画幅下沿，远处大江弯过青苍山脊，夕阳正剩半轮，橘、绛、紫自然过渡，金光碎在水面。最重要的是开阔的落日与江，细腻手绘群山层次，柔和而浓郁的夕照，无城市旅游地招牌，无可读字。画面中间山脊宽阔、视野深，诗意与呼吸感，不夸张镜头光斑。图2只取原游戏中国群山笔触。\n同一款《异托邦》中国叙事视觉小说的手绘环境与CG。参考图1只用于现有游戏的细腻厚涂笔触、柔和水墨边缘、低饱和青灰米金色、细纸纹，不照搬参考中的古装和厨房。真实可信透视、东方手绘人物比例、柔和自然光、适度留白、凝练空间。全画幅16:9，画面下方四分之一低细节可叠现有对白，无UI无文字无水印，无排版，不是照片、不用3D渲染。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-sunset_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "278ae281-76dc-43e4-8e7c-573e5b913d26"
+      }
+    },
+    {
+      "prompt_id": "9f1368ca-225c-4925-9dd4-6fd08f8c9afe",
+      "queue_number": 52,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172306,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/lin-yue.jpg"
+      ],
+      "prompt": "山脊观景台人群擦肩而过的剧情CG，一个两三秒的错身。画面左前景是二十岁东亚男大学生林越，同参考图2的侧分黑短发、细圆框眼镜、灰蓝针织开衫、绿色帆布背包，侧脸忽然停步、想叫却还没叫。中远景右侧一位穿亮黄色现代户外外套的年轻女孩向石阶拐角走远，双臂完整，右手拿水瓶，半回首笑得爽朗。她与林越之间隔着几位衣色柔灰的普通游客，人潮自然交错、将她推远，二人没有握手、没有递水、没有对话接触。石栏、江面和树影带出周末午后，构图清楚表达一瞬认出故人的震颤又错过。少量人物，不重复主角，无古装无伤残。\n同一款《异托邦》中国叙事视觉小说的手绘环境与CG。参考图1只用于现有游戏的细腻厚涂笔触、柔和水墨边缘、低饱和青灰米金色、细纸纹，不照搬参考中的古装和厨房。真实可信透视、东方手绘人物比例、柔和自然光、适度留白、凝练空间。全画幅16:9，画面下方四分之一低细节可叠现有对白，无UI无文字无水印，无排版，不是照片、不用3D渲染。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-one-glance_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "6ff42923-cfab-4137-915c-8ae53f6dcc46"
+      }
+    },
+    {
+      "prompt_id": "47423f43-cfd7-45cc-91f0-a5bcae7cea02",
+      "queue_number": 53,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172307,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/lin-yue.jpg",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/modern-cast.jpg"
+      ],
+      "prompt": "从唐瑾的相机视角拍下的山顶合影，16:9现代故事结尾CG。远处半轮落日将没入青苍山脊、弯曲江面碎金光，画面上方三分之二以山川落日为主。下方只有三个东亚男生：左边二十岁的林越（参考图2的侧分短发、唯一的细圆眼镜、灰蓝针织开衫、绿色帆布背包），画面中央是十六岁沈辞（参考图3最左，短乱黑发、没有眼镜，海军蓝薄外套，安静略不习惯地笑），右边十六岁宋嘉树（参考图3最右，黑短发、没有眼镜、米黄外套，笑得爽朗）。恰好三人，左林越、中沈辞、右宋嘉树。三人自然挨近面向相机、身体各自独立，沈辞居正中。唐瑾在镜头外拍照，不出镜。下方栏杆、上方大面积落日；镜头温暖克制、人物比例符合少年，非写真照。\n同一款《异托邦》中国叙事视觉小说的手绘环境与CG。参考图1只用于现有游戏的细腻厚涂笔触、柔和水墨边缘、低饱和青灰米金色、细纸纹，不照搬参考中的古装和厨房。真实可信透视、东方手绘人物比例、柔和自然光、适度留白、凝练空间。全画幅16:9，画面下方四分之一低细节可叠现有对白，无UI无文字无水印，无排版，不是照片、不用3D渲染。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-final-photo_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "c3082f3e-46ee-482b-b8b9-979bf9bb7cc9"
+      }
+    },
+    {
+      "prompt_id": "4deb8c85-47a3-477c-aea4-446e96f1106f",
+      "queue_number": 54,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172402,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png"
+      ],
+      "prompt": "重新画一张完整的横幅现代图书馆环境背景，画布必须全部画满，延伸到四边，没有留白条，没有纸页拼贴，没有海报区域。无人物的海外大学图书馆靠窗木桌，桌上打开的书、钢笔、小圆玉扣，窗外柔和树影。完整透视：近处桌沿和木椅一直延伸到画面最底边，后方书架从左侧向远方延展，右侧窗框和树影，午后低饱和青灰米金，自然柔光。精细手绘厚涂和淡水墨边缘、轻微纸纹，笔触与原版《异托邦》CG相同。画幅16:9全画幅环境概念图，不用相纸边、不用空白平涂色块、不用抠图，不写可读文字。\n参考图1仅取原游戏细腻厚涂画风与柔光，不能照搬其布局或画幅下方黑色蒙版。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-library-v2_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "f1ffc3b4-4bd0-4d77-a9e9-c5fc55be4796"
+      }
+    },
+    {
+      "prompt_id": "d30a8226-ab68-4562-8e39-d12ad4f183f8",
+      "queue_number": 55,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172410,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 768,
+      "width": 1024,
+      "height": 1536,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/lin-yue.jpg"
+      ],
+      "prompt": "根据参考图同一个林越制作游戏角色单人立绘：二十岁东亚男大学生，同一张脸、侧分短黑发、细圆金属眼镜，灰蓝针织开衫、白T恤、深灰裤子，绿色帆布双肩包。一人独立站姿，姿态自然安静，一只手放在包带上，另一只手松垂，头发、五官、两手完整，膝上半身，头顶和左右充分留边，面向画面左侧一点，温和认真、略有书卷气。与参考相同细腻手绘厚涂、水墨柔边、低饱和画风，不能做照片。背景绝对均匀纯亮品红RGB255,0,255，整张背景必须纯色无纹理无阴影，方便抠图；品红光不反射人物，衣服不用品红。无书桌无场景无文字无logo无水印无边框，没有别的人，没有坐姿。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "portrait-linyue_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1024,
+          "height": 1536
+        },
+        "id": "020e7aa9-77df-4b34-80ad-7d23826eaffb"
+      }
+    },
+    {
+      "prompt_id": "1429a47a-cc30-48e1-bd7f-b0efd1e3f53e",
+      "queue_number": 56,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172420,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/lin-yue.jpg"
+      ],
+      "prompt": "海外大学东亚研究导师办公室午后，一幅温暖而严肃的剧情CG。左侧是二十岁的林越，必须保持图2的侧分黑短发、细圆眼镜、灰蓝针织开衫，坐在访客木椅，认真听。右侧一位五十岁左右的中国男导师，灰色毛衣、短黑灰发，把一份有自然审稿笔迹但无法读出文字的打印稿推给林越。桌上是书、两杯茶、一台面向桌后打开的笔记电脑，电脑屏幕朝向两人但不要正对观众。后面书墙、窗台小绿植一角微蔫、旧暖气管、窗外树影。两位人物，手动作自然，林越轻轻按住稿子，表情是惊讶中开始认真相信自己。手绘现代大学，不是企业办公宣传照，背景和桌面一直画到四边，不加空白栏。\n参考图1只用于现行《异托邦》CG同一画师的细腻手绘厚涂、柔和水墨边缘、低饱和米金青灰色、轻微纸纹。真实结构，温柔克制的表演，单张完整16:9叙事CG，无文字无水印无界面无排版，画满四边，不要照片或3D。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-office-conversation_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "23859212-9712-44d8-9162-1e0605504a1b"
+      }
+    },
+    {
+      "prompt_id": "db939609-ff50-447b-b4ab-a940b88c377c",
+      "queue_number": 57,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172421,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/heterotopia-style-e6-home.png",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/modern-cast.jpg",
+        "Qwen2.1/Heterotopia/StoryExpansion-2026-11-23/lin-yue.jpg"
+      ],
+      "prompt": "中国江边山顶观景平台，现代周末黄昏，剧情CG。人物在中远景，只占画幅下半部，背景是大江、青苍山峦和尚未沉落的暖金太阳。画面右侧正中是十六岁沈辞（图2最左男生的同一张脸，黑短乱发、无眼镜、深海军蓝户外薄外套），手抱着一本薄笔记，安静地刚转过身。一旁低马尾女孩唐瑾（图2中间的同一张脸，穿灰米色日常薄外套，完整双手）把笔记递到他手边，嘴上在说话、手臂自然替他挡迎面挤过的游客。宋嘉树（图2最右男生同一脸，米黄日常外套）站在他另一侧，笑着向林越招手。林越是画面左侧稍远的第四位，图3同一二十岁东亚青年、细圆眼镜、灰蓝针织衫、苔绿背包，安静站在圈外侧脸看三位高中生，轻轻微笑。四个人物，各自一张脸不重复，只有林越戴眼镜。唐瑾只一位少女。周围游客只有模糊远景轮廓，无人正面挡脸，没有摆拍合照的姿势，没有相机，不穿校服、不穿古装。\n参考图1只用于现行《异托邦》CG同一画师的细腻手绘厚涂、柔和水墨边缘、低饱和米金青灰色、轻微纸纹。真实结构，温柔克制的表演，单张完整16:9叙事CG，无文字无水印无界面无排版，画满四边，不要照片或3D。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-summit-reunion_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "2937576a-a380-47a4-bf0a-6bef0b91efba"
+      }
+    },
+    {
+      "prompt_id": "6c7e68c3-8965-4f7c-bdb2-775f9cdec153",
+      "queue_number": 58,
+      "status": "success",
+      "model": "qwen_image_2.1_int8_convrot.safetensors",
+      "clip": "qwen3vl_8b_int8_convrot.safetensors",
+      "vae": "qwen_image_2.1_vae_bf16.safetensors",
+      "seed": 23172430,
+      "steps": 22,
+      "cfg": 3.8,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "resolution": 704,
+      "width": 1536,
+      "height": 864,
+      "images": [
+        "Qwen2.1/Heterotopia/ModernLine-2026-11-23/modern-dorm_00001_.png [output]"
+      ],
+      "prompt": "精确编辑参考图的现代海外大学宿舍夜景，保留全部空间位置、书桌与书本、灰色窗框、厨房锅、衣架、画幅与手绘厚涂笔触。只有一处场景变化：桌灯已经熄灭，室内整体变暗，现在右边墙面投影是唯一明亮的青蓝光源。投影矩形内出现一只古代少年的手，持小刻刀在一片竹简上认真刻字，手与竹简只画在墙上的投影里，不伸入房间；竹简只带一两条抽象短刻痕，不写可读文字。近前桌面的小圆玉扣在青蓝投影反光中显得微亮。窗外仍是现代城市夜灯，不是芦苇、不是水淹室内。营造第三声何之后的陌生感，克制、诡异、安静，不是怪物恐怖，不要鬼脸不要血。单幅完整16:9游戏CG，画满四边，无UI、字幕、文字、边框、水印。原版手绘笔触，不能变照片。",
+      "negative_prompt": "live action, photograph, 3D CGI, western superhero, manga panel, chibi, cel shading, plastic skin, modern weapons in ancient setting, bulky fantasy armor, Japanese samurai, Roman dress, neon, oversaturation, burnt blacks, excessive bloom, watermark, signature, letters, fake text, subtitles, labels, panels, borders, duplicated person, malformed hands, extra fingers, extra limbs, blood, wounds, gore, explicit injury, photorealistic, stock photo, studio portrait, legible letters, tourist signage, cinematic lens flare",
+      "output": {
+        "filename": "modern-projection_00001_.png",
+        "subfolder": "Qwen2.1\\Heterotopia\\ModernLine-2026-11-23",
+        "type": "output",
+        "metadata": {
+          "kind": "image",
+          "width": 1536,
+          "height": 864
+        },
+        "id": "b30023c4-5d10-45cc-9bfe-a3ce13c38a34"
+      }
+    }
+  ]
+}

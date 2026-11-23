@@ -75,7 +75,7 @@ test('only registered side portraits stage; explicit silent presence is narrow',
 });
 
 test('reviewed CGs match their exact story interval and unlock only after reading', () => {
-  assert.equal(CGS.filter(cg => !!cg.file).length, 14);
+  assert.equal(CGS.filter(cg => !!cg.file && !cg.id.startsWith('modern-')).length, 14);
   const beatIds = new Set<string>();
   for (const scene of SCENES) {
     for (const breakfast of ['A', 'B']) {

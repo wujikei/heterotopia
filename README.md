@@ -2,6 +2,8 @@
 
 根据《异托邦 V6 完整剧本》制作的完整视觉小说。81 场、两条主线、四个王裔结局，以及完成两条路线后展开的“归来”。正文保留原著，对白与叙述共约 5.6 万字。
 
+首页现可切换“林越 · 现代新卷”：从海外旧街的问字摊出发，经历王裔与昆仑两条旅程、两次现代返场，再进入山顶落日尾声。新卷独立收录 281 场、2,932 页，使用单独的自动存档、六个手动书签和解锁记录。林越在古代借用戌的身体，现代场景恢复林越的身份与立绘。新卷正文目前为简体中文，英文、日文和德文译本仍仅覆盖 V6 原篇。
+
 在线游玩：**[https://wujikei.github.io/heterotopia/](https://wujikei.github.io/heterotopia/)**。手机、平板和电脑均可用现代浏览器直接打开。声音在首次点击后启用；进度保存在当前设备的浏览器里，换设备可通过导出、导入存档继续。
 
 ## 开发历程
@@ -19,6 +21,7 @@
 | 2026-11-14 | [#10](https://github.com/wujikei/heterotopia/pull/10)–[#11](https://github.com/wujikei/heterotopia/pull/11) · 第三批 | 为旅途旧物制作物笺，接入正文与手记，并修复离线设置刷新检查。 |
 | 2026-11-14 | [#12](https://github.com/wujikei/heterotopia/pull/12) · 第四批 | 六张时段背景、三首约 146 秒长配乐、关键段落表情与自动停留；提供分片离线版和完整单文件。已合并并发布。 |
 | 2026-11-14 | 四语版本 | 设置内可切换中文、English、日本語、Deutsch；每种译本覆盖 1,603 页剧情与 970 条界面文案，保留已有路线和存档，并支持离线阅读。 |
+| 2026-11-23 | 林越海外现代线 | 独立故事卷、两条路线与现代返场、山顶尾声；新增林越立绘与现代场景，接入 Qwen-Image 2.1 素材，支持网页和离线两种版本。 |
 
 游戏默认中文，语言偏好保存在本机。切换后正文、选项、人物志、回看、书签和界面文案同步更新；四种语言共用原场景编号与阅读进度，已有存档无需重开。英语、德语和日语字体随游戏本地提供。译名与文风约定见 [翻译说明](docs/translation-guide.md)。
 
@@ -79,6 +82,8 @@
 若重新处理历史短版全套声音，随后执行 `python scripts/process-long-score.py` 恢复三首长主题；所需的 `*-long.flac` 母带路径和 SHA-256 在第四批音乐任务记录中。单独重做本批背景使用 `python scripts/process-time-of-day.py`，会校验源图哈希和无损像素一致性。
 
 修改原著后，运行 `python scripts/import_story.py` 重新导入。`scripts/collect_art.py` 只收集此项目已提交的本机生成任务；游玩不会调用生成服务。
+
+现代卷使用 `python scripts/import_modern.py` 从 `最新/异托邦_完整剧情_人称标注版.txt` 与 `最新/异托邦_海外版现代线_独立卷.txt` 导入，生成独立的 `modern-story.json` 和 `modern-index.json`，保留 V6 数据。`npm run test:modern` 验证新卷入口、开篇美术、资料页与分卷存档隔离；`npm test` 还会验证两种路线顺序及两次返场到尾声的完整流程。现代卷美术来源及生成参数见 `docs/art/modern-line-assets.json` 和 `docs/art/modern-line-generation.json`。
 
 ## 网站发布
 

@@ -1,0 +1,366 @@
+{
+  "date": "2026-11-23",
+  "engine": "ComfyUI / Qwen-Image 2.1",
+  "assets": [
+    {
+      "asset": "modern-dorm",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-dorm_00001_.png",
+      "source_sha256": "8b861da5e6d318f327fb6f9abd75ba59c9b8d5090071b08e12f31fb814427b41",
+      "master": "resources\\art-src\\modern\\modern-dorm.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "modern-library",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-library-v2_00001_.png",
+      "source_sha256": "495e9b9dd77a730b81b485fe5eb61e091291ea21274e4443fdbec1471a45c4e6",
+      "master": "resources\\art-src\\modern\\modern-library.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "modern-office",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-office_00001_.png",
+      "source_sha256": "6e31be15ae954a46d88ff581e4d687d29d9d16d1c6a92a27f7882e9797240f17",
+      "master": "resources\\art-src\\modern\\modern-office.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "modern-projection",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-projection_00001_.png",
+      "source_sha256": "bd3153478a7b77abedcd83dff13e82c11d7678ad88f455e42a29aed27da86658",
+      "master": "resources\\art-src\\modern\\modern-projection.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "modern-mountain-path",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-mountain-path_00001_.png",
+      "source_sha256": "c11afa3a6189982cc510c223e09e6b72ac2c390d2319b36b08cc94d09e4c4864",
+      "master": "resources\\art-src\\modern\\modern-mountain-path.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "modern-sunset",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-sunset_00001_.png",
+      "source_sha256": "a96416a6d7a9712331e6d321c611e0dbb1434d86671efe9595aba30a2ab3f7ed",
+      "master": "resources\\art-src\\modern\\modern-sunset.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-word-stall",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Modern\\01b-word-stall.png",
+      "source_sha256": "237a7c3ef6140a53b4078b28a6d7150f212c60e29bdbb61353289c9f70f8d5a4",
+      "master": "resources\\art-src\\modern\\cg-modern-word-stall.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-friends",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Modern\\01-campus-friends.png",
+      "source_sha256": "cc24d68cb446838c6d01ed9f6b32f07cd0885d3afed8a3809a0bd8fe1ecdfa9e",
+      "master": "resources\\art-src\\modern\\cg-modern-friends.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-noodles",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Modern\\01e-dorm-noodles.png",
+      "source_sha256": "64828b1a10dd46ff334c409a401178cab3b06e43f988aa2b2857124d43c39cc2",
+      "master": "resources\\art-src\\modern\\cg-modern-noodles.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-translation",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Modern\\01h-tianwen-translation.png",
+      "source_sha256": "8a2d6fe768d87e0f1c5157a88634e1bcadd496e148b64a7b8420b5047abcb4f2",
+      "master": "resources\\art-src\\modern\\cg-modern-translation.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-glance",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-one-glance_00001_.png",
+      "source_sha256": "25cbc14a40ba15900ca7a9a233e563ca12997147b7f0dc7d261ba8fdae404b56",
+      "master": "resources\\art-src\\modern\\cg-modern-glance.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-photo",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-final-photo_00001_.png",
+      "source_sha256": "4b616d62b8a80d24d72252128f72e41c7723fe12e98a094ba5a376b7428ba8cb",
+      "master": "resources\\art-src\\modern\\cg-modern-photo.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-summit",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-summit-reunion_00001_.png",
+      "source_sha256": "285c7358907f38a73bbe00112071871458fc34503de27a0d562a869096d6a860",
+      "master": "resources\\art-src\\modern\\cg-modern-summit.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-paper",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-office-conversation_00001_.png",
+      "source_sha256": "553a284919fb12b88bd774e07644dd79ecf2ec0ca05c87d86717b19bbe4b9a59",
+      "master": "resources\\art-src\\modern\\cg-modern-paper.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-projection",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\modern-projection_00001_.png",
+      "source_sha256": "bd3153478a7b77abedcd83dff13e82c11d7678ad88f455e42a29aed27da86658",
+      "master": "resources\\art-src\\modern\\cg-modern-projection.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-selection",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Common\\13-ritual-selection.png",
+      "source_sha256": "a0e58e316e7ad4edbb4705c5e265daa785cc6361855f2a9d3841f8a7a5d4fc0b",
+      "master": "resources\\art-src\\modern\\cg-modern-selection.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-fork",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Common\\12-carriage-choice.png",
+      "source_sha256": "668f71cc4e844c4a975715371623fa599da309dc761f606ce822faa161486614",
+      "master": "resources\\art-src\\modern\\cg-modern-fork.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-storm",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\02-storm-boat.png",
+      "source_sha256": "5b669f2a86d55392c00593569bdd09989e9e90e7157466ee083d2810910ede01",
+      "master": "resources\\art-src\\modern\\cg-modern-storm.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-cloud-lord",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03a-cloud-lord.png",
+      "source_sha256": "4233fb8b6a95a8cad1e456f31ecec165cdc1da5211e9012358582f073952d995",
+      "master": "resources\\art-src\\modern\\cg-modern-cloud-lord.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-xiangjun",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03b-xiangjun.png",
+      "source_sha256": "e6c9691e661af57033b1b7f88da07ba7eac1eeafbfc970580eedca285eed9f55",
+      "master": "resources\\art-src\\modern\\cg-modern-xiangjun.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-xiangfuren",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03c-xiangfuren.png",
+      "source_sha256": "d5f87b85fc07cddf83b3498f9f174347235f40857672d302fbfcc9086b36a9fd",
+      "master": "resources\\art-src\\modern\\cg-modern-xiangfuren.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-siming",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\04-siming-afterwater.png",
+      "source_sha256": "d8ffe5279b8d343842f68c8ee6ee1f5cd33f0891931dd5fbdcb2f2ce01c205bd",
+      "master": "resources\\art-src\\modern\\cg-modern-siming.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-shaosiming",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03d-shaosiming.png",
+      "source_sha256": "5d88feef28966588660c5574878e31f9669f4b6103b0b9cbeb7ebad4763f2022",
+      "master": "resources\\art-src\\modern\\cg-modern-shaosiming.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-dongjun",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03e-dongjun.png",
+      "source_sha256": "009a83466e93a0b400bcb51409db894143d05300a58ff538bd45969c65f25147",
+      "master": "resources\\art-src\\modern\\cg-modern-dongjun.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-mountain-spirit",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03f-mountain-spirit.png",
+      "source_sha256": "2a764dd04c2997d5b565e6773e37c244e5417c80f57d9066864fbeb05467dfc8",
+      "master": "resources\\art-src\\modern\\cg-modern-mountain-spirit.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-river-lord",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03g-river-lord.png",
+      "source_sha256": "1eef2b1eb8aea989df95a8cff738aa05a72cf1d4027ccdca71fc5a77a6b08ac1",
+      "master": "resources\\art-src\\modern\\cg-modern-river-lord.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-gods-rite",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03i-gods-rite.png",
+      "source_sha256": "2f2297a90e0414b5b66ec362abd5d861bdcb43812f960efd1bf37f7e69cbdae9",
+      "master": "resources\\art-src\\modern\\cg-modern-gods-rite.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-kunlun-light",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\05-kunlun-light.png",
+      "source_sha256": "e0336c6eab8f9180b4cb6c03cb1db42c0abdfe1e2a353e67a0235cc0d336005e",
+      "master": "resources\\art-src\\modern\\cg-modern-kunlun-light.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-donghuang",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\03h-donghuang.png",
+      "source_sha256": "6cbb3c5ee0b9ea4a929791959d339fbf930c608d3351a18db5ff658a5dc59cbf",
+      "master": "resources\\art-src\\modern\\cg-modern-donghuang.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-reed-boat",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Kunlun\\06-reed-boat-found.png",
+      "source_sha256": "35a41c46168c4c4fbd997f0b2a83c093763158d9c70bea20afddece92a49e35b",
+      "master": "resources\\art-src\\modern\\cg-modern-reed-boat.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-battle",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Royal\\07-ink-battle.png",
+      "source_sha256": "3c91f5e7adca8b09828f5e92d93fcb836af9bd814fab20c50d52f51837182cb9",
+      "master": "resources\\art-src\\modern\\cg-modern-battle.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-city",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Royal\\08-city-fighting.png",
+      "source_sha256": "5a87b2489f0be79b91f691aa6b3e20741214d060f27a1eb129c0b005f545c0ca",
+      "master": "resources\\art-src\\modern\\cg-modern-city.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-last-geese",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Royal\\09-xu-last-seven-geese.png",
+      "source_sha256": "14345543e412c34a6654daf2247d099c914011aefe261dd76d124e3563036c4d",
+      "master": "resources\\art-src\\modern\\cg-modern-last-geese.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-feast",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Royal\\10-corrupt-feast.png",
+      "source_sha256": "87cd9ea97d5d7a2a08df9d1b6e86d9af1ce284163420c918ebed62935ba87390",
+      "master": "resources\\art-src\\modern\\cg-modern-feast.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "cg-modern-ritual",
+      "source": "D:\\异托邦\\游戏核心\\artifacts\\StoryExpansion-2026-11-23\\deliverable\\Assets\\Royal\\11-royal-ritual.png",
+      "source_sha256": "7b47606021c47e9cb61b9c8aa73ca730490fe7f94bf091e2d2f646671e250259",
+      "master": "resources\\art-src\\modern\\cg-modern-ritual.png",
+      "size": [
+        1536,
+        864
+      ]
+    },
+    {
+      "asset": "portrait-linyue",
+      "source": "D:\\Comfy-Desktop\\ComfyUI-Shared\\output\\Qwen2.1\\Heterotopia\\ModernLine-2026-11-23\\portrait-linyue_00001_.png",
+      "source_sha256": "58a8b1bb26dde291addea872ddfc5cf1c692a4beb3f4bbe023f2a96fbc92cdf3",
+      "matte": "magenta; preserve green backpack",
+      "size": [
+        768,
+        1152
+      ]
+    }
+  ]
+}

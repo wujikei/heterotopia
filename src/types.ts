@@ -1,8 +1,9 @@
 export type Route = 'prologue' | 'common' | 'royal' | 'kunlun' | 'return';
-export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home';
+export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home' | `modern-${string}`;
+export type Campaign = 'original' | 'overseas';
 export type Language = 'zh' | 'en' | 'ja' | 'de';
-export interface RawBlock { tag: string; lines: string[]; pages?: string[] }
-export interface Scene { id: string; title: string; chapter: string; route: Route; background: string; blocks: RawBlock[] }
+export interface RawBlock { tag: string; lines: string[]; pages?: string[]; options?: Choice[]; when?: { choice: string; value: string }; background?: string; cast?: string[]; domesticOnly?: boolean }
+export interface Scene { id: string; title: string; chapter: string; route: Route; background: string; blocks: RawBlock[]; next?: string; ending?: EndingId; script?: 'modern'; sourceId?: string }
 export interface Choice { key: string; title: string; detail: string; target?: string; disabled?: boolean; hint?: string }
 export interface BeatBase { id: string; background: string; cast: string[]; atmosphere: string; audioCueId: string; direction: string }
 export interface TextBeat extends BeatBase { kind: 'text'; speaker: string; mood: string; text: string }
@@ -11,6 +12,7 @@ export interface EndingBeat extends BeatBase { kind: 'ending'; ending: EndingId 
 export type Beat = TextBeat | ChoiceBeat | EndingBeat;
 export interface Profile {
   version: 1;
+  campaign?: Campaign;
   visited: string[];
   read: string[];
   art: string[];
@@ -21,6 +23,7 @@ export interface Profile {
 export interface HistoryEntry { id: string; sceneId: string; speaker: string; text: string; kind: 'text' | 'choice' }
 export interface GameState {
   version: 1;
+  campaign?: Campaign;
   sceneId: string;
   beatId: string;
   inventory: string[];
