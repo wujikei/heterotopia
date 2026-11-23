@@ -1,7 +1,7 @@
 import { MODERN_SCENES, SCENES, isStoryReady } from './story';
 import { CHARACTERS, MODERN_CHARACTERS } from './data/world';
 import { timeOfDayBackground } from './data/timeOfDay';
-import { campaignOf, isModern, modernBackground, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_SCENE_ART } from './modern';
+import { campaignOf, isModern, modernBackground, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_SCENE_ART, MODERN_RETURN_ENDING, modernReturnMemory } from './modern';
 import type { Beat, Campaign, ChoiceBeat, EndingId, GameState, Profile, Scene, TextBeat } from './types';
 
 export { STORY, SCENES, loadStory, isStoryReady } from './story';
@@ -147,7 +147,8 @@ function compileModernScene(scene: Scene, profile: Profile, state: Pick<GameStat
       return;
     }
     const [speaker, ...moods] = block.tag.split('·');
-    (block.pages ?? block.lines).forEach((page, pageIndex) => {
+    (block.pages ?? block.lines).forEach((sourcePage, pageIndex) => {
+      const page = block.returnMemory ? modernReturnMemory(state.choices) ?? sourcePage : sourcePage;
       background = modernBackground(scene, page, background);
       const activeSpeaker = speaker === '旁白' ? '' : speaker;
       const who = [...CHARACTERS, ...MODERN_CHARACTERS].find(c => c.name === activeSpeaker || activeSpeaker === '大巫祝' && c.key === 'wuyang');
@@ -260,7 +261,7 @@ export function continueEnding(state: GameState, profile: Profile): GameState {
   if (isModern(state.sceneId)) {
     const beat = currentBeat(state, updated);
     if (beat.kind !== 'ending' || beat.ending === 'modern-home') return state;
-    return enterScene(state, updated, beat.ending === 'modern-kunlun' ? 'modern-o-4-2' : 'modern-o-4-1');
+    return enterScene({ ...state, choices: { ...state.choices, [MODERN_RETURN_ENDING]: beat.ending } }, updated, beat.ending === 'modern-kunlun' ? 'modern-o-4-2' : 'modern-o-4-1');
   }
   if (canReturn(updated)) return enterScene(state, updated, '终-1');
   return enterScene({ ...state, inventory: ['jadeTail', 'birds', 'box', 'bone', 'coat'], choices: {}, cycle: state.cycle + 1 }, updated, '1-12', true);

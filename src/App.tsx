@@ -12,7 +12,7 @@ import { UpdateNotice } from './components/UpdateNotice';
 import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
 import { asset, BACKGROUNDS, CHARACTERS, endingsForCampaign, portraitAsset } from './data/world';
-import { campaignOf, modernFinal } from './modern';
+import { campaignOf, modernFinal, restoreModernState } from './modern';
 import { actorForBeat } from './actors';
 import { actorPortraitName } from './data/actorVariants';
 import { relicForBeat } from './data/relics';
@@ -428,7 +428,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const resume = async (state = game) => {
     if (!state) return;
     void sound.unlock(settings);
-    state = await prepareReading(() => state!);
+    state = await prepareReading(() => restoreModernState(state!));
     if (!state) return;
     audioJump.current = true;
     previousScene.current = state.sceneId;
@@ -534,10 +534,10 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       persist('profile', merged); setProfile(merged);
       const importedSlots = slots.map((slot, i) => {
         const item = Array.isArray(data.slots) ? data.slots[i] : null;
-        return item?.version === 1 && validState(item.state, campaign) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? item as SaveSlot : slot;
+        return item?.version === 1 && validState(item.state, campaign) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? { ...item as SaveSlot, state: restoreModernState(item.state) } : slot;
       });
       setSlots(importedSlots); persist('slots', importedSlots);
-      if (validState(data.state, campaign)) { audioJump.current = true; persist('autosave', data.state); setGame(data.state); }
+      if (validState(data.state, campaign)) { const restored = restoreModernState(data.state); audioJump.current = true; persist('autosave', restored); setGame(restored); }
       notify('旅途已导入，已经历的记忆合在了一处。');
     } catch { notify('这份文件无法识读，请选择从本作导出的 JSON 存档。'); }
   };

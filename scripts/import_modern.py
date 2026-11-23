@@ -211,6 +211,25 @@ def configure_options(scene: dict):
         if not options: raise ValueError(f"Unparsed choice {scene['id']}:{index}: {text}")
 
 
+def apply_adaptations():
+    """Keep supplied manuscripts intact; fail on source drift instead of fuzzy replacing."""
+    path = ROOT / 'scripts/modern-adaptations.json'
+    by_id = {scene['id']: scene for scene in SCENES}
+    seen = set()
+    for patch in json.loads(path.read_text(encoding='utf-8')):
+        key = (patch['scene'], patch['block'])
+        if key in seen: raise ValueError(f'Duplicate adaptation: {key}')
+        seen.add(key)
+        block = by_id[patch['scene']]['blocks'][patch['block']]
+        if block['tag'] != '旁白' or block['lines'] != [patch['source']]:
+            raise ValueError(f'Adaptation source changed: {key}; review the manuscript before reapplying')
+        block['lines'] = [patch['text']]
+        block['pages'] = pages(patch['text'])
+    # One existing paragraph, not an inserted block: bookmark and choice IDs stay stable.
+    by_id['modern-o-4-1']['blocks'][7]['returnMemory'] = True
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def main():
     whole = SOURCE.read_text(encoding='utf-8-sig')
     modern = MODERN.read_text(encoding='utf-8-sig')
@@ -307,8 +326,9 @@ def main():
         for b in s['blocks']:
             for c in b.get('options', []):
                 if c.get('target'): assert c['target'] in by_id, c
+    adaptation_sha = apply_adaptations()
     dest = ROOT/'src/data/modern-story.json'
-    metadata = {'title': '异托邦·海外现代线', 'edition': 'modern-2026-11', 'sceneCount': len(SCENES),
+    metadata = {'adaptationSha256': adaptation_sha, 'title': '异托邦·海外现代线', 'edition': 'modern-2026-11', 'sceneCount': len(SCENES),
                 'sourceSha256': hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
                 'modernSourceSha256': hashlib.sha256(MODERN.read_bytes()).hexdigest(),
                 'pageCount': sum(len(b.get('pages', [])) for s in SCENES for b in s['blocks']),

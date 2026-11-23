@@ -85,6 +85,8 @@
 
 现代卷使用 `python scripts/import_modern.py` 从 `最新/异托邦_完整剧情_人称标注版.txt` 与 `最新/异托邦_海外版现代线_独立卷.txt` 导入，生成独立的 `modern-story.json` 和 `modern-index.json`，保留 V6 数据。`npm run test:modern` 验证新卷入口、开篇美术、资料页与分卷存档隔离；`npm test` 还会验证两种路线顺序及两次返场到尾声的完整流程。现代卷美术来源及生成参数见 `docs/art/modern-line-assets.json` 和 `docs/art/modern-line-generation.json`。
 
+现代卷的已审校适配位于 `scripts/modern-adaptations.json`：逐场号、段落号保存完整原文锚点与修正理由，不改两份供稿。运行 `npm run import:modern` 可重复生成；原文漂移时会停止并要求重审，不模糊替换。第一轮连续性修复与验收边界见 `docs/reviews/modern-continuity-r1.md`。
+
 ## 网站发布
 
 仓库：[wujikei/heterotopia](https://github.com/wujikei/heterotopia)。GitHub Actions 在 PR 和 `main` 上验证剧情、构建、Chromium 阅读交互与立绘；检查通过的 `main` 才发布至 GitHub Pages。也可在仓库的 Actions 页面手动运行发布工作流。

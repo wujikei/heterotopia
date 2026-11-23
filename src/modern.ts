@@ -1,4 +1,4 @@
-import type { Beat, Campaign, Profile, Scene } from './types';
+import type { Beat, Campaign, GameState, Profile, Scene } from './types';
 import type { MusicId } from './score';
 
 export const isModern = (id: string) => id.startsWith('modern-');
@@ -110,12 +110,24 @@ export const MODERN_SCENE_ART: Record<string, string> = {
   'modern-k-G-2': 'cg-modern-reed-boat',
 };
 
+// Stored in the existing extensible choice record; old saves without it use neutral prose.
+export const MODERN_RETURN_ENDING = 'modern-return-ending';
+export function modernReturnMemory(choices: GameState['choices']): string | undefined {
+  const ending = choices[MODERN_RETURN_ENDING];
+  const entry = Object.entries(MODERN_ENDINGS).find(([id]) => id === ending && id.startsWith('modern-royal-'));
+  return entry ? `（“${entry[1].quote}”——那一边的句子，还留在你心里。）` : undefined;
+}
+
 export function modernInventory(sceneId: string, previous: string[]): string[] {
   if (sceneId === 'modern-o-0-1') return [];
-  if (sceneId === 'modern-o-0-2') return ['questionJade'];
-  if (modernInterlude(sceneId) || /^modern-o-5-/.test(sceneId)) return ['questionJade', 'map'];
+  if (sceneId === 'modern-o-0-2' || modernInterlude(sceneId) || /^modern-o-5-/.test(sceneId)) return ['questionJade'];
   if (sceneId === 'modern-o-0-3') return [];
-  if (['modern-c-1-13', 'modern-c-1-13a', 'modern-c-1-13b'].includes(sceneId)) return ['questionJade', 'map', 'jadeTail', 'birds', 'box'];
-  if (sceneId === 'modern-o-0-8') return [...new Set([...previous, 'map', 'jadeTail', 'birds', 'box'])];
-  return previous;
+  if (['modern-c-1-13', 'modern-c-1-13a', 'modern-c-1-13b'].includes(sceneId)) return ['jadeTail', 'birds', 'box'];
+  const ancient = previous.filter(id => id !== 'map' && id !== 'questionJade');
+  if (sceneId === 'modern-o-0-8') return [...new Set([...ancient, 'jadeTail', 'birds', 'box'])];
+  return ancient;
+}
+
+export function restoreModernState(state: GameState): GameState {
+  return isModern(state.sceneId) ? { ...state, inventory: modernInventory(state.sceneId, state.inventory) } : state;
 }

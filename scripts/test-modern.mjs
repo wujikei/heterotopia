@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { enterScene, newGame, newProfile } from '../src/engine.ts';
+import { loadStory } from '../src/story.ts';
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4179';
 const browser = await chromium.launch({ headless: true });
@@ -46,6 +48,26 @@ try {
   const separated = await page.evaluate(() => ({ modern: JSON.parse(localStorage.getItem('heterotopia.v1.overseas.autosave') || 'null'), original: JSON.parse(localStorage.getItem('heterotopia.v1.autosave') || 'null') }));
   assert.equal(separated.modern?.campaign, 'overseas');
   assert.equal(separated.original, null);
+  // Import through the real settings control: no storage injection for this old save.
+  await page.getByRole('button', { name: /林越.*现代新卷/ }).click();
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  await loadStory('overseas');
+  const legacyProfile = newProfile('overseas');
+  const legacyState = { ...enterScene(newGame(legacyProfile), legacyProfile, 'modern-o-4-1'), beatId: 'modern-o-4-1:7:0', inventory: ['map', 'questionJade'] };
+  const slot = { version: 1, savedAt: '2026-11-23T14:00:00Z', state: legacyState };
+  const legacyFile = { format: 'heterotopia-save', version: 1, profile: legacyProfile, state: legacyState, slots: [slot, null, null, null, null, null] };
+  await page.locator('input[type="file"]').setInputFiles({ name: 'legacy-modern.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(legacyFile)) });
+  await page.waitForFunction(() => {
+    const state = JSON.parse(localStorage.getItem('heterotopia.v1.overseas.autosave') || 'null');
+    const slots = JSON.parse(localStorage.getItem('heterotopia.v1.overseas.slots') || 'null');
+    return state?.beatId === 'modern-o-4-1:7:0' && state.inventory.join(',') === 'questionJade' && slots?.[0]?.state.inventory.join(',') === 'questionJade';
+  });
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /^续梦/ }).click();
+  const intro = page.getByTestId('chapter-intro');
+  if (await intro.isVisible()) await intro.click();
+  await page.getByTestId('dialogue-text').waitFor();
+  assert.match(await page.getByTestId('dialogue-text').innerText(), /玉扣上的“何”字，刻痕还在/);
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ modernEntry: 'ok', campaignAboutAndSource: 'ok', openingArtwork: 'ok', modernRouteMemory: 'ok', scopedAutosave: 'ok', originalSaveIsolation: 'ok', browserErrors: errors }, null, 2));
+  console.log(JSON.stringify({ legacyFileImportAndResume: 'ok', modernEntry: 'ok', campaignAboutAndSource: 'ok', openingArtwork: 'ok', modernRouteMemory: 'ok', scopedAutosave: 'ok', originalSaveIsolation: 'ok', browserErrors: errors }, null, 2));
 } finally { await context.close(); await browser.close(); }
