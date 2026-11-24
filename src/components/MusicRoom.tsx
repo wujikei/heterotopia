@@ -3,7 +3,7 @@ import { AudioButton } from './AudioButton';
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { Download, Headphones, LoaderCircle, LockKeyhole, Pause, Play, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
 import { sound } from '../audio';
-import { audioAsset, musicForVisit, SOUNDTRACK, TRACK_ART, trackById, unlockedTracks } from '../score';
+import { audioAsset, tracksForVisit, SOUNDTRACK, TRACK_ART, trackById, unlockedTracks } from '../score';
 import { campaignScenes } from '../engine';
 import { campaignOf } from '../modern';
 import type { MusicId } from '../score';
@@ -20,8 +20,9 @@ export function MusicRoom({ profile, settings, onChange }: { profile: Profile; s
   const trackChapters = useMemo(() => {
     const chapters = new Map<MusicId, string>([['river-home', '']]);
     for (const scene of campaignScenes(campaign)) {
-      const id = musicForVisit(scene.id);
-      if (id && !chapters.has(id)) chapters.set(id, scene.chapter);
+      for (const id of tracksForVisit(scene.id)) {
+        if (!chapters.has(id)) chapters.set(id, scene.chapter);
+      }
     }
     return chapters;
   }, [campaign]);

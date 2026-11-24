@@ -41,7 +41,15 @@ try {
       await page.evaluate(() => document.fonts.ready);
       for (const viewport of viewports) {
         await page.setViewportSize(viewport);
+        await page.waitForFunction(({width, height}) => {
+          const screen = document.querySelector('.ending-screen');
+          return innerWidth === width && innerHeight === height && screen?.clientHeight === height;
+        }, viewport);
         await page.locator('.ending-screen').evaluate(element => { element.scrollTop = 0; });
+        if (ending === 'modern-home') {
+          assert.ok(await page.locator('.ending-actions').evaluate(element => element.getBoundingClientRect().bottom <= innerHeight + 1),
+            `modern finale actions must be visible on entry at ${viewport.width}x${viewport.height}`);
+        }
         for (const time of [1000, 5000]) {
           await page.locator('.ending-screen').evaluate(async (element, currentTime) => {
             for (const animation of element.getAnimations({ subtree: true })) { animation.pause(); animation.currentTime = currentTime; }

@@ -585,6 +585,50 @@
       "integratedLUFS": -18.33,
       "truePeakDB": -2.75,
       "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "music-modern-return.mp3",
+      "title": "留一碗面",
+      "kind": "music",
+      "loop": true,
+      "seconds": 76.66667,
+      "bytes": 1841501,
+      "integratedLUFS": -18.27,
+      "truePeakDB": -5.24,
+      "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "music-modern-untranslated.mp3",
+      "title": "留白里的「何」",
+      "kind": "music",
+      "loop": true,
+      "seconds": 80.0,
+      "bytes": 1921758,
+      "integratedLUFS": -18.26,
+      "truePeakDB": -2.75,
+      "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "music-modern-ascent.mp3",
+      "title": "从这里上去",
+      "kind": "music",
+      "loop": true,
+      "seconds": 65.21739,
+      "bytes": 1566905,
+      "integratedLUFS": -18.26,
+      "truePeakDB": -5.41,
+      "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "music-modern-afterglow.mp3",
+      "title": "半规落日",
+      "kind": "music",
+      "loop": true,
+      "seconds": 76.66667,
+      "bytes": 1841501,
+      "integratedLUFS": -18.21,
+      "truePeakDB": -2.75,
+      "source": "Local ACE-Step 1.5"
     }
   ]
 }

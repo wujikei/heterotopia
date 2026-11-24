@@ -65,6 +65,32 @@ test('the overseas opening crossfades into its own theme and keeps it through th
   assert.ok(carving.musicGain < quiet.musicGain);
 });
 
+test('the overseas return and finale cues follow the notebook, climb and shutter', () => {
+  const frame = (id: string) => {
+    const scene = id.split(':')[0];
+    return scoreFrame(scene, beat(scene, id));
+  };
+  const bowl = frame('modern-o-4-1:24:0');
+  assert.equal(bowl.music, 'modern-return');
+  assert.equal(bowl.events.at(-1)?.effects[0]?.id, 'ceramic');
+  const pause = frame('modern-o-4-2:10:0');
+  const before = frame('modern-o-4-2:7:0');
+  const office = frame('modern-o-5-1:10:0');
+  assert.equal(pause.music, 'modern-untranslated');
+  assert.equal(office.music, pause.music);
+  assert.ok(pause.musicGain < before.musicGain);
+  assert.ok(office.musicGain > pause.musicGain);
+  const ascent = frame('modern-o-5-3:2:0');
+  const summit = frame('modern-o-5-6:4:0');
+  assert.equal(ascent.music, 'modern-ascent');
+  assert.equal(summit.music, ascent.music);
+  const shutter = frame('modern-o-5-7:17:0');
+  const ending = frame('modern-o-5-7:ending');
+  assert.equal(shutter.music, 'modern-afterglow');
+  assert.equal(ending.music, shutter.music);
+  assert.ok(shutter.musicGain < ending.musicGain);
+});
+
 test('three farewells remove the music at their exact narrative pages', () => {
   assert.equal(scoreFrame('B-5-5', beat('B-5-5', 'B-5-5:8:2')).music, 'small-goodbyes');
   const tu = scoreFrame('B-5-5', beat('B-5-5', 'B-5-5:8:3'));
@@ -84,6 +110,8 @@ test('the listening room unlocks music from visited scenes without exposing futu
   assert.deepEqual(unlockedTracks({ visited: SCENES.map(scene => scene.id) }).sort(), [...ORIGINAL_MUSIC_IDS].sort());
   assert.deepEqual(unlockedTracks({ visited: ['modern-o-0-1'] }), ['river-home', 'modern-street']);
   assert.deepEqual(unlockedTracks({ visited: ['modern-o-0-1', 'modern-o-0-2'] }), ['river-home', 'modern-street', 'modern-question']);
+  assert.deepEqual(unlockedTracks({ visited: ['modern-o-4-1', 'modern-o-4-2', 'modern-o-5-1', 'modern-o-5-3', 'modern-o-5-6', 'modern-o-5-7'] }),
+    ['river-home', 'modern-return', 'small-goodbyes', 'modern-untranslated', 'modern-ascent', 'modern-afterglow', 'light-in-kitchen']);
 });
 
 test('every shipped audio asset has provenance, duration, peak headroom and a matching file', () => {

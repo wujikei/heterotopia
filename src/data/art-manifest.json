@@ -63,7 +63,12 @@
     "cg-modern-mountain-spirit-thumb",
     "cg-modern-noodles",
     "cg-modern-noodles-thumb",
+    "cg-modern-notebook-open",
+    "cg-modern-notebook-open-m",
     "cg-modern-paper",
+    "cg-modern-paper-note",
+    "cg-modern-paper-note-m",
+    "cg-modern-paper-note-thumb",
     "cg-modern-paper-thumb",
     "cg-modern-photo",
     "cg-modern-photo-thumb",
@@ -86,6 +91,9 @@
     "cg-modern-summit",
     "cg-modern-summit-thumb",
     "cg-modern-translation",
+    "cg-modern-translation-r3",
+    "cg-modern-translation-r3-m",
+    "cg-modern-translation-r3-thumb",
     "cg-modern-translation-thumb",
     "cg-modern-word-stall",
     "cg-modern-word-stall-r3",
@@ -268,6 +276,9 @@
     "cg-modern-dorm-unease-r2",
     "cg-modern-jade-light-r2",
     "cg-modern-jade-palm-r2",
+    "cg-modern-notebook-open",
+    "cg-modern-paper-note",
+    "cg-modern-translation-r3",
     "cg-modern-word-stall-r3",
     "cg-s02-first-crossing",
     "cg-s04-old-names",
@@ -434,7 +445,13 @@
     "modern-street-arrival-r3": "modern-street-arrival-r3.webp",
     "cg-modern-word-stall-r3": "cg-modern-word-stall-r3.webp",
     "cg-modern-word-stall-r3-m": "cg-modern-word-stall-r3-m.webp",
-    "modern-royal-wall-night": "modern-royal-wall-night.webp"
+    "modern-royal-wall-night": "modern-royal-wall-night.webp",
+    "cg-modern-notebook-open": "cg-modern-notebook-open.webp",
+    "cg-modern-notebook-open-m": "cg-modern-notebook-open-m.webp",
+    "cg-modern-translation-r3": "cg-modern-translation-r3.webp",
+    "cg-modern-translation-r3-m": "cg-modern-translation-r3-m.webp",
+    "cg-modern-paper-note": "cg-modern-paper-note.webp",
+    "cg-modern-paper-note-m": "cg-modern-paper-note-m.webp"
   },
   "masters": {
     "cg-e1-blade": "resources/art-src/cgs/v2/e1-blade.png",
@@ -531,7 +548,10 @@
     "modern-street-arrival-r3": "resources/art-src/modern-polish/modern-street-arrival-r3.png",
     "cg-modern-word-stall-r3": "resources/art-src/modern-polish/cg-modern-word-stall-r3.png",
     "modern-royal-wall-night": "resources/art-src/modern-polish/modern-royal-wall-night.png",
-    "prop-question-jade": "resources/art-src/modern-polish/prop-question-jade.png"
+    "prop-question-jade": "resources/art-src/modern-polish/prop-question-jade.png",
+    "cg-modern-notebook-open": "resources/art-src/modern-text/cg-modern-notebook-open.png",
+    "cg-modern-translation-r3": "resources/art-src/modern-text/cg-modern-translation-r3.png",
+    "cg-modern-paper-note": "resources/art-src/modern-text/cg-modern-paper-note.png"
   },
   "mobileMasters": {
     "cg-e1-blade": "resources/art-src/cgs/mobile/e1-blade.png",
@@ -548,6 +568,9 @@
     "cg-modern-dorm-carving-r2": "cg-modern-dorm-carving-r2-m.webp",
     "cg-modern-dorm-dark-r2": "cg-modern-dorm-dark-r2-m.webp",
     "cg-modern-jade-light-r2": "cg-modern-jade-light-r2-m.webp",
-    "cg-modern-word-stall-r3": "cg-modern-word-stall-r3-m.webp"
+    "cg-modern-word-stall-r3": "cg-modern-word-stall-r3-m.webp",
+    "cg-modern-notebook-open": "cg-modern-notebook-open-m.webp",
+    "cg-modern-translation-r3": "cg-modern-translation-r3-m.webp",
+    "cg-modern-paper-note": "cg-modern-paper-note-m.webp"
   }
 }

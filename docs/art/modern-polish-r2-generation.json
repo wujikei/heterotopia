@@ -1,0 +1,360 @@
+{
+  "date": "2026-11-24",
+  "art": {
+    "model": "Local ComfyUI Qwen-Image 2.1",
+    "jobs": [
+      {
+        "id": "library-detail",
+        "promptId": "a975edc0-c425-4850-a903-ab8e58ac895d",
+        "graph": {
+          "1": {
+            "class_type": "UNETLoader",
+            "inputs": {
+              "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          "2": {
+            "class_type": "CLIPLoader",
+            "inputs": {
+              "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+              "type": "qwen_image",
+              "device": "default"
+            }
+          },
+          "3": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+            }
+          },
+          "4": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "1",
+                0
+              ],
+              "shift": 3.1
+            }
+          },
+          "5": {
+            "class_type": "TextEncodeQwenImage21",
+            "inputs": {
+              "clip": [
+                "2",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ],
+              "resolution": 576,
+              "images": {
+                "image_1": [
+                  "20",
+                  0
+                ],
+                "image_2": [
+                  "21",
+                  0
+                ]
+              },
+              "prompt": "16:9 game visual-novel still, a careful new close insert of the exact overseas library scene in reference 1, inherited muted warm-grey painterly textures, old wood grain and natural soft daylight from the same window on the left. Reference 2 fixes Lin Yue's slate-blue cardigan sleeve, sober visual style and young adult identity. Camera looks down over his right shoulder, moderately overhead, focus on one open notebook, one simple black pen and his right writing hand with visible knitted cuff. The open notebook is genuinely large, filling about three quarters of the shot width and sixty percent of image height, its spine at the center, clean ivory papers and a shallow angle so that the edges form believable simple quadrilaterals. Pages occupy the central horizontal band above the caption region, from about 17 percent to 83 percent of the frame width. Both pages are clean with a faint warm laid-paper texture, reserved for later writing. The left has a generous area for handwritten Chinese source lines and the right has extensive unmarked space; the tip of the pen and fingers rest gently near the inner half of the right page, below the future line, leaving its middle open. The same small pale jade button with an open hole lies on the darker table beside the notebook, around the size of the thumb, subdued. The pen-holding hand comes from the right, with 5 correct fingers, and a tiny glimpse of the cardigan front edge nearby. Quiet natural materials, no face needed, devotional stillness, shallow painterly focus on the single notebook. In-camera illustration with clean paper surface for manual Chinese ink. No readable letters, no symbols, no watermark, one pen, one open notebook.",
+              "negative_prompt": ""
+            }
+          },
+          "6": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1536,
+              "height": 864,
+              "batch_size": 1
+            }
+          },
+          "7": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "4",
+                0
+              ],
+              "seed": 112481,
+              "steps": 22,
+              "cfg": 3.8,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1,
+              "positive": [
+                "5",
+                0
+              ],
+              "negative": [
+                "5",
+                1
+              ],
+              "latent_image": [
+                "6",
+                0
+              ]
+            }
+          },
+          "8": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "7",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ]
+            }
+          },
+          "9": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "8",
+                0
+              ],
+              "filename_prefix": "Qwen2.1/Heterotopia/Polish-R2-2026-11-24/library-detail"
+            }
+          },
+          "20": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-R2-2026-11-24/library.png"
+            }
+          },
+          "21": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-R2-2026-11-24/lin-yue.png"
+            }
+          }
+        },
+        "source": "resources/art-src/modern-text/library-comfy-source.png",
+        "sourceSHA256": "1f4ba21df122c8d2d4379b8c6722a4ae4cc4aa00ffb3586f120f6f8543a3c3d2"
+      },
+      {
+        "id": "office-detail",
+        "promptId": "1901b879-58e8-4a1a-ae01-d35116d1e32f",
+        "graph": {
+          "1": {
+            "class_type": "UNETLoader",
+            "inputs": {
+              "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          "2": {
+            "class_type": "CLIPLoader",
+            "inputs": {
+              "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+              "type": "qwen_image",
+              "device": "default"
+            }
+          },
+          "3": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+            }
+          },
+          "4": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "1",
+                0
+              ],
+              "shift": 3.1
+            }
+          },
+          "5": {
+            "class_type": "TextEncodeQwenImage21",
+            "inputs": {
+              "clip": [
+                "2",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ],
+              "resolution": 576,
+              "images": {
+                "image_1": [
+                  "20",
+                  0
+                ]
+              },
+              "prompt": "16:9 game still, close object insert matched to reference 1: same overseas professor office, same golden subdued window side light, identical pale wood table and stone-gray knitted sleeves. Lin Yue's blue-grey cardigan cuff appears from frame left, the advisor's older hand and dark gray knit from upper right. The same printed academic manuscript just changed hands. Camera over the desk at a moderately aerial angle, one large flat stack of cream-white A4 sheets rotated a little clockwise, front page occupying most of the center 67 percent of width with accessible corners and low perspective distortion. Paper texture fine but not crumpled. Faint unobtrusive typographic texture or completely blank in the main part, leave a broad legible empty space in the middle and bottom half for a short handwritten annotation added in post. Hands hold only the paper edges. No faces. At most a single partially visible off-white tea cup at a far edge, out of focus. Documentary realism inside the reference's softened hand-painted brush texture. One continuous art style, same afternoon, editorial insert, restrained colors. Keep all meaningful paper surfaces above the lowest fifth of the frame. No visible words, seals, logos, or extra fingers.",
+              "negative_prompt": ""
+            }
+          },
+          "6": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1536,
+              "height": 864,
+              "batch_size": 1
+            }
+          },
+          "7": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "4",
+                0
+              ],
+              "seed": 112487,
+              "steps": 22,
+              "cfg": 3.8,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1,
+              "positive": [
+                "5",
+                0
+              ],
+              "negative": [
+                "5",
+                1
+              ],
+              "latent_image": [
+                "6",
+                0
+              ]
+            }
+          },
+          "8": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "7",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ]
+            }
+          },
+          "9": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "8",
+                0
+              ],
+              "filename_prefix": "Qwen2.1/Heterotopia/Polish-R2-2026-11-24/office-detail"
+            }
+          },
+          "20": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-R2-2026-11-24/office.png"
+            }
+          }
+        },
+        "source": "resources/art-src/modern-text/office-comfy-source.png",
+        "sourceSHA256": "3f30c068e9d668bb53f87da6443d6f773bf114949bef232ca703b2e1f109ee43"
+      }
+    ],
+    "references": {
+      "library.png": "resources/art-src/modern/cg-modern-translation.png",
+      "office.png": "resources/art-src/modern/cg-modern-paper.png",
+      "lin-yue.png": "resources/art-src/modern-text/lin-yue-reference.png"
+    }
+  },
+  "music": {
+    "model": "Local ComfyUI ACE-Step 1.5",
+    "jobs": [
+      {
+        "id": "modern-return",
+        "title": "留一碗面",
+        "subtitle": "醒来以后，还有一碗热面",
+        "promptId": "13d84c45-d94c-4c22-81e6-a44b0d86288f",
+        "settings": {
+          "caption": "Warm acoustic indie chamber instrumental, D major 72 bpm 4/4. Begin on the first beat with a hummable four-note felt-piano motif, D E A F sharp, syncopated short short long response. Midrange plucked nylon guitar echoes the pianist, simple steady upright bass, quiet brushes. A bowl set down in the lamplight, relief after a bad dream. A clear lead melody, a changing answer every eight bars, tender and memorable, gently confident. Music from first second, recurring steady four-bar phrases, active consonant tail. Small live room, healthy headroom, no vocals or narration.",
+          "lyrics": "[Instrumental]",
+          "preset": "quality",
+          "seed": 227829,
+          "bpm": 72,
+          "keyscale": "D major",
+          "timesignature": "4",
+          "duration": 100
+        },
+        "source": "artifacts/modern-polish-r2/music/modern-return-alternate.flac",
+        "sourceSHA256": "47fe98a3aacd9775091b4faf7d4564b631f73004092693b4c246903c31fef7fe",
+        "startAtSeconds": 3.3333333333,
+        "trimAtSeconds": 83.3333333333,
+        "seamSearchSeconds": 0.22
+      },
+      {
+        "id": "modern-untranslated",
+        "title": "留白里的「何」",
+        "subtitle": "抄到「何」字时，笔尖停了一下",
+        "promptId": "613a4817-4c18-42a0-b533-835450f42bc3",
+        "settings": {
+          "caption": "Instrumental felt-piano and cello chamber underscore. Warm B minor against relative D major, 72 bpm, 4/4. First beat is a defined close-miked four-note piano theme, D E A F sharp. Repeat recognizable theme with two-note cello answer and soft muted guitar pulse. Clear midrange; legible melody over reading; no huge spaces, no intro silence, no fade before the final phrase. Considered and gently confident like an author finding his own words, not mournful. Natural room, generous peak headroom, no voice, no percussion builds.",
+          "lyrics": "[Instrumental]",
+          "preset": "quality",
+          "seed": 227831,
+          "bpm": 72,
+          "keyscale": "B minor",
+          "timesignature": "4",
+          "duration": 96
+        },
+        "source": "artifacts/modern-polish-r2/music/modern-untranslated-alternate.flac",
+        "sourceSHA256": "08f0ea886b5a663d3d1855191db077fc9c99ce300e9b2fd8ef21b5d9cbfce3fd",
+        "trimAtSeconds": 83.3333333333,
+        "seamSearchSeconds": 0.22
+      },
+      {
+        "id": "modern-ascent",
+        "title": "从这里上去",
+        "subtitle": "山路上的背书声，栏杆边认出故人",
+        "promptId": "4be8a031-56a1-4413-bc8a-a913891aa256",
+        "settings": {
+          "caption": "Instrumental indie acoustic theme for a Chinese narrative game set on a mountain walkway: first climbing alone to get his breath back, then a group of high-schoolers recites verses on the steps and recognizes friends. Present, youthful, lightly windblown; affectionate with a little ache, no triumphant fanfare. D major, 4/4, steady 92 bpm. Open with a catchy four-note picked-guitar line D–E–A–F sharp, using short short held resolve and a clear answer, place it in the foreground early like the first little tune the player remembers. Warm strummed guitar, felt piano or soft mallets, running bass and a barely brushed snare enter gradually. One instrumental lead at a time, mostly simple rhythmic sentences, conversational pauses. Groove should function at a low volume over reading. Light lifts after every 8 bars, breathable ending turnaround and smooth loop potential. No vocals, no busy hi-hats, no trailer drums. Deliver a complete underscore with active gentle phrasing from start through the last measures. Record with ample digital headroom. The outro may thin out but should keep its pulse and pitch until the end, without a long tail of silence.",
+          "lyrics": "[Instrumental]",
+          "preset": "quality",
+          "seed": 112566,
+          "bpm": 92,
+          "keyscale": "D major",
+          "timesignature": "4",
+          "duration": 76
+        },
+        "source": "artifacts/modern-polish-r2/music/modern-ascent-long.flac",
+        "sourceSHA256": "b33baeb5cad32e94673b56a44c89965113f81edbb03a7d6edca7d8d17a184b35",
+        "startAtSeconds": 5.2173913043,
+        "trimAtSeconds": 73.0434782609,
+        "seamSearchSeconds": 0.22
+      },
+      {
+        "id": "modern-afterglow",
+        "title": "半规落日",
+        "subtitle": "快门轻响时，最后一缕金光没入山脊",
+        "promptId": "f419c524-f85c-4861-84bb-abb849985ef2",
+        "settings": {
+          "caption": "Instrumental ending theme for a literary visual novel, a final group photograph on a crowded mountain platform overlooking a river at sunset. Clear, luminous, bittersweet and human, the world keeps going. Set 72 bpm, 4/4, D major. Quiet felt piano immediately reprises a recognizable short-short-held-answer melody D–E–A–F sharp from earlier rooms, in a slightly higher register, with simple warm string quartet answering. Understated plucked guitar, a smooth slow swell of human chamber strings at phrase endings, no percussion in the foreground. One singable melody with a real memorable entrance, then ease into air for distant wind and the quiet photo moment. Sustain a feeling of life and youth without bombast. Delicate optimistic color, soft but defined midrange, measured dynamics, loopable instrumental tail, no vocals, no big finale crash. Deliver a complete underscore with active gentle phrasing from start through the last measures. Record with ample digital headroom. The outro may thin out but should keep its pulse and pitch until the end, without a long tail of silence.",
+          "lyrics": "[Instrumental]",
+          "preset": "quality",
+          "seed": 112574,
+          "bpm": 72,
+          "keyscale": "D major",
+          "timesignature": "4",
+          "duration": 88
+        },
+        "source": "artifacts/modern-polish-r2/music/modern-afterglow-long.flac",
+        "sourceSHA256": "0a962742ae6e46e6d648740aadc38c0d55b9f5d9566b6b5d8c1b3d3a95f645f7",
+        "trimAtSeconds": 80,
+        "seamSearchSeconds": 0.22
+      }
+    ]
+  }
+}

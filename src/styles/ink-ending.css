@@ -250,9 +250,9 @@
     letter-spacing: 0.08em;
   }
 }
-@media (max-height: 520px) and (min-width: 600px) {
+@media (max-height: 680px) and (min-width: 761px), (max-height: 520px) and (min-width: 600px) {
   .ending-screen {
-    --ending-title-size: clamp(34px, 9.5vh, 44px);
+    --ending-title-size: clamp(34px, 9.5dvh, 58px);
     gap: 6px;
     padding: 10px 24px 10px;
   }

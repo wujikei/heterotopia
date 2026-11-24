@@ -115,5 +115,41 @@
     "keyscale": "D major",
     "file": "music-modern-question.mp3",
     "seconds": 87.66667
+  },
+  {
+    "id": "modern-return",
+    "title": "留一碗面",
+    "subtitle": "醒来以后，还有一碗热面",
+    "bpm": 72,
+    "keyscale": "D major",
+    "file": "music-modern-return.mp3",
+    "seconds": 76.66667
+  },
+  {
+    "id": "modern-untranslated",
+    "title": "留白里的「何」",
+    "subtitle": "抄到「何」字时，笔尖停了一下",
+    "bpm": 72,
+    "keyscale": "B minor",
+    "file": "music-modern-untranslated.mp3",
+    "seconds": 80.0
+  },
+  {
+    "id": "modern-ascent",
+    "title": "从这里上去",
+    "subtitle": "山路上的背书声，栏杆边认出故人",
+    "bpm": 92,
+    "keyscale": "D major",
+    "file": "music-modern-ascent.mp3",
+    "seconds": 65.21739
+  },
+  {
+    "id": "modern-afterglow",
+    "title": "半规落日",
+    "subtitle": "快门轻响时，最后一缕金光没入山脊",
+    "bpm": 72,
+    "keyscale": "D major",
+    "file": "music-modern-afterglow.mp3",
+    "seconds": 76.66667
   }
 ]

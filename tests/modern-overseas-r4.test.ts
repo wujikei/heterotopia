@@ -34,7 +34,7 @@ test('overseas visual polish CSS keeps idle actors opaque, frames 16:9 CGs on po
   assert.match(modernCss, /cg-modern-"\]:not\(\[data-art\$="-r2"\]\)/);
   assert.match(modernCss, /background-size:\s*contain/);
   const endingCss = readFileSync('src/styles/ink-ending.css', 'utf8');
-  assert.match(endingCss, /--ending-title-size:\s*clamp\(34px,\s*9\.5vh,\s*44px\)/);
+  assert.match(endingCss, /@media \(max-height: 680px\).*\(max-height: 520px\)/);
   const atmosphere = readFileSync('src/components/Atmosphere.tsx', 'utf8');
   assert.match(atmosphere, /target\.startsWith\('cg-modern-'\)/);
 });

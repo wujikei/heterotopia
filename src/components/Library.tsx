@@ -273,7 +273,7 @@ export function SettingsView({ settings, onChange, onExport, onImport, onReset, 
 
 export function AboutView({ campaign }: { campaign: Campaign }) {
   useLocale();
-  const credits: [string, string][] = [['原著剧本', '用户提供'], ['场景与人物美术', '本机 Qwen-Image 2.1'], ['原声配乐', campaign === 'overseas' ? '本机 ACE-Step 1.5 · 现代卷两首原创主题' : '本机 ACE-Step 1.5 · 十一首'], ['环境与音效', '本作程序化声音设计'], ['中文字体', 'Noto Serif SC · 霞鹜文楷 LXGW WenKai'], ['字体授权', 'SIL Open Font License']];
+  const credits: [string, string][] = [['原著剧本', '用户提供'], ['场景与人物美术', '本机 Qwen-Image 2.1'], ['原声配乐', campaign === 'overseas' ? '本机 ACE-Step 1.5 · 现代卷原创配乐' : '本机 ACE-Step 1.5 · 十一首'], ['环境与音效', '本作程序化声音设计'], ['中文字体', 'Noto Serif SC · 霞鹜文楷 LXGW WenKai'], ['字体授权', 'SIL Open Font License']];
   return <div className="about-content">
     <div className="about-hero"><span className="about-seal" aria-hidden="true">{getLanguage() === 'en' || getLanguage() === 'de' ? 'HT' : '异托'}</span><div className="about-title">{t("异托邦")}</div></div>
     <blockquote>{t("看路，也看看走路的人。")}</blockquote>

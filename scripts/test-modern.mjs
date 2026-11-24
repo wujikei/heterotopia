@@ -21,6 +21,19 @@ try {
   assert.match(await page.locator('.about-source').getAttribute('href'), /原著剧本-海外现代线\.txt/);
   await page.keyboard.press('Escape');
   await page.locator('.about-content').waitFor({ state: 'detached' });
+  for (const viewport of [{ width: 1366, height: 650 }, { width: 1024, height: 528 }, { width: 662, height: 375 }]) {
+    await page.setViewportSize(viewport);
+    await page.waitForFunction(() => {
+      const controls = document.querySelectorAll('.campaign-selector button, .home-main-menu button, .home-library button, .home-footer button');
+      return controls.length > 0 && [...controls].every(button => {
+        const { x, y, width, height } = button.getBoundingClientRect();
+        const center = document.elementFromPoint(x + width / 2, y + height / 2);
+        return x >= 0 && y >= 0 && x + width <= innerWidth + 1 && y + height <= innerHeight + 1 &&
+          (button.disabled || button.contains(center));
+      });
+    });
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: '去问', exact: true }).click();
   await page.locator('.game-screen').waitFor();
   await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());

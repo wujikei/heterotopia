@@ -11,9 +11,13 @@ export const modernFinal = (id: string) => id === 'modern-home';
 
 export const MODERN_ARRIVAL_ART = 'modern-street-arrival-r3';
 export const MODERN_STALL_ART = 'cg-modern-word-stall-r3';
+export const MODERN_NOTEBOOK_ART = 'cg-modern-notebook-open';
+export const MODERN_TRANSLATION_ART = 'cg-modern-translation-r3';
+export const MODERN_PAPER_NOTE_ART = 'cg-modern-paper-note';
 const MODERN_ART_PREVIOUS: Readonly<Partial<Record<string, string>>> = {
   [MODERN_ARRIVAL_ART]: 'modern-street-arrival-r2',
   [MODERN_STALL_ART]: 'cg-modern-word-stall',
+  [MODERN_TRANSLATION_ART]: 'cg-modern-translation',
 };
 export function hasSeenModernArt(profile: Pick<Profile, 'art'>, name: string): boolean {
   const previous = MODERN_ART_PREVIOUS[name];
@@ -37,7 +41,7 @@ export const MODERN_BACKGROUNDS = {
   'modern-royal-wall-night': { name: '最后一个橘', subtitle: '寿春 · 城头夜色', chapter: '王裔线' },
   'cg-modern-friends': { name: '在异乡说话', subtitle: '海外 · 校园中庭', chapter: '现代卷' },
   'cg-modern-noodles': { name: '分一碗面', subtitle: '海外 · 宿舍深夜', chapter: '现代卷' },
-  'cg-modern-translation': { name: '不译', subtitle: '海外 · 图书馆', chapter: '现代卷' },
+  [MODERN_TRANSLATION_ART]: { name: '不译', subtitle: '海外 · 图书馆', chapter: '现代卷' },
   'cg-modern-projection': { name: '投影上的刻痕', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
   'cg-modern-paper': { name: '把稿子推过来', subtitle: '导师办公室 · 午后', chapter: '现代卷' },
   'cg-modern-glance': { name: '只是一瞬', subtitle: '半山 · 人潮', chapter: '现代卷' },
@@ -53,9 +57,10 @@ export const MODERN_CGS = [
   { id: 'modern-carriage-fork', title: '这个清晨', caption: '你得选一样。', file: 'cg-modern-fork', thumbnail: 'cg-modern-fork-thumb', trigger: { beatIds: [] } },
   { id: 'modern-east-god', title: '神坐在船板上', caption: '你们到了吗？', file: 'cg-modern-donghuang', thumbnail: 'cg-modern-donghuang-thumb', trigger: { beatIds: [] } },
   { id: 'modern-noodles', title: '心里有个地方', caption: '室友把煮好的面，分了一碗。', file: 'cg-modern-noodles', thumbnail: 'cg-modern-noodles-thumb', trigger: { beatIds: [] as string[] } },
-  { id: 'modern-translation', title: '不译', caption: '有些字，译出来，就不是它了。', file: 'cg-modern-translation', thumbnail: 'cg-modern-translation-thumb', trigger: { beatIds: [] as string[] } },
+  { id: 'modern-translation', title: '不译', caption: '有些字，译出来，就不是它了。', file: MODERN_TRANSLATION_ART, thumbnail: `${MODERN_TRANSLATION_ART}-thumb`, trigger: { beatIds: [] as string[] } },
   { id: 'modern-projection', title: '一笔一笔', caption: '那只手还在刻。', file: 'cg-modern-projection', thumbnail: 'cg-modern-projection-thumb', trigger: { beatIds: [] as string[] } },
   { id: 'modern-paper', title: '把稿子推过来', caption: '这个人写得像真的见过。', file: 'cg-modern-paper', thumbnail: 'cg-modern-paper-thumb', trigger: { beatIds: [] as string[] } },
+  { id: 'modern-paper-note', title: '导师的批注', caption: '这个人写得像真的见过。', file: MODERN_PAPER_NOTE_ART, thumbnail: `${MODERN_PAPER_NOTE_ART}-thumb`, trigger: { beatIds: [] as string[] } },
   { id: 'modern-glance', title: '有些相见', caption: '就是一瞬。够你用很久。', file: 'cg-modern-glance', thumbnail: 'cg-modern-glance-thumb', trigger: { beatIds: [] as string[] } },
   { id: 'modern-summit', title: '山顶 · 仍是同一个人', caption: '他从圈外，看见少年们接住彼此。', file: 'cg-modern-summit', thumbnail: 'cg-modern-summit-thumb', trigger: { beatIds: [] as string[] } },
   { id: 'modern-photo', title: '半规落日', caption: '你尚且年少，却与落笔成诗的人并肩而立。', file: 'cg-modern-photo', thumbnail: 'cg-modern-photo-thumb', trigger: { beatIds: [] as string[] } },
@@ -97,8 +102,14 @@ export function modernBackground(scene: Scene, text: string, current: string): s
   }
   if (scene.id === 'modern-o-4-1' && text.includes('夜里，室友看你')) return 'modern-dorm-quiet-r2';
   if (scene.id === 'modern-o-4-1' && /煮好的面|分了一碗/.test(text)) return 'cg-modern-noodles';
-  if (scene.id === 'modern-o-4-2' && /最后，你在右边|写下两个字|不译。/.test(text)) return 'cg-modern-translation';
-  if (scene.id === 'modern-o-5-1' && /打印稿推过来|稿子推了过来|把打印稿/.test(text)) return 'cg-modern-paper';
+  if (scene.id === 'modern-o-4-2') {
+    if (text.includes('不译。')) return MODERN_TRANSLATION_ART;
+    if (/抄到“何”字|最后，你在右边/.test(text)) return MODERN_NOTEBOOK_ART;
+  }
+  if (scene.id === 'modern-o-5-1') {
+    if (text === '这个人写得像真的见过。') return MODERN_PAPER_NOTE_ART;
+    if (/打印稿推过来|稿子推了过来|把打印稿|导师又说/.test(text)) return 'cg-modern-paper';
+  }
   if (scene.id === 'modern-o-5-5' && /亮黄外套|药学院的学生/.test(text)) return 'cg-modern-glance';
   if (scene.id === 'modern-o-5-6' && /沈辞！/.test(text)) return 'cg-modern-summit';
   if (scene.id === 'modern-o-5-7' && /拍照|按下快门/.test(text)) return 'cg-modern-photo';
@@ -126,9 +137,15 @@ export function modernBackground(scene: Scene, text: string, current: string): s
 const MODERN_SCENE_MUSIC: Partial<Record<string, MusicId>> = {
   'modern-o-0-1': 'modern-street',
   'modern-o-0-2': 'modern-question',
-  'modern-o-4-1': 'small-goodbyes',
-  'modern-o-4-2': 'small-goodbyes',
-  'modern-o-5-7': 'light-in-kitchen',
+  'modern-o-4-1': 'modern-return',
+  'modern-o-4-2': 'modern-untranslated',
+  'modern-o-5-1': 'modern-untranslated',
+  'modern-o-5-2': 'modern-untranslated',
+  'modern-o-5-3': 'modern-ascent',
+  'modern-o-5-4': 'modern-ascent',
+  'modern-o-5-5': 'modern-ascent',
+  'modern-o-5-6': 'modern-ascent',
+  'modern-o-5-7': 'modern-afterglow',
 };
 
 export function modernMusic(sceneId: string, background: string): MusicId | null {

@@ -63,6 +63,28 @@ test('existing ancient CGs appear with their action and the last geese remain at
   }
 });
 
+test('the notebook and manuscript only reveal their inscriptions on the authored pages', () => {
+  for (const [id, image] of [
+    ['modern-o-4-2:7:0', 'modern-library'],
+    ['modern-o-4-2:8:0', 'cg-modern-notebook-open'],
+    ['modern-o-4-2:9:0', 'cg-modern-notebook-open'],
+    ['modern-o-4-2:10:0', 'cg-modern-translation-r3'],
+    ['modern-o-4-2:12:0', 'modern-dorm-quiet-r2'],
+    ['modern-o-5-1:8:0', 'cg-modern-paper'],
+    ['modern-o-5-1:10:0', 'cg-modern-paper-note'],
+    ['modern-o-5-1:11:0', 'cg-modern-paper-note'],
+    ['modern-o-5-1:12:0', 'cg-modern-paper'],
+  ]) {
+    const scene = id.split(':')[0];
+    const beat = pages(scene).find(item => item.id === id);
+    assert.equal(beat?.background, image, id);
+    assert.equal(cgForBeat(beat!, scene)?.file, image.startsWith('cg-') ? image : undefined, id);
+  }
+  const gallery = CGS.find(cg => cg.id === 'modern-translation')!;
+  assert.equal(cgUnlocked(gallery, { ...profile, art: ['cg-modern-notebook-open'] }), false);
+  assert.equal(cgUnlocked(gallery, { ...profile, art: ['cg-modern-translation'] }), true);
+});
+
 test('an existing page bookmark restores the same text and deterministic new staging', () => {
   const entered = enterScene(newGame(profile), profile, 'modern-o-0-2');
   const old = { ...entered, beatId: 'modern-o-0-2:17:0' };
@@ -81,7 +103,7 @@ test('reviewed r2 crops load in original quality on portrait screens and survive
   });
   globalThis.matchMedia = mobile;
   try {
-    for (const name of ['cg-modern-word-stall-r3', 'cg-modern-jade-palm-r2', 'cg-modern-dorm-unease-r2', 'cg-modern-dorm-carving-r2', 'cg-modern-dorm-dark-r2', 'cg-modern-jade-light-r2']) {
+    for (const name of ['cg-modern-word-stall-r3', 'cg-modern-jade-palm-r2', 'cg-modern-dorm-unease-r2', 'cg-modern-dorm-carving-r2', 'cg-modern-dorm-dark-r2', 'cg-modern-jade-light-r2', 'cg-modern-notebook-open', 'cg-modern-translation-r3', 'cg-modern-paper-note']) {
       assert.match(assetSources(name).webp, /art-original\//);
       assert.match(asset(name), new RegExp(`${name}-m\\.webp$`));
       assert.ok(existsSync(new URL(`../public/art-original/${name}-m.webp`, import.meta.url)));

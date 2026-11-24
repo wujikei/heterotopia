@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium, firefox, webkit } from 'playwright';
-import { compileScene, newGame, newProfile, SCENES } from '../src/engine.ts';
+import { compileScene, enterScene, newGame, newProfile, SCENES } from '../src/engine.ts';
 import { loadStory } from '../src/story.ts';
 
 await loadStory();
@@ -353,6 +353,39 @@ try {
     checks.push('No Web Audio: media fallback or graceful silent reading, with functional settings and listening-room download');
   }
   if (name === 'chromium') {
+    await loadStory('overseas');
+    const cues = [
+      ['modern-o-4-1:24:0', 'modern-return', '留一碗面'],
+      ['modern-o-4-2:10:0', 'modern-untranslated', '留白里的「何」'],
+      ['modern-o-5-6:4:0', 'modern-ascent', '从这里上去'],
+      ['modern-o-5-7:17:0', 'modern-afterglow', '半规落日'],
+    ];
+    for (const [beatId, id, title] of cues) {
+      const profile = newProfile('overseas');
+      const state = { ...enterScene(newGame(profile), profile, beatId.split(':')[0]), beatId };
+      const sample = await open();
+      const file = `music-${id}.mp3`;
+      try {
+        await sample.getByRole('button', { name: /林越.*现代新卷/ }).click();
+        await sample.getByRole('button', { name: '阅读设置', exact: true }).click();
+        const save = { format: 'heterotopia-save', version: 1, profile, state, slots: [] };
+        await sample.locator('input[type=file]').setInputFiles({ name: 'modern-audio-test.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(save)) });
+        await sample.getByRole('button', { name: '关闭提示', exact: true }).click();
+        await sample.keyboard.press('Escape');
+        await sample.getByRole('button', { name: /^续梦/ }).click();
+        await sample.locator('.game-screen').waitFor();
+        await closeIntro(sample);
+        await sample.locator(`[data-beat-id="${beatId}"]`).waitFor();
+        await waitFor(sample, file);
+        assert.equal(await sample.evaluate(file => window.__audioTest.starts.some(voice => voice.file === file && voice.loop), file), true);
+        await sample.getByRole('button', { name: '打开菜单', exact: true }).click();
+        await sample.getByRole('button', { name: '听水集', exact: true }).click();
+        assert.equal(await sample.getByRole('button', { name: `试听《${title}》`, exact: true }).getAttribute('aria-pressed'), 'true');
+        await sample.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+      } finally { await sample.context().close(); }
+    }
+    checks.push('All four new overseas cues decoded, started looping on their story pages and appeared unlocked in the listening room');
+
     // An isolated test device permits autoplay; production code changes no policy.
     const permittedBrowser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
     try {
