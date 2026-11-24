@@ -135,6 +135,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const [fullscreen, setFullscreen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [confirmHome, setConfirmHome] = useState(false);
+  const [confirmRestart, setConfirmRestart] = useState(false);
   const [stamped, setStamped] = useState<string | null>(null);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const [showReadingHint, setShowReadingHint] = useState(() => {
@@ -145,6 +146,8 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const readingRef = useRef<HTMLDivElement>(null);
   const modalOpener = useRef<HTMLElement | null>(null);
   const nextAllowedAt = useRef(0);
+  const entryPointerGuardAt = useRef(0);
+  const entryPointerPos = useRef<{ x: number; y: number } | null>(null);
   const choiceTimer = useRef(0);
   const stampTimer = useRef(0);
   const choiceRequest = useRef(0);
@@ -323,10 +326,14 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     return () => clearTimeout(timer);
   }, [intro, settings.reducedMotion]);
 
-  const next = useCallback(() => {
+  const next = useCallback((pointer?: { x: number; y: number } | null) => {
     if (modal || screen !== 'play' || !game || !beat) return;
     const now = performance.now();
     if (now < nextAllowedAt.current) return;
+    if (pointer && typing.done) {
+      const nearEntry = entryPointerPos.current && Math.hypot(pointer.x - entryPointerPos.current.x, pointer.y - entryPointerPos.current.y) < 56;
+      if (nearEntry && now < entryPointerGuardAt.current) return;
+    }
     if (intro) { nextAllowedAt.current = now + 180; setIntro(null); return; }
     if (hidden) { nextAllowedAt.current = now + 180; setHidden(false); sound.click('toggle'); return; }
     if (beat.kind !== 'text') return;
@@ -351,15 +358,15 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     if (screen === 'play' && beat?.kind === 'choice' && !modal && !intro) sound.prepareUi('stamp');
   }, [screen, beat?.id, beat?.kind, modal, intro]);
 
-  const openModal = useCallback((name: ModalName) => {
+  const openModal = useCallback((name: ModalName, options?: { keepAuto?: boolean }) => {
     if (name === 'journal') setJournalRelic(undefined);
     if (name === 'saves' && !isStoryReady(campaign)) void loadStory(campaign).then(() => setStoryReady(true)).catch(() => {});
     if (!document.querySelector('[role="dialog"]')) modalOpener.current = document.activeElement as HTMLElement | null;
     setModalPath(path => path.at(-1) === name ? path : [...path, name]);
-    setHidden(false); setHoldingSkip(false);
+    entryPointerGuardAt.current = 0; entryPointerPos.current = null; setHidden(false); if (!options?.keepAuto) setAuto(false); stopSkipping();
     clearChoiceTimers(); setStamped(null);
     clearTimeout(toastTimer.current); setToast(''); sound.click('open');
-  }, [campaign, clearChoiceTimers]);
+  }, [campaign, clearChoiceTimers, stopSkipping]);
   const openSaves = useCallback((mode: 'save' | 'load') => { setSaveMode(mode); openModal('saves'); }, [openModal]);
 
   const toggleFullscreen = useCallback(async () => {
@@ -377,7 +384,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     return () => document.removeEventListener('fullscreenchange', change);
   }, []);
 
-  useEffect(() => { setConfirmHome(false); }, [modal]);
+  useEffect(() => { setConfirmHome(false); setConfirmRestart(false); }, [modal]);
   useEffect(() => {
     setStamped(null);
     return clearChoiceTimers;
@@ -418,9 +425,11 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   };
 
   const start = async () => {
+    setConfirmRestart(false);
     void sound.unlock(settings); sound.click('bell');
     const state = await prepareReading(() => newGame(currentProfile.current));
     if (!state) return;
+    entryPointerGuardAt.current = performance.now() + 260;
     previousScene.current = state.sceneId; setIntro(openingIntro(state, currentProfile.current));
     setGame(state); setScreen('play'); closeModal(); setAuto(false); stopSkipping(); setHidden(false);
   };
@@ -431,6 +440,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     state = await prepareReading(() => restoreModernState(state!));
     if (!state) return;
     audioJump.current = true;
+    entryPointerGuardAt.current = performance.now() + 260;
     previousScene.current = state.sceneId;
     setGame(state); setScreen('play'); closeModal(); setIntro(null); setAuto(false); stopSkipping(); setHidden(false);
   };
@@ -489,6 +499,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     const jumped = await prepareReading(() => revisitScene(game ?? newGame(currentProfile.current), currentProfile.current, id));
     if (!jumped) return;
     audioJump.current = true;
+    entryPointerGuardAt.current = performance.now() + 260;
     previousScene.current = ''; setGame(jumped); setScreen('play'); closeModal(); setAuto(false); stopSkipping(); setHidden(false);
     void sound.unlock(settings);
   };
@@ -537,7 +548,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
         return item?.version === 1 && validState(item.state, campaign) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? { ...item as SaveSlot, state: restoreModernState(item.state) } : slot;
       });
       setSlots(importedSlots); persist('slots', importedSlots);
-      if (validState(data.state, campaign)) { const restored = restoreModernState(data.state); audioJump.current = true; persist('autosave', restored); setGame(restored); }
+      if (validState(data.state, campaign)) { const restored = restoreModernState(data.state); audioJump.current = true; previousScene.current = restored.sceneId; setAuto(false); stopSkipping(); setHidden(false); setIntro(null); persist('autosave', restored); setGame(restored); }
       notify('旅途已导入，已经历的记忆合在了一处。');
     } catch { notify('这份文件无法识读，请选择从本作导出的 JSON 存档。'); }
   };
@@ -562,7 +573,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       if (key === 'f') { event.preventDefault(); void state.toggleFullscreen(); return; }
       if (state.screen !== 'play') return;
       if (event.target instanceof HTMLButtonElement && !event.target.classList.contains('dialogue-advance') && [' ', 'enter'].includes(key)) return;
-      if ([' ', 'enter', 'arrowright'].includes(key)) { event.preventDefault(); state.next(); return; }
+      if ([' ', 'enter', 'arrowright'].includes(key)) { event.preventDefault(); state.next(null); return; }
       if (state.intro) return;
       if (key === 'h' && (state.beat?.kind === 'text' || state.beat?.kind === 'ending')) { event.preventDefault(); sound.click('toggle'); setHidden(value => !value); }
       if (key === 'arrowleft' || key === 'pageup') { event.preventDefault(); state.openModal('history'); }
@@ -618,7 +629,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} />
     <Atmosphere scene={background} reduced={settings.reducedMotion} />
 
-    {tr(screen === 'home' ? <div className="home-screen" inert={!!modal}>
+    {tr(screen === 'home' ? <div className="home-screen" inert={!!modal} onPointerDownCapture={event => { if (confirmRestart && event.target instanceof Element && !event.target.closest('.start-button')) setConfirmRestart(false); }}>
       <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label={t("关于异托邦")}><BoatMark /><span>{t("异托邦")}<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />{campaign === 'overseas' ? '汉字、远行与另一条来处' : t("一场未尽的楚地远行")}<span className="tiny-line" /></div><div className="header-tools"><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={tr(fullscreen ? '退出全屏' : '全屏')} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label={t("阅读设置")} onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
       <div className="home-body">
         <div className="home-eyebrow"><span className="vermillion-seal">{campaign === 'overseas' ? '何' : homeSeal}</span><span>{campaign === 'overseas' ? '海外现代篇 · 叙事视觉小说' : t("东方奇幻 · 叙事视觉小说")}</span></div>
@@ -629,10 +640,10 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
           <button aria-pressed={campaign === 'original'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('original')}>沈辞 · 原篇</button>
           <button aria-pressed={campaign === 'overseas'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('overseas')}>林越 · 现代新卷<span>新</span></button>
         </nav>
-        {campaign === 'overseas' && <p className="campaign-note">问字，不问命。<span>中文原著 · 两条旅途之后，留在这一边。</span></p>}
+        <p className="campaign-note">{campaign === 'overseas' ? <>问字，不问命。<span>双卷独立存档 · 两条旅途之后，留在这一边（亦可直接开卷）。</span></> : <>{t("双卷独立，各自留存")}<span>{t("建议先读原篇；也可直接切换现代新卷。")}</span></>}</p>
         <nav className={`home-main-menu ${game ? 'home-main-menu--resume' : ''}`} aria-label={t("启程菜单")}>
-          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'}`} disabled={loadingReading || !!languagePending} onClick={() => void start()}><span className="cta-glow" aria-hidden="true" /><strong>{tr(game ? (campaign === 'overseas' ? '重走这一程' : '重新启程') : (campaign === 'overseas' ? '去问' : '启程'))}</strong><BoatMark className="cta-boat" /></button>
-          <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game || loadingReading || !!languagePending} onClick={() => void resume()}><span className="cta-glow" aria-hidden="true" /><strong>{t("续梦")}</strong><small>{tr(game ? t("{0} · {1}", sceneById(game.sceneId).chapter, t(sceneById(game.sceneId).title)) : '此刻尚无未尽的梦')}</small></button>
+          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'} ${confirmRestart ? 'is-confirming' : ''}`} disabled={loadingReading || !!languagePending} aria-live="polite" onBlur={() => setConfirmRestart(false)} onClick={() => { if (game && !confirmRestart) { setConfirmRestart(true); return; } setConfirmRestart(false); void start(); }}><span className="cta-glow" aria-hidden="true" /><strong>{tr(confirmRestart ? (campaign === 'overseas' ? '再点一次，重走这一程' : '再点一次，重新启程') : game ? (campaign === 'overseas' ? '重走这一程' : '重新启程') : (campaign === 'overseas' ? '去问' : '启程'))}</strong>{tr(confirmRestart && <small>{t("将覆盖此刻自动留存")}</small>)}<BoatMark className="cta-boat" /></button>
+          <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game || loadingReading || !!languagePending} onClick={event => { entryPointerPos.current = event.detail > 0 ? { x: event.clientX, y: event.clientY } : null; void resume(); }}><span className="cta-glow" aria-hidden="true" /><strong>{t("续梦")}</strong><small>{tr(game ? t("{0} · {1}", sceneById(game.sceneId).chapter, t(sceneById(game.sceneId).title)) : '此刻尚无未尽的梦')}</small></button>
         </nav>
         {tr((loadingReading || languagePending) && <p className="reading-load" role="status">{languagePending ? t("正在切换语言…") : t("正在载入旅途…")}</p>)}
         {tr(readingError && <p className="reading-load" role="alert"><button onClick={() => location.reload()}>{t("刷新重试")}</button></p>)}
@@ -653,13 +664,13 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       {tr(showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label={t("阅读提示")}><CircleHelp size={16} aria-hidden="true" /><p>{t("点击画面继续，点「回看」重读。")}<small>{t("更多操作可在阅读设置中查看。")}</small></p><button onClick={dismissReadingHint}>{t("知道了")}</button></aside>)}
 
       {tr(settings.showSprites && !intro && !cg && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} />)}
-      {tr(beat.kind === 'text' && <><button className="advance-surface" onClick={next} aria-label={tr(hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文')} tabIndex={-1} />
+      {tr(beat.kind === 'text' && <><button className="advance-surface" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文')} tabIndex={-1} />
         <section className={`dialogue dialogue--${lineKind}`} aria-label={t("故事正文")} inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />
           <div className="dialogue-body">
-            {tr(relic && !hidden && !intro && <button className="relic-cue" onClick={() => { openModal('journal'); setJournalRelic(relic.id); }} aria-label={tr(t("细看{0}", relic.title))}><InkBrush size={15} /><span>{t("物笺 ·")}{' '}{tr(relic.title)}</span><ArrowRight size={13} /></button>)}
+            {tr(relic && !hidden && !intro && <button className="relic-cue" onClick={() => { openModal('journal', { keepAuto: true }); setJournalRelic(relic.id); }} aria-label={tr(t("细看{0}", relic.title))}><InkBrush size={15} /><span>{t("物笺 ·")}{' '}{tr(relic.title)}</span><ArrowRight size={13} /></button>)}
             {tr(beat.speaker && <div className="speaker"><span className="speaker-seal"><strong>{tr(beat.speaker)}</strong></span>{tr(beat.mood && <span className="speaker-mood">{tr(beat.mood)}</span>)}</div>)}
-            <button className="dialogue-advance" onClick={next} aria-label={tr(typing.done ? '继续' : '立即显示全文')}><p className="dialogue-text" data-testid="dialogue-text" data-beat-id={beat.id} aria-label={text}><span aria-hidden="true">{text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{text.slice(typing.count)}</span><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true" /></p></button>
+            <button className="dialogue-advance" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(typing.done ? '继续' : '立即显示全文')}><p className="dialogue-text" data-testid="dialogue-text" data-beat-id={beat.id} aria-label={text}><span aria-hidden="true">{text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{text.slice(typing.count)}</span><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true" /></p></button>
             <footer className="dialogue-footer">
               <div className="scene-bookmark" title={t("进度已自动保存")}><span className="autosaved-dot" /><span>{t("已留存")}</span><span className="dialogue-page">{tr(position + 1)}<i> / {tr(beats.length)}</i></span></div>
               <nav className={`reading-controls ${toolsOpen ? 'is-open' : ''}`} aria-label={t("阅读控制")}>
@@ -720,7 +731,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     {tr(!modal && toastNotice)}
     {languageError && !modal && <button className="language-notice" role="alert" onClick={() => openModal('settings')}>{t('语言切换失败，请重试。')}</button>}
     <UpdateNotice />
-    {tr(auto && screen === 'play' && !modal && !intro && beat?.kind === 'text' && <button className="reading-mode-indicator" onClick={toggleAuto}><span />{t("自动阅读中")}{' '}<Pause size={11} /></button>)}
-    {tr(isSkipping && screen === 'play' && !modal && <button className="reading-mode-indicator" onClick={stopSkipping}><SkipForward size={12} />{t("已读快进中")}</button>)}
+    {tr(auto && screen === 'play' && !modal && !intro && beat?.kind === 'text' && <button className="reading-mode-indicator" onClick={toggleAuto} title={t("点击暂停自动阅读")}><span />{t("自动阅读中")}{' '}<Pause size={11} /></button>)}
+    {tr(isSkipping && screen === 'play' && !modal && <button className="reading-mode-indicator" onClick={stopSkipping} title={t("点击停止快进")}><SkipForward size={12} />{t("已读快进中")}</button>)}
   </main>;
 }

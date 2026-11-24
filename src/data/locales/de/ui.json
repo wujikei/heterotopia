@@ -968,5 +968,11 @@
   "本机字体 · 日文衬线体": "Lokale Schriftart · Japanische Serifenschrift",
   "正文翻译": "Übersetzung des Haupttexts",
   "英语、日语与德语译本": "Englische, japanische und deutsche Übersetzungen",
-  "本译本保留原作中的人名、意象与留白。": "Diese Übersetzung bewahrt die Namen, Motive und Leerstellen des Originals."
+  "本译本保留原作中的人名、意象与留白。": "Diese Übersetzung bewahrt die Namen, Motive und Leerstellen des Originals.",
+  "再点一次，重新启程": "Noch einmal klicken, um neu zu beginnen",
+  "将覆盖此刻自动留存": "Überschreibt deinen aktuellen automatischen Speicherstand",
+  "双卷独立，各自留存": "Beide Bände speichern getrennt",
+  "建议先读原篇；也可直接切换现代新卷。": "Am besten zuerst das Original lesen oder direkt zum modernen Band wechseln.",
+  "点击暂停自动阅读": "Klicken, um das automatische Lesen zu pausieren",
+  "点击停止快进": "Klicken, um den Vorlauf zu beenden"
 }

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   gap: 4px;
-  margin: 18px auto 12px;
+  margin: 12px 0 8px;
   padding: 3px;
   width: fit-content;
   border: 1px solid rgba(212, 194, 153, .25);
@@ -11,7 +11,7 @@
 }
 .campaign-selector button {
   position: relative;
-  min-height: 38px;
+  min-height: 44px;
   padding: 7px 17px;
   font-size: 12px;
   letter-spacing: .12em;
@@ -31,21 +31,54 @@
   border: 1px solid rgba(184, 91, 67, .6);
   font-size: 9px;
 }
-.campaign-note { margin: 0 0 10px; color: #e2cfaa; font-size: 13px; letter-spacing: .12em; text-align: center; }
+.campaign-note { margin: 0 0 4px; color: #e2cfaa; font-size: 13px; letter-spacing: .12em; text-align: left; }
+@media (min-width: 761px) {
+  .home-body:has(.campaign-note) { top: clamp(104px, 14vh, 210px); }
+  .home-body:has(.campaign-note) .home-verse { margin-top: 20px; }
+  .home-body:has(.campaign-note) .campaign-note { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+  .home-body:has(.campaign-note) .campaign-note span { display: inline; padding-top: 0; font-size: 11px; }
+}
+.home-body:has(.campaign-note) .home-main-menu { margin-top: 18px; }
+.home-body:has(.campaign-note) .home-library { margin-top: 18px; }
 .modern-seal-mark { display: grid; width: 36px; height: 36px; place-items: center; color: #d7c6a5; border: 1px solid rgba(212, 194, 153, .52); border-radius: 50%; font-size: 20px; line-height: 1; font-family: var(--serif); }
 .modern-seal-mark--large { width: 76px; height: 76px; font-size: 37px; }
 .campaign-note span { display: block; padding-top: 5px; color: #adb7b2; font-size: 10px; letter-spacing: .06em; }
 .scene-image[data-art="cg-modern-photo"] { background-position: center 40%; }
 .scene-image[data-art="cg-modern-glance"] { background-position: 62% center; }
+@media (max-width: 760px) {
+  .campaign-selector { margin: 10px auto 6px; }
+  .campaign-note { text-align: center; font-size: 12px; margin-bottom: 4px; }
+  .home-body:has(.campaign-note) .home-main-menu { margin-top: auto; }
+  .home-body:has(.campaign-note) .home-library { margin-top: 12px; }
+}
 @media (max-width: 600px) {
-  .campaign-selector { margin-top: 10px; margin-bottom: 8px; }
-  .campaign-selector button { min-height: 36px; padding: 7px 11px; font-size: 11px; }
-  .campaign-note { font-size: 12px; margin-bottom: 5px; }
-  .campaign-note span { font-size: 9px; }
+  .campaign-selector { margin: 6px auto 4px; }
+  .campaign-selector button { min-height: 44px; padding: 7px 11px; font-size: 11px; }
+  .campaign-note { font-size: 11px; margin-bottom: 4px; }
+  .campaign-note span { font-size: 9px; padding-top: 2px; }
+}
+@media (max-height: 620px) and (max-width: 600px) {
+  .app--home .home-body { top: calc(74px + env(safe-area-inset-top)); bottom: calc(66px + env(safe-area-inset-bottom)); }
+  .app--home .home-eyebrow { margin-bottom: 6px; }
+  .app--home .home-title { font-size: 68px; line-height: 1.15; }
+  .app--home .home-english { padding-top: 4px; }
+  .app--home .home-verse { margin-top: 8px; }
+  .app--home .home-verse p { margin-top: 4px; }
+  .app--home .campaign-note { margin-bottom: 2px; }
+  .app--home .campaign-note span { display: none; }
+  .app--home .home-main-menu button { min-height: 50px; }
+  .app--home .home-library { margin-top: 8px; }
+  .app--home .home-library button { min-height: 46px; }
 }
 @media (max-height: 600px) and (orientation: landscape) {
   .campaign-selector { margin: 4px auto; }
   .campaign-note { display: none; }
+}
+@media (max-height: 520px) and (min-width: 600px) {
+  .app--home .home-body { grid-template-rows: auto auto auto auto; align-content: center; }
+  .app--home .home-title { font-size: clamp(48px, 7.2vw, 68px); line-height: 1.15; }
+  .app--home .campaign-selector { grid-area: 4 / 1; justify-self: start; margin: 10px 0 0; }
+  .app--home .home-library { grid-area: 3 / 2 / 5 / 3; align-self: start; margin-top: 8px; }
 }
 
 /* Reviewed r2 art keeps its focal action above the reading layer. */

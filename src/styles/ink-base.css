@@ -295,6 +295,26 @@ button:hover:not(:disabled) {
 .cta-secondary:disabled {
   opacity: 0.55;
 }
+.start-button.is-confirming {
+  padding: 8px 24px 10px 28px;
+  color: #f2c3ae;
+  background: rgba(166, 63, 43, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(194, 85, 59, 0.78);
+}
+.start-button.is-confirming:hover:not(:disabled) {
+  color: #f7d5c6;
+  box-shadow: inset 0 0 0 1px rgba(214, 102, 74, 0.9);
+}
+.start-button.is-confirming strong {
+  font-size: 16px;
+  letter-spacing: 0.14em;
+}
+.start-button.is-confirming small {
+  grid-column: 1 / -1;
+  max-width: none;
+  margin-top: 2px;
+  color: #d9a48f;
+}
 .home-library {
   margin-top: 30px;
   gap: 26px;
@@ -400,7 +420,8 @@ button:hover:not(:disabled) {
   color: var(--brass-bright);
   background: radial-gradient(closest-side, rgba(8, 26, 32, 0.75), rgba(8, 26, 32, 0.35));
   border-radius: 20px;
-  box-shadow: inset 0 0 0 1px rgba(201, 164, 106, 0.3);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(234, 190, 120, 0.48), 0 6px 20px rgba(3, 14, 19, 0.45);
 }
 .reading-mode-indicator > span {
   width: 7px;

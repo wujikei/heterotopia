@@ -116,7 +116,9 @@ try {
   }
   {
     const { context, page } = await open(undefined, page => page.route('**/assets/story-*.js', route => route.abort()));
-    await page.getByRole('button', { name: /^(重新)?启程$/ }).click();
+    const start = page.locator('.start-button');
+    await start.click();
+    await page.getByRole('button', { name: /再点一次，重新启程/ }).click();
     await page.getByRole('button', { name: '刷新重试', exact: true }).waitFor();
     await page.getByRole('button', { name: '阅读设置', exact: true }).click();
     await page.getByRole('dialog').waitFor();

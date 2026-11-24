@@ -307,17 +307,21 @@
   border-radius: 20px;
   white-space: nowrap;
   transition:
-    color 0.5s,
-    background 0.5s;
+    color 0.12s,
+    background 0.12s,
+    box-shadow 0.12s;
 }
-.reading-controls button:hover:not(:disabled) {
-  color: var(--brass-bright);
-  background: radial-gradient(closest-side, rgba(201, 164, 106, 0.16), transparent);
+@media (hover: hover) {
+  .reading-controls button:hover:not(:disabled):not(.selected) {
+    color: var(--brass-bright);
+    background: radial-gradient(closest-side, rgba(201, 164, 106, 0.09), transparent);
+  }
 }
 .reading-controls button.selected {
   color: var(--brass-bright);
-  background: radial-gradient(closest-side, rgba(234, 190, 120, 0.22), transparent);
-  text-shadow: 0 0 12px rgba(234, 190, 120, 0.6);
+  background: rgba(234, 190, 120, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(234, 190, 120, 0.56);
+  text-shadow: 0 0 10px rgba(234, 190, 120, 0.45);
 }
 .reading-controls button.selected .ink-icon {
   filter: drop-shadow(0 0 6px rgba(234, 190, 120, 0.7));
@@ -510,8 +514,8 @@
     margin-bottom: 4px;
   }
   .dialogue-text {
-    font-size: 17px;
-    min-height: calc(17px * 1.75 * 2);
+    font-size: clamp(17px, calc(var(--dialogue-size) * 0.85), 22px);
+    min-height: calc(clamp(17px, calc(var(--dialogue-size) * 0.85), 22px) * 1.75 * 2);
     line-height: 1.75;
   }
   .dialogue-footer {
