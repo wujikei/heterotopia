@@ -130,7 +130,13 @@ try {
     await actor.waitFor(); const key = await actor.evaluate(el => el.className.match(/actor--(shen|tang)/)[1]);
     await full(page, key); const node = await active(page, key).elementHandle();
     await turn(page, '0-7:6:0');
-    await page.waitForFunction(() => document.querySelector('.actor--idle') && Math.abs(Number(getComputedStyle(document.querySelector('.actor--idle')).opacity) - .55) < .01);
+    await page.waitForFunction(() => {
+      const actor = document.querySelector('.actor--idle');
+      if (!actor || Number(getComputedStyle(actor).opacity) < .99) return false;
+      const filter = getComputedStyle(actor.querySelector('img')).filter;
+      const brightness = /brightness\(([\d.]+)\)/.exec(filter);
+      return brightness && Number(brightness[1]) < 1;
+    });
     assert.ok(await node.evaluate(el => el.isConnected));
     await page.waitForTimeout(190);
     await armTiming(page, key); await page.locator('.dialogue-advance').click();
