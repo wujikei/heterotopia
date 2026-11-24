@@ -358,12 +358,12 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     if (screen === 'play' && beat?.kind === 'choice' && !modal && !intro) sound.prepareUi('stamp');
   }, [screen, beat?.id, beat?.kind, modal, intro]);
 
-  const openModal = useCallback((name: ModalName) => {
+  const openModal = useCallback((name: ModalName, options?: { keepAuto?: boolean }) => {
     if (name === 'journal') setJournalRelic(undefined);
     if (name === 'saves' && !isStoryReady(campaign)) void loadStory(campaign).then(() => setStoryReady(true)).catch(() => {});
     if (!document.querySelector('[role="dialog"]')) modalOpener.current = document.activeElement as HTMLElement | null;
     setModalPath(path => path.at(-1) === name ? path : [...path, name]);
-    entryPointerGuardAt.current = 0; entryPointerPos.current = null; setHidden(false); setAuto(false); stopSkipping();
+    entryPointerGuardAt.current = 0; entryPointerPos.current = null; setHidden(false); if (!options?.keepAuto) setAuto(false); stopSkipping();
     clearChoiceTimers(); setStamped(null);
     clearTimeout(toastTimer.current); setToast(''); sound.click('open');
   }, [campaign, clearChoiceTimers, stopSkipping]);
@@ -668,7 +668,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
         <section className={`dialogue dialogue--${lineKind}`} aria-label={t("故事正文")} inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />
           <div className="dialogue-body">
-            {tr(relic && !hidden && !intro && <button className="relic-cue" onClick={() => { openModal('journal'); setJournalRelic(relic.id); }} aria-label={tr(t("细看{0}", relic.title))}><InkBrush size={15} /><span>{t("物笺 ·")}{' '}{tr(relic.title)}</span><ArrowRight size={13} /></button>)}
+            {tr(relic && !hidden && !intro && <button className="relic-cue" onClick={() => { openModal('journal', { keepAuto: true }); setJournalRelic(relic.id); }} aria-label={tr(t("细看{0}", relic.title))}><InkBrush size={15} /><span>{t("物笺 ·")}{' '}{tr(relic.title)}</span><ArrowRight size={13} /></button>)}
             {tr(beat.speaker && <div className="speaker"><span className="speaker-seal"><strong>{tr(beat.speaker)}</strong></span>{tr(beat.mood && <span className="speaker-mood">{tr(beat.mood)}</span>)}</div>)}
             <button className="dialogue-advance" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(typing.done ? '继续' : '立即显示全文')}><p className="dialogue-text" data-testid="dialogue-text" data-beat-id={beat.id} aria-label={text}><span aria-hidden="true">{text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{text.slice(typing.count)}</span><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true" /></p></button>
             <footer className="dialogue-footer">
