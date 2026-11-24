@@ -95,8 +95,19 @@
 .app--play:has(.scene-art[data-art$="-r2"]) .dialogue-mist {
   background: linear-gradient(to top, rgba(3,14,19,.97), rgba(3,14,19,.85) 34%, rgba(3,14,19,.45) 62%, transparent);
 }
-.app--play:has(.scene-art[data-art="modern-dorm-quiet-r2"]) .actor img {
-  filter: brightness(.90) saturate(.90);
+.app--play:has(.scene-art[data-art="modern-dorm-quiet-r2"]) .actor--speaking img {
+  filter: brightness(.90) saturate(.90) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
+}
+.app--play:has(.scene-art[data-art="modern-dorm-quiet-r2"]) .actor--idle img {
+  filter: brightness(.76) saturate(.74) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
+}
+/* Modern daylight/sunset scenes need a crisp top header scrim without tinting the scene. */
+.app--play :is(.scene-art[data-art^="modern-"], .scene-art[data-art^="cg-modern-"]) .scene-shade {
+  background:
+    linear-gradient(180deg, rgba(3, 15, 20, .64) 0%, rgba(3, 15, 20, .26) 13%, transparent 25%, transparent 66%, rgba(3, 15, 20, .38));
+}
+.app--play:has(.scene-art[data-art^="modern-"], .scene-art[data-art^="cg-modern-"]) .game-header {
+  text-shadow: 0 1px 10px rgba(3, 14, 19, .88);
 }
 @media (max-aspect-ratio: 3/4) {
   .scene-art[data-art^="cg-modern-"][data-art$="-r2"] .scene-image {
@@ -114,6 +125,44 @@
   .scene-art[data-art="cg-modern-dorm-dark-r2"] .scene-image { background-position: 30% center; }
   .scene-art[data-art^="cg-modern-"][data-art$="-r2"] .scene-shade {
     background: linear-gradient(180deg, rgba(3,15,20,.25), transparent 14%, transparent 55%, rgba(3,15,20,.75) 68%, #031014 82%);
+  }
+  /* Wide 16:9 overseas CGs without dedicated portrait crops frame cleanly above the reading mist. */
+  .app--play:not(.app--hidden):not(:has(.ending-screen:not(.ending-screen--clean))) .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) {
+    background: #031014;
+  }
+  .app--play:not(.app--hidden):not(:has(.ending-screen:not(.ending-screen--clean))) .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-image {
+    --cg-stage-top: calc(68px + env(safe-area-inset-top));
+    --cg-stage-avail: max(190px, calc(var(--r2-reading-top, 74dvh) - var(--cg-stage-top) - 14px));
+    top: calc(var(--cg-stage-top) + max(0px, (var(--cg-stage-avail) - 56.25vw) * 0.44));
+    bottom: auto;
+    height: min(56.25vw, var(--cg-stage-avail));
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: none;
+    animation: none;
+    opacity: 1;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
+  }
+  .app--play:not(.app--hidden):not(:has(.ending-screen:not(.ending-screen--clean))) .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-shade {
+    background: linear-gradient(180deg, rgba(3,15,20,.64) 0%, rgba(3,15,20,.24) 11%, transparent 22%, transparent 72%, #031014 96%);
+  }
+  .app--play.app--hidden .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) {
+    background: #031014;
+  }
+  .app--play.app--hidden .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-image {
+    top: 50%;
+    bottom: auto;
+    height: 56.25vw;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: translateY(-50%);
+    animation: none;
+    opacity: 1;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
   }
 }
 .reduced-motion .scene-art[data-art$="-r2"] .scene-image {

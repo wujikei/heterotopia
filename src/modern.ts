@@ -94,7 +94,7 @@ export function modernBackground(scene: Scene, text: string, current: string): s
   if (/导师办公室|办公室|打印稿|暖气管/.test(text)) return 'modern-office';
   if (/图书馆|书架|资料室/.test(text)) return 'modern-library';
   if (/卧室|宿舍|投影仪|室友/.test(text) && !/土屋|阿媪|木匣|走廊/.test(text)) return 'modern-dorm';
-  if (/车站|山坡|石阶|山脊|登山/.test(text)) return 'modern-mountain-path';
+  if (/车站|登山/.test(text)) return 'modern-mountain-path';
   if (/落日|夕照|江面碎金|落霞/.test(text)) return 'modern-sunset';
   if (/问字摊|涂鸦墙|修鞋摊/.test(text)) return 'cg-modern-word-stall';
   if (/城墙|秦军|城门洞开/.test(text)) return 'ruins';

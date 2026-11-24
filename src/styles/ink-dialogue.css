@@ -27,7 +27,7 @@
   opacity: 0;
 }
 .actor--idle:not(.actor--pending):not(.actor--exit) {
-  opacity: 0.55;
+  opacity: 1;
 }
 .actor img {
   position: relative;
@@ -63,7 +63,7 @@
   filter: saturate(.94) brightness(.97) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
 }
 .actor--idle img {
-  filter: saturate(.8) brightness(.85) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
+  filter: saturate(.72) brightness(.78) drop-shadow(0 10px 30px rgba(2, 12, 16, .45));
 }
 .actor-glow {
   position: absolute;
@@ -88,8 +88,10 @@
   font-family: var(--hand);
   font-size: 15px;
   letter-spacing: 0.5em;
-  color: rgba(239, 232, 214, 0.55);
-  text-shadow: 0 0 12px rgba(4, 19, 26, 0.9);
+  color: rgba(244, 236, 216, 0.72);
+  text-shadow:
+    0 1px 10px rgba(3, 14, 19, 0.96),
+    0 0 2px rgba(3, 14, 19, 0.96);
 }
 .dialogue {
   position: absolute;
@@ -493,10 +495,14 @@
 /* ---------- 手机横屏 / 很矮的窗口 ---------- */
 @media (max-height: 520px) and (min-width: 600px) {
   .actor {
-    height: 100dvh;
+    height: calc(100dvh - 44px);
     width: 40vw;
     right: 4%;
     bottom: 0;
+  }
+  .actor-vertical-name {
+    top: 14%;
+    right: 6%;
   }
   .dialogue {
     padding: 56px 32px 6px;

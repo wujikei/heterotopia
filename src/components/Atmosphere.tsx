@@ -41,8 +41,11 @@ export function SceneArt({ name, motion = true, cg, readingId }: { name: string;
     return () => clearTimeout(timer);
   }, [previous, loaded]);
   useEffect(() => {
-    if (!target.endsWith('-r2') || readingId === null) return;
     const element = art.current;
+    if ((!target.endsWith('-r2') && !target.startsWith('cg-modern-')) || readingId === null) {
+      element?.style.removeProperty('--r2-reading-top');
+      return;
+    }
     const text = document.querySelector('.dialogue-text');
     if (!element || !text) return;
     // A detached/unlaid-out reading node is not a measured zero-height art region.

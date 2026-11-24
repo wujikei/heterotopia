@@ -29,6 +29,7 @@ await mkdir(output, { recursive: true });
 const errors = [];
 const browser = await chromium.launch({ headless: true });
 const contexts = [];
+const storageEvents = [];
 const imageManifest = JSON.parse(await readFile(new URL('../src/data/art-manifest.json', import.meta.url), 'utf8'));
 
 function walk(until, selections, state = newGame(newProfile()), profile = newProfile()) {
@@ -49,7 +50,9 @@ async function open(fixture, viewport = { width: 1440, height: 900 }) {
   await context.addInitScript(data => {
     // The persisted settings themselves guard the fixture. file:// session
     // storage is browser-dependent and must not reset a real reload assertion.
-    if (localStorage.getItem('heterotopia.v1.settings')) return;
+    const existing = localStorage.getItem('heterotopia.v1.settings');
+    console.debug('portable-settings-at-navigation', existing);
+    if (existing) return;
     localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted: true, showSprites: true }));
     if (data) {
       localStorage.setItem('heterotopia.v1.profile', JSON.stringify(data.profile));
@@ -57,6 +60,11 @@ async function open(fixture, viewport = { width: 1440, height: 900 }) {
     }
   }, fixture);
   const page = await context.newPage();
+  page.on('console', message => {
+    if (message.text().startsWith('portable-settings-at-navigation')) {
+      storageEvents.push({ context: contexts.indexOf(context), value: message.text() });
+    }
+  });
   page.on('pageerror', error => errors.push(error.message));
   page.on('requestfailed', request => errors.push(`${request.url().slice(0, 160)}: ${request.failure()?.errorText}`));
   page.on('request', request => {
@@ -247,6 +255,7 @@ try {
   await page.locator('.save-slot--filled .save-slot-main').first().click();
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId), bookmarked.beatId);
   await page.reload();
+  await page.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
   assert.ok(await page.getByRole('button', { name: /^续梦/ }).isEnabled());
   await page.getByRole('button', { name: '阅读设置', exact: true }).click();
   const downloadPromise = page.waitForEvent('download');
@@ -324,7 +333,7 @@ try {
           original: stage.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ORIGINALS__?.hero) })) }));
     } catch { return { url: page.url(), closed: true }; }
   }));
-  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), errors, failure: String(error), diagnostics }, null, 2));
+  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), errors, failure: String(error), storageEvents, diagnostics }, null, 2));
   if (errors.length) console.error(errors);
   throw error;
 } finally {
