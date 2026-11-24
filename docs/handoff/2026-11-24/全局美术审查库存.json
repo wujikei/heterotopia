@@ -1,0 +1,1561 @@
+{
+  "baseline": {
+    "repo": "wujikei/heterotopia",
+    "branch": "feat/overseas-r4-staging",
+    "commit": "81981bbe4be51b26ed302f6ecf5ee50552273c25",
+    "pr": 17
+  },
+  "counts": {
+    "modern_bgs": 8,
+    "modern_cgs_primary": 35,
+    "modern_portraits": 15,
+    "shared_ancient_bgs": 10,
+    "shared_ancient_portraits": 13,
+    "props_missing_suggestion": 1,
+    "remake_total": 7,
+    "finetune_total": 12,
+    "keep_total": 57,
+    "archived_unused": 5
+  },
+  "items": [
+    {
+      "id": "modern-street-arrival-r2",
+      "category": "背景",
+      "usageStatus": "实用",
+      "decision": "重制",
+      "priority": "P1",
+      "dimensions": "973x720",
+      "scenes": [
+        "modern-o-0-1"
+      ],
+      "evidence": "当前为973x720(4:3)，全线唯一非16:9主背景；左侧「奶茶店」以中式古镇仿古木匾+青石板巷呈现，缺少原著海外旧街砖墙与中英文叠写喷漆涂鸦墙的在场质感。",
+      "runtimePath": "art/modern-street-arrival-r2.webp",
+      "repoPath": "public/art/modern-street-arrival-r2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-street-arrival-r2.webp"
+    },
+    {
+      "id": "modern-dorm-quiet-r2",
+      "category": "背景",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1280x720",
+      "scenes": [
+        "modern-o-0-2",
+        "modern-o-4-1",
+        "modern-o-4-2"
+      ],
+      "evidence": "1280x720(16:9)；R2重制母版，空桌面、窗外便利店夜景、煮面热气、投影白墙及台灯暖光与R2序列高度一致，4193宽屏实测稳妥。",
+      "runtimePath": "art/modern-dorm-quiet-r2.webp",
+      "repoPath": "public/art/modern-dorm-quiet-r2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-dorm-quiet-r2.webp"
+    },
+    {
+      "id": "modern-dorm",
+      "category": "背景",
+      "usageStatus": "实用(闪回)",
+      "decision": "微调",
+      "priority": "P1",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-7"
+      ],
+      "evidence": "1536x864(16:9)；经代码核实在modern-k-E-7第5段闪回时实际切换上屏，但左下书桌仍保留旧版凸心玉扣，同源覆盖为R2空桌即可。",
+      "runtimePath": "art/modern-dorm.webp",
+      "repoPath": "public/art/modern-dorm.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-dorm.webp"
+    },
+    {
+      "id": "modern-library",
+      "category": "背景",
+      "usageStatus": "实用",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-4-1",
+        "modern-o-4-2"
+      ],
+      "evidence": "1536x864(16:9)；整体窗光、厚涂油画质感极佳；仅右下桌面小玉扣中心呈浅凹坑而非通透小圆孔，局部修补圆孔即可。",
+      "runtimePath": "art/modern-library.webp",
+      "repoPath": "public/art/modern-library.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-library.webp"
+    },
+    {
+      "id": "modern-office",
+      "category": "背景",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-5-1",
+        "modern-o-5-2"
+      ],
+      "evidence": "1536x864(16:9)；暖气管、叶角微蔫绿植、茶杯与打印稿堆贴合原文，底部留有平滑暗区供正文叠字。",
+      "runtimePath": "art/modern-office.webp",
+      "repoPath": "public/art/modern-office.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-office.webp"
+    },
+    {
+      "id": "modern-mountain-path",
+      "category": "背景",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-5-3",
+        "modern-o-5-4",
+        "modern-o-5-5"
+      ],
+      "evidence": "1536x864(16:9)；石阶、松影、木栏与远江灰青过渡柔和，自然写实质感统一。",
+      "runtimePath": "art/modern-mountain-path.webp",
+      "repoPath": "public/art/modern-mountain-path.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-mountain-path.webp"
+    },
+    {
+      "id": "modern-sunset",
+      "category": "背景",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "title",
+        "modern-o-5-6",
+        "modern-o-5-7",
+        "modern-home"
+      ],
+      "evidence": "1536x864(16:9)；半规落日、江面碎金与木栏与古篇一叶归舟互文准确，标题与结局皆稳定。",
+      "runtimePath": "art/modern-sunset.webp",
+      "repoPath": "public/art/modern-sunset.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-sunset.webp"
+    },
+    {
+      "id": "modern-projection",
+      "category": "背景",
+      "usageStatus": "历史废弃",
+      "decision": "废弃不重制",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [],
+      "evidence": "1536x864(16:9)；未被assets.ts引用（钢笔竹简旧版），已被cg-modern-dorm-carving-r2取代。",
+      "runtimePath": "art/modern-projection.webp",
+      "repoPath": "public/art/modern-projection.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/modern-projection.webp"
+    },
+    {
+      "id": "cg-modern-word-stall",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "重制",
+      "priority": "P0",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-0-1"
+      ],
+      "evidence": "桌上4枚玉扣画成7-9cm杯垫级厚绿饼，与cg-modern-jade-palm-r2小圆扣严重矛盾；文字模糊无法辨「何」；缺「问字，不问命」手写招牌与翻旧竹签；街巷仍偏国内灰砖古巷。",
+      "runtimePath": "art/cg-modern-word-stall.webp",
+      "repoPath": "public/art/cg-modern-word-stall.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-word-stall.webp"
+    },
+    {
+      "id": "cg-modern-jade-palm-r2",
+      "category": "CG",
+      "usageStatus": "实用(+ -m)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1280x720",
+      "scenes": [
+        "modern-o-0-1"
+      ],
+      "evidence": "1280x720(+720x960)；指尖递扣尺度准确，通孔与「何」字清晰，林越灰蓝开衫+白圆领T细节一致。",
+      "runtimePath": "art/cg-modern-jade-palm-r2.webp",
+      "repoPath": "public/art/cg-modern-jade-palm-r2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-jade-palm-r2.webp"
+    },
+    {
+      "id": "cg-modern-dorm-unease-r2",
+      "category": "CG",
+      "usageStatus": "实用(+ -m)",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "1280x720",
+      "scenes": [
+        "modern-o-0-2"
+      ],
+      "evidence": "1280x720(+720x960)；整体光影与投影框极佳，唯手举玉扣左下表面留有一小块旧版涂抹残灰斑且口径略大，同源局部清斑微收尺度即可。",
+      "runtimePath": "art/cg-modern-dorm-unease-r2.webp",
+      "repoPath": "public/art/cg-modern-dorm-unease-r2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-dorm-unease-r2.webp"
+    },
+    {
+      "id": "cg-modern-dorm-carving-r2",
+      "category": "CG",
+      "usageStatus": "实用(+ -m)",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "1280x720",
+      "scenes": [
+        "modern-o-0-2"
+      ],
+      "evidence": "1280x720(+720x960)；刻刀与竹简「何」字精准，仅继承上述同源玉扣左下角浅灰残痕，局部随母版清洁即可。",
+      "runtimePath": "art/cg-modern-dorm-carving-r2.webp",
+      "repoPath": "public/art/cg-modern-dorm-carving-r2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-dorm-carving-r2.webp"
+    },
+    {
+      "id": "cg-modern-dorm-dark-r2",
+      "category": "CG",
+      "usageStatus": "派生照明(+ -m)",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "1280x720",
+      "scenes": [
+        "modern-o-0-2"
+      ],
+      "evidence": "1280x720(+720x960)；同源暗场照明，4189实测20/28暗区阅读良好；若修母版玉扣左下残痕需同步导出。",
+      "runtimePath": "art/cg-modern-dorm-dark-r2.webp",
+      "repoPath": "public/art/cg-modern-dorm-dark-r2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-dorm-dark-r2.webp"
+    },
+    {
+      "id": "cg-modern-jade-light-r2",
+      "category": "CG",
+      "usageStatus": "派生照明(+ -m)",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "1280x720",
+      "scenes": [
+        "modern-o-0-2"
+      ],
+      "evidence": "1280x720(+720x960)；同源玉扣微亮变体，4189实测27/28聚焦良好；随母版同步清洁左下残痕即可。",
+      "runtimePath": "art/cg-modern-jade-light-r2.webp",
+      "repoPath": "public/art/cg-modern-jade-light-r2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-jade-light-r2.webp"
+    },
+    {
+      "id": "cg-modern-selection",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-0-4"
+      ],
+      "evidence": "1536x864；巫村祭台、兽牙项链大巫祝、青铜鼎烟与跪童背影质感厚重，与portrait-wuyang一致。",
+      "runtimePath": "art/cg-modern-selection.webp",
+      "repoPath": "public/art/cg-modern-selection.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-selection.webp"
+    },
+    {
+      "id": "cg-modern-noodles",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-4-1"
+      ],
+      "evidence": "1536x864；室友摘耳机同桌吃面，锅灶窗户与宿舍母版衔接自然，4193实测人物清晰。",
+      "runtimePath": "art/cg-modern-noodles.webp",
+      "repoPath": "public/art/cg-modern-noodles.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-noodles.webp"
+    },
+    {
+      "id": "cg-modern-translation",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "重制",
+      "priority": "P1",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-4-2"
+      ],
+      "evidence": "1536x864；右页未体现「不译。」落笔核心意象而呈双页全白；桌角玉扣仍偏大且缺通孔「何」字细节；林越服装偏套头毛衣缺少开衫前襟连续性。",
+      "runtimePath": "art/cg-modern-translation.webp",
+      "repoPath": "public/art/cg-modern-translation.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-translation.webp"
+    },
+    {
+      "id": "cg-modern-paper",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "重制",
+      "priority": "P1",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-5-1"
+      ],
+      "evidence": "1536x864；林越错穿翻领白衬衫（应为圆领白T）；中景平视角导致论文只占小块斜面积，4193实测反馈「批注太小不可读」，无法通过小修改变透视呈现满页红蓝铅笔批注。",
+      "runtimePath": "art/cg-modern-paper.webp",
+      "repoPath": "public/art/cg-modern-paper.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-paper.webp"
+    },
+    {
+      "id": "cg-modern-glance",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-5-5"
+      ],
+      "evidence": "1536x864；林越侧身回望，穿亮黄外套举水瓶女孩回眸微笑神态生动，石阶与远江光影自然（内领极微翻领痕可忽略）。",
+      "runtimePath": "art/cg-modern-glance.webp",
+      "repoPath": "public/art/cg-modern-glance.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-glance.webp"
+    },
+    {
+      "id": "cg-modern-summit",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "微调",
+      "priority": "P1",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-5-6"
+      ],
+      "evidence": "1536x864；林越、沈辞、唐瑾、宋嘉树站位与落日山顶极佳；仅林越左后方出现一名同样绿背包+圆框眼镜+黑发撞脸路人背影，局部Inpaint替换路人即可。（注：三人休闲外套与o-5-4校服差异已单列原稿/服装连续性说明）",
+      "runtimePath": "art/cg-modern-summit.webp",
+      "repoPath": "public/art/cg-modern-summit.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-summit.webp"
+    },
+    {
+      "id": "cg-modern-photo",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-o-5-7"
+      ],
+      "evidence": "1536x864；三人木栏合照情绪、林越圆领白T与灰蓝开衫、沈辞眉尾细节与宋嘉树神态均稳妥。",
+      "runtimePath": "art/cg-modern-photo.webp",
+      "repoPath": "public/art/cg-modern-photo.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-photo.webp"
+    },
+    {
+      "id": "cg-modern-ritual",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-r-C-6",
+        "modern-r-C-7"
+      ],
+      "evidence": "1536x864；大巫祝、戌、楚王、幽蓝烛火与案上橘子调度精准。",
+      "runtimePath": "art/cg-modern-ritual.webp",
+      "repoPath": "public/art/cg-modern-ritual.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-ritual.webp"
+    },
+    {
+      "id": "cg-modern-city",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-r-C-12"
+      ],
+      "evidence": "1536x864；百姓扶老携幼穿门而出，火光在后、碎陶竹筐在前，冷灰战争压迫感克制真实。",
+      "runtimePath": "art/cg-modern-city.webp",
+      "repoPath": "public/art/cg-modern-city.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-city.webp"
+    },
+    {
+      "id": "cg-modern-last-geese",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "重制",
+      "priority": "P0",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-r-E1-6",
+        "modern-r-D-1"
+      ],
+      "evidence": "1536x864；人物鼻梁横亘金属贴片状伪影、左手五指肿胀变形、白麻袍下摆正中糊有突兀高饱和宝蓝矩形块；且当前被代码前置绑定至夜城头对话modern-r-D-1。需按modern-r-E1-6战死余晖仰望七雁南飞重制。",
+      "runtimePath": "art/cg-modern-last-geese.webp",
+      "repoPath": "public/art/cg-modern-last-geese.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-last-geese.webp"
+    },
+    {
+      "id": "cg-modern-storm",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-D-5",
+        "modern-k-D-6"
+      ],
+      "evidence": "1536x864；污绿浪涛间1只抓船舷之手+对面5名特征全对的孩童（蒙眼雩、骨笛芈、最小沅、独臂媭、左脸胎记荼），6人齐全准确。",
+      "runtimePath": "art/cg-modern-storm.webp",
+      "repoPath": "public/art/cg-modern-storm.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-storm.webp"
+    },
+    {
+      "id": "cg-modern-cloud-lord",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-1"
+      ],
+      "evidence": "1536x864；蓝水上无影白紫神祇持兰滴水，构图空灵契合原文。",
+      "runtimePath": "art/cg-modern-cloud-lord.webp",
+      "repoPath": "public/art/cg-modern-cloud-lord.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-cloud-lord.webp"
+    },
+    {
+      "id": "cg-modern-xiangjun",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "重制",
+      "priority": "P0",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-3"
+      ],
+      "evidence": "1536x864；原文写「手中一支桨，拦腰折断；怀里一支参差（排箫）」，现图画成捧两小片窄木牌且无参差排箫，舟尾多出空船角，人物古偶感偏重。",
+      "runtimePath": "art/cg-modern-xiangjun.webp",
+      "repoPath": "public/art/cg-modern-xiangjun.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-xiangjun.webp"
+    },
+    {
+      "id": "cg-modern-xiangfuren",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-4"
+      ],
+      "evidence": "1536x864；水底香草之屋门扉望远与前方小舟孩童剪影意境契合。",
+      "runtimePath": "art/cg-modern-xiangfuren.webp",
+      "repoPath": "public/art/cg-modern-xiangfuren.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-xiangfuren.webp"
+    },
+    {
+      "id": "cg-modern-siming",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-5"
+      ],
+      "evidence": "1536x864；鹤发老者展空白竹简坐于星水孤舟，肃穆克制。",
+      "runtimePath": "art/cg-modern-siming.webp",
+      "repoPath": "public/art/cg-modern-siming.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-siming.webp"
+    },
+    {
+      "id": "cg-modern-shaosiming",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-6"
+      ],
+      "evidence": "1536x864；青衣女仙抱熟睡婴孩立于香草舟头，神态温和。",
+      "runtimePath": "art/cg-modern-shaosiming.webp",
+      "repoPath": "public/art/cg-modern-shaosiming.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-shaosiming.webp"
+    },
+    {
+      "id": "cg-modern-dongjun",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-7"
+      ],
+      "evidence": "1536x864；金波游鱼极佳，唯左上龙车与右上树冠带轻度矢量描边感，局部水墨雾气柔化即可。",
+      "runtimePath": "art/cg-modern-dongjun.webp",
+      "repoPath": "public/art/cg-modern-dongjun.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-dongjun.webp"
+    },
+    {
+      "id": "cg-modern-mountain-spirit",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-8"
+      ],
+      "evidence": "1536x864；披薜荔女萝乘白鹿少女与雾中鹿群，冷青灰调统一。",
+      "runtimePath": "art/cg-modern-mountain-spirit.webp",
+      "repoPath": "public/art/cg-modern-mountain-spirit.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-mountain-spirit.webp"
+    },
+    {
+      "id": "cg-modern-river-lord",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-9"
+      ],
+      "evidence": "1536x864；荷盖青铜龙车乘浪而来，神性庄重不浮夸。",
+      "runtimePath": "art/cg-modern-river-lord.webp",
+      "repoPath": "public/art/cg-modern-river-lord.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-river-lord.webp"
+    },
+    {
+      "id": "cg-modern-gods-rite",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-E-12"
+      ],
+      "evidence": "1536x864；六童举香草与雾中诸神相送，群像呼应完整。",
+      "runtimePath": "art/cg-modern-gods-rite.webp",
+      "repoPath": "public/art/cg-modern-gods-rite.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-gods-rite.webp"
+    },
+    {
+      "id": "cg-modern-kunlun-light",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "重制",
+      "priority": "P1",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-F-1"
+      ],
+      "evidence": "1536x864；原文核心异象为「蓝太亮了，亮得没有影子」，现图却是暖黄白过曝日光鹅卵石滩且脚下皆有清晰深影，背影亦难以辨认六童各自伤痕特征。",
+      "runtimePath": "art/cg-modern-kunlun-light.webp",
+      "repoPath": "public/art/cg-modern-kunlun-light.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-kunlun-light.webp"
+    },
+    {
+      "id": "cg-modern-reed-boat",
+      "category": "CG",
+      "usageStatus": "实用",
+      "decision": "微调",
+      "priority": "P1",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-r-A-6",
+        "modern-k-G-1",
+        "modern-k-G-2"
+      ],
+      "evidence": "1536x864；灰白芦苇岸与村人站位极好，仅六具幼躯过于整齐，局部在布边点绘糖纸残片/红绳小纸船/草茎遗物即可。",
+      "runtimePath": "art/cg-modern-reed-boat.webp",
+      "repoPath": "public/art/cg-modern-reed-boat.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-reed-boat.webp"
+    },
+    {
+      "id": "cg-modern-fork",
+      "category": "CG",
+      "usageStatus": "代码屏蔽未触发",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-c-1-13(被首句/村口/覆盖)"
+      ],
+      "evidence": "1536x864；屈衡车旁递烤薯、大巫祝持饼、戌抱匣立泥道，画面精准；仅因代码规则被village背景覆盖，解除屏蔽即可直接用。",
+      "runtimePath": "art/cg-modern-fork.webp",
+      "repoPath": "public/art/cg-modern-fork.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-fork.webp"
+    },
+    {
+      "id": "cg-modern-feast",
+      "category": "CG",
+      "usageStatus": "代码屏蔽未触发",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-r-A-4(被首句/楚宫/覆盖)"
+      ],
+      "evidence": "1536x864；楚王剥橘压竹简、后景编钟舞乐，契合原文；目前被palace覆盖。",
+      "runtimePath": "art/cg-modern-feast.webp",
+      "repoPath": "public/art/cg-modern-feast.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-feast.webp"
+    },
+    {
+      "id": "cg-modern-battle",
+      "category": "CG",
+      "usageStatus": "代码屏蔽未触发",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-r-C-11(被首句/城墙/覆盖)"
+      ],
+      "evidence": "1536x864；大军压境城墙压迫感良好；目前被ruins覆盖。",
+      "runtimePath": "art/cg-modern-battle.webp",
+      "repoPath": "public/art/cg-modern-battle.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-battle.webp"
+    },
+    {
+      "id": "cg-modern-donghuang",
+      "category": "CG",
+      "usageStatus": "代码屏蔽未触发",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "1536x864",
+      "scenes": [
+        "modern-k-F-5(被首句/天开了/覆盖)"
+      ],
+      "evidence": "1536x864；当前仅见2童且蒙眼布错戴于男孩而非少女雩，若未来代码启用需补齐六童轮廓与蒙眼雩。",
+      "runtimePath": "art/cg-modern-donghuang.webp",
+      "repoPath": "public/art/cg-modern-donghuang.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-donghuang.webp"
+    },
+    {
+      "id": "cg-modern-projection",
+      "category": "CG",
+      "usageStatus": "历史废弃",
+      "decision": "废弃不重制",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [],
+      "evidence": "1536x864；R2前钢笔竹简旧版，未启用。",
+      "runtimePath": "art/cg-modern-projection.webp",
+      "repoPath": "public/art/cg-modern-projection.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-projection.webp"
+    },
+    {
+      "id": "cg-modern-friends",
+      "category": "CG",
+      "usageStatus": "未触发冗余",
+      "decision": "废弃不重制",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [],
+      "evidence": "1536x864；校园圆桌四同学图，与cg-modern-campus-friends像素完全重复且无场景引用。",
+      "runtimePath": "art/cg-modern-friends.webp",
+      "repoPath": "public/art/cg-modern-friends.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-friends.webp"
+    },
+    {
+      "id": "cg-modern-campus-friends",
+      "category": "CG",
+      "usageStatus": "未触发冗余",
+      "decision": "废弃不重制",
+      "priority": "-",
+      "dimensions": "1536x864",
+      "scenes": [],
+      "evidence": "1536x864；与cg-modern-friends完全同图且无场景引用。",
+      "runtimePath": "art/cg-modern-campus-friends.webp",
+      "repoPath": "public/art/cg-modern-campus-friends.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/cg-modern-campus-friends.webp"
+    },
+    {
+      "id": "portrait-linyue-modern",
+      "category": "立绘与头像",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [
+        "modern-o-0-1",
+        "modern-o-0-2",
+        "modern-o-4-1",
+        "modern-o-4-2",
+        "modern-o-5-1..5"
+      ],
+      "evidence": "864x1152(+480x640 -m)；R2基准立绘，灰蓝开衫+圆领白T+绿背包+细圆镜，alpha干净。",
+      "runtimePath": "art/portrait-linyue-modern.webp",
+      "repoPath": "public/art/portrait-linyue-modern.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue-modern.webp"
+    },
+    {
+      "id": "portrait-linyue-modern-thoughtful",
+      "category": "立绘与头像",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [
+        "modern-o-0-1",
+        "modern-o-0-2",
+        "modern-o-4-1",
+        "modern-o-4-2",
+        "modern-o-5-2"
+      ],
+      "evidence": "864x1152(+ -m)；R2同源微皱眉思考差分，羽化自然。",
+      "runtimePath": "art/portrait-linyue-modern-thoughtful.webp",
+      "repoPath": "public/art/portrait-linyue-modern-thoughtful.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue-modern-thoughtful.webp"
+    },
+    {
+      "id": "portrait-linyue-modern-smile",
+      "category": "立绘与头像",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [
+        "modern-o-0-1",
+        "modern-o-5-2",
+        "modern-o-5-4"
+      ],
+      "evidence": "864x1152(+ -m)；R2同源克制浅笑差分。",
+      "runtimePath": "art/portrait-linyue-modern-smile.webp",
+      "repoPath": "public/art/portrait-linyue-modern-smile.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue-modern-smile.webp"
+    },
+    {
+      "id": "portrait-linyue-modern-puzzled",
+      "category": "立绘与头像",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [
+        "modern-o-0-1",
+        "modern-o-0-2",
+        "modern-o-4-1"
+      ],
+      "evidence": "864x1152(+ -m)；R2同源轻疑差分。",
+      "runtimePath": "art/portrait-linyue-modern-puzzled.webp",
+      "repoPath": "public/art/portrait-linyue-modern-puzzled.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue-modern-puzzled.webp"
+    },
+    {
+      "id": "portrait-linyue-modern-alert",
+      "category": "立绘与头像",
+      "usageStatus": "备用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [
+        "modern-o-0-1:25(CG激活隐藏)"
+      ],
+      "evidence": "864x1152(+ -m)；R2同源警觉差分，待命备用。",
+      "runtimePath": "art/portrait-linyue-modern-alert.webp",
+      "repoPath": "public/art/portrait-linyue-modern-alert.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue-modern-alert.webp"
+    },
+    {
+      "id": "portrait-linyue-modern-surprised",
+      "category": "立绘与头像",
+      "usageStatus": "备用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [],
+      "evidence": "864x1152(+ -m)；R2同源微惊差分，待命备用。",
+      "runtimePath": "art/portrait-linyue-modern-surprised.webp",
+      "repoPath": "public/art/portrait-linyue-modern-surprised.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue-modern-surprised.webp"
+    },
+    {
+      "id": "portrait-roommate-modern",
+      "category": "立绘与头像",
+      "usageStatus": "备用(含人物志)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [
+        "人物志"
+      ],
+      "evidence": "864x1152(+ -m)；R2室友基准立绘，黑卷发+头戴灰耳机+米色针织衫，国籍未定不妄加符号。",
+      "runtimePath": "art/portrait-roommate-modern.webp",
+      "repoPath": "public/art/portrait-roommate-modern.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-roommate-modern.webp"
+    },
+    {
+      "id": "portrait-roommate-modern-concerned",
+      "category": "立绘与头像",
+      "usageStatus": "实用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [
+        "modern-o-4-1"
+      ],
+      "evidence": "864x1152(+ -m)；R2同源关切差分。",
+      "runtimePath": "art/portrait-roommate-modern-concerned.webp",
+      "repoPath": "public/art/portrait-roommate-modern-concerned.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-roommate-modern-concerned.webp"
+    },
+    {
+      "id": "portrait-roommate-modern-focused",
+      "category": "立绘与头像",
+      "usageStatus": "备用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [],
+      "evidence": "864x1152(+ -m)；R2同源专注差分。",
+      "runtimePath": "art/portrait-roommate-modern-focused.webp",
+      "repoPath": "public/art/portrait-roommate-modern-focused.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-roommate-modern-focused.webp"
+    },
+    {
+      "id": "portrait-roommate-modern-puzzled",
+      "category": "立绘与头像",
+      "usageStatus": "备用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [],
+      "evidence": "864x1152(+ -m)；R2同源疑惑差分。",
+      "runtimePath": "art/portrait-roommate-modern-puzzled.webp",
+      "repoPath": "public/art/portrait-roommate-modern-puzzled.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-roommate-modern-puzzled.webp"
+    },
+    {
+      "id": "portrait-roommate-modern-smile",
+      "category": "立绘与头像",
+      "usageStatus": "备用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [],
+      "evidence": "864x1152(+ -m)；R2同源微笑差分。",
+      "runtimePath": "art/portrait-roommate-modern-smile.webp",
+      "repoPath": "public/art/portrait-roommate-modern-smile.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-roommate-modern-smile.webp"
+    },
+    {
+      "id": "portrait-roommate-modern-surprised",
+      "category": "立绘与头像",
+      "usageStatus": "备用",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "864x1152",
+      "scenes": [],
+      "evidence": "864x1152(+ -m)；R2同源微惊差分。",
+      "runtimePath": "art/portrait-roommate-modern-surprised.webp",
+      "repoPath": "public/art/portrait-roommate-modern-surprised.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-roommate-modern-surprised.webp"
+    },
+    {
+      "id": "portrait-linyue-face",
+      "category": "立绘与头像",
+      "usageStatus": "备用(人物志索引)",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "240x264",
+      "scenes": [
+        "portraitFace()"
+      ],
+      "evidence": "240x264；仍裁切自R1旧版portrait-linyue而非R2林越立绘，同源重裁R2头部替换即可。",
+      "runtimePath": "art/portrait-linyue-face.webp",
+      "repoPath": "public/art/portrait-linyue-face.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue-face.webp"
+    },
+    {
+      "id": "portrait-roommate-face",
+      "category": "立绘与头像",
+      "usageStatus": "备用(人物志索引)",
+      "decision": "微调",
+      "priority": "P2",
+      "dimensions": "256x256",
+      "scenes": [
+        "portraitFace()"
+      ],
+      "evidence": "256x256；顶部发丝边缘留有明显白色锯齿杂边，同源重裁clean alpha即可。",
+      "runtimePath": "art/portrait-roommate-face.webp",
+      "repoPath": "public/art/portrait-roommate-face.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-roommate-face.webp"
+    },
+    {
+      "id": "portrait-linyue",
+      "category": "立绘与头像",
+      "usageStatus": "历史废弃",
+      "decision": "废弃不重制",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [],
+      "evidence": "768x1152；R1旧版遗留文件，assets:check报unreferenced。",
+      "runtimePath": "art/portrait-linyue.webp",
+      "repoPath": "public/art/portrait-linyue.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-linyue.webp"
+    },
+    {
+      "id": "hut",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-k-A-1",
+        "modern-k-A-8",
+        "modern-k-F-2",
+        "modern-o-0-5",
+        "modern-o-0-8"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/hut.webp",
+      "repoPath": "public/art/hut.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/hut.webp"
+    },
+    {
+      "id": "light-river",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-k-D-13",
+        "modern-k-F-1",
+        "modern-k-F-5",
+        "modern-k-F-6"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/light-river.webp",
+      "repoPath": "public/art/light-river.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/light-river.webp"
+    },
+    {
+      "id": "mountain",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-k-A-9",
+        "modern-k-B-1",
+        "modern-r-L-4"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/mountain.webp",
+      "repoPath": "public/art/mountain.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/mountain.webp"
+    },
+    {
+      "id": "palace",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-k-A-1",
+        "modern-r-A-4",
+        "modern-r-B-12",
+        "modern-r-B-13",
+        "modern-r-B-4",
+        "modern-r-B-7a",
+        "modern-r-B-9a",
+        "modern-r-C-10",
+        "modern-r-C-1a",
+        "modern-r-C-4a",
+        "modern-r-C-9",
+        "modern-r-L-1"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/palace.webp",
+      "repoPath": "public/art/palace.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/palace.webp"
+    },
+    {
+      "id": "ritual",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-k-D-2",
+        "modern-k-D-3",
+        "modern-o-0-3",
+        "modern-r-A-7",
+        "modern-r-B-6",
+        "modern-r-C-1",
+        "modern-r-C-2",
+        "modern-r-C-5"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/ritual.webp",
+      "repoPath": "public/art/ritual.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/ritual.webp"
+    },
+    {
+      "id": "river",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-c-1-13",
+        "modern-k-A-10",
+        "modern-k-A-11",
+        "modern-k-A-12",
+        "modern-k-A-2",
+        "modern-k-A-3",
+        "modern-k-A-4",
+        "modern-k-A-5",
+        "modern-k-A-6",
+        "modern-k-A-7",
+        "modern-k-A-8",
+        "modern-k-B-10",
+        "modern-k-B-11",
+        "modern-k-B-12",
+        "modern-k-B-13",
+        "modern-k-B-14",
+        "modern-k-B-15",
+        "modern-k-B-4",
+        "modern-k-B-5",
+        "modern-k-B-6",
+        "modern-k-B-7",
+        "modern-k-B-8",
+        "modern-k-B-9",
+        "modern-k-C-1",
+        "modern-k-C-2",
+        "modern-k-C-3",
+        "modern-k-C-4",
+        "modern-k-C-5",
+        "modern-k-C-6",
+        "modern-k-D-1",
+        "modern-k-D-10",
+        "modern-k-D-11",
+        "modern-k-D-12",
+        "modern-k-D-2",
+        "modern-k-D-3",
+        "modern-k-D-4",
+        "modern-k-D-5",
+        "modern-k-D-6",
+        "modern-k-D-7",
+        "modern-k-D-8",
+        "modern-k-D-9",
+        "modern-k-E-1",
+        "modern-k-E-10",
+        "modern-k-E-11",
+        "modern-k-E-12",
+        "modern-k-E-2",
+        "modern-k-E-5",
+        "modern-k-E-6",
+        "modern-k-E-8",
+        "modern-k-E-9",
+        "modern-k-F-3",
+        "modern-k-F-4",
+        "modern-k-F-6",
+        "modern-k-G-1",
+        "modern-k-G-2",
+        "modern-k-G-3",
+        "modern-k-G-4",
+        "modern-o-0-7",
+        "modern-o-2-1",
+        "modern-o-2-2",
+        "modern-o-2-3",
+        "modern-o-2-4",
+        "modern-o-2-5",
+        "modern-o-2-6",
+        "modern-o-2-7",
+        "modern-r-A-1",
+        "modern-r-A-6a",
+        "modern-r-B-11",
+        "modern-r-D-11",
+        "modern-r-D-6",
+        "modern-r-E2-5",
+        "modern-r-E2-7",
+        "modern-r-F-6",
+        "modern-r-L-3"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/river.webp",
+      "repoPath": "public/art/river.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/river.webp"
+    },
+    {
+      "id": "ruins",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-k-B-15",
+        "modern-k-C-1",
+        "modern-r-C-11",
+        "modern-r-C-1a",
+        "modern-r-D-1",
+        "modern-r-D-11",
+        "modern-r-E1-2",
+        "modern-r-E1-5"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/ruins.webp",
+      "repoPath": "public/art/ruins.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/ruins.webp"
+    },
+    {
+      "id": "study",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-r-A-2",
+        "modern-r-A-3",
+        "modern-r-A-5",
+        "modern-r-B-12",
+        "modern-r-B-14",
+        "modern-r-B-5a",
+        "modern-r-C-1a",
+        "modern-r-D-7",
+        "modern-r-F-3"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/study.webp",
+      "repoPath": "public/art/study.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/study.webp"
+    },
+    {
+      "id": "tomb",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-r-B-1",
+        "modern-r-B-2",
+        "modern-r-B-8"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/tomb.webp",
+      "repoPath": "public/art/tomb.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/tomb.webp"
+    },
+    {
+      "id": "village",
+      "category": "共用古代背景",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "1344x768",
+      "scenes": [
+        "modern-c-1-13",
+        "modern-c-1-13a",
+        "modern-c-1-13b",
+        "modern-k-B-10",
+        "modern-k-B-13",
+        "modern-k-B-2",
+        "modern-k-B-3",
+        "modern-o-0-6",
+        "modern-r-A-1",
+        "modern-r-A-3a",
+        "modern-r-A-8",
+        "modern-r-B-10",
+        "modern-r-B-11",
+        "modern-r-B-3",
+        "modern-r-B-5",
+        "modern-r-B-7",
+        "modern-r-B-9",
+        "modern-r-C-3",
+        "modern-r-C-4",
+        "modern-r-C-8",
+        "modern-r-D-10",
+        "modern-r-D-12",
+        "modern-r-D-2",
+        "modern-r-D-3",
+        "modern-r-D-4",
+        "modern-r-D-5",
+        "modern-r-D-6",
+        "modern-r-D-8",
+        "modern-r-D-9",
+        "modern-r-E1-1",
+        "modern-r-E1-3",
+        "modern-r-E1-4",
+        "modern-r-E1-7",
+        "modern-r-E2-1",
+        "modern-r-E2-2",
+        "modern-r-E2-3",
+        "modern-r-E2-4",
+        "modern-r-E2-6",
+        "modern-r-F-1",
+        "modern-r-F-2",
+        "modern-r-F-5",
+        "modern-r-L-2",
+        "modern-r-L-5",
+        "modern-r-L-6",
+        "modern-r-L-7",
+        "modern-r-L-8"
+      ],
+      "evidence": "原篇高质量水墨厚涂共享背景，现代王裔/昆仑分支与结局沿用统一。",
+      "runtimePath": "art/village.webp",
+      "repoPath": "public/art/village.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/village.webp"
+    },
+    {
+      "id": "xu",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-k-A-2",
+        "modern-k-A-3",
+        "modern-k-A-8",
+        "modern-k-B-12",
+        "modern-k-B-4",
+        "modern-k-B-6",
+        "modern-k-B-7",
+        "modern-k-C-1",
+        "modern-k-D-10",
+        "modern-k-F-4",
+        "modern-k-G-3",
+        "modern-o-0-5",
+        "modern-o-0-7",
+        "modern-o-0-8",
+        "modern-o-2-5",
+        "modern-o-2-6",
+        "modern-o-2-7",
+        "modern-r-A-1",
+        "modern-r-A-2",
+        "modern-r-A-3",
+        "modern-r-A-4",
+        "modern-r-A-5",
+        "modern-r-A-6a",
+        "modern-r-A-7",
+        "modern-r-A-8",
+        "modern-r-B-1",
+        "modern-r-B-10",
+        "modern-r-B-11",
+        "modern-r-B-12",
+        "modern-r-B-13",
+        "modern-r-B-14",
+        "modern-r-B-2",
+        "modern-r-B-3",
+        "modern-r-B-4",
+        "modern-r-B-5",
+        "modern-r-B-5a",
+        "modern-r-B-6",
+        "modern-r-B-7",
+        "modern-r-B-7a",
+        "modern-r-B-8",
+        "modern-r-B-9",
+        "modern-r-B-9a",
+        "modern-r-C-1",
+        "modern-r-C-10",
+        "modern-r-C-11",
+        "modern-r-C-1a",
+        "modern-r-C-2",
+        "modern-r-C-3",
+        "modern-r-C-4",
+        "modern-r-C-5",
+        "modern-r-C-8",
+        "modern-r-C-9",
+        "modern-r-D-1",
+        "modern-r-D-10",
+        "modern-r-D-12",
+        "modern-r-D-2",
+        "modern-r-D-3",
+        "modern-r-D-4",
+        "modern-r-D-5",
+        "modern-r-D-6",
+        "modern-r-D-7",
+        "modern-r-D-8",
+        "modern-r-D-9",
+        "modern-r-E1-1",
+        "modern-r-E1-3",
+        "modern-r-E1-4",
+        "modern-r-E2-1",
+        "modern-r-E2-2",
+        "modern-r-E2-4",
+        "modern-r-E2-5",
+        "modern-r-E2-7",
+        "modern-r-F-1",
+        "modern-r-F-2",
+        "modern-r-F-5",
+        "modern-r-L-1",
+        "modern-r-L-3",
+        "modern-r-L-4",
+        "modern-r-L-5",
+        "modern-r-L-7",
+        "modern-r-L-8"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-xu.webp",
+      "repoPath": "public/art/portrait-xu.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-xu.webp"
+    },
+    {
+      "id": "amao",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-o-0-5"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-amao.webp",
+      "repoPath": "public/art/portrait-amao.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-amao.webp"
+    },
+    {
+      "id": "elder",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-r-D-3"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-elder.webp",
+      "repoPath": "public/art/portrait-elder.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-elder.webp"
+    },
+    {
+      "id": "gouzi",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-o-0-7",
+        "modern-r-C-2",
+        "modern-r-D-8"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-gouzi.webp",
+      "repoPath": "public/art/portrait-gouzi.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-gouzi.webp"
+    },
+    {
+      "id": "quheng",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-c-1-13",
+        "modern-r-A-1",
+        "modern-r-A-5",
+        "modern-r-A-6a",
+        "modern-r-B-12",
+        "modern-r-B-2",
+        "modern-r-B-5a",
+        "modern-r-C-4",
+        "modern-r-D-2",
+        "modern-r-D-4",
+        "modern-r-E2-5",
+        "modern-r-L-1"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-quheng.webp",
+      "repoPath": "public/art/portrait-quheng.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-quheng.webp"
+    },
+    {
+      "id": "wuyang",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-c-1-13",
+        "modern-k-A-11",
+        "modern-k-B-1",
+        "modern-k-B-15",
+        "modern-k-C-1",
+        "modern-k-C-2",
+        "modern-k-C-6",
+        "modern-k-E-10",
+        "modern-o-0-3",
+        "modern-r-A-1",
+        "modern-r-A-6a",
+        "modern-r-A-8",
+        "modern-r-C-1",
+        "modern-r-D-5"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-wuyang.webp",
+      "repoPath": "public/art/portrait-wuyang.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-wuyang.webp"
+    },
+    {
+      "id": "chang",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-r-A-2",
+        "modern-r-A-3",
+        "modern-r-A-3a",
+        "modern-r-B-12",
+        "modern-r-B-14",
+        "modern-r-B-5",
+        "modern-r-C-3",
+        "modern-r-D-1",
+        "modern-r-D-7",
+        "modern-r-D-9",
+        "modern-r-E1-7",
+        "modern-r-E2-3"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-chang.webp",
+      "repoPath": "public/art/portrait-chang.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-chang.webp"
+    },
+    {
+      "id": "yu",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-k-A-2",
+        "modern-k-A-5",
+        "modern-k-A-7",
+        "modern-k-B-1",
+        "modern-k-B-14",
+        "modern-k-D-12",
+        "modern-k-D-7",
+        "modern-k-F-4"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-yu.webp",
+      "repoPath": "public/art/portrait-yu.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-yu.webp"
+    },
+    {
+      "id": "xua-v3",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "832x1248",
+      "scenes": [
+        "modern-k-A-1",
+        "modern-k-A-6",
+        "modern-k-A-8",
+        "modern-k-B-1",
+        "modern-k-B-15",
+        "modern-k-B-3",
+        "modern-k-B-5",
+        "modern-k-C-1",
+        "modern-k-D-10",
+        "modern-k-D-7",
+        "modern-k-E-6",
+        "modern-r-D-9"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-xua-v3.webp",
+      "repoPath": "public/art/portrait-xua-v3.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-xua-v3.webp"
+    },
+    {
+      "id": "yuan",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-k-A-3",
+        "modern-k-B-3",
+        "modern-k-D-8",
+        "modern-k-F-1",
+        "modern-r-D-6"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-yuan.webp",
+      "repoPath": "public/art/portrait-yuan.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-yuan.webp"
+    },
+    {
+      "id": "tu-v2",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-k-A-2"
+      ],
+      "evidence": "原篇共享立绘，整体保留。",
+      "runtimePath": "art/portrait-tu-v2.webp",
+      "repoPath": "public/art/portrait-tu-v2.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-tu-v2.webp"
+    },
+    {
+      "id": "song",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-o-5-4"
+      ],
+      "evidence": "在modern-o-5-4以高中蓝白校服出场，与该场文本完全吻合；但同日傍晚modern-o-5-6/5-7的CG切为休闲外套，属跨场次服装连续性待定项（单列不擅改）。",
+      "runtimePath": "art/portrait-song.webp",
+      "repoPath": "public/art/portrait-song.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-song.webp"
+    },
+    {
+      "id": "tang",
+      "category": "共用立绘",
+      "usageStatus": "实用(跨卷共用)",
+      "decision": "保留",
+      "priority": "-",
+      "dimensions": "768x1152",
+      "scenes": [
+        "modern-o-5-4"
+      ],
+      "evidence": "在modern-o-5-4以高中蓝白校服出场，与该场文本完全吻合；但同日傍晚modern-o-5-6/5-7的CG切为休闲外套，属跨场次服装连续性待定项（单列不擅改）。",
+      "runtimePath": "art/portrait-tang.webp",
+      "repoPath": "public/art/portrait-tang.webp",
+      "fixedShaUrl": "https://github.com/wujikei/heterotopia/blob/81981bbe4be51b26ed302f6ecf5ee50552273c25/public/art/portrait-tang.webp"
+    },
+    {
+      "id": "prop-question-jade (questionJade)",
+      "category": "道具(缺图建议)",
+      "usageStatus": "仅ITEMS文字条目(未接RELICS图)",
+      "decision": "可选增补",
+      "priority": "P2",
+      "dimensions": "未建立(建议 768x768 或 1024x1024 透明底)",
+      "scenes": [
+        "modern-o-0-2",
+        "modern-o-4-1",
+        "modern-o-4-2",
+        "modern-o-5-*"
+      ],
+      "evidence": "当前src/data/world.ts仅文字定义「何字玉扣」，src/data/relics.ts未收录现代物笺且无prop-*图文件；属可选增量建议，非现有损坏文件。",
+      "runtimePath": "(未定义)",
+      "repoPath": "(未定义)",
+      "fixedShaUrl": "-"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "checkedAt": "2026-11-24T13:35:30.934043+08:00",
+  "zone": "Asia/Shanghai",
+  "site": "https://wujikei.github.io/heterotopia/",
+  "expectedBundles": [
+    "./assets/index-DjZE3La_.js",
+    "./assets/vendor-CI6SGl1L.js",
+    "./assets/icons-BTl_MOml.js",
+    "./assets/index-BCEAgyks.css"
+  ],
+  "liveBundles": [
+    "./assets/index-DjZE3La_.js",
+    "./assets/vendor-CI6SGl1L.js",
+    "./assets/icons-BTl_MOml.js",
+    "./assets/index-BCEAgyks.css"
+  ],
+  "bundlesMatch": true,
+  "checks": [
+    {
+      "path": "./assets/index-DjZE3La_.js",
+      "bytes": 217756,
+      "sha256": "1669215aee235b1fdc46e947aa34645609fa3bce1555d157d088e26b886f1716",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "./assets/vendor-CI6SGl1L.js",
+      "bytes": 223078,
+      "sha256": "61fa7acd80a40d8a88eac669eefe8d57cd8e06d330835535e72f873b13dc3410",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "./assets/icons-BTl_MOml.js",
+      "bytes": 9750,
+      "sha256": "ec2cde3a34c7c07cc8f8cc9e02e1e745bd960a95e98dc3734367a609d7efbccb",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "./assets/index-BCEAgyks.css",
+      "bytes": 141076,
+      "sha256": "c9835cd38d273de4286e36971bb73f752919e7d444b819931aa05403be1bc7ad",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "sw.js",
+      "bytes": 6997,
+      "sha256": "33ad407311c89264ee0d2b7da5773fd6c2ac92415a2261cfb4ce4635c0270926",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "art/modern-dorm-quiet-r2.webp",
+      "bytes": 74614,
+      "sha256": "7031f94bd843cfe51071d6331e5e04aa38f56c8e5873a2a5a8b69c8db37a6e67",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "art/portrait-linyue-modern.webp",
+      "bytes": 326678,
+      "sha256": "d1a8207f1fd578c31eebe0e106d4a0ba834bcc09e197a44f744a9d87e0993b9f",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "art/cg-modern-noodles.webp",
+      "bytes": 152902,
+      "sha256": "45987b27720e40ba545c753ad3d649dfd64e9d63d2fed9384c86ab457b2e84a2",
+      "matchesLocalBuild": true
+    }
+  ]
+}

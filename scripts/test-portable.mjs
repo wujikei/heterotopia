@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdir, copyFile, stat } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, copyFile, stat, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -30,6 +31,7 @@ const errors = [];
 const browser = await chromium.launch({ headless: true });
 const contexts = [];
 const storageEvents = [];
+const durableProfile = await mkdtemp(path.join(tmpdir(), 'heterotopia-offline-'));
 const imageManifest = JSON.parse(await readFile(new URL('../src/data/art-manifest.json', import.meta.url), 'utf8'));
 
 function walk(until, selections, state = newGame(newProfile()), profile = newProfile()) {
@@ -44,8 +46,13 @@ function walk(until, selections, state = newGame(newProfile()), profile = newPro
   throw new Error('Test journey did not reach its destination');
 }
 
-async function open(fixture, viewport = { width: 1440, height: 900 }) {
-  const context = await browser.newContext({ offline: true, viewport, deviceScaleFactor: 1, acceptDownloads: true });
+async function open(fixture, viewport = { width: 1440, height: 900 }, { persistent = false } = {}) {
+  const options = { offline: true, viewport, deviceScaleFactor: 1, acceptDownloads: true };
+  // Reload and restart persistence use a real disposable on-disk browser profile.
+  // Incognito file-origin storage was observed missing before app startup in CI.
+  const context = persistent
+    ? await chromium.launchPersistentContext(durableProfile, { ...options, headless: true })
+    : await browser.newContext(options);
   contexts.push(context);
   await context.addInitScript(data => {
     // The persisted settings themselves guard the fixture. file:// session
@@ -110,7 +117,7 @@ try {
       await missingPage.locator('[data-portable-error]').filter({ hasText: '离线资源没有放齐。' }).waitFor();
     } finally { await missingContext.close(); }
   } else assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
-  const page = await open();
+  const page = await open(undefined, undefined, { persistent: true });
   await page.getByRole('heading', { name: '异托邦' }).waitFor();
   const modernPage = await open();
   await modernPage.getByRole('button', { name: /林越.*现代新卷/ }).click();
@@ -266,6 +273,28 @@ try {
   const exported = JSON.parse(await readFile(testSave, 'utf8'));
   assert.equal(exported.format, 'heterotopia-save');
   assert.equal(exported.slots[0].state.beatId, bookmarked.beatId);
+  // No init script, snapshot restore, or manual re-seeding is allowed here:
+  // the ordinary profile must recover the actual offline save from disk.
+  await page.context().close();
+  const reopened = await chromium.launchPersistentContext(durableProfile, { headless: true, offline: true });
+  contexts.push(reopened);
+  const restoredPage = await reopened.newPage();
+  restoredPage.on('pageerror', error => errors.push(error.message));
+  restoredPage.on('requestfailed', request => errors.push(`${request.url().slice(0, 160)}: ${request.failure()?.errorText}`));
+  restoredPage.on('request', request => {
+    if (/^https?:/.test(request.url())) errors.push(`Unexpected network dependency after restart: ${request.url()}`);
+  });
+  await restoredPage.goto(gameUrl);
+  await restoredPage.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
+  const restoredStorage = await restoredPage.evaluate(() => ({
+    state: JSON.parse(localStorage.getItem('heterotopia.v1.autosave')),
+    slots: JSON.parse(localStorage.getItem('heterotopia.v1.slots')),
+    settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')),
+  }));
+  assert.equal(restoredStorage.state.beatId, bookmarked.beatId);
+  assert.equal(restoredStorage.slots[0].state.beatId, bookmarked.beatId);
+  assert.equal(restoredStorage.settings.lightweight, false);
+  await reopened.close();
   const importedPage = await open();
   await importedPage.getByRole('button', { name: '阅读设置', exact: true }).click();
   await importedPage.locator('input[type=file]').setInputFiles(testSave);
@@ -321,7 +350,7 @@ try {
   await relicPage.locator('.relic-study-plate img').evaluate(img => img.decode());
   await relicPage.screenshot({ path: artifact('17-name-slips-offline-mobile.png') });
   assert.deepEqual(errors, []);
-  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), edition, mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, ...audioIntegrity, errors }, null, 2));
+  await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), edition, mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, durableProfileRestart: true, ...audioIntegrity, errors }, null, 2));
   console.log('Offline checks passed: original and overseas stories, original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
 } catch (error) {
   const diagnostics = await Promise.all(contexts.flatMap(context => context.pages()).map(async page => {
@@ -339,4 +368,5 @@ try {
 } finally {
   for (const context of contexts) await context.close();
   await browser.close();
+  await rm(durableProfile, { recursive: true, force: true });
 }
