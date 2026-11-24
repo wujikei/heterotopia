@@ -26,6 +26,7 @@ export const CHARACTERS: Character[] = [
 
 export const MODERN_CHARACTERS: Character[] = [
   { key: 'linyue', name: '林越', subtitle: '问字的人', description: '二十岁，海外大学东亚研究专业二年级的中国留学生。朋友叫他 Yue。他读得懂注释，仍想知道自己与这份文化究竟隔着什么。', quote: '还是不懂。但知道，不懂在哪了。', first: 'modern-o-0-1', color: '#a4c0c2' },
+  { key: 'roommate', name: '室友', subtitle: '这边的日子', description: '林越的宿舍室友。戴着耳机打游戏，也会留意他脸色不对；夜里不再追问，把煮好的面分一碗，搁到他手边。', quote: '想家了？', first: 'modern-o-0-2', color: '#cbbda6' },
 ];
 export const charactersForCampaign = (campaign = 'original') => campaign === 'overseas'
   ? [...MODERN_CHARACTERS, ...CHARACTERS.map(character => character.key === 'xu' ? { ...character, description: '十五六岁的泽边少年，口吃，人称“三停”。林越借用的是他的身体；身体的习惯与林越的意识，各有来处。' } : character)] : CHARACTERS;
@@ -91,7 +92,8 @@ export const ITEMS: Record<string, { name: string; mark: string; detail: string 
 
 export function characterFor(name: string): Character | undefined {
   if (name === '大巫祝') return CHARACTERS.find(c => c.key === 'wuyang');
-  if (name === '林越') return MODERN_CHARACTERS[0];
+  const modern = MODERN_CHARACTERS.find(character => character.name === name);
+  if (modern) return modern;
   if (name.includes('戌（') || name === '戌（沈辞）') return CHARACTERS.find(c => c.key === 'xu');
   return CHARACTERS.find(c => c.name === name);
 }

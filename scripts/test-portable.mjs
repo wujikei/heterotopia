@@ -115,7 +115,7 @@ try {
   await modernPage.locator('.game-screen').waitFor();
   await modernPage.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
   await modernPage.getByTestId('dialogue-text').waitFor();
-  await modernPage.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'cg-modern-word-stall');
+  await modernPage.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'modern-street-arrival-r2');
   await modernPage.setViewportSize({ width: 390, height: 844 });
   assert.equal(await modernPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await modernPage.context().close();
@@ -125,7 +125,7 @@ try {
     ...[...new Set(Object.values(MODERN_SCENE_ART))].flatMap(name => [name, `${name}-thumb`]),
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
     ...CHARACTERS.map(c => `portrait-${c.key}-face`),
-    ...MODERN_CHARACTERS.flatMap(c => [`portrait-${c.key}`, `portrait-${c.key}-face`]),
+    ...MODERN_CHARACTERS.flatMap(c => [portraitName(c.key), `portrait-${c.key}-face`]),
     ...Object.entries(AVAILABLE).flatMap(([key, states]) => states.map(state => portraitNameFor(key, state))),
     ...Object.entries(ACTOR_VARIANTS).flatMap(([key, variants]) => Object.entries(variants).flatMap(([variant, states]) => states.map(expression => actorPortraitName({ character: { key }, variant, expression })))),
     ...[...AVAILABLE_EXTRAS].map(portraitName),

@@ -1,0 +1,165 @@
+{
+  "generatedSources": [
+    {
+      "file": "resources/art-src/modern-r2/generated/dorm-carving.jpg",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "06a34ad28bfdefecdeb1aa07e793e2bf2f7527ac3fbc8cdff6500c5cb8e930d0"
+    },
+    {
+      "file": "resources/art-src/modern-r2/generated/dorm-quiet.jpg",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "8d4fc3b59ece1249d1f84afd75ed5d64db9f836e87eaaa38b6ec4ccc14ab3b8b"
+    },
+    {
+      "file": "resources/art-src/modern-r2/generated/dorm-unease.jpg",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "38d778ed0dd873a9ba390bc9ef7cb6ab1841b8e831714e24cf88c33abd028312"
+    },
+    {
+      "file": "resources/art-src/modern-r2/generated/jade-palm.jpg",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "5674fc07b88cce483e78fb12e72ccb4734cf78b17237a5516207a342713e293c"
+    },
+    {
+      "file": "resources/art-src/modern-r2/generated/street-arrival.jpg",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "7d6b10c6606c416bf555ab762eac2e4d1affd40805f176761bfffce00e0a228c"
+    }
+  ],
+  "exports": [
+    {
+      "asset": "modern-street-arrival-r2",
+      "master": "resources/art-src/modern-r2/modern-street-arrival-r2.png",
+      "size": [
+        973,
+        720
+      ],
+      "sha256": "bb17d31b1d7347dea1ad2810e0a924f0ae4deb3aa6055b64bc5d257a1974aa7c"
+    },
+    {
+      "asset": "modern-dorm-quiet-r2",
+      "master": "resources/art-src/modern-r2/modern-dorm-quiet-r2.png",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "21be9428e555c3647f69962bda3ccbd99885c53cc39e2d2eca8351d4c6412a7a"
+    },
+    {
+      "asset": "cg-modern-jade-palm-r2",
+      "master": "resources/art-src/modern-r2/cg-modern-jade-palm-r2.png",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "e0cef58ed09673ef1e51304e48abf16e33bd0a9014130567d47b965afb2f8248",
+      "mobileCrop": [
+        0.12,
+        0,
+        0.78,
+        1
+      ],
+      "mobileSize": [
+        844,
+        720
+      ]
+    },
+    {
+      "asset": "cg-modern-dorm-unease-r2",
+      "master": "resources/art-src/modern-r2/cg-modern-dorm-unease-r2.png",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "13210c10d041e5a1b26ab83b426637b9ba5739fd83e44b0533343576c2818985",
+      "mobileCrop": [
+        0.26,
+        0,
+        0.86,
+        1
+      ],
+      "mobileSize": [
+        768,
+        720
+      ]
+    },
+    {
+      "asset": "cg-modern-dorm-carving-r2",
+      "master": "resources/art-src/modern-r2/cg-modern-dorm-carving-r2.png",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "e462642fa105f0ff1a1fc826c2896c10cf9a0ff82641ae51877380c0624d4a2c",
+      "mobileCrop": [
+        0.4,
+        0,
+        1,
+        1
+      ],
+      "mobileSize": [
+        768,
+        720
+      ]
+    },
+    {
+      "asset": "cg-modern-dorm-dark-r2",
+      "master": "resources/art-src/modern-r2/cg-modern-dorm-dark-r2.png",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "45df0350c0dff17b1188d1cb91f22e8f1133d40adf06ce3341893046ede4ef50",
+      "mobileCrop": [
+        0.4,
+        0,
+        1,
+        1
+      ],
+      "mobileSize": [
+        768,
+        720
+      ]
+    },
+    {
+      "asset": "cg-modern-jade-light-r2",
+      "master": "resources/art-src/modern-r2/cg-modern-jade-light-r2.png",
+      "size": [
+        1280,
+        720
+      ],
+      "sha256": "d84fad5c2e87692641af3e8bfe82600b3f31839051447847181374d016f8d424",
+      "mobileCrop": [
+        0.26,
+        0,
+        0.86,
+        1
+      ],
+      "mobileSize": [
+        768,
+        720
+      ]
+    }
+  ],
+  "notes": [
+    "Three generated narrative CGs and two generated continuity backgrounds.",
+    "Night/light are derived lighting variants, not extra generated CGs.",
+    "Quiet room is a reviewed generated clean plate from the same original room; the old source stays intact.",
+    "Establishing shot is a documented crop of its retained generated source."
+  ]
+}

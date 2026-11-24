@@ -25,7 +25,7 @@ try {
   await page.locator('.game-screen').waitFor();
   await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
   await page.getByTestId('dialogue-text').waitFor();
-  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'cg-modern-word-stall');
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'modern-street-arrival-r2');
   await page.locator('.game-location').click();
   const routeMemory = await page.locator('.route-memory').innerText();
   assert.match(routeMemory, /回到现代线/);

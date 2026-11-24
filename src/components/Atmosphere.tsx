@@ -4,10 +4,11 @@ import { asset } from '../data/world';
 import { backgroundImageForUrl, artQuality, subscribeArtQuality, artViewport, subscribeArtViewport } from '../assets';
 import { preloadImage } from '../preload';
 
-export function SceneArt({ name, motion = true, cg }: { name: string; motion?: boolean; cg?: string }) {
+export function SceneArt({ name, motion = true, cg, readingId }: { name: string; motion?: boolean; cg?: string; readingId: string | null }) {
   useLocale();
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
   useSyncExternalStore(subscribeArtViewport, artViewport, () => 'false:false');
+  const art = useRef<HTMLDivElement>(null);
   const target = cg || name;
   const selected = asset(target);
   const [loaded, setLoaded] = useState({ name: target, url: selected });
@@ -39,7 +40,27 @@ export function SceneArt({ name, motion = true, cg }: { name: string; motion?: b
     const timer = setTimeout(() => setPrevious(null), 1700);
     return () => clearTimeout(timer);
   }, [previous, loaded]);
-  return <div className={`scene-art ${loaded.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
+  useEffect(() => {
+    if (!target.endsWith('-r2') || readingId === null) return;
+    const element = art.current;
+    const text = document.querySelector('.dialogue-text');
+    if (!element || !text) return;
+    // A detached/unlaid-out reading node is not a measured zero-height art region.
+    let active = true;
+    const measure = () => {
+      if (!active || !text.isConnected || !text.getClientRects().length) return;
+      const top = text.getBoundingClientRect().top - element.getBoundingClientRect().top;
+      if (top > 0) element.style.setProperty('--r2-reading-top', `${top}px`);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(text);
+    observer.observe(text.closest('.dialogue') ?? text);
+    window.addEventListener('resize', measure);
+    const frame = requestAnimationFrame(measure);
+    void document.fonts.ready.then(measure);
+    return () => { active = false; observer.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(frame); };
+  }, [target, loaded.url, readingId]);
+  return <div ref={art} data-art={loaded.name} className={`scene-art ${loaded.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
     {tr(previous && <div className="scene-image scene-image--previous" data-art={previous.name} style={{ backgroundImage: backgroundImageForUrl(previous.url) }} />)}
     <div key={loaded.url} className="scene-image scene-image--current" data-art={loaded.name} style={{ backgroundImage: backgroundImageForUrl(loaded.url) }} />
     <div className="scene-shade" />

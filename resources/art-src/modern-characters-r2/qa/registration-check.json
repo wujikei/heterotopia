@@ -1,0 +1,158 @@
+[
+  {
+    "character": "linyue",
+    "state": "neutral",
+    "alphaBBox": [
+      188,
+      43,
+      778,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "6d907bf1eef7ada4039de4361b7b3f83ed02ed5930d3e0ab0e18f6ff87cb52e1"
+  },
+  {
+    "character": "linyue",
+    "state": "thoughtful",
+    "alphaBBox": [
+      188,
+      43,
+      778,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "fb771edfe638c2055ec7d45766b71e258732fcbea54d8873ddbdaf91ecef9078"
+  },
+  {
+    "character": "linyue",
+    "state": "warm",
+    "alphaBBox": [
+      188,
+      43,
+      778,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "dc7c84078fd24e367823a044bbff42794a4884acd1807975c5d1c5a1c7ddc3c1"
+  },
+  {
+    "character": "linyue",
+    "state": "puzzled",
+    "alphaBBox": [
+      188,
+      43,
+      778,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "747c2fafe25595177069c7ff64f8a15b0eb1c3ef74548439054db22424b88d24"
+  },
+  {
+    "character": "linyue",
+    "state": "alert",
+    "alphaBBox": [
+      188,
+      43,
+      778,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "cd83dbaca149574b82110787ac459f20bfd614899e8c5d2d2a8bf93ba66fda1c"
+  },
+  {
+    "character": "linyue",
+    "state": "startled",
+    "alphaBBox": [
+      188,
+      43,
+      778,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "1a687dab2282b3673121cf9bc3dd3bf4588adcba34423ff936907d25771f94bc"
+  },
+  {
+    "character": "roommate",
+    "state": "neutral",
+    "alphaBBox": [
+      193,
+      28,
+      740,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "3e668b53ff5230ad04c9e5ba74fb25f89611a005bd71e1448c0f4947ecf6e67b"
+  },
+  {
+    "character": "roommate",
+    "state": "focused",
+    "alphaBBox": [
+      193,
+      28,
+      740,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "0055dba2632aafe97160128d7c5f86e6e31525d48e5ebff1e16d90aa5ccd0e14"
+  },
+  {
+    "character": "roommate",
+    "state": "warm",
+    "alphaBBox": [
+      193,
+      28,
+      740,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "4a62baf0f9e347bd3b5966dd7b0fa8f5f3ff55fcb6672130cf9d10f001174f14"
+  },
+  {
+    "character": "roommate",
+    "state": "puzzled",
+    "alphaBBox": [
+      193,
+      28,
+      740,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "cccce412d04a123f88cc8a53bb3b4aee1333e37e8218c7129379b24604f8cb25"
+  },
+  {
+    "character": "roommate",
+    "state": "concerned",
+    "alphaBBox": [
+      193,
+      28,
+      740,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "9f3c310c4d17ee257b04b144758743cce23318c6b637ece56223bbfd4b952537"
+  },
+  {
+    "character": "roommate",
+    "state": "startled",
+    "alphaBBox": [
+      193,
+      28,
+      740,
+      1152
+    ],
+    "sharedBodyIdentical": true,
+    "layerReconstructsExactly": true,
+    "sha256": "a48a62709da0af87a6ed2a6f544248cd50d8742168bc7fe9926bf67959f18902"
+  }
+]

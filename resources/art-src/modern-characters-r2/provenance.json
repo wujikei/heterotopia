@@ -1,0 +1,75 @@
+{
+  "round": "modern-character-r2",
+  "tool": "GenerateImage",
+  "referencePolicy": "Every generation used project-owned reference images; all-positive scene descriptions. Exact verbatim prompts were not saved as a separate file.",
+  "linyueIdentityReference": "public/art/portrait-linyue.webp",
+  "roommateIdentityReference": "public/art-original/cg-modern-noodles.webp right-hand character; appearance is visual setting, not additional source-script facts.",
+  "expressionReference": "Selected same-character base, head crop. Five independently generated emotion sources plus the shared neutral body.",
+  "attempts": 14,
+  "returnedImages": 13,
+  "selectedImages": 12,
+  "rejectedImages": 1,
+  "interruptedWithoutReturnedImage": 1,
+  "files": [
+    {
+      "file": "generated/linyue-alert.jpg",
+      "sha256": "c45ef724e0646ccf380e2dcdaefa53e160423b28c62920368ae52ae390a0d331",
+      "selected": true
+    },
+    {
+      "file": "generated/linyue-base.jpg",
+      "sha256": "d9e65036c2c076b89065df8b9f95ceda860d3ee19d94b16bf71b9e85158289a2",
+      "selected": true
+    },
+    {
+      "file": "generated/linyue-puzzled.jpg",
+      "sha256": "a827a9acaaa6831c57ba2f9c61e978eb8adea3b28a567ce6bd42d74ded73a850",
+      "selected": true
+    },
+    {
+      "file": "generated/linyue-startled.jpg",
+      "sha256": "97c25cf47e9152dadb625263ee3118c97e5ec2e5bc439b3296f383d54776cdd7",
+      "selected": true
+    },
+    {
+      "file": "generated/linyue-thoughtful.jpg",
+      "sha256": "f49b97269afdc895c0a5fdef82ad61dda589143f784cbd09d0fdca2562d8ab80",
+      "selected": true
+    },
+    {
+      "file": "generated/linyue-warm.jpg",
+      "sha256": "f7c1764553164f3a6e2ce1da3d7bf9d71e71a0430dc9d1ae7d79d44110297dfa",
+      "selected": true
+    },
+    {
+      "file": "generated/roommate-base.jpg",
+      "sha256": "69ebfb1ee80e2d3f48cd24e279b07c62470e9c506f7472a148e2c18dbaf63c09",
+      "selected": true
+    },
+    {
+      "file": "generated/roommate-concerned.jpg",
+      "sha256": "829a2c24503bad603e42d4117bdbdbb9f75ca7bcbb3bf724b86427bca4383f9b",
+      "selected": true
+    },
+    {
+      "file": "generated/roommate-focused.jpg",
+      "sha256": "73f982bf99374fa4841e2c304cbbb061ca496af94f28239a379d9d682206b83b",
+      "selected": true
+    },
+    {
+      "file": "generated/roommate-puzzled.jpg",
+      "sha256": "99ed3d61df2fa80278b30dc3189836e87ba8f81651af846dc1cb7e5ed004eacd",
+      "selected": true
+    },
+    {
+      "file": "generated/roommate-startled.jpg",
+      "sha256": "e2068f463ad3deed87ba3aa404f26422d36932a458121f321e68f1c3d55fa63c",
+      "selected": true
+    },
+    {
+      "file": "generated/roommate-warm.jpg",
+      "sha256": "0811394e075c3a2b3f1f9d9518c24d69b44664d02e4dace7ffd56ec04678e357",
+      "selected": true
+    }
+  ]
+}

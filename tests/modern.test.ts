@@ -51,9 +51,11 @@ test('both source corpora stay separate, every new scene compiles and narrative 
   }
   const overseas = newProfile('overseas');
   const opening = compileScene('modern-o-0-1', overseas, { choices: {}, inventory: [] });
-  assert.ok(opening.filter(beat => beat.kind === 'text').every(beat => beat.background === 'cg-modern-word-stall'));
+  assert.equal(opening.find(beat => beat.kind === 'text')?.background, 'modern-street-arrival-r2');
+  assert.equal(opening.find(beat => beat.id === 'modern-o-0-1:7:0')?.background, 'cg-modern-word-stall');
+  assert.equal(opening.find(beat => beat.id === 'modern-o-0-1:18:0')?.background, 'cg-modern-jade-palm-r2');
   const projection = compileScene('modern-o-0-2', overseas, { choices: {}, inventory: [] });
-  assert.equal(projection.find(beat => beat.id === 'modern-o-0-2:17:0')?.background, 'cg-modern-projection');
+  assert.equal(projection.find(beat => beat.id === 'modern-o-0-2:17:0')?.background, 'cg-modern-dorm-carving-r2');
   for (const sceneId of ['modern-o-4-1', 'modern-o-4-2']) {
     const backgrounds = compileScene(sceneId, overseas, { choices: {}, inventory: [] }).map(beat => beat.background);
     assert.ok(!backgrounds.some(background => ['river', 'light-river', 'palace', 'ruins'].includes(background)), `${sceneId} should remain staged in the modern world`);

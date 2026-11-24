@@ -29,17 +29,19 @@ export function subscribeArtViewport(listener: () => void) {
   queries.forEach(query => query.addEventListener('change', listener));
   return () => queries.forEach(query => query.removeEventListener('change', listener));
 }
-export const portraitName = (key: string) => `portrait-${key}${key === 'tu' ? '-v2' : key === 'xua' ? '-v3' : ''}`;
+export const portraitName = (key: string) => `portrait-${key}${key === 'linyue' || key === 'roommate' ? '-modern' : key === 'tu' ? '-v2' : key === 'xua' ? '-v3' : ''}`;
 export const imageFailed = (url: string) => failed.has(urlKey(url));
 
 export function assetSources(name: string) {
   const embedded = (globalThis as Embedded).__HETEROTOPIA_ASSETS__?.[name];
   const embeddedMobile = (globalThis as Embedded).__HETEROTOPIA_ASSETS__?.[`${name}-m`];
   const originalFile = (manifest.originals as Record<string, string>)[name];
+  const mobileOriginalFile = Object.entries(manifest.mobileOriginals).find(([key]) => key === name)?.[1];
+  const mobileOriginal = (globalThis as Embedded).__HETEROTOPIA_ORIGINALS__?.[`${name}-m`] ?? (!isPortable() && mobileOriginalFile ? `${base()}art-original/${mobileOriginalFile}` : undefined);
   const original = (globalThis as Embedded).__HETEROTOPIA_ORIGINALS__?.[name] ?? (!isPortable() && originalFile ? `${base()}art-original/${originalFile}` : undefined);
   if (!lightweight && original && !failed.has(urlKey(original))) {
     const type = original.endsWith('.webp') || original.startsWith('data:image/webp') ? 'image/webp' : 'image/png';
-    return { webp: original, avif: undefined, mobile: undefined, type };
+    return { webp: original, avif: undefined, mobile: mobileOriginal ? { webp: mobileOriginal, avif: undefined, media: mobileMedia(name) } : undefined, type };
   }
   const webp = embedded ?? `${base()}art/${name}.webp`;
   return {
