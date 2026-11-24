@@ -1,8 +1,10 @@
 import rawSoundtrack from './data/soundtrack.json';
 import type { Beat, EndingId, Profile } from './types';
-import { isModern, modernMusic } from './modern';
+import { sceneById } from './engine';
+import { isModern, modernMusic, MODERN_ARRIVAL_ART, MODERN_SCENE_ART, MODERN_STALL_ART } from './modern';
 
-export const MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
+export const ORIGINAL_MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
+export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-question'] as const;
 export type MusicId = typeof MUSIC_IDS[number];
 export const AMBIENCE_IDS = ['river', 'rain', 'hearth', 'wind', 'winter', 'room', 'night', 'street', 'marsh', 'underwater', 'cave', 'palace'] as const;
 export type AmbienceId = typeof AMBIENCE_IDS[number];
@@ -70,10 +72,16 @@ export const TRACK_ART: Record<MusicId, string> = {
   'river-home': 'hero', 'paper-note': 'classroom-day', hearth: 'hut', 'river-journey': 'river',
   'old-jade': 'study', ritual: 'ritual', 'under-current': 'marsh', 'small-goodbyes': 'mountain',
   'last-flute': 'snow', 'river-of-names': 'light-river', 'light-in-kitchen': 'home',
+  'modern-street': MODERN_ARRIVAL_ART, 'modern-question': 'cg-modern-dorm-carving-r2',
 };
 
+export function musicForVisit(sceneId: string): MusicId | null | undefined {
+  if (!isModern(sceneId)) return MUSIC_BY_SCENE[sceneId];
+  const scene = sceneById(sceneId);
+  if (scene.id === sceneId) return modernMusic(sceneId, MODERN_SCENE_ART[sceneId] ?? scene.background);
+}
 export function unlockedTracks(profile: Pick<Profile, 'visited'>): MusicId[] {
-  return [...new Set<MusicId>(['river-home', ...profile.visited.map(id => MUSIC_BY_SCENE[id]).filter((id): id is MusicId => !!id)])];
+  return [...new Set<MusicId>(['river-home', ...profile.visited.map(musicForVisit).filter((id): id is MusicId => !!id)])];
 }
 
 const e = (id: EffectId, gain = .65, at = 0, pan = 0): Effect => ({ id, gain, at, pan });
@@ -152,7 +160,11 @@ const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
   'modern-office': [['room', .3], ['street', .07]],
   'modern-mountain-path': [['wind', .3]],
   'modern-sunset': [['wind', .2], ['river', .1]],
-  'cg-modern-word-stall': [['street', .45]],
+  [MODERN_ARRIVAL_ART]: [['street', .46]],
+  [MODERN_STALL_ART]: [['street', .37]],
+  'cg-modern-jade-palm-r2': [['street', .37]],
+  'modern-dorm-quiet-r2': [['room', .36], ['street', .06]],
+  'modern-royal-wall-night': [['wind', .48]],
   'cg-modern-noodles': [['room', .35]],
   'cg-modern-translation': [['room', .2]],
   'cg-modern-glance': [['wind', .28]],
@@ -187,14 +199,15 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
     events: [{ id: beat.audioCueId, effects: CUE_EFFECTS[beat.audioCueId] ?? [] }],
   };
   if (isModern(sceneId)) {
-    frame.music = modernMusic(sceneId, beat);
+    frame.music = modernMusic(sceneId, beat.background);
     frame.transition = 3.5;
+    if (sceneId === 'modern-o-0-1') frame.musicGain = beat.background === MODERN_ARRIVAL_ART ? .68 : .55;
+    if (sceneId === 'modern-o-0-2') frame.musicGain = .57;
     if (sceneId === 'modern-o-0-2' && block >= 15) {
       frame.musicGain = .3;
       frame.ambience = block >= 26 ? [['rain', .48], ['room', .1]] : [['room', .18]];
     }
     if (sceneId.startsWith('modern-k-G-')) {
-      frame.music = null;
       frame.ambience = [['river', .17], ['wind', .1]];
     }
     if (sceneId === 'modern-o-5-7') frame.musicGain = .65;

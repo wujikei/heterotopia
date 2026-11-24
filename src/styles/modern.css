@@ -45,6 +45,41 @@
 .campaign-note span { display: block; padding-top: 5px; color: #adb7b2; font-size: 10px; letter-spacing: .06em; }
 .scene-image[data-art="cg-modern-photo"] { background-position: center 40%; }
 .scene-image[data-art="cg-modern-glance"] { background-position: 62% center; }
+.scene-art[data-art="cg-modern-word-stall-r3"] { --modern-cg-height: 81vw; }
+.relic-cue[data-relic="question-jade"] { min-height: 44px; }
+@media (min-height: 521px) and (min-aspect-ratio: 3/4) {
+  .app--play:not(.app--hidden) .scene-art[data-art="cg-modern-word-stall-r3"] .scene-image {
+    bottom: 15%;
+    height: auto;
+    background-position: center 72%;
+    -webkit-mask-image: linear-gradient(#000 82%, transparent);
+    mask-image: linear-gradient(#000 82%, transparent);
+  }
+  .app--play:not(.app--hidden) .scene-art[data-art="cg-modern-word-stall-r3"] .scene-image--current {
+    animation: modern-r2-arrive .55s ease-out both;
+  }
+}
+@media (max-height: 520px) and (min-width: 600px) {
+  .app--play:not(.app--hidden) .scene-art:is([data-art="cg-modern-word-stall-r3"], [data-art="cg-modern-jade-palm-r2"]) {
+    background: #08161a;
+  }
+  .app--play:not(.app--hidden) .scene-art:is([data-art="cg-modern-word-stall-r3"], [data-art="cg-modern-jade-palm-r2"]) .scene-image {
+    inset: 62px 12px 28px 53%;
+    width: auto;
+    height: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: none;
+  }
+  .app--play:not(.app--hidden):has(.scene-art:is([data-art="cg-modern-word-stall-r3"], [data-art="cg-modern-jade-palm-r2"])) .dialogue {
+    right: 47%;
+    padding: 8px 6px 9px 16px;
+  }
+  .app--play:not(.app--hidden):has(.scene-art:is([data-art="cg-modern-word-stall-r3"], [data-art="cg-modern-jade-palm-r2"])) .dialogue-body {
+    margin: 0;
+  }
+}
 @media (max-width: 760px) {
   .campaign-selector { margin: 10px auto 6px; }
   .campaign-note { text-align: center; font-size: 12px; margin-bottom: 4px; }
@@ -110,6 +145,18 @@
   text-shadow: 0 1px 10px rgba(3, 14, 19, .88);
 }
 @media (max-aspect-ratio: 3/4) {
+  .app--play:not(.app--hidden) .scene-art:is([data-art="modern-street-arrival-r3"], [data-art="cg-modern-word-stall-r3"]) .scene-image--previous {
+    display: none;
+  }
+  .app--play:not(.app--hidden) .scene-art[data-art="modern-street-arrival-r3"] .scene-image--current {
+    bottom: auto;
+    height: min(60%, 123vw);
+    background-position: 53% center;
+    -webkit-mask-image: linear-gradient(#000 78%, transparent);
+    mask-image: linear-gradient(#000 78%, transparent);
+    animation: none;
+    transform: none;
+  }
   .scene-art[data-art^="cg-modern-"][data-art$="-r2"] .scene-image {
     top: 10%;
     height: min(54%, 110vw, max(0px, calc(var(--r2-reading-top, 80vh) - 10vh - 16px)));
@@ -133,9 +180,9 @@
   .app--play:not(.app--hidden):not(:has(.ending-screen:not(.ending-screen--clean))) .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-image {
     --cg-stage-top: calc(68px + env(safe-area-inset-top));
     --cg-stage-avail: max(190px, calc(var(--r2-reading-top, 74dvh) - var(--cg-stage-top) - 14px));
-    top: calc(var(--cg-stage-top) + max(0px, (var(--cg-stage-avail) - 56.25vw) * 0.44));
+    top: calc(var(--cg-stage-top) + max(0px, (var(--cg-stage-avail) - var(--modern-cg-height, 56.25vw)) * 0.44));
     bottom: auto;
-    height: min(56.25vw, var(--cg-stage-avail));
+    height: min(var(--modern-cg-height, 56.25vw), var(--cg-stage-avail));
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -154,7 +201,7 @@
   .app--play.app--hidden .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-image {
     top: 50%;
     bottom: auto;
-    height: 56.25vw;
+    height: var(--modern-cg-height, 56.25vw);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

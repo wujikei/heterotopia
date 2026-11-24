@@ -75,7 +75,7 @@
 
 `npm run assets:check` 审计动态和静态资源引用、原画、表情、配角和 CG；`npm run test:assets` 检查手机图、透明边缘、缺失 AVIF 的 WebP 回退及剧情下载失败。`npm run test:ui-polish` 检查人物志、书签、回看、绘卷沉浸浏览与六个结局的桌面/手机排版；可用 `VN_TEST_BROWSER=firefox` 或 `webkit` 重复检查。普通浏览器回归阻止 Service Worker，独立的 `npm run test:cache` 用真实 `/heterotopia/` 子路径与临时持久化浏览器，验证 HTTP 缓存过期后的重开、断网续读、音频 Range、版本更新和紧急注销。
 
-生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查本地数据文件的哈希、缺失资源提示、全部美术与字体、51 个音频的实际解码、存档导入导出、立绘、窄屏选项及终章入口。指定 `VN_PORTABLE_FILE=artifacts/portable/异托邦-单文件.html` 可验证完整单文件。`npm run test:scene-direction` 验证时段边界、关键表情、原画回退和自动/手动停留，支持 Chromium 与 WebKit。测试使用独立浏览器环境与临时模拟进度，不会修改玩家存档；验证截图位于 `artifacts/`。
+生成离线包后，运行 `npm run test:portable` 可在断网浏览器中检查本地数据文件的哈希、缺失资源提示、全部美术与字体、音频清单里的全部文件能否解码、存档导入导出、立绘、窄屏选项及终章入口。指定 `VN_PORTABLE_FILE=artifacts/portable/异托邦-单文件.html` 可验证完整单文件。`npm run test:scene-direction` 验证时段边界、关键表情、原画回退和自动/手动停留，支持 Chromium 与 WebKit。测试使用独立浏览器环境与临时模拟进度，验证截图位于 `artifacts/`。
 
 重新处理声音需要 Python、numpy 与 FFmpeg：将 11 首同名 FLAC 母带放入忽略的 `artifacts/audio-masters/`，执行 `python scripts/produce_audio.py`。母带留在本机；Git 只包含处理后的游戏音频、提示记录与可复现的声音设计脚本。
 

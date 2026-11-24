@@ -88,6 +88,9 @@
     "cg-modern-translation",
     "cg-modern-translation-thumb",
     "cg-modern-word-stall",
+    "cg-modern-word-stall-r3",
+    "cg-modern-word-stall-r3-m",
+    "cg-modern-word-stall-r3-thumb",
     "cg-modern-word-stall-thumb",
     "cg-modern-xiangfuren",
     "cg-modern-xiangfuren-thumb",
@@ -132,8 +135,12 @@
     "modern-office-thumb",
     "modern-projection",
     "modern-projection-thumb",
+    "modern-royal-wall-night",
+    "modern-royal-wall-night-thumb",
     "modern-street-arrival-r2",
     "modern-street-arrival-r2-thumb",
+    "modern-street-arrival-r3",
+    "modern-street-arrival-r3-thumb",
     "modern-sunset",
     "modern-sunset-thumb",
     "mountain",
@@ -238,6 +245,7 @@
     "prop-jade-tail",
     "prop-map",
     "prop-names",
+    "prop-question-jade",
     "ritual",
     "river",
     "ruins",
@@ -260,6 +268,7 @@
     "cg-modern-dorm-unease-r2",
     "cg-modern-jade-light-r2",
     "cg-modern-jade-palm-r2",
+    "cg-modern-word-stall-r3",
     "cg-s02-first-crossing",
     "cg-s04-old-names",
     "cg-s05-mi-flute",
@@ -421,7 +430,11 @@
     "cg-modern-dorm-dark-r2": "cg-modern-dorm-dark-r2.webp",
     "cg-modern-dorm-dark-r2-m": "cg-modern-dorm-dark-r2-m.webp",
     "cg-modern-jade-light-r2": "cg-modern-jade-light-r2.webp",
-    "cg-modern-jade-light-r2-m": "cg-modern-jade-light-r2-m.webp"
+    "cg-modern-jade-light-r2-m": "cg-modern-jade-light-r2-m.webp",
+    "modern-street-arrival-r3": "modern-street-arrival-r3.webp",
+    "cg-modern-word-stall-r3": "cg-modern-word-stall-r3.webp",
+    "cg-modern-word-stall-r3-m": "cg-modern-word-stall-r3-m.webp",
+    "modern-royal-wall-night": "modern-royal-wall-night.webp"
   },
   "masters": {
     "cg-e1-blade": "resources/art-src/cgs/v2/e1-blade.png",
@@ -514,7 +527,11 @@
     "portrait-roommate-modern-smile": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-warm.png",
     "portrait-roommate-modern-puzzled": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-puzzled.png",
     "portrait-roommate-modern-concerned": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-concerned.png",
-    "portrait-roommate-modern-surprised": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-startled.png"
+    "portrait-roommate-modern-surprised": "resources/art-src/modern-characters-r2/runtime/portrait-roommate-r2-startled.png",
+    "modern-street-arrival-r3": "resources/art-src/modern-polish/modern-street-arrival-r3.png",
+    "cg-modern-word-stall-r3": "resources/art-src/modern-polish/cg-modern-word-stall-r3.png",
+    "modern-royal-wall-night": "resources/art-src/modern-polish/modern-royal-wall-night.png",
+    "prop-question-jade": "resources/art-src/modern-polish/prop-question-jade.png"
   },
   "mobileMasters": {
     "cg-e1-blade": "resources/art-src/cgs/mobile/e1-blade.png",
@@ -530,6 +547,7 @@
     "cg-modern-dorm-unease-r2": "cg-modern-dorm-unease-r2-m.webp",
     "cg-modern-dorm-carving-r2": "cg-modern-dorm-carving-r2-m.webp",
     "cg-modern-dorm-dark-r2": "cg-modern-dorm-dark-r2-m.webp",
-    "cg-modern-jade-light-r2": "cg-modern-jade-light-r2-m.webp"
+    "cg-modern-jade-light-r2": "cg-modern-jade-light-r2-m.webp",
+    "cg-modern-word-stall-r3": "cg-modern-word-stall-r3-m.webp"
   }
 }

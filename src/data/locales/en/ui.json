@@ -605,7 +605,7 @@
   "开启使用较小背景；关闭呈现原画细节": "Use smaller backgrounds when on; show full artwork detail when off",
   "听觉 · 一条河的声音": "Listening · The sound of a river",
   "配乐音量": "Music volume",
-  "十一首原声，随旅途渐次展开": "Eleven original tracks, unfolding along the journey",
+  "原声随旅途渐次展开": "Original music that unfolds along the journey",
   "环境音量": "Ambient volume",
   "水声、风声与灶边的微响": "Water, wind and the small sounds by the hearth",
   "音效音量": "Sound effects volume",
@@ -974,5 +974,17 @@
   "双卷独立，各自留存": "Both volumes keep separate saves",
   "建议先读原篇；也可直接切换现代新卷。": "Recommended to start with the original, or switch to the modern volume anytime.",
   "点击暂停自动阅读": "Click to pause auto-reading",
-  "点击停止快进": "Click to stop fast-forwarding"
+  "点击停止快进": "Click to stop fast-forwarding",
+  "现代卷 · 旅途原声": "Overseas volume · Soundtrack",
+  "原声随旅途解锁 · 关闭后继续当前故事的配乐": "Tracks unlock as you read · Close to return to the current scene's music",
+  "本机 ACE-Step 1.5 · 现代卷两首原创主题": "Local ACE-Step 1.5 · Two themes for the overseas volume",
+  "异乡街角": "A Street Far from Home",
+  "在旧街拐角听见自己的问题": "At the corner, he hears his own question",
+  "何的回声": "Echo of He",
+  "第三声之后，投影仍亮着": "After the third call, the projector is still on",
+  "何字玉扣": "Jade button marked 何",
+  "青白玉 · 圆孔": "Pale jade · Pierced center",
+  "孔边的“何”刻得很深，玉面已被摩挲得温润。": "The 何 is cut deep at the edge of the hole. Years of handling have worn the jade smooth.",
+  "刻痕很深，像被人摩挲了很多年。": "The cut is deep, as if someone had rubbed it for years.",
+  "海外旧街 · 问字摊": "Old street abroad · The character stall"
 }

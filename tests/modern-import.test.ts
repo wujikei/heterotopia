@@ -30,7 +30,8 @@ test('modern import is deterministic, matches delivered data and refuses a drift
   try {
     for (const directory of ['scripts', 'src/data', 'public', '最新']) mkdirSync(join(temp, directory), { recursive: true });
     for (const path of [...Object.keys(fixed), 'scripts/import_modern.py', 'scripts/modern-adaptations.json']) cpSync(join(root, path), join(temp, path));
-    const run = () => spawnSync('python3', ['scripts/import_modern.py'], { cwd: temp, encoding: 'utf8' });
+    const python = process.env.PYTHON ?? (process.platform === 'win32' ? 'python' : 'python3');
+    const run = () => spawnSync(python, ['scripts/import_modern.py'], { cwd: temp, encoding: 'utf8' });
     const outputs = ['src/data/modern-story.json', 'src/data/modern-index.json', 'public/原著剧本-海外现代线.txt', 'public/原著剧本-剧情增补.txt'];
     for (let n = 0; n < 2; n++) {
       const result = run();

@@ -6,6 +6,7 @@ import { ITEMS } from '../src/data/world';
 import { loadStory } from '../src/story';
 
 await loadStory();
+await loadStory('overseas');
 
 test('object drawings unlock on existing authored pages, never merely on entering a scene', () => {
   const profile = { ...newProfile(), visited: ['0-9', '1-5', 'A-6', 'A-6a', 'B-12-1'], oldNames: true };
@@ -13,7 +14,7 @@ test('object drawings unlock on existing authored pages, never merely on enterin
   assert.deepEqual(seenRelics(profile), []);
   for (const item of state.inventory) assert.equal(relicForItem(item, profile), undefined);
   const ids = new Set<string>();
-  const terms: Record<string, RegExp> = { map: /古图/, jade: /玉|鸟眼|断口/, birds: /木鸟|两只鸟/, bone: /卜骨/, 'flute-old': /骨笛|旧箱/, 'flute-mi': /笛/, names: /名简|衡/ };
+  const terms: Record<string, RegExp> = { map: /古图/, jade: /玉|鸟眼|断口/, birds: /木鸟|两只鸟/, bone: /卜骨/, 'flute-old': /骨笛|旧箱/, 'flute-mi': /笛/, names: /名简|衡/, 'question-jade': /何|玉扣/ };
   for (const relic of RELICS) for (const id of relic.reveal) {
     assert.ok(!ids.has(id), `Conflicting object shortcut: ${id}`); ids.add(id);
     const sceneId = id.slice(0, id.indexOf(':'));

@@ -1,4 +1,4 @@
-import type { Beat, Campaign, GameState, Profile, Scene } from './types';
+import type { Campaign, GameState, Profile, Scene } from './types';
 import type { MusicId } from './score';
 
 export const isModern = (id: string) => id.startsWith('modern-');
@@ -9,8 +9,20 @@ export const modernComplete = (profile: Profile) => modernHasRoyal(profile) && m
 export const modernInterlude = (id: string) => id === 'modern-o-4-1' || id === 'modern-o-4-2';
 export const modernFinal = (id: string) => id === 'modern-home';
 
+export const MODERN_ARRIVAL_ART = 'modern-street-arrival-r3';
+export const MODERN_STALL_ART = 'cg-modern-word-stall-r3';
+const MODERN_ART_PREVIOUS: Readonly<Partial<Record<string, string>>> = {
+  [MODERN_ARRIVAL_ART]: 'modern-street-arrival-r2',
+  [MODERN_STALL_ART]: 'cg-modern-word-stall',
+};
+export function hasSeenModernArt(profile: Pick<Profile, 'art'>, name: string): boolean {
+  const previous = MODERN_ART_PREVIOUS[name];
+  return profile.art.includes(name) || (previous !== undefined && profile.art.includes(previous));
+}
+
 export const MODERN_BACKGROUNDS = {
-  'modern-street-arrival-r2': { name: '字在街上', subtitle: '海外旧街 · 黄昏', chapter: '现代卷' },
+  [MODERN_ARRIVAL_ART]: { name: '字在街上', subtitle: '海外旧街 · 黄昏', chapter: '现代卷' },
+  [MODERN_STALL_ART]: { name: '问字，不问命', subtitle: '海外旧街 · 黄昏', chapter: '现代卷' },
   'modern-dorm-quiet-r2': { name: '日常尚在', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
   'cg-modern-jade-palm-r2': { name: '掌心的何', subtitle: '海外旧街 · 黄昏', chapter: '现代卷' },
   'cg-modern-dorm-unease-r2': { name: '第三声之后', subtitle: '海外 · 宿舍夜色', chapter: '现代卷' },
@@ -22,7 +34,7 @@ export const MODERN_BACKGROUNDS = {
   'modern-office': { name: '把问题写清楚', subtitle: '导师办公室 · 午后', chapter: '现代卷' },
   'modern-mountain-path': { name: '一段很长的路', subtitle: '山坡 · 午后', chapter: '现代卷' },
   'modern-sunset': { name: '半规落日', subtitle: '山顶 · 黄昏', chapter: '现代卷' },
-  'cg-modern-word-stall': { name: '问字，不问命', subtitle: '海外旧街 · 黄昏', chapter: '现代卷' },
+  'modern-royal-wall-night': { name: '最后一个橘', subtitle: '寿春 · 城头夜色', chapter: '王裔线' },
   'cg-modern-friends': { name: '在异乡说话', subtitle: '海外 · 校园中庭', chapter: '现代卷' },
   'cg-modern-noodles': { name: '分一碗面', subtitle: '海外 · 宿舍深夜', chapter: '现代卷' },
   'cg-modern-translation': { name: '不译', subtitle: '海外 · 图书馆', chapter: '现代卷' },
@@ -37,7 +49,9 @@ export const MODERN_CGS = [
   { id: 'modern-jade-palm-r2', title: '掌心的何', caption: '刻痕很深，像被人摩挲了很多年。', file: 'cg-modern-jade-palm-r2', thumbnail: 'cg-modern-jade-palm-r2-thumb', trigger: { beatIds: [] } },
   { id: 'modern-dorm-unease-r2', title: '第三声之后', caption: '日常还在，声音却变了。', file: 'cg-modern-dorm-unease-r2', thumbnail: 'cg-modern-dorm-unease-r2-thumb', trigger: { beatIds: [] } },
   { id: 'modern-dorm-carving-r2', title: '一笔，一笔', caption: '那只手握着小刀，在竹简上刻字。', file: 'cg-modern-dorm-carving-r2', thumbnail: 'cg-modern-dorm-carving-r2-thumb', trigger: { beatIds: [] } },
-  { id: 'modern-word-stall', title: '问字，不问命', caption: '不信，才是问。', file: 'cg-modern-word-stall', thumbnail: 'cg-modern-word-stall-thumb', trigger: { sceneId: 'modern-o-0-1' } },
+  { id: 'modern-word-stall', title: '问字，不问命', caption: '不信，才是问。', file: MODERN_STALL_ART, thumbnail: `${MODERN_STALL_ART}-thumb`, trigger: { beatIds: ['modern-o-0-1:5:0', 'modern-o-0-1:7:0'] } },
+  { id: 'modern-carriage-fork', title: '这个清晨', caption: '你得选一样。', file: 'cg-modern-fork', thumbnail: 'cg-modern-fork-thumb', trigger: { beatIds: [] } },
+  { id: 'modern-east-god', title: '神坐在船板上', caption: '你们到了吗？', file: 'cg-modern-donghuang', thumbnail: 'cg-modern-donghuang-thumb', trigger: { beatIds: [] } },
   { id: 'modern-noodles', title: '心里有个地方', caption: '室友把煮好的面，分了一碗。', file: 'cg-modern-noodles', thumbnail: 'cg-modern-noodles-thumb', trigger: { beatIds: [] as string[] } },
   { id: 'modern-translation', title: '不译', caption: '有些字，译出来，就不是它了。', file: 'cg-modern-translation', thumbnail: 'cg-modern-translation-thumb', trigger: { beatIds: [] as string[] } },
   { id: 'modern-projection', title: '一笔一笔', caption: '那只手还在刻。', file: 'cg-modern-projection', thumbnail: 'cg-modern-projection-thumb', trigger: { beatIds: [] as string[] } },
@@ -65,11 +79,15 @@ export const MODERN_ENDINGS = {
 /** Exact-source text controls the small number of modern montage cuts. */
 export function modernBackground(scene: Scene, text: string, current: string): string {
   if (scene.id === 'modern-o-0-1') {
-    if (/从图书馆出来|把玉扣揣进口袋/.test(text)) return 'modern-street-arrival-r2';
-    if (/蹲了下去/.test(text)) return 'cg-modern-word-stall';
+    if (/从图书馆出来|把玉扣揣进口袋/.test(text)) return MODERN_ARRIVAL_ART;
+    if (/一块手写的招牌|蹲了下去|那到底问什么|你抬头看她/.test(text)) return MODERN_STALL_ART;
     if (/顺手拿起|塞进你手里/.test(text)) return 'cg-modern-jade-palm-r2';
     return current;
   }
+  if (scene.id === 'modern-c-1-13') return text.includes('一个人递烤薯，一个人递饼') ? 'cg-modern-fork' : current;
+  if (scene.id === 'modern-r-C-11') return text.startsWith('切。城下') ? 'ruins' : current;
+  if (scene.id === 'modern-k-F-5') return text.includes('神坐在你们中间') ? 'cg-modern-donghuang' : current;
+  if (scene.id === 'modern-r-A-4' || scene.id === 'modern-r-D-1') return current;
   if (scene.id === 'modern-o-0-2') {
     if (/掌心的玉扣.*亮了一下/.test(text)) return 'cg-modern-jade-light-r2';
     if (/灯灭了|屋里一片黑/.test(text)) return 'cg-modern-dorm-dark-r2';
@@ -96,7 +114,7 @@ export function modernBackground(scene: Scene, text: string, current: string): s
   if (/卧室|宿舍|投影仪|室友/.test(text) && !/土屋|阿媪|木匣|走廊/.test(text)) return 'modern-dorm';
   if (/车站|登山/.test(text)) return 'modern-mountain-path';
   if (/落日|夕照|江面碎金|落霞/.test(text)) return 'modern-sunset';
-  if (/问字摊|涂鸦墙|修鞋摊/.test(text)) return 'cg-modern-word-stall';
+  if (/问字摊|涂鸦墙|修鞋摊/.test(text)) return MODERN_STALL_ART;
   if (/城墙|秦军|城门洞开/.test(text)) return 'ruins';
   if (/楚宫|朝堂|王寝|王宫|屈宅/.test(text)) return /屈宅|书房|旧箱/.test(text) ? 'study' : 'palace';
   if (/河边|渡口|船上|小舟|靠岸/.test(text)) return 'river';
@@ -105,35 +123,42 @@ export function modernBackground(scene: Scene, text: string, current: string): s
   return current;
 }
 
-export function modernMusic(sceneId: string, beat: Beat): MusicId {
-  if (/^modern-o-5-/.test(sceneId)) return sceneId === 'modern-o-5-7' ? 'light-in-kitchen' : 'paper-note';
-  if (sceneId === 'modern-o-0-2') return 'under-current';
-  if (sceneId.startsWith('modern-o-4-')) return 'small-goodbyes';
-  if (sceneId.startsWith('modern-r-')) return beat.background === 'ritual' ? 'ritual' : 'old-jade';
-  if (sceneId.startsWith('modern-k-')) return sceneId.startsWith('modern-k-G-') ? 'last-flute' : 'river-journey';
+const MODERN_SCENE_MUSIC: Partial<Record<string, MusicId>> = {
+  'modern-o-0-1': 'modern-street',
+  'modern-o-0-2': 'modern-question',
+  'modern-o-4-1': 'small-goodbyes',
+  'modern-o-4-2': 'small-goodbyes',
+  'modern-o-5-7': 'light-in-kitchen',
+};
+
+export function modernMusic(sceneId: string, background: string): MusicId | null {
+  const track = MODERN_SCENE_MUSIC[sceneId];
+  if (track) return track;
+  if (sceneId.startsWith('modern-r-')) return ['ritual', 'cg-modern-ritual'].includes(background) ? 'ritual' : 'old-jade';
+  if (sceneId.startsWith('modern-k-')) return sceneId.startsWith('modern-k-G-') ? null : 'river-journey';
   return 'paper-note';
 }
 
 export const MODERN_SCENE_ART: Record<string, string> = {
-  'modern-o-0-1': 'modern-street-arrival-r2',
+  'modern-o-0-1': MODERN_ARRIVAL_ART,
   'modern-o-0-2': 'modern-dorm-quiet-r2',
   'modern-o-4-1': 'modern-dorm-quiet-r2',
   'modern-o-4-2': 'modern-dorm-quiet-r2',
   'modern-o-0-4': 'cg-modern-selection',
-  'modern-c-1-13': 'cg-modern-fork',
+  'modern-c-1-13': 'village',
   'modern-o-5-6': 'cg-modern-summit',
   'modern-r-A-4': 'cg-modern-feast', 'modern-r-A-6': 'cg-modern-reed-boat',
   'modern-r-C-6': 'cg-modern-ritual', 'modern-r-C-7': 'cg-modern-ritual',
   'modern-r-C-11': 'cg-modern-battle', 'modern-r-C-12': 'cg-modern-city',
   'modern-r-E1-6': 'cg-modern-last-geese',
-  'modern-r-D-1': 'cg-modern-last-geese',
+  'modern-r-D-1': 'modern-royal-wall-night',
   'modern-k-D-5': 'cg-modern-storm', 'modern-k-D-6': 'cg-modern-storm',
   'modern-k-E-1': 'cg-modern-cloud-lord', 'modern-k-E-3': 'cg-modern-xiangjun',
   'modern-k-E-4': 'cg-modern-xiangfuren', 'modern-k-E-5': 'cg-modern-siming',
   'modern-k-E-6': 'cg-modern-shaosiming', 'modern-k-E-7': 'cg-modern-dongjun',
   'modern-k-E-8': 'cg-modern-mountain-spirit', 'modern-k-E-9': 'cg-modern-river-lord',
   'modern-k-E-12': 'cg-modern-gods-rite', 'modern-k-F-1': 'cg-modern-kunlun-light',
-  'modern-k-F-5': 'cg-modern-donghuang', 'modern-k-G-1': 'cg-modern-reed-boat',
+  'modern-k-F-5': 'light-river', 'modern-k-G-1': 'cg-modern-reed-boat',
   'modern-k-G-2': 'cg-modern-reed-boat',
 };
 

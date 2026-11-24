@@ -38,7 +38,15 @@ try {
    const resume=page.getByRole('button',{name:/^续梦/});
    if(await resume.isVisible())await resume.click();
    const intro=page.getByTestId('chapter-intro');if(await intro.isVisible())await intro.click();
-   await page.waitForFunction(art=>document.querySelector('.scene-image--current')?.getAttribute('data-art')===art,art);
+   await page.waitForFunction(art=>document.querySelector('.scene-image--current')?.getAttribute('data-art')===art,art)
+    .catch(async error => {
+      const current = await page.evaluate(() => ({
+        art: document.querySelector('.scene-image--current')?.getAttribute('data-art'),
+        text: document.querySelector('[data-testid="dialogue-text"]')?.getAttribute('aria-label'),
+        intro: !!document.querySelector('[data-testid="chapter-intro"]'),
+      }));
+      throw new Error(`${label} ${viewport.width}×${viewport.height} expected ${art}. ${JSON.stringify(current)}`, { cause: error });
+    });
    const hint=page.getByRole('button',{name:'知道了',exact:true});if(await hint.isVisible())await hint.click();
    const notice=page.getByRole('button',{name:'关闭提示',exact:true});if(await notice.isVisible())await notice.click();
    await page.waitForTimeout(650);

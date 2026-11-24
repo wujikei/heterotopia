@@ -97,5 +97,23 @@
     "keyscale": "G major",
     "file": "music-light-in-kitchen.mp3",
     "seconds": 56.66667
+  },
+  {
+    "id": "modern-street",
+    "title": "异乡街角",
+    "subtitle": "在旧街拐角听见自己的问题",
+    "bpm": 72,
+    "keyscale": "D major",
+    "file": "music-modern-street.mp3",
+    "seconds": 108.66667
+  },
+  {
+    "id": "modern-question",
+    "title": "何的回声",
+    "subtitle": "第三声之后，投影仍亮着",
+    "bpm": 72,
+    "keyscale": "D major",
+    "file": "music-modern-question.mp3",
+    "seconds": 87.66667
   }
 ]

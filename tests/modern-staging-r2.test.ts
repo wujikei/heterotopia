@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
 import { asset, assetSources } from '../src/assets';
-import { cgForBeat } from '../src/data/cgs';
+import { cgForBeat, cgUnlocked, CGS } from '../src/data/cgs';
 import { compileScene, currentBeat, enterScene, newGame, newProfile } from '../src/engine';
 import { loadStory } from '../src/story';
 
@@ -14,10 +14,12 @@ test('opening art follows the actual taking, third voice, carving and blackout p
   const street = pages('modern-o-0-1');
   const dorm = pages('modern-o-0-2');
   const checks = [
-    [street, 'modern-o-0-1:7:0', 'cg-modern-word-stall', /蹲了下去/],
+    [street, 'modern-o-0-1:5:0', 'cg-modern-word-stall-r3', /手写的招牌/],
+    [street, 'modern-o-0-1:7:0', 'cg-modern-word-stall-r3', /蹲了下去/],
     [street, 'modern-o-0-1:18:0', 'cg-modern-jade-palm-r2', /顺手拿起/],
+    [street, 'modern-o-0-1:19:0', 'cg-modern-word-stall-r3', /到底问什么/],
     [street, 'modern-o-0-1:27:0', 'cg-modern-jade-palm-r2', /塞进你手里/],
-    [street, 'modern-o-0-1:35:0', 'modern-street-arrival-r2', /揣进口袋/],
+    [street, 'modern-o-0-1:35:0', 'modern-street-arrival-r3', /揣进口袋/],
     [dorm, 'modern-o-0-2:8:0', 'modern-dorm-quiet-r2', /口袋里摸出/],
     [dorm, 'modern-o-0-2:15:0', 'cg-modern-dorm-unease-r2', /声音变了/],
     [dorm, 'modern-o-0-2:16:0', 'cg-modern-dorm-unease-r2', /抬头/],
@@ -34,8 +36,31 @@ test('opening art follows the actual taking, third voice, carving and blackout p
   }
   const start = street.find(beat => beat.kind === 'text');
   assert.ok(start);
-  assert.equal(start.background, 'modern-street-arrival-r2');
+  assert.equal(start.background, 'modern-street-arrival-r3');
   assert.equal(cgForBeat(start, 'modern-o-0-1'), undefined, 'whole-scene gallery trigger must not override the establishing shot');
+  const stall = CGS.find(cg => cg.id === 'modern-word-stall')!;
+  assert.equal(cgUnlocked(stall, { ...profile, visited: ['modern-o-0-1'] }), false);
+  assert.equal(cgUnlocked(stall, { ...profile, art: ['cg-modern-word-stall'] }), true, 'history still opens the replacement CG');
+});
+
+test('existing ancient CGs appear with their action and the last geese remain at the actual ending', () => {
+  for (const [id, background] of [
+    ['modern-c-1-13:2:0', 'village'],
+    ['modern-c-1-13:18:0', 'cg-modern-fork'],
+    ['modern-r-A-4:1:0', 'cg-modern-feast'],
+    ['modern-r-C-11:1:0', 'cg-modern-battle'],
+    ['modern-r-C-11:8:0', 'ruins'],
+    ['modern-k-F-5:1:0', 'light-river'],
+    ['modern-k-F-5:3:0', 'cg-modern-donghuang'],
+    ['modern-r-D-1:1:0', 'modern-royal-wall-night'],
+    ['modern-r-D-1:6:0', 'modern-royal-wall-night'],
+    ['modern-r-E1-6:1:0', 'cg-modern-last-geese'],
+  ]) {
+    const sceneId = id.split(':')[0];
+    const beat = pages(sceneId).find(item => item.id === id);
+    assert.equal(beat?.background, background, id);
+    assert.equal(cgForBeat(beat!, sceneId)?.file, background.startsWith('cg-') ? background : undefined, id);
+  }
 });
 
 test('an existing page bookmark restores the same text and deterministic new staging', () => {
@@ -56,7 +81,7 @@ test('reviewed r2 crops load in original quality on portrait screens and survive
   });
   globalThis.matchMedia = mobile;
   try {
-    for (const name of ['cg-modern-jade-palm-r2', 'cg-modern-dorm-unease-r2', 'cg-modern-dorm-carving-r2', 'cg-modern-dorm-dark-r2', 'cg-modern-jade-light-r2']) {
+    for (const name of ['cg-modern-word-stall-r3', 'cg-modern-jade-palm-r2', 'cg-modern-dorm-unease-r2', 'cg-modern-dorm-carving-r2', 'cg-modern-dorm-dark-r2', 'cg-modern-jade-light-r2']) {
       assert.match(assetSources(name).webp, /art-original\//);
       assert.match(asset(name), new RegExp(`${name}-m\\.webp$`));
       assert.ok(existsSync(new URL(`../public/art-original/${name}-m.webp`, import.meta.url)));

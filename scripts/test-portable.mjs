@@ -130,7 +130,7 @@ try {
   await modernPage.locator('.game-screen').waitFor();
   await modernPage.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
   await modernPage.getByTestId('dialogue-text').waitFor();
-  await modernPage.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'modern-street-arrival-r2');
+  await modernPage.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'modern-street-arrival-r3');
   await modernPage.setViewportSize({ width: 390, height: 844 });
   assert.equal(await modernPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await modernPage.context().close();
@@ -245,7 +245,7 @@ try {
   }, expectedAudio);
   assert.deepEqual(audioIntegrity.missingAudio, []);
   assert.deepEqual(audioIntegrity.brokenAudio, []);
-  assert.equal(audioIntegrity.audioAssets, 51);
+  assert.equal(audioIntegrity.audioAssets, expectedAudio.length);
   await page.getByRole('button', { name: '启程', exact: true }).click();
   await page.locator('.game-screen').waitFor();
   await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
@@ -351,7 +351,7 @@ try {
   await relicPage.screenshot({ path: artifact('17-name-slips-offline-mobile.png') });
   assert.deepEqual(errors, []);
   await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), edition, mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, durableProfileRestart: true, ...audioIntegrity, errors }, null, 2));
-  console.log('Offline checks passed: original and overseas stories, original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
+  console.log(`Offline checks passed: both stories and art quality modes, fonts and all ${expectedAudio.length} audio files; saves, import/export, mobile choices, ending and return. No network requests.`);
 } catch (error) {
   const diagnostics = await Promise.all(contexts.flatMap(context => context.pages()).map(async page => {
     try {

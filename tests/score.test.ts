@@ -2,10 +2,11 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import test from 'node:test';
 import { compileScene, newGame, newProfile, SCENES } from '../src/engine';
-import { AMBIENCE_IDS, CUE_EFFECTS, EFFECT_IDS, MUSIC_BY_SCENE, MUSIC_IDS, scoreFrame, SOUNDTRACK, unlockedTracks } from '../src/score';
+import { AMBIENCE_IDS, CUE_EFFECTS, EFFECT_IDS, MUSIC_BY_SCENE, MUSIC_IDS, ORIGINAL_MUSIC_IDS, scoreFrame, SOUNDTRACK, unlockedTracks } from '../src/score';
 import { loadStory } from '../src/story.ts';
 
 await loadStory();
+await loadStory('overseas');
 
 const profile = { ...newProfile(), oldNames: true, endings: ['mercy', 'names', 'kunlun'] as const };
 const progress = { ...profile, endings: [...profile.endings] };
@@ -48,6 +49,22 @@ test('paragraphs share their cue, while the alarm cuts the dream and changes the
   assert.equal(changed.events[0].effects[0].id, 'alarm');
 });
 
+test('the overseas opening crossfades into its own theme and keeps it through the projection', () => {
+  const profile = newProfile('overseas');
+  const frame = (sceneId: string, beatId: string) => scoreFrame(sceneId,
+    compileScene(sceneId, profile, { choices: {}, inventory: [] }).find(item => item.id === beatId)!);
+  const street = frame('modern-o-0-1', 'modern-o-0-1:2:0');
+  const quiet = frame('modern-o-0-2', 'modern-o-0-2:14:0');
+  const carving = frame('modern-o-0-2', 'modern-o-0-2:17:0');
+  const blackout = frame('modern-o-0-2', 'modern-o-0-2:21:0');
+  assert.equal(street.music, 'modern-street');
+  assert.deepEqual(street.ambience.map(([id]) => id), ['street']);
+  assert.equal(quiet.music, 'modern-question');
+  assert.equal(carving.music, quiet.music);
+  assert.equal(blackout.music, quiet.music);
+  assert.ok(carving.musicGain < quiet.musicGain);
+});
+
 test('three farewells remove the music at their exact narrative pages', () => {
   assert.equal(scoreFrame('B-5-5', beat('B-5-5', 'B-5-5:8:2')).music, 'small-goodbyes');
   const tu = scoreFrame('B-5-5', beat('B-5-5', 'B-5-5:8:3'));
@@ -64,13 +81,16 @@ test('three farewells remove the music at their exact narrative pages', () => {
 test('the listening room unlocks music from visited scenes without exposing future track names', () => {
   assert.deepEqual(unlockedTracks(newProfile()), ['river-home']);
   assert.deepEqual(unlockedTracks({ visited: ['0-1', '0-2', '1-1'] }), ['river-home', 'under-current', 'paper-note', 'hearth']);
-  assert.deepEqual(unlockedTracks({ visited: SCENES.map(scene => scene.id) }).sort(), [...MUSIC_IDS].sort());
+  assert.deepEqual(unlockedTracks({ visited: SCENES.map(scene => scene.id) }).sort(), [...ORIGINAL_MUSIC_IDS].sort());
+  assert.deepEqual(unlockedTracks({ visited: ['modern-o-0-1'] }), ['river-home', 'modern-street']);
+  assert.deepEqual(unlockedTracks({ visited: ['modern-o-0-1', 'modern-o-0-2'] }), ['river-home', 'modern-street', 'modern-question']);
 });
 
 test('every shipped audio asset has provenance, duration, peak headroom and a matching file', () => {
   const manifest = JSON.parse(readFileSync(new URL('../public/audio/manifest.json', import.meta.url), 'utf8'));
   const names = [...SOUNDTRACK.map(track => track.file), ...AMBIENCE_IDS.map(id => `amb-${id}.mp3`), ...EFFECT_IDS.map(id => `sfx-${id}.mp3`)];
-  assert.equal(names.length, 51);
+  assert.deepEqual(SOUNDTRACK.map(track => track.id), [...MUSIC_IDS]);
+  assert.equal(new Set(names).size, names.length);
   assert.deepEqual(manifest.files.map((file: { file: string }) => file.file).sort(), names.sort());
   for (const file of manifest.files) {
     assert.ok(existsSync(new URL(`../public/audio/${file.file}`, import.meta.url)));

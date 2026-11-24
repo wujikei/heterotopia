@@ -1,5 +1,5 @@
 import type { Beat, EndingId, Profile } from '../types';
-import { MODERN_CGS } from '../modern';
+import { hasSeenModernArt, MODERN_CGS } from '../modern';
 
 export type CGTrigger = { endingId: EndingId } | { beatIds: string[] } | { sceneId: string; fromBeat?: string; toBeat?: string };
 export type CG = { id: string; title: string; caption: string; file: string; thumbnail?: string; trigger: CGTrigger };
@@ -44,7 +44,7 @@ export const cgForBeat = (beat: Beat, sceneId: string): CG | undefined => {
 };
 export const cgForEnding = (endingId: EndingId): CG | undefined => CGS.find(cg => !!cg.file && 'endingId' in cg.trigger && cg.trigger.endingId === endingId);
 export function cgUnlocked(cg: CG, profile: Profile): boolean {
-  if (cg.id.startsWith('modern-') && profile.art.includes(cg.file)) return true;
+  if (cg.id.startsWith('modern-') && hasSeenModernArt(profile, cg.file)) return true;
   const trigger = cg.trigger;
   if ('endingId' in trigger) return profile.endings.includes(trigger.endingId);
   if ('beatIds' in trigger) return trigger.beatIds.some(id => profile.read.includes(id));

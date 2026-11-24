@@ -22,7 +22,7 @@ test('ancient Kunlun mountain slope keeps mountain backdrop instead of modern-mo
 });
 
 test('modern actor lighting profiles cover all modern return and prologue backdrops', () => {
-  for (const bg of ['modern-dorm-quiet-r2', 'modern-dorm', 'modern-street-arrival-r2', 'modern-library', 'modern-office', 'modern-mountain-path', 'modern-sunset']) {
+  for (const bg of ['modern-dorm-quiet-r2', 'modern-dorm', 'modern-street-arrival-r3', 'modern-library', 'modern-office', 'modern-mountain-path', 'modern-sunset']) {
     assert.ok(ACTOR_LIGHT[bg] === 'warm' || ACTOR_LIGHT[bg] === 'cold', `${bg} has ambient lighting`);
   }
 });

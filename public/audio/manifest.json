@@ -563,6 +563,28 @@
       "integratedLUFS": -24.85,
       "truePeakDB": -9.5,
       "source": "Original deterministic procedural sound design"
+    },
+    {
+      "file": "music-modern-street.mp3",
+      "title": "异乡街角",
+      "kind": "music",
+      "loop": true,
+      "seconds": 108.66667,
+      "bytes": 2609501,
+      "integratedLUFS": -18.38,
+      "truePeakDB": -2.75,
+      "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "music-modern-question.mp3",
+      "title": "何的回声",
+      "kind": "music",
+      "loop": true,
+      "seconds": 87.66667,
+      "bytes": 2105442,
+      "integratedLUFS": -18.33,
+      "truePeakDB": -2.75,
+      "source": "Local ACE-Step 1.5"
     }
   ]
 }
