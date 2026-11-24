@@ -30,7 +30,9 @@
     "test:localization": "node --import tsx scripts/with-preview.mjs scripts/test-localization.mjs",
     "test:localization:webkit": "node --import tsx scripts/with-preview.mjs scripts/test-localization.mjs --webkit",
     "test:modern": "node --import tsx scripts/with-preview.mjs scripts/test-modern.mjs",
+    "test:endings": "node --import tsx scripts/with-preview.mjs scripts/test-ending-layout.mjs",
     "art:originals": "python scripts/encode-originals.py",
+    "import:modern": "python3 scripts/import_modern.py",
     "import:story": "python scripts/import_story.py"
   },
   "dependencies": {

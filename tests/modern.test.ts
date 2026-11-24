@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { advance, campaignScenes, choose, compileScene, completeEnding, continueEnding, currentBeat, enterScene, newGame, newProfile, recordProgress, revisitScene } from '../src/engine';
 import { loadStory, MODERN_SCENES } from '../src/story';
 import { actorForBeat } from '../src/actors';
-import { modernComplete } from '../src/modern';
+import { modernComplete, MODERN_ENDINGS, MODERN_RETURN_ENDING, restoreModernState } from '../src/modern';
 import type { GameState, Profile } from '../src/types';
 
 await loadStory('overseas');
@@ -28,14 +28,21 @@ test('both source corpora stay separate, every new scene compiles and narrative 
   assert.equal(campaignScenes().length, 81);
   assert.ok(MODERN_SCENES.length > 100);
   const source = readFileSync(new URL('../最新/异托邦_海外版现代线_独立卷.txt', import.meta.url), 'utf8');
+  const adaptations: { scene: string; block: number; source: string; text: string }[] = JSON.parse(readFileSync(new URL('../scripts/modern-adaptations.json', import.meta.url), 'utf8'));
   const modernIds = ['0-1','0-2','4-1','4-2','5-1','5-2','5-3','5-4','5-5','5-6','5-7'];
   for (const id of modernIds) {
     const scene = MODERN_SCENES.find(s => s.id === `modern-o-${id}`)!;
     assert.ok(scene, id);
-    for (const block of scene.blocks) {
+    for (const [index, block] of scene.blocks.entries()) {
       if (!block.pages) continue;
       assert.equal(block.pages.join(''), block.lines.join(''), `${scene.id} text changed while splitting`);
-      for (const line of block.lines) assert.ok(source.includes(line), `Not in supplied modern volume: ${line}`);
+      const adaptation = adaptations.find(patch => patch.scene === scene.id && patch.block === index);
+      if (adaptation) {
+        assert.ok(source.includes(adaptation.source), `Adaptation lost its supplied-source anchor: ${scene.id}:${index}`);
+        assert.deepEqual(block.lines, [adaptation.text]);
+      } else {
+        for (const line of block.lines) assert.ok(source.includes(line), `Not in supplied modern volume: ${line}`);
+      }
     }
   }
   for (const scene of MODERN_SCENES) {
@@ -69,7 +76,7 @@ for (const first of ['royal','kunlun']) test(`${first} first: each route returns
   const secondStart = choose(interlude.state, interlude.profile, 'return');
   assert.equal(secondStart.sceneId, 'modern-c-1-13');
   assert.equal(secondStart.cycle, 2);
-  assert.ok(secondStart.inventory.includes('questionJade'));
+  assert.deepEqual(secondStart.inventory, ['jadeTail', 'birds', 'box'], 'the modern jade stays in the modern world; the box supplied only the ancient objects');
   const b = readToBoundary(secondStart, interlude.profile, scene => scene === 'modern-c-1-13' ? first === 'royal' ? '2' : '1' : scene === 'modern-o-2-6' ? '4' : '1');
   assert.ok(modernComplete(b.profile));
   const finalInterlude = readToBoundary(continueEnding(b.state, b.profile), b.profile, undefined, true);
@@ -150,4 +157,80 @@ test('only modern prose, the final chapter and later ancient scenes include Xu, 
   const next = recordProgress(state, p);
   assert.ok(next.met.includes('xu'));
   assert.ok(!p.met.includes('xu'));
+});
+
+const royalTerminals = ['E1-7','E2-7','G1-8','G2-8','L-8','S-8','H-8','R-6','F-6','O-10'];
+for (const terminal of royalTerminals) for (const order of ['royal-first', 'kunlun-first']) test(`${terminal} ${order}: its own memory returns, both journeys still unlock the finale`, () => {
+  let profile = newProfile('overseas');
+  let initial = newGame(profile);
+  if (order === 'kunlun-first') {
+    const first = readToBoundary(enterScene(initial, profile, 'modern-k-G-1'), profile);
+    assert.equal(first.beat.kind === 'ending' && first.beat.ending, 'modern-kunlun');
+    const back = readToBoundary(continueEnding(first.state, first.profile), first.profile, undefined, true);
+    profile = back.profile;
+    initial = choose(back.state, profile, 'return');
+  }
+  // Start at every supported terminal, not just the default E1 path.
+  const royal = readToBoundary(enterScene(initial, profile, `modern-r-${terminal}`), profile);
+  assert.equal(royal.beat.kind, 'ending');
+  if (royal.beat.kind !== 'ending') assert.fail('Expected ending');
+  const endingId = royal.beat.ending;
+  const returned = continueEnding(royal.state, royal.profile);
+  assert.equal(returned.sceneId, 'modern-o-4-1');
+  assert.equal(returned.choices[MODERN_RETURN_ENDING], royal.beat.ending);
+  const memory = Object.entries(MODERN_ENDINGS).find(([id]) => id === endingId)?.[1].quote;
+  assert.ok(memory);
+  const texts = compileScene(returned.sceneId, royal.profile, returned).filter(beat => beat.kind === 'text').map(beat => beat.kind === 'text' ? beat.text : '').join('');
+  assert.ok(texts.includes(memory));
+  assert.doesNotMatch(texts, /城破那一下之后|古图|脚踝那圈墨|记了几百个名字/);
+  assert.deepEqual(returned.inventory, ['questionJade']);
+  const restored = restoreModernState(JSON.parse(JSON.stringify(returned)));
+  assert.equal(currentBeat(restored, royal.profile).id, returned.beatId);
+  const back = readToBoundary(restored, royal.profile, undefined, true);
+  const onward = choose(back.state, back.profile, 'return');
+  let both = back.profile;
+  let finalStart = onward;
+  if (order === 'royal-first') {
+    assert.equal(onward.sceneId, 'modern-c-1-13');
+    const kunlun = readToBoundary(onward, back.profile, scene => scene === 'modern-c-1-13' ? '2' : '1');
+    assert.equal(kunlun.beat.kind === 'ending' && kunlun.beat.ending, 'modern-kunlun');
+    const modern = readToBoundary(continueEnding(kunlun.state, kunlun.profile), kunlun.profile, undefined, true);
+    both = modern.profile;
+    finalStart = choose(modern.state, both, 'return');
+  }
+  assert.ok(modernComplete(both));
+  assert.equal(finalStart.sceneId, 'modern-o-5-1');
+  const final = readToBoundary(finalStart, both);
+  assert.equal(final.beat.kind === 'ending' && final.beat.ending, 'modern-home');
+});
+
+for (const terminal of ['X-6','N-6','Y-6','J-6','S-6','M-6','T-6','H-6','L-6','Z-6']) test(`Kunlun ${terminal}: its shared boat ending returns to the authored modern chapter`, () => {
+  const profile = newProfile('overseas');
+  const ending = readToBoundary(enterScene(newGame(profile), profile, `modern-k-${terminal}`), profile);
+  assert.equal(ending.beat.kind === 'ending' && ending.beat.ending, 'modern-kunlun');
+  const returned = continueEnding(ending.state, ending.profile);
+  assert.equal(returned.sceneId, 'modern-o-4-2');
+  const prose = compileScene(returned.sceneId, ending.profile, returned).filter(beat => beat.kind === 'text').map(beat => beat.kind === 'text' ? beat.text : '').join('');
+  assert.match(prose, /靠岸的小舟/);
+  assert.doesNotMatch(prose, /古图|城破那一下/);
+});
+
+test('an old interlude save with no ending marker stays readable without guessing its past ending', () => {
+  const profile = newProfile('overseas');
+  const state = { ...enterScene(newGame(profile), profile, 'modern-o-4-1'), beatId: 'modern-o-4-1:7:0', inventory: ['map','questionJade'], choices: { 'old-choice': '1' } };
+  const restored = restoreModernState(state);
+  assert.deepEqual(restored.inventory, ['questionJade']);
+  assert.equal(restored.beatId, state.beatId);
+  assert.deepEqual(restored.choices, state.choices);
+  const beat = currentBeat(restored, profile);
+  assert.equal(beat.kind === 'text' && beat.text, '（玉扣上的“何”字，刻痕还在。）');
+});
+
+test('return memory follows this playthrough even after replaying an already unlocked ending', () => {
+  const profile = { ...newProfile('overseas'), endings: ['modern-royal-o' as const, 'modern-royal-e1' as const] };
+  const ending = readToBoundary(enterScene(newGame(profile), profile, 'modern-r-O-10'), profile);
+  const returned = continueEnding(ending.state, ending.profile);
+  assert.equal(returned.choices[MODERN_RETURN_ENDING], 'modern-royal-o');
+  const memory = compileScene(returned.sceneId, ending.profile, returned).find(beat => beat.id === 'modern-o-4-1:7:0');
+  assert.equal(memory?.kind === 'text' && memory.text.includes(MODERN_ENDINGS['modern-royal-o'].quote), true);
 });

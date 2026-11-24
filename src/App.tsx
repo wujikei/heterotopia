@@ -12,7 +12,7 @@ import { UpdateNotice } from './components/UpdateNotice';
 import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
 import { asset, BACKGROUNDS, CHARACTERS, endingsForCampaign, portraitAsset } from './data/world';
-import { campaignOf, modernFinal } from './modern';
+import { campaignOf, modernFinal, restoreModernState } from './modern';
 import { actorForBeat } from './actors';
 import { actorPortraitName } from './data/actorVariants';
 import { relicForBeat } from './data/relics';
@@ -428,7 +428,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const resume = async (state = game) => {
     if (!state) return;
     void sound.unlock(settings);
-    state = await prepareReading(() => state!);
+    state = await prepareReading(() => restoreModernState(state!));
     if (!state) return;
     audioJump.current = true;
     previousScene.current = state.sceneId;
@@ -534,10 +534,10 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       persist('profile', merged); setProfile(merged);
       const importedSlots = slots.map((slot, i) => {
         const item = Array.isArray(data.slots) ? data.slots[i] : null;
-        return item?.version === 1 && validState(item.state, campaign) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? item as SaveSlot : slot;
+        return item?.version === 1 && validState(item.state, campaign) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? { ...item as SaveSlot, state: restoreModernState(item.state) } : slot;
       });
       setSlots(importedSlots); persist('slots', importedSlots);
-      if (validState(data.state, campaign)) { audioJump.current = true; persist('autosave', data.state); setGame(data.state); }
+      if (validState(data.state, campaign)) { const restored = restoreModernState(data.state); audioJump.current = true; persist('autosave', restored); setGame(restored); }
       notify('旅途已导入，已经历的记忆合在了一处。');
     } catch { notify('这份文件无法识读，请选择从本作导出的 JSON 存档。'); }
   };
@@ -684,7 +684,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       {tr(beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label={t("命运选择")}><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{tr(beat.prompt)}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{tr(beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} aria-keyshortcuts={String(i + 1)} title={tr(t("按 {0} 选择", i + 1))} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[language][i] ?? i + 1}</span><span className="choice-copy"><strong>{tr(choice.disabled ? '尚未听见的名字' : choice.title)}</strong><small>{tr(choice.disabled ? choice.hint : choice.detail)}</small></span><span className="choice-stamp" aria-hidden="true" onAnimationStart={event => stampAtContact(choice.key, event.animationName)}>{t("定")}</span></button>))}</div>{tr(game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{tr(game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。')}</span></div>)}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />{t("在分路前，留一枚书签")}</button></section>)}
 
       {tr(beat.kind === 'ending' && <section className={`ending-screen ending-screen--${beat.ending} ${hidden ? 'ending-screen--clean' : ''}`} aria-label={tr(t("结局 · {0}", ENDINGS[beat.ending].title))}>
-        <span className="ending-ink" aria-hidden="true" /><span className="ending-ripple" aria-hidden="true" />
+        <div className="ending-effects" aria-hidden="true"><span className="ending-ink" /><span className="ending-ripple" /></div>
         <div className="ending-content" inert={hidden} aria-hidden={hidden}>
           <p className="ending-kicker">{tr((beat.ending === 'home' || modernFinal(beat.ending)) ? '全剧终' : '命运的回声')}</p>
           <div className="ending-stage">

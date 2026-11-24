@@ -2,7 +2,7 @@ export type Route = 'prologue' | 'common' | 'royal' | 'kunlun' | 'return';
 export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home' | `modern-${string}`;
 export type Campaign = 'original' | 'overseas';
 export type Language = 'zh' | 'en' | 'ja' | 'de';
-export interface RawBlock { tag: string; lines: string[]; pages?: string[]; options?: Choice[]; when?: { choice: string; value: string }; background?: string; cast?: string[]; domesticOnly?: boolean }
+export interface RawBlock { tag: string; lines: string[]; pages?: string[]; options?: Choice[]; when?: { choice: string; value: string }; background?: string; cast?: string[]; domesticOnly?: boolean; returnMemory?: true }
 export interface Scene { id: string; title: string; chapter: string; route: Route; background: string; blocks: RawBlock[]; next?: string; ending?: EndingId; script?: 'modern'; sourceId?: string }
 export interface Choice { key: string; title: string; detail: string; target?: string; disabled?: boolean; hint?: string }
 export interface BeatBase { id: string; background: string; cast: string[]; atmosphere: string; audioCueId: string; direction: string }

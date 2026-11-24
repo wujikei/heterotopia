@@ -1,6 +1,6 @@
 import { newProfile, SCENES } from './engine';
 import { MODERN_SCENES } from './story';
-import { campaignOf, isModern } from './modern';
+import { campaignOf, isModern, restoreModernState } from './modern';
 import { isLanguage } from './localeText';
 import type { Campaign, GameState, Profile, SaveSlot, Settings } from './types';
 
@@ -78,14 +78,14 @@ export function validState(value: unknown, campaign?: Campaign): value is GameSt
 
 export function loadAutosave(campaign: Campaign = 'original'): GameState | null {
   const state = read<unknown>('autosave', null, campaign);
-  return validState(state, campaign) ? state : null;
+  return validState(state, campaign) ? restoreModernState(state) : null;
 }
 
 export function loadSlots(campaign: Campaign = 'original'): (SaveSlot | null)[] {
   const slots = read<unknown[]>('slots', [], campaign);
   return Array.from({ length: 6 }, (_, i) => {
     const slot = Array.isArray(slots) ? slots[i] as SaveSlot | null : null;
-    return slot?.version === 1 && validState(slot.state, campaign) && typeof slot.savedAt === 'string' && !Number.isNaN(Date.parse(slot.savedAt)) ? slot : null;
+    return slot?.version === 1 && validState(slot.state, campaign) && typeof slot.savedAt === 'string' && !Number.isNaN(Date.parse(slot.savedAt)) ? { ...slot, state: restoreModernState(slot.state) } : null;
   });
 }
 
