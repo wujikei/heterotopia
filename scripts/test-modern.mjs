@@ -68,6 +68,14 @@ try {
   if (await intro.isVisible()) await intro.click();
   await page.getByTestId('dialogue-text').waitFor();
   assert.match(await page.getByTestId('dialogue-text').innerText(), /玉扣上的“何”字，刻痕还在/);
+  // Entry cooldown protects a short landing beat against fast double-taps, and restart confirmation protects active progress.
+  await page.getByRole('button', { name: '打开菜单', exact: true }).click();
+  await page.getByRole('button', { name: /^回到标题/ }).click();
+  await page.getByRole('button', { name: /再点一次/ }).click();
+  const restartBtn = page.locator('.start-button');
+  await restartBtn.click();
+  assert.match(await restartBtn.innerText(), /再点一次，重走这一程/);
+  assert.equal(JSON.parse(await page.evaluate(() => localStorage.getItem('heterotopia.v1.overseas.autosave'))).beatId, 'modern-o-4-1:7:0');
   assert.deepEqual(errors, []);
   console.log(JSON.stringify({ legacyFileImportAndResume: 'ok', modernEntry: 'ok', campaignAboutAndSource: 'ok', openingArtwork: 'ok', modernRouteMemory: 'ok', scopedAutosave: 'ok', originalSaveIsolation: 'ok', browserErrors: errors }, null, 2));
 } finally { await context.close(); await browser.close(); }

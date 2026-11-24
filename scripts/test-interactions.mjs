@@ -272,7 +272,7 @@ try {
     await page.reload();
     for (const [width, height] of [[320, 568], [390, 844], [844, 390]]) {
       await resize(page, width, height);
-      const targets = await page.locator('.home-library button, .headphone-note, .about-link, .home-header .icon-button').evaluateAll(buttons => buttons.map(button => {
+      const targets = await page.locator('.campaign-selector button, .home-library button, .headphone-note, .about-link, .home-header .icon-button').evaluateAll(buttons => buttons.map(button => {
         const r = button.getBoundingClientRect(); const hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
         return { width: r.width, height: r.height, x: r.x, right: r.right, bottom: r.bottom, hit: button.contains(hit) };
       }));
@@ -280,6 +280,42 @@ try {
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       await page.screenshot({ path: screenshot(`09-home-${width}x${height}.png`), fullPage: true });
     }
+  });
+
+  await check('Opening a modal stops auto-reading and landscape font-size slider updates dialogue text', async (page) => {
+    const autoBtn = page.getByRole('button', { name: '自动', exact: true });
+    await autoBtn.click();
+    assert.equal(await autoBtn.getAttribute('aria-pressed'), 'true');
+    await page.getByRole('button', { name: '自动阅读中' }).waitFor();
+    await page.getByRole('button', { name: '回看', exact: true }).click();
+    await page.keyboard.press('Escape');
+    assert.equal(await autoBtn.getAttribute('aria-pressed'), 'false');
+    assert.equal(await page.locator('.reading-mode-indicator').count(), 0);
+    await resize(page, 667, 375);
+    await page.getByRole('button', { name: '打开菜单', exact: true }).click();
+    await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+    await page.getByRole('slider', { name: '正文字号', exact: true }).focus();
+    await page.keyboard.press('End');
+    await page.getByRole('button', { name: '关闭', exact: true }).click();
+    const size = await page.getByTestId('dialogue-text').evaluate(el => Number.parseFloat(getComputedStyle(el).fontSize));
+    assert.ok(size >= 21, `Landscape font size should respect slider above 17px, got ${size}`);
+  });
+
+  await check('Title restart requires a second click to overwrite autosave and resets on outside tap', async (page, data) => {
+    await page.getByRole('button', { name: '打开菜单', exact: true }).click();
+    await page.getByRole('button', { name: /^回到标题/ }).click();
+    await page.getByRole('button', { name: /再点一次/ }).click();
+    await page.locator('.campaign-note').waitFor();
+    const restart = page.locator('.start-button');
+    await restart.click();
+    assert.match(await restart.innerText(), /再点一次，重新启程/);
+    assert.equal((await stored(page)).beatId, data.state.beatId);
+    await page.locator('.home-title').click();
+    assert.match(await restart.innerText(), /^重新启程/);
+    await restart.click();
+    await restart.click();
+    await page.locator('.game-screen').waitFor();
+    assert.equal((await stored(page)).sceneId, '0-1');
   });
 
   await check('First-play guidance dismisses persistently and screen readers receive full lines', async page => {

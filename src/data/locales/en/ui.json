@@ -968,5 +968,11 @@
   "本机字体 · 日文衬线体": "Local font · Japanese serif",
   "正文翻译": "Story translation",
   "英语、日语与德语译本": "English, Japanese and German editions",
-  "本译本保留原作中的人名、意象与留白。": "This translation preserves the original's names, imagery and silences."
+  "本译本保留原作中的人名、意象与留白。": "This translation preserves the original's names, imagery and silences.",
+  "再点一次，重新启程": "Click once more to begin again",
+  "将覆盖此刻自动留存": "Replaces your current auto-saved progress",
+  "双卷独立，各自留存": "Both volumes keep separate saves",
+  "建议先读原篇；也可直接切换现代新卷。": "Recommended to start with the original, or switch to the modern volume anytime.",
+  "点击暂停自动阅读": "Click to pause auto-reading",
+  "点击停止快进": "Click to stop fast-forwarding"
 }
