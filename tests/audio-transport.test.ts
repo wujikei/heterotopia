@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { Soundscape } from '../src/audio';
 import { scoreFrame } from '../src/score';
+import type { ScoreFrame } from '../src/score';
 import type { Settings } from '../src/types';
 
 const settings: Settings = { language: 'zh', muted: false, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55, textSpeed: 32, autoDelay: 4, fontSize: 22, reducedMotion: false, showSprites: true, lightweight: false, autoAfterChoice: true };
@@ -13,6 +14,7 @@ function device(native = false, initiallyBlocked = false, pendingResume = false,
   let blocked = initiallyBlocked;
   const starts: { key: string; offset: number; stopped: boolean }[] = [];
   const downloads: string[] = [];
+  const held = new Map<string, (response: Response) => void>();
   const contexts: Context[] = [];
   const media: Media[] = [];
   const document = Object.assign(new EventTarget(), { hidden: false });
@@ -48,6 +50,8 @@ function device(native = false, initiallyBlocked = false, pendingResume = false,
     canPlayType() { return 'probably'; }
     async play() {
       if (blocked && (!blockMusicOnly || this.src.includes('music-'))) throw new DOMException('Gesture required', 'NotAllowedError');
+      const file = this.src.split('/').at(-1)!;
+      if (held.has(file)) await new Promise<Response>(resolve => held.set(file, resolve));
       this.paused = false; this.dispatchEvent(new Event('playing'));
     }
     pause() { this.paused = true; this.dispatchEvent(new Event('pause')); }
@@ -57,11 +61,19 @@ function device(native = false, initiallyBlocked = false, pendingResume = false,
   const replacements = {
     window: { AudioContext: native ? undefined : Context, setTimeout, clearTimeout, setInterval, clearInterval },
     document, Audio: Media,
-    fetch: async (url: string) => { downloads.push(url); return new Response(url); },
+    fetch: async (url: string) => {
+      downloads.push(url);
+      const key = url.split('/').at(-1)!;
+      if (held.has(key)) return new Promise<Response>(resolve => held.set(key, resolve));
+      return new Response(url);
+    },
   };
   const descriptors = Object.fromEntries(Object.keys(replacements).map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   for (const [key, value] of Object.entries(replacements)) Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
-  return { starts, downloads, contexts, media, document, allow: () => { blocked = false; }, restore() {
+  return { starts, downloads, contexts, media, document,
+    hold: (file: string) => held.set(file, () => {}),
+    release: (file: string) => { held.get(file)?.(new Response(file)); held.delete(file); },
+    allow: () => { blocked = false; }, restore() {
     for (const key of Object.keys(replacements)) {
       const descriptor = descriptors[key];
       if (descriptor) Object.defineProperty(globalThis, key, descriptor); else Reflect.deleteProperty(globalThis, key);
@@ -151,6 +163,73 @@ test('switching tracks and returning to story never resurrects a superseded requ
     sound.endPreview(); await settle();
     assert.equal(sound.getSnapshot().track, 'river-home');
     assert.equal(mock.starts.filter(item => item.key.endsWith('music-paper-note.mp3')).length, 0);
+  } finally { sound.dispose(); mock.restore(); }
+});
+
+test('a realm change retires the outgoing cue before the new file resolves', async () => {
+  const mock = device(), sound = new Soundscape();
+  const title = scoreFrame('', null);
+  const dorm: ScoreFrame = { ...title, scene: 'modern-o-0-2', music: 'modern-question', releaseBeforeLoad: false };
+  const chu: ScoreFrame = { ...title, scene: 'modern-o-0-3', music: 'ritual', transition: .75 };
+  const ritualFile = 'music-ritual.mp3';
+  try {
+    sound.direct(dorm);
+    await sound.unlock(settings); await settle();
+    assert.equal(sound.getSnapshot().track, 'modern-question');
+    mock.hold(ritualFile);
+    sound.direct(chu);
+    assert.equal(sound.getSnapshot().sceneTrack, 'ritual');
+    assert.equal(sound.getSnapshot().track, null);
+    assert.equal(sound.getSnapshot().loadingTrack, 'ritual');
+    assert.ok(mock.starts.find(start => start.key.endsWith('music-modern-question.mp3'))?.stopped);
+    assert.ok(!mock.starts.some(start => start.key.endsWith(ritualFile)));
+    sound.direct({ ...chu, cue: 'same-ritual-next-page' });
+    mock.release(ritualFile); await settle();
+    assert.equal(sound.getSnapshot().track, 'ritual');
+    assert.equal(mock.starts.filter(start => start.key.endsWith(ritualFile)).length, 1);
+    assert.equal(sound.getSnapshot().playing, true);
+  } finally { mock.release(ritualFile); sound.dispose(); mock.restore(); }
+});
+
+test('native playback preserves an incoming cue when another page arrives before it can play', async () => {
+  const mock = device(true), sound = new Soundscape();
+  const chu: ScoreFrame = { ...scoreFrame('', null), scene: 'modern-o-0-3', music: 'ritual', transition: .75, ambience: [] };
+  const file = 'music-ritual.mp3';
+  try {
+    await sound.unlock(settings); await settle();
+    mock.hold(file);
+    sound.direct(chu);
+    sound.direct({ ...chu, cue: 'next-page' }, { blocked: true });
+    assert.equal(sound.getSnapshot().track, null);
+    assert.equal(sound.getSnapshot().loadingTrack, 'ritual');
+    mock.release(file); await settle();
+    assert.equal(sound.getSnapshot().track, 'ritual');
+    assert.equal(mock.media.filter(item => item.src.endsWith(file) && !item.paused).length, 1);
+  } finally { mock.release(file); sound.dispose(); mock.restore(); }
+});
+
+test('fast-forward cannot carry a modern cue across the cut and leaving a preview restores silence', async () => {
+  const mock = device(), sound = new Soundscape();
+  const title = scoreFrame('', null);
+  const dorm: ScoreFrame = { ...title, scene: 'modern-o-0-2', music: 'modern-question', releaseBeforeLoad: false };
+  const chu: ScoreFrame = { ...title, scene: 'modern-o-0-3', music: 'ritual', transition: .75 };
+  try {
+    sound.direct(dorm);
+    await sound.unlock(settings); await settle();
+    sound.direct(chu, { skipping: true }); await settle();
+    assert.equal(sound.getSnapshot().track, null);
+    assert.ok(!mock.downloads.some(file => file.endsWith('music-ritual.mp3')), 'skipping must not fetch the passing score');
+    sound.direct(chu); await settle();
+    assert.equal(sound.getSnapshot().track, 'ritual');
+    const quiet: ScoreFrame = { ...chu, scene: 'modern-k-G-1', music: null, ambience: [] };
+    sound.direct(quiet);
+    sound.togglePreview('paper-note', true); await settle();
+    assert.equal(sound.getSnapshot().track, 'paper-note');
+    assert.equal(sound.getSnapshot().sceneTrack, null);
+    sound.endPreview(); await settle();
+    assert.equal(sound.getSnapshot().track, null);
+    assert.equal(sound.getSnapshot().playing, false);
+    assert.ok(mock.starts.find(start => start.key.endsWith('music-paper-note.mp3'))?.stopped);
   } finally { sound.dispose(); mock.restore(); }
 });
 

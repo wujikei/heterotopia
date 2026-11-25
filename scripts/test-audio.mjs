@@ -25,8 +25,11 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
     if (!sessionStorage.getItem('synthetic-audio-test')) {
       localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
       if (data) {
-        localStorage.setItem('heterotopia.v1.profile', JSON.stringify(data.profile));
-        localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(data.state));
+        const campaign = data.profile.campaign ?? 'original';
+        const prefix = campaign === 'overseas' ? 'heterotopia.v1.overseas.' : 'heterotopia.v1.';
+        localStorage.setItem('heterotopia.v1.campaign', JSON.stringify(campaign));
+        localStorage.setItem(prefix + 'profile', JSON.stringify(data.profile));
+        localStorage.setItem(prefix + 'autosave', JSON.stringify(data.state));
       }
       sessionStorage.setItem('synthetic-audio-test', 'true');
     }
@@ -364,7 +367,58 @@ try {
   }
   if (name === 'chromium') {
     await loadStory('overseas');
+    const crossingProfile = newProfile('overseas');
+    const crossingState = { ...enterScene(newGame(crossingProfile), crossingProfile, 'modern-o-0-2'), beatId: 'modern-o-0-2:25:0' };
+    const crossing = await open({ profile: crossingProfile, state: crossingState });
+    try {
+      let releaseRitual;
+      const heldRitual = new Promise(resolve => { releaseRitual = resolve; });
+      await crossing.route('**/audio/music-ritual.mp3', async route => {
+        await heldRitual;
+        await route.continue().catch(() => {});
+      });
+      await crossing.getByRole('button', { name: /^续梦/ }).click();
+      await waitFor(crossing, 'music-modern-question.mp3');
+      for (const id of ['modern-o-0-2:26:0', 'modern-o-0-2:27:0', 'modern-o-0-2:28:0', 'modern-o-0-2:29:0']) {
+        await crossing.waitForTimeout(200);
+        await crossing.keyboard.press('ArrowRight');
+        await crossing.locator(`[data-beat-id="${id}"]`).waitFor();
+      }
+      await crossing.getByRole('button', { name: '打开菜单', exact: true }).click();
+      await crossing.getByRole('button', { name: '听水集', exact: true }).click();
+      assert.match(await crossing.locator('.music-cover-status').innerText(), /本段无配乐/);
+      assert.equal(await crossing.locator('.music-track--selected, .music-seek').count(), 0);
+      await crossing.getByRole('button', { name: '关闭', exact: true }).click();
+      await crossing.waitForTimeout(200);
+      await crossing.keyboard.press('ArrowRight');
+      await crossing.locator('[data-beat-id="modern-o-0-3:2:0"]').waitFor();
+      await crossing.waitForFunction(() => window.__audioTest.starts.find(voice => voice.file === 'music-modern-question.mp3')?.ended);
+      assert.equal(await count(crossing, 'music-ritual.mp3'), 0, 'The target is still held');
+      await crossing.getByRole('button', { name: '打开菜单', exact: true }).click();
+      await crossing.getByRole('button', { name: '听水集', exact: true }).click();
+      await crossing.getByRole('heading', { name: '高台千灯', exact: true }).waitFor();
+      assert.match(await crossing.locator('.music-cover-status').innerText(), /曲子正沿水声而来/);
+      releaseRitual();
+      await waitFor(crossing, 'music-ritual.mp3');
+      await crossing.waitForFunction(() => document.querySelector('.music-cover-status')?.textContent.includes('当前场景配乐'));
+      assert.equal(await count(crossing, 'music-paper-note.mp3'), 0);
+      assert.equal(await count(crossing, 'music-ritual.mp3'), 1);
+      await crossing.getByRole('button', { name: '关闭', exact: true }).click();
+      await crossing.waitForTimeout(200);
+      await crossing.keyboard.press('ArrowRight');
+      await crossing.locator('[data-beat-id="modern-o-0-3:3:0"]').waitFor();
+      assert.equal(await count(crossing, 'music-ritual.mp3'), 1, 'The following page keeps the rite at the same playback position');
+      await crossing.screenshot({ path: screenshot('overseas-chu-arrival.png') });
+      await crossing.getByRole('button', { name: '打开菜单', exact: true }).click();
+      await crossing.getByRole('button', { name: '听水集', exact: true }).click();
+      await crossing.getByRole('heading', { name: '高台千灯', exact: true }).waitFor();
+      await crossing.screenshot({ path: screenshot('overseas-chu-ritual-score.png') });
+    } finally { await crossing.context().close(); }
+    checks.push('The first Chu scene clears the dorm score while the ritual is loading and the listening room shows the incoming cue');
+
     const cues = [
+      ['modern-o-2-1:2:0', 'chu-night-river', '七夜问河'],
+      ['modern-k-D-5:1:0', 'chu-storm', '风囊开了'],
       ['modern-o-4-1:23:0', 'modern-return', '留一碗面', { effect: 'dorm-bowl', gain: .24, release: .72 }],
       ['modern-o-4-2:10:0', 'modern-untranslated', '留白里的「何」'],
       ['modern-o-5-6:4:0', 'modern-ascent', '从这里上去'],
@@ -422,7 +476,7 @@ try {
         await sample.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
       } finally { await sample.context().close(); }
     }
-    checks.push('All four overseas cues decoded, started looping on their story pages and appeared unlocked in the listening room');
+    checks.push('Night river, storm and the four return and finale cues decoded, looped, and appeared unlocked in the listening room');
     checks.push('The bowl and shutter predecoded, hit once after music ducking, and let the same score recover');
 
     // An isolated test device permits autoplay; production code changes no policy.

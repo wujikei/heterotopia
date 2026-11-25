@@ -151,5 +151,23 @@
     "keyscale": "D major",
     "file": "music-modern-afterglow.mp3",
     "seconds": 76.66667
+  },
+  {
+    "id": "chu-night-river",
+    "title": "七夜问河",
+    "subtitle": "屈原在暗处追问，河水缓缓经过",
+    "bpm": 60,
+    "keyscale": "D minor",
+    "file": "music-chu-night-river.mp3",
+    "seconds": 56.0
+  },
+  {
+    "id": "chu-storm",
+    "title": "风囊开了",
+    "subtitle": "桅杆一响，水从船头涌进来",
+    "bpm": 72,
+    "keyscale": "C minor",
+    "file": "music-chu-storm.mp3",
+    "seconds": 56.66667
   }
 ]

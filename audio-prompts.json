@@ -177,6 +177,40 @@
       "caption": "Instrumental end-credit chamber folk music for a Chinese coming-of-age visual novel, back home in an ordinary warm kitchen after an impossible journey. Intimate felt piano and fingerpicked nylon-string guitar, warm lyrical cello, a faint xiao bamboo-flute reply carrying the memory of the ancient world. G major pentatonic, 72 BPM, 4/4, a gently resolved small melody, honest and hopeful with a trace of bittersweetness. Soft natural room sound, warm detail, lots of air, no busy drums, no sentimental big orchestral build. Quiet ending and continuing everyday life. No vocals, no choir, no spoken words, no electronic beat.",
       "seed": 6111111,
       "prompt_id": "9247cb04-4db1-46a6-a604-bde6ecfbf300"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "unknown",
+      "id": "chu-night-river",
+      "title": "七夜问河",
+      "subtitle": "屈原在暗处追问，河水缓缓经过",
+      "bpm": 60,
+      "keyscale": "D minor",
+      "caption": "Instrumental underscore for a painted Chinese visual novel at a quiet river in pre-imperial Chu. 60 BPM, D minor, very soft, spacious and nearly still. One breathy bamboo xiao call answered at a distance by two muted silk-string guqin notes. Low bowed bass drone and long soft decay, no obvious downbeats, no drum kit, no steady pulse, no piano, no pop chords, no voices, no singing, no foley or ambient sound baked in. We want the impression of a question being asked into open water. Leave generous silence between the small motifs, never swell to a climax. Consistent restrained dynamics and timbre from beginning to end for seamless underscore looping.",
+      "seed": 11252561,
+      "prompt_id": "3e38a4cf-ed21-4cf7-b1e7-1adeacb49713",
+      "masterSha256": "10b35c2e185bf22321894b8fe6a00f254fb9c737cabb319392abdac93549e0e1"
+    },
+    {
+      "lyrics": "[Instrumental]",
+      "duration": 60,
+      "timesignature": "4",
+      "preset": "quality",
+      "steps": 8,
+      "language": "unknown",
+      "id": "chu-storm",
+      "title": "风囊开了",
+      "subtitle": "桅杆一响，水从船头涌进来",
+      "bpm": 72,
+      "keyscale": "C minor",
+      "caption": "[Instrumental] Seamless suspense bed for ancient Chinese river storm, dry cinematic ensemble. Close audible continuous cello and viola tremolo, low bowed strings growling gently from the very first second, understated skin-drum pulses every few breaths at a regular soft volume, sparse dull bronze and bow scrapes. The midbass cello is the central element and remains present all sixty seconds, intimately recorded and entirely audible on small laptop speakers. C minor, 72 BPM, low dynamics, minor second suspensions, same active texture at start and end, no intro, no ending, no breakdown, no fade, no swells. No singing, speech, piano, drum kit, literal weather or huge sub-bass. Start mid-phrase, hold steady. This is the dread of a small canoe, not action or a victory theme.",
+      "seed": 11252582,
+      "prompt_id": "bea5451e-12ed-4c86-9ff6-9df7d0ef31ca",
+      "masterSha256": "b61b984063997be1c49500d943123775ac5924bae0e0215ae776e41967572e20"
     }
   ],
   "effects": [

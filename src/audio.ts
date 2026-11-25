@@ -6,10 +6,10 @@ type Bus = 'music' | 'ambience' | 'sfx';
 interface Voice {
   file: string; bus: Bus; key: string; level: number; startedAt: number; offset: number; seconds: number;
   source?: AudioBufferSourceNode; node?: GainNode; pan?: StereoPannerNode; media?: HTMLAudioElement;
-  timer?: number; startTimer?: number; fadeTimer?: number; stopped?: boolean; mediaPlaying?: boolean; event?: string;
+  timer?: number; startTimer?: number; fadeTimer?: number; stopped?: boolean; retiringAt?: number; mediaPlaying?: boolean; event?: string;
 }
 export interface AudioState {
-  unlocked: boolean; needsGesture: boolean; available: boolean; track: MusicId | null; preview: MusicId | null;
+  unlocked: boolean; needsGesture: boolean; available: boolean; track: MusicId | null; sceneTrack: MusicId | null; preview: MusicId | null;
   previewPaused: boolean; playing: boolean; loading: boolean; loadingTrack: MusicId | null; error: string | null;
 }
 interface DirectOptions { suppressEffects?: boolean; discontinuous?: boolean; blocked?: boolean; dimmed?: boolean; skipping?: boolean }
@@ -46,7 +46,7 @@ export class Soundscape {
   private lastPageClick = 0;
   private uiRequest = 0;
   private listeners = new Set<() => void>();
-  private state: AudioState = { unlocked: false, needsGesture: false, available: true, track: null, preview: null, previewPaused: false, playing: false, loading: false, loadingTrack: null, error: null };
+  private state: AudioState = { unlocked: false, needsGesture: false, available: true, track: null, sceneTrack: 'river-home', preview: null, previewPaused: false, playing: false, loading: false, loadingTrack: null, error: null };
 
   readonly subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   readonly getSnapshot = () => this.state;
@@ -139,11 +139,18 @@ export class Soundscape {
   }
 
   direct(frame: ScoreFrame, options: DirectOptions = {}): void {
-    const sceneChanged = frame.scene !== this.frame.scene;
-    const cueChanged = frame.cue !== this.frame.cue;
+    const previous = this.frame;
+    const sceneChanged = frame.scene !== previous.scene;
+    const cueChanged = frame.cue !== previous.cue;
     if (sceneChanged || cueChanged || options.discontinuous || options.skipping || options.blocked && !this.options.blocked) this.cancelEvents();
     if (sceneChanged || options.discontinuous) { this.seen.clear(); this.eventStarts.clear(); }
     this.frame = frame; this.options = options;
+    this.publish({ sceneTrack: frame.music });
+    // On a cut, a slow incoming file must not extend the previous scene's mix.
+    if (!this.previewId && (options.discontinuous || frame.releaseBeforeLoad ||
+        (sceneChanged && previous.releaseBeforeLoad) || frame.music !== previous.music && frame.transition < .3)) {
+      this.releaseMusic(frame.music, options.discontinuous ? .20 : Math.min(frame.transition, .35));
+    }
     if (options.suppressEffects || options.discontinuous || options.skipping || this.settings?.muted) frame.events.forEach(event => this.seen.add(event.id));
     if (this.activated) this.sync();
   }
@@ -154,6 +161,9 @@ export class Soundscape {
     // Fast-forward keeps one bed and does not fetch every passing cue.
     if (!this.options.skipping || this.previewId) { this.syncMusic(); this.syncAmbience(); }
     if (this.settings.muted || this.options.skipping || this.previewId || document.hidden) return;
+    if (this.context && this.settings.musicVolume && this.frame.prepareMusic) {
+      void this.buffer(trackById(this.frame.prepareMusic).file).catch(() => {});
+    }
     if (this.context && this.settings.sfxVolume) {
       for (const id of this.frame.prepareEffects ?? []) void this.buffer(`sfx-${id}.mp3`).catch(() => {});
     }
@@ -182,6 +192,20 @@ export class Soundscape {
 
   private musicChoice(): MusicId | null { return this.previewId ? this.previewPaused ? null : this.previewId : this.frame.music; }
 
+  private releaseMusic(desired: MusicId | null, seconds: number): void {
+    if (this.musicTarget !== desired) {
+      ++this.musicRequest;
+      this.musicTarget = undefined;
+      this.publish({ loading: false, loadingTrack: null });
+    }
+    const current = this.musicVoice?.key === desired ? this.musicVoice : undefined;
+    this.musicVoice = current;
+    for (const voice of this.active) {
+      if (voice.bus === 'music' && voice !== current && (voice.key !== desired || voice.stopped)) this.retire(voice, seconds, true);
+    }
+    if (!current) this.publish({ track: null, playing: false });
+  }
+
   private syncMusic(): void {
     const desired = this.musicChoice();
     const gain = this.previewId ? 1 : this.frame.musicGain * (this.options.dimmed ? .68 : 1);
@@ -205,8 +229,6 @@ export class Soundscape {
       return;
     }
     if (this.settings?.muted) { this.musicTarget = undefined; return; }
-    // The alarm cuts the dream immediately. Other transitions wait for decoding.
-    if (transition < .3 && this.musicVoice) { this.retire(this.musicVoice, transition); this.musicVoice = undefined; }
     this.publish({ loading: true, loadingTrack: desired, error: null });
     const track = trackById(desired);
     const offset = this.previewId === desired ? this.previewOffset : this.resumePosition?.id === desired ? this.resumePosition.offset : 0;
@@ -397,8 +419,10 @@ export class Soundscape {
   }
 
   private retire(voice: Voice, seconds: number, shorten = false): void {
-    if (voice.stopped && !shorten) return;
+    const at = this.clock() + seconds;
+    if (voice.stopped && (!shorten || (voice.retiringAt ?? 0) <= at)) return;
     voice.stopped = true;
+    voice.retiringAt = at;
     clearTimeout(voice.startTimer);
     clearTimeout(voice.timer);
     this.fade(voice, 0, seconds);
@@ -495,6 +519,7 @@ export class Soundscape {
       ? { id: this.previewId, offset: this.position(this.previewId) } : null;
     this.previewId = null; this.previewPaused = false; this.previewOffset = 0;
     this.publish({ preview: null, previewPaused: false, error: null });
+    this.releaseMusic(this.frame.music, .25);
     this.sync();
   }
 

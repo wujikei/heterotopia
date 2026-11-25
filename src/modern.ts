@@ -1,5 +1,4 @@
 import type { Campaign, GameState, Profile } from './types';
-import type { MusicId } from './score';
 import { validOverseasIdentity } from './overseasIdentity';
 
 export const isModern = (id: string) => id.startsWith('modern-');
@@ -90,28 +89,6 @@ export const MODERN_ENDINGS = {
   'modern-kunlun': { title: '仿佛到了昆仑', subtitle: '九歌 · 舟与岸', quote: '人没了，名字还刻在牌上。天地不会为谁停，可它也不删谁。', background: 'light-river', index: 'XI', description: '走过诸神，回到靠岸的小舟。' },
   'modern-home': { title: '半规落日', subtitle: '现代卷 · 这边的日子', quote: '你尚且年少。', background: 'modern-sunset', index: 'XII', description: '两条路之后，留在这一边，把自己的句子写下去。' },
 };
-
-const MODERN_SCENE_MUSIC: Partial<Record<string, MusicId>> = {
-  'modern-o-0-1': 'modern-street',
-  'modern-o-0-2': 'modern-question',
-  'modern-o-4-1': 'modern-return',
-  'modern-o-4-2': 'modern-untranslated',
-  'modern-o-5-1': 'modern-untranslated',
-  'modern-o-5-2': 'modern-untranslated',
-  'modern-o-5-3': 'modern-ascent',
-  'modern-o-5-4': 'modern-ascent',
-  'modern-o-5-5': 'modern-ascent',
-  'modern-o-5-6': 'modern-ascent',
-  'modern-o-5-7': 'modern-afterglow',
-};
-
-export function modernMusic(sceneId: string, background: string): MusicId | null {
-  const track = MODERN_SCENE_MUSIC[sceneId];
-  if (track) return track;
-  if (sceneId.startsWith('modern-r-')) return ['ritual', 'cg-modern-ritual'].includes(background) ? 'ritual' : 'old-jade';
-  if (sceneId.startsWith('modern-k-')) return sceneId.startsWith('modern-k-G-') ? null : 'river-journey';
-  return 'paper-note';
-}
 
 // Stored in the existing extensible choice record; old saves without it use neutral prose.
 export const MODERN_RETURN_ENDING = 'modern-return-ending';

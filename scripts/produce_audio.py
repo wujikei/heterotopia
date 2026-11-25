@@ -170,9 +170,9 @@ def encode(path: Path, filename: str, title: str, kind: str, loop=False, target=
     return info
 
 
-def music_score(plan: dict) -> None:
+def music_score(tracks: list[dict]) -> list[dict]:
     catalog = []
-    for track in plan["tracks"]:
+    for track in tracks:
         master = MASTERS / f"{track['id']}.flac"
         data = run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(master),
                     "-f", "f32le", "-ar", str(SR), "-ac", "2", "-"]).stdout
@@ -190,7 +190,7 @@ def music_score(plan: dict) -> None:
         info = encode(intermediate, f"music-{track['id']}.mp3", track["title"], "music", True, duration=duration)
         catalog.append({k: track[k] for k in ["id", "title", "subtitle", "bpm", "keyscale"]} |
                        {"file": info["file"], "seconds": round(duration, 5)})
-    (ROOT / "src" / "data" / "soundtrack.json").write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return catalog
 
 
 def effect_palette(modern_only: bool = False) -> dict[str, tuple[str, np.ndarray]]:
@@ -397,17 +397,33 @@ def encode_effects(palette: dict[str, tuple[str, np.ndarray]]) -> None:
         encode(path, f"sfx-{key}.mp3", title, "effect", False, -24, -7, len(audio) / SR)
 
 
-def main(modern_only: bool = False):
+def merge_records(existing: list[dict], updates: list[dict], key: str) -> list[dict]:
+    by_key = {record[key]: record for record in updates}
+    return [by_key.pop(record[key], record) for record in existing] + list(by_key.values())
+
+
+def main(modern_only: bool = False, music_ids: list[str] | None = None):
     for folder in [WORK, DEST]:
         folder.mkdir(parents=True, exist_ok=True)
     plan = json.loads((ROOT / "audio-prompts.json").read_text(encoding="utf-8"))
+    manifest_path = DEST / "manifest.json"
+    catalog_path = ROOT / "src" / "data" / "soundtrack.json"
+    if music_ids is not None:
+        tracks = [track for track in plan["tracks"] if track["id"] in music_ids]
+        unknown = set(music_ids) - {track["id"] for track in tracks}
+        if unknown:
+            raise ValueError(f"Unknown music IDs: {', '.join(sorted(unknown))}")
+        additions = music_score(tracks)
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        catalog_path.write_text(json.dumps(merge_records(catalog, additions, "id"), ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["files"] = merge_records(manifest["files"], REPORT, "file")
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        return
     if modern_only:
         encode_effects(effect_palette(modern_only=True))
-        manifest_path = DEST / "manifest.json"
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        fresh = {item["file"]: item for item in REPORT}
-        manifest["files"] = [fresh.pop(item["file"], item) for item in manifest["files"]]
-        manifest["files"].extend(fresh.values())
+        manifest["files"] = merge_records(manifest["files"], REPORT, "file")
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
         fresh = {item["file"].removesuffix(".mp3"): {
             "id": item["file"].removesuffix(".mp3"), "title": item["title"], "source": item["source"]
@@ -417,14 +433,15 @@ def main(modern_only: bool = False):
         (ROOT / "audio-prompts.json").write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
         return
 
-    music_score(plan)
+    catalog = music_score(plan["tracks"])
+    catalog_path.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     for key, (title, audio) in ambient_palette().items():
         path = WORK / f"amb-{key}.wav"
         write_wave(path, audio)
         encode(path, f"amb-{key}.mp3", title, "ambience", True, -26, -6, len(audio) / SR)
     encode_effects(effect_palette())
     manifest = {"version": 1, "sampleRate": SR, "musicMastering": "One-bar circular equal-power overlap; two-pass EBU R128 -18 LUFS / -2 dBTP", "files": REPORT}
-    (DEST / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     plan["effects"] = [{"id": f["file"].removesuffix(".mp3"), "title": f["title"], "source": f["source"]} for f in REPORT if f["kind"] != "music"]
     (ROOT / "audio-prompts.json").write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Finished: {len(REPORT)} assets, {sum(a['bytes'] for a in REPORT) / 1024 / 1024:.1f} MiB", flush=True)
@@ -432,5 +449,8 @@ def main(modern_only: bool = False):
 
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--modern-foley", action="store_true", help="Rebuild only the two modern scene effects and their records")
-    main(parser.parse_args().modern_foley)
+    scope = parser.add_mutually_exclusive_group()
+    scope.add_argument("--modern-foley", action="store_true", help="Rebuild only the two modern scene effects and their records")
+    scope.add_argument("--music", nargs="+", help="Master only these ACE-Step tracks and update their records")
+    args = parser.parse_args()
+    main(args.modern_foley, args.music)
