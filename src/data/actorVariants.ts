@@ -1,13 +1,14 @@
 import { portraitNameFor, type Expression } from './expressions';
 import type { Beat, Scene } from '../types';
 
-export type ActorVariant = 'default' | 'home' | 'school' | 'dining' | 'winter' | 'listening' | 'palm' | 'tired' | 'trail';
+export type ActorVariant = 'default' | 'home' | 'school' | 'dining' | 'winter' | 'listening' | 'palm' | 'tired' | 'trail' | 'summit';
 
 // Only reviewed, exported sprites belong here. Expressions fall back within
 // the current outfit before trying a canonical portrait on a network failure.
 export const ACTOR_VARIANTS: Record<string, Partial<Record<ActorVariant, readonly Expression[]>>> = {
-  shen: { home: ['default', 'surprised', 'smile'], school: ['default', 'smile', 'surprised', 'angry', 'sad', 'closed'] },
-  tang: { dining: ['default'] },
+  shen: { home: ['default', 'surprised', 'smile'], school: ['default', 'smile', 'surprised', 'angry', 'sad', 'closed'], summit: ['default'] },
+  tang: { dining: ['default'], summit: ['default'] },
+  song: { summit: ['default'] },
   xu: { winter: ['default', 'sad'] },
   mi: { listening: ['default'], palm: ['default'], tired: ['default'] },
   linyue: { trail: ['default', 'smile'] },
@@ -28,6 +29,7 @@ export const POSE_BEATS: Record<string, ActorVariant> = {
 
 export function variantForBeat(key: string, beat: Beat, scene: Scene): ActorVariant {
   if (key === 'linyue' && scene.id === 'modern-o-5-4') return 'trail';
+  if (ACTOR_VARIANTS[key]?.summit && /^modern-o-5-[4-7]$/.test(scene.id)) return 'summit';
   if (key === 'mi') return POSE_BEATS[beat.id] ?? 'default';
   if (key === 'shen') {
     if (scene.id === '0-1' || scene.id === '终-5' || (scene.id === '终-4' && beat.background.startsWith('bedroom'))) return 'home';

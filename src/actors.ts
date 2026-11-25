@@ -3,10 +3,21 @@ import { extraFor } from './data/extras';
 import { BEAT_OVERRIDES, expressionForBeat, type Expression } from './data/expressions';
 import { presenceForBeat } from './data/presence';
 import { modernExpressionForBeat } from './data/modernPerformance';
-import { variantForBeat, type ActorVariant } from './data/actorVariants';
+import { actorPortraitCandidates, variantForBeat, type ActorVariant } from './data/actorVariants';
+import { overseasArt, overseasPortrait } from './overseasArt';
+import type { OverseasTone } from './overseasIdentity';
 import type { Beat, Character, Scene } from './types';
 
 export type StageActor = { character: Character; label: string; castKey: string; expression: Expression; variant: ActorVariant };
+
+export function portraitCandidatesForActor(actor: StageActor, tone?: OverseasTone): string[] {
+  const names = actorPortraitCandidates(actor);
+  if (!tone || tone === 'neutral' || actor.character.key !== 'linyue') return names;
+  const suited = names.map(name => overseasArt(name, tone)).filter((name, index) => name !== names[index]);
+  const trail = actor.variant === 'trail' ? overseasArt('portrait-linyue-trail', tone) : 'portrait-linyue-trail';
+  const selected = overseasPortrait('linyue', tone);
+  return [...new Set([...suited, ...(actor.variant === 'trail' && trail !== 'portrait-linyue-trail' ? [trail] : []), selected, ...names])];
+}
 
 /** Presentation only: the speaker and the story state stay untouched. */
 export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActor | undefined {

@@ -1,19 +1,23 @@
 import { t, tr, useLocale } from '../i18n';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { asset } from '../data/world';
-import { artQuality, subscribeArtQuality, artViewport, subscribeArtViewport, avifEnabled, subscribeArtFormat } from '../assets';
+import { artQuality, subscribeArtQuality, artViewport, subscribeArtViewport, avifEnabled, subscribeArtFormat, assetSources, imageUrl } from '../assets';
 import { preloadImage } from '../preload';
+import { overseasArt } from '../overseasArt';
+import type { OverseasTone } from '../overseasIdentity';
 
-type ArtLayer = { name: string; url: string };
+type ArtLayer = { name: string; url: string; composition?: 'portrait' };
+const portraitCompositions = new Set(['cg-modern-summit-r4', 'cg-modern-porridge-plaque']);
 
-export function SceneArt({ name, motion = true, cg, readingId, blackout = false }: { name: string; motion?: boolean; cg?: string; readingId: string | null; blackout?: boolean }) {
+export function SceneArt({ name, motion = true, cg, readingId, blackout = false, tone }: { name: string; motion?: boolean; cg?: string; readingId: string | null; blackout?: boolean; tone?: OverseasTone }) {
   useLocale();
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
   useSyncExternalStore(subscribeArtFormat, avifEnabled, () => false);
   useSyncExternalStore(subscribeArtViewport, artViewport, () => 'false:false');
   const art = useRef<HTMLDivElement>(null);
   const target = cg || name;
-  const selected = asset(target);
+  const artwork = overseasArt(target, tone);
+  const selected = asset(artwork);
   const [{ loaded, previous }, setLayers] = useState<{ loaded: ArtLayer | null; previous: ArtLayer | null }>({ loaded: null, previous: null });
   useEffect(() => {
     let cancelled = false;
@@ -22,22 +26,31 @@ export function SceneArt({ name, motion = true, cg, readingId, blackout = false 
     // making dialogue play against the previous location indefinitely.
     const timer = setTimeout(clearOldArt, 1250);
     const show = async () => {
-      let next: ArtLayer;
-      try {
-        next = { name: target, url: await preloadImage(selected, 'high') };
-      } catch {
+      const background = overseasArt(name, tone);
+      const sources = new Map([
+        [artwork, target],
+        [target, target],
+        [background, name],
+        [name, name],
+      ]);
+      for (const [candidate, sceneArt] of sources) {
         if (cancelled) return;
-        if (target === name) { clearOldArt(); return; }
-        try { next = { name, url: await preloadImage(asset(name), 'high') }; }
-        catch { if (!cancelled) clearOldArt(); return; }
+        try {
+          const mobile = portraitCompositions.has(sceneArt) ? assetSources(candidate).mobile : undefined;
+          const url = await preloadImage(candidate === artwork ? selected : asset(candidate), 'high');
+          if (cancelled) return;
+          const portrait = mobile && [mobile.webp, mobile.avif].some(source => source && imageUrl(source) === url);
+          const next: ArtLayer = { name: sceneArt, url, composition: portrait ? 'portrait' : undefined };
+          clearTimeout(timer);
+          setLayers(current => current.loaded?.url === next.url && current.loaded.name === next.name ? current : { loaded: next, previous: current.loaded });
+          return;
+        } catch { /* Try the next available version. */ }
       }
-      if (cancelled) return;
-      clearTimeout(timer);
-      setLayers(current => current.loaded?.url === next.url && current.loaded.name === next.name ? current : { loaded: next, previous: current.loaded });
+      if (!cancelled) clearOldArt();
     };
     void show();
     return () => { cancelled = true; clearTimeout(timer); };
-  }, [target, selected, name]);
+  }, [target, artwork, selected, name, tone]);
   useEffect(() => {
     if (!previous) return;
     const timer = setTimeout(() => setLayers(current => ({ ...current, previous: null })), 1700);
@@ -67,8 +80,8 @@ export function SceneArt({ name, motion = true, cg, readingId, blackout = false 
     return () => { active = false; observer.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(frame); };
   }, [target, loaded?.url, readingId]);
   if (blackout) return <div key="blackout" ref={art} className="scene-art scene-art--blackout" data-art="blackout" aria-hidden="true" />;
-  return <div ref={art} data-art={loaded?.name} className={`scene-art ${loaded?.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
-    {tr(previous && <div className="scene-image scene-image--previous" data-art={previous.name} style={{ backgroundImage: `url("${previous.url}")` }} />)}
+  return <div ref={art} data-art={loaded?.name} data-composition={loaded?.composition} className={`scene-art ${loaded?.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
+    {tr(previous && <div className="scene-image scene-image--previous" data-art={previous.name} data-composition={previous.composition} style={{ backgroundImage: `url("${previous.url}")` }} />)}
     {tr(loaded && <div key={loaded.url} className="scene-image scene-image--current" data-art={loaded.name} style={{ backgroundImage: `url("${loaded.url}")` }} />)}
     <div className="scene-shade" />
     <div className="scene-grain" />

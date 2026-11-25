@@ -121,8 +121,9 @@ test('ancient locations and CGs survive dialogue and narrated comparisons', () =
     for (const beat of beats) assert.equal(beat.background, background, beat.id);
   }
   const houses = pages('modern-r-C-1a');
-  assert.ok(houses.some(b => b.background === 'study') && houses.some(b => b.background === 'palace'));
-  assert.ok(houses.some(b => b.background === 'modern-chu-courtyard'));
+  for (const background of ['study', 'palace', 'modern-chu-courtyard', 'modern-minister-hall', 'modern-minister-ancestor', 'modern-minister-veteran', 'modern-minister-orange', 'modern-minister-inlaw']) {
+    assert.ok(houses.some(b => b.background === background), background);
+  }
   assert.ok(houses.every(b => b.background !== 'ruins'));
   const briefMemory = pages('modern-k-E-7');
   assert.deepEqual(briefMemory.filter(beat => beat.background === 'modern-dorm').map(beat => beat.id), ['modern-k-E-7:5:0']);
@@ -136,18 +137,24 @@ test('return and finale images appear after their scripted actions and old galle
     ['modern-o-4-1:14:0', 'modern-classroom', /课堂上第一次举手/],
     ['modern-o-4-1:19:0', 'modern-dorm-quiet-r2', /夜里，室友/],
     ['modern-o-4-1:25:0', 'modern-dorm-quiet-r2', /电脑前/],
+    ['modern-o-2-1:2:0', 'modern-night-river', /第一夜/],
+    ['modern-o-5-2:2:0', 'modern-office', /导师顺口问起/],
+    ['modern-o-5-2:4:0', 'modern-office-video', /给家里视频/],
     ['modern-o-5-5:4:0', MODERN_GLANCE_ART, /亮黄外套/],
     ['modern-o-5-5:9:0', 'modern-mountain-path', /消失不见/],
     ['modern-o-5-6:4:0', 'modern-sunset', /沈辞！/],
     ['modern-o-5-6:9:0', MODERN_SUMMIT_ART, /笔记递过去/],
     ['modern-o-5-7:15:0', 'modern-sunset', /拍照啦/],
     ['modern-o-5-7:17:0', MODERN_PHOTO_ART, /按下快门/],
+    ['modern-k-C-3:2:0', 'cg-modern-porridge-offering', /把碗塞给媭/],
+    ['modern-k-C-3:7:0', 'village', /戴上面具/],
+    ['modern-k-F-2:1:0', 'modern-herb-eaves', /药草/],
     ['modern-k-G-1:1:0', 'river', /舟很轻/],
-    ['modern-k-G-1:2:0', 'cg-modern-quiet-shoal', /蜷着/],
+    ['modern-k-G-1:2:0', 'cg-modern-quiet-shoal-six', /蜷着/],
     ['modern-k-G-2:1:0', 'cg-modern-cold-porridge', /一碗粥/],
     ['modern-k-G-2:3:0', 'cg-modern-porridge-plaque', /一块木牌/],
     ['modern-k-G-3:14:0', 'cg-modern-porridge-plaque', /他们听不见了/],
-    ['modern-k-G-4:1:0', 'cg-modern-quiet-shoal', /红绳的另一头/],
+    ['modern-k-G-4:1:0', 'cg-modern-shoal-cord', /红绳的另一头/],
     ['modern-k-G-4:4:0', 'river', /人去舟空/],
   ] as const) {
     const beat = pages(id.split(':')[0]).find(item => item.id === id);
@@ -174,7 +181,7 @@ test('reviewed r2 crops load in original quality on portrait screens and survive
   });
   globalThis.matchMedia = mobile;
   try {
-    for (const name of ['cg-modern-word-stall-r3', 'cg-modern-jade-palm-r2', 'cg-modern-dorm-unease-r2', 'cg-modern-dorm-carving-r2', 'cg-modern-dorm-dark-r2', 'cg-modern-jade-light-r2', 'cg-modern-notebook-open', 'cg-modern-translation-r3', 'cg-modern-paper-note']) {
+    for (const name of ['cg-modern-word-stall-r3', 'cg-modern-jade-palm-r2', 'cg-modern-dorm-unease-r2', 'cg-modern-dorm-carving-r2', 'cg-modern-dorm-dark-r2', 'cg-modern-jade-light-r2', 'cg-modern-notebook-open', 'cg-modern-translation-r3', 'cg-modern-paper-note', 'cg-modern-summit-r4', 'cg-modern-porridge-plaque']) {
       assert.match(assetSources(name).webp, /art-original\//);
       assert.match(asset(name), new RegExp(`${name}-m\\.webp$`));
       assert.ok(existsSync(new URL(`../public/art-original/${name}-m.webp`, import.meta.url)));

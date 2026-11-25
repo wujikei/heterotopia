@@ -207,8 +207,30 @@ try {
       return layer && getComputedStyle(layer).backgroundColor === 'rgb(0, 0, 0)';
     });
     assert.equal(await page.locator('.scene-image, .actor').count(), 0);
-    assert.match(await page.locator('.dialogue-text').getAttribute('aria-label'), /切黑/);
-    results.push({ check: 'the scripted blackout clears background and portraits while preserving the saved page', passed: true });
+    assert.equal(await page.locator('.dialogue-text').getAttribute('aria-label'), '');
+    // The story intentionally ignores a second advance inside its 180 ms input guard.
+    await page.waitForTimeout(200);
+    await page.keyboard.press('ArrowRight');
+    await page.waitForFunction(() => !document.querySelector('.scene-art[data-art="blackout"]'));
+    results.push({ check: 'the scripted blackout clears art and stays silent while allowing the story to advance', passed: true });
+    await context.close();
+  }
+  {
+    const sceneId = 'modern-k-G-2';
+    const id = `${sceneId}:2:0`;
+    const history = [{ id, sceneId, speaker: '', kind: 'text', text: '（就是 C-3 那位老妇人送的那碗。没有人收。）' }];
+    const seed = { ...state, campaign: 'overseas', sceneId, beatId: `${sceneId}:3:0`, history };
+    const { context, page } = await open({ width: 390, height: 844 }, undefined, {}, seed);
+    await page.getByRole('button', { name: /^续梦/ }).click();
+    await page.locator('.dialogue-text').waitFor();
+    await page.keyboard.press('ArrowLeft');
+    const entry = page.getByRole('button', { name: /重读.*临行那天，老妇人送来的那碗粥/ });
+    await entry.waitFor();
+    assert.equal(await page.locator('.history-content').getByText(/C-3/).count(), 0);
+    await entry.click();
+    await page.locator(`.dialogue-text[data-beat-id="${id}"]`).waitFor();
+    assert.match(await page.locator('.dialogue-text').getAttribute('aria-label'), /临行那天，老妇人送来的那碗粥/);
+    results.push({ check: 'mobile backlog cleans the old C-3 caption and replays its original page', passed: true });
     await context.close();
   }
   {

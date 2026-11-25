@@ -16,7 +16,7 @@ const requiredArt = new Set([
   ...Object.keys(BACKGROUNDS).flatMap(name => [`${name}.webp`, `${name}-thumb.webp`]),
   ...modernStagedArtNames().map(name => `${name}.webp`),
   ...[...CHARACTERS, ...MODERN_CHARACTERS].flatMap(character => [`${portraitName(character.key)}.webp`, `portrait-${character.key}-face.webp`]),
-  ...imageManifest.avif.map(name => `${name}.avif`),
+  ...imageManifest.avif.flatMap(name => [`${name}.avif`, `${name}.webp`]),
   ...imageManifest.mobile.flatMap(name => [`${name}-m.avif`, `${name}-m.webp`]),
   ...Object.keys(imageManifest.originals ?? {}).map(name => `${name}.webp`),
   ...Object.entries(AVAILABLE).flatMap(([key, expressions]) => expressions.map(expression => `${portraitNameFor(key, expression)}.webp`)),

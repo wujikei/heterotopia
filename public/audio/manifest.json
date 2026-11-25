@@ -629,6 +629,28 @@
       "integratedLUFS": -18.21,
       "truePeakDB": -2.75,
       "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "sfx-dorm-bowl.mp3",
+      "title": "宿舍瓷碗落桌",
+      "kind": "effect",
+      "loop": false,
+      "seconds": 0.5,
+      "bytes": 11703,
+      "integratedLUFS": -24.65,
+      "truePeakDB": -9.49,
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "file": "sfx-camera-shutter.mp3",
+      "title": "山顶轻快门",
+      "kind": "effect",
+      "loop": false,
+      "seconds": 0.42,
+      "bytes": 10133,
+      "integratedLUFS": -28.45,
+      "truePeakDB": -9.47,
+      "source": "Original deterministic procedural sound design"
     }
   ]
 }

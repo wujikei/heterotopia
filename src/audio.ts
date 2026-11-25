@@ -153,7 +153,11 @@ export class Soundscape {
     if (this.context && this.context.state !== 'running') { this.publishPlayback(); return; }
     // Fast-forward keeps one bed and does not fetch every passing cue.
     if (!this.options.skipping || this.previewId) { this.syncMusic(); this.syncAmbience(); }
-    if (this.settings.muted || this.options.blocked || this.options.skipping || this.previewId || document.hidden) return;
+    if (this.settings.muted || this.options.skipping || this.previewId || document.hidden) return;
+    if (this.context && this.settings.sfxVolume) {
+      for (const id of this.frame.prepareEffects ?? []) void this.buffer(`sfx-${id}.mp3`).catch(() => {});
+    }
+    if (this.options.blocked) return;
     for (const event of this.frame.events) {
       if (!event.id || this.seen.has(event.id) || this.pendingEvents.has(event.id)) continue;
       if (!event.effects.length) { this.seen.add(event.id); continue; }
@@ -185,7 +189,8 @@ export class Soundscape {
     if (this.musicVoice?.key === desired) {
       if (this.musicTarget !== desired) ++this.musicRequest;
       this.musicTarget = desired;
-      if (this.musicVoice.level !== gain) this.fade(this.musicVoice, gain, Math.max(1, transition));
+      const fade = this.previewId ? Math.max(1, transition) : this.frame.musicFade ?? Math.max(1, transition);
+      if (this.musicVoice.level !== gain) this.fade(this.musicVoice, gain, fade);
       this.publish({ loading: false, loadingTrack: null, track: desired, error: null });
       this.publishPlayback();
       return;
@@ -231,16 +236,17 @@ export class Soundscape {
 
   private syncAmbience(): void {
     const wanted = this.previewId ? [] : this.frame.ambience;
+    const fade = this.previewId ? undefined : this.frame.ambienceFade;
     this.ambienceTargets = new Map(wanted);
     for (const [id, voice] of this.ambience) {
       if (this.ambienceTargets.has(id)) continue;
-      this.retire(voice, 2.6); this.ambience.delete(id);
+      this.retire(voice, fade ?? 2.6); this.ambience.delete(id);
     }
     for (const id of this.ambienceRequests.keys()) if (!this.ambienceTargets.has(id)) this.ambienceRequests.delete(id);
     for (const [id, level] of wanted) {
       const gain = level * (this.options.dimmed ? .65 : 1);
       const existing = this.ambience.get(id);
-      if (existing) { if (existing.level !== gain) this.fade(existing, gain, 2.8); continue; }
+      if (existing) { if (existing.level !== gain) this.fade(existing, gain, fade ?? 2.8); continue; }
       if (this.ambienceRequests.has(id) || this.settings?.muted) continue;
       const token = ++this.serial;
       this.ambienceRequests.set(id, token);
@@ -249,7 +255,7 @@ export class Soundscape {
         if (!voice) { if (this.ambienceRequests.get(id) === token) this.ambienceRequests.delete(id); return; }
         this.ambienceRequests.delete(id);
         this.ambience.set(id, voice);
-        this.fade(voice, (this.ambienceTargets.get(id) ?? 0) * (this.options.dimmed ? .65 : 1), 3.2);
+        this.fade(voice, (this.ambienceTargets.get(id) ?? 0) * (this.options.dimmed ? .65 : 1), this.frame.ambienceFade ?? 3.2);
         this.trimCache();
       }).catch(() => { if (this.ambienceRequests.get(id) === token) this.ambienceRequests.delete(id); });
     }

@@ -5,6 +5,7 @@ Lossless ACE masters belong in artifacts/audio-masters, outside the shipped game
 """
 from __future__ import annotations
 
+from argparse import ArgumentParser
 import json
 import math
 from pathlib import Path
@@ -30,10 +31,10 @@ def timeline(seconds: float) -> np.ndarray:
     return np.arange(round(seconds * SR), dtype=np.float64) / SR
 
 
-def noise(seconds: float, low=30.0, high=10000.0) -> np.ndarray:
+def noise(seconds: float, low=30.0, high=10000.0, rng=RNG) -> np.ndarray:
     """Band-shaped, periodic noise; an FFT avoids platform DSP dependencies."""
     n = round(seconds * SR)
-    spectrum = np.fft.rfft(RNG.normal(size=n))
+    spectrum = np.fft.rfft(rng.normal(size=n))
     freq = np.fft.rfftfreq(n, 1 / SR)
     shape = 1 / np.sqrt(1 + (freq / high) ** 8)
     shape *= 1 - 1 / np.sqrt(1 + (freq / max(low, 1)) ** 8)
@@ -192,7 +193,7 @@ def music_score(plan: dict) -> None:
     (ROOT / "src" / "data" / "soundtrack.json").write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def effect_palette() -> dict[str, tuple[str, np.ndarray]]:
+def effect_palette(modern_only: bool = False) -> dict[str, tuple[str, np.ndarray]]:
     effects = {}
     def add(key, title, signal, wet=.13):
         signal = spatial(signal, wet=wet)
@@ -202,6 +203,32 @@ def effect_palette() -> dict[str, tuple[str, np.ndarray]]:
         signal[-fade:] *= np.linspace(1, 0, fade)[:, None]
         signal *= .28 / max(np.max(np.abs(signal)), 1e-9)
         effects[key] = (title, signal)
+
+    if modern_only:
+        rng = np.random.default_rng(251126)
+        # A filled bowl transfers a short contact to a wood tabletop.
+        duration = .50
+        bowl = np.zeros(len(timeline(duration)))
+        contact = (.50 * resonator(.34, [232, 503, 719, 1468, 2501],
+                                  [.053, .044, .031, .020, .010],
+                                  [.66, .38, .22, .14, .09], attack=.002)
+                   + .085 * noise(.34, 720, 4100, rng) * envelope(timeline(.34), .001, .013))
+        place(bowl, contact, .022)
+        add("dorm-bowl", "宿舍瓷碗落桌", bowl, .045)
+
+        # A compact camera releases and returns in one quick mechanical gesture.
+        duration = .42
+        shutter = np.zeros(len(timeline(duration)))
+        t = timeline(.14)
+        latch = resonator(.14, [436, 1086, 1871, 3242, 4934],
+                          [.025, .023, .013, .008, .004],
+                          [.27, .38, .20, .12, .05], attack=.0007)
+        latch += noise(.14, 950, 5600, rng) * envelope(t, .00065, .007) * .23
+        recoil = noise(.14, 430, 4200, rng) * envelope(t, .0012, .018) * .18
+        place(shutter, latch, .024)
+        place(shutter, recoil, .066)
+        add("camera-shutter", "山顶轻快门", shutter, .025)
+        return effects
 
     t = timeline(.24)
     paper = noise(.24, 1100, 10000) * (np.sin(np.pi * np.minimum(t / .21, 1)) ** 3) * (.6 + .4 * np.sin(t * 80) ** 2)
@@ -299,6 +326,7 @@ def effect_palette() -> dict[str, tuple[str, np.ndarray]]:
         place(heartbeat, thud, at)
         place(heartbeat, thud, at + .18, .5)
     add("heartbeat", "近处心跳", heartbeat, .08)
+    effects.update(effect_palette(modern_only=True))
     return effects
 
 
@@ -362,20 +390,39 @@ def ambient_palette() -> dict[str, tuple[str, np.ndarray]]:
     return result
 
 
-def main():
+def encode_effects(palette: dict[str, tuple[str, np.ndarray]]) -> None:
+    for key, (title, audio) in palette.items():
+        path = WORK / f"sfx-{key}.wav"
+        write_wave(path, audio)
+        encode(path, f"sfx-{key}.mp3", title, "effect", False, -24, -7, len(audio) / SR)
+
+
+def main(modern_only: bool = False):
     for folder in [WORK, DEST]:
         folder.mkdir(parents=True, exist_ok=True)
     plan = json.loads((ROOT / "audio-prompts.json").read_text(encoding="utf-8"))
+    if modern_only:
+        encode_effects(effect_palette(modern_only=True))
+        manifest_path = DEST / "manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        fresh = {item["file"]: item for item in REPORT}
+        manifest["files"] = [fresh.pop(item["file"], item) for item in manifest["files"]]
+        manifest["files"].extend(fresh.values())
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        fresh = {item["file"].removesuffix(".mp3"): {
+            "id": item["file"].removesuffix(".mp3"), "title": item["title"], "source": item["source"]
+        } for item in REPORT}
+        plan["effects"] = [fresh.pop(item["id"], item) for item in plan["effects"]]
+        plan["effects"].extend(fresh.values())
+        (ROOT / "audio-prompts.json").write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        return
+
     music_score(plan)
     for key, (title, audio) in ambient_palette().items():
         path = WORK / f"amb-{key}.wav"
         write_wave(path, audio)
         encode(path, f"amb-{key}.mp3", title, "ambience", True, -26, -6, len(audio) / SR)
-    for key, (title, audio) in effect_palette().items():
-        path = WORK / f"sfx-{key}.wav"
-        write_wave(path, audio)
-        # Normalization is peak constrained for short transients, with a quiet target.
-        encode(path, f"sfx-{key}.mp3", title, "effect", False, -24, -7, len(audio) / SR)
+    encode_effects(effect_palette())
     manifest = {"version": 1, "sampleRate": SR, "musicMastering": "One-bar circular equal-power overlap; two-pass EBU R128 -18 LUFS / -2 dBTP", "files": REPORT}
     (DEST / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     plan["effects"] = [{"id": f["file"].removesuffix(".mp3"), "title": f["title"], "source": f["source"]} for f in REPORT if f["kind"] != "music"]
@@ -384,4 +431,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--modern-foley", action="store_true", help="Rebuild only the two modern scene effects and their records")
+    main(parser.parse_args().modern_foley)

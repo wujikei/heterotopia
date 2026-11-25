@@ -1,0 +1,3733 @@
+{
+  "engine": "Local ComfyUI / Qwen-Image 2.1",
+  "date": "2026-11-25",
+  "jobs": [
+    {
+      "id": "trail-neutral",
+      "promptId": "697a9b57-1f6a-45b1-aea6-6e4cff21d4c9",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "A polished, coherent full redraw of the young adult in reference 1, for a Chinese painterly visual novel. Keep his slim oval face, thoughtful eyes, thin round metal spectacles, soft tousled short black hair, understated moss green canvas backpack, his three-quarter turn facing left, visual scale and light direction. Draw head, neck, shoulders, collar, torso and arms as a single continuous anatomical figure in one integrated illustration. The jaw flows into a naturally proportioned neck with realistic shoulders, a normal collarbone and one continuous area of skin and soft value transitions. Delicate naturalist brushwork and muted colors, clean silhouette from head to upper thighs, from above hair to mid thigh, accurate hands, no letters or added accessories. Flat uniform bright magenta #e800e8 chroma key background. No scenery or cast shadow. He has taken off his slate-blue knit cardigan, and wears a simple off-white crew-neck T-shirt with sleeves above the elbows. One forearm comfortably carries the folded slate-blue cardigan. Backpack straps are intact. Keep both arms and complete hair in frame, no cropped knees required. He looks attentive and calm, mouth at rest.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 864,
+            "height": 1152,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113251,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/trail-neutral"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/linyue-key.png"
+          }
+        }
+      },
+      "outputSha256": "13d6db36f48cdf151ec3bdb8e68be688b37977929e7f4968567930c1929c513f"
+    },
+    {
+      "id": "appearance-light",
+      "promptId": "08f1de98-8097-4e42-84a7-b683f6797567",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "A polished, coherent full redraw of the young adult in reference 1, for a Chinese painterly visual novel. Keep his slim oval face, thoughtful eyes, thin round metal spectacles, soft tousled short black hair, understated moss green canvas backpack, his three-quarter turn facing left, visual scale and light direction. Draw head, neck, shoulders, collar, torso and arms as a single continuous anatomical figure in one integrated illustration. The jaw flows into a naturally proportioned neck with realistic shoulders, a normal collarbone and one continuous area of skin and soft value transitions. Delicate naturalist brushwork and muted colors, clean silhouette from head to upper thighs, from above hair to mid thigh, accurate hands, no letters or added accessories. Flat uniform bright magenta #e800e8 chroma key background. No scenery or cast shadow. Keep his slate-blue modern cardigan, cream cotton T-shirt, green backpack and glasses. Preserve framing, build, features and head angle. This selectable look has pale cool beige skin with subtle realistic cheek warmth. Keep the same silhouette and formal painterly brushwork.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 864,
+            "height": 1152,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113253,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/appearance-light"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/linyue-key.png"
+          }
+        }
+      },
+      "outputSha256": "17ea35fd4d90e31e4d2d5bdba36997d04179502e40d18ed9f0942b458d820164"
+    },
+    {
+      "id": "appearance-deep",
+      "promptId": "d1d6250d-dfc0-4c8a-9ad0-baa558e1079a",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "A polished, coherent full redraw of the young adult in reference 1, for a Chinese painterly visual novel. Keep his slim oval face, thoughtful eyes, thin round metal spectacles, soft tousled short black hair, understated moss green canvas backpack, his three-quarter turn facing left, visual scale and light direction. Draw head, neck, shoulders, collar, torso and arms as a single continuous anatomical figure in one integrated illustration. The jaw flows into a naturally proportioned neck with realistic shoulders, a normal collarbone and one continuous area of skin and soft value transitions. Delicate naturalist brushwork and muted colors, clean silhouette from head to upper thighs, from above hair to mid thigh, accurate hands, no letters or added accessories. Flat uniform bright magenta #e800e8 chroma key background. No scenery or cast shadow. Keep his slate-blue modern cardigan, cream cotton T-shirt, green backpack and glasses. Preserve framing, build, features and head angle. This selectable look has a rich deep brown complexion with dignified warm brown undertones across face, neck and both hands. Keep the same silhouette, recognisable identity and style.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 864,
+            "height": 1152,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113254,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/appearance-deep"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/linyue-key.png"
+          }
+        }
+      },
+      "outputSha256": "09fef5a640f2448fbbf05f73520978e4463f7bafcb1d2515fd6a65a869792be8"
+    },
+    {
+      "id": "porridge-mobile",
+      "promptId": "3129c9d2-4026-49e3-b0ac-2981b8ccbf42",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Reframe this exact quiet Chinese historical visual novel still in a native 3:4 aspect ratio. Same rough chipped coarse dark ceramic bowl of cooled white rice porridge and old narrow weathered wooden memorial plaque in one uninterrupted painting. Bowl just left and slightly nearer than the plaque, both within middle 68 percent of frame width. The bowl rim has one clear old notch, surface skin of cold porridge slightly wrinkled and no steam. Upright wood planted beside the bowl with two small stones at base, faint short chipped marks are not readable, raw grained wood. High enough camera to see porridge surface, centered low-mid height while keeping the top of plaque in frame. Shallow river, weathered stone and understated waxy reeds, no people. Preserve source light, colors, quiet melancholy and realistic brushwork. No readable marks, text, subtitles or logos.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 768,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113256,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/porridge-mobile"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/porridge.png"
+          }
+        }
+      },
+      "outputSha256": "09fc5692c0e46192f93df202f6fec3d2de18f1445d578b175761423320152ac8"
+    },
+    {
+      "id": "herb-eaves",
+      "promptId": "0946662c-110e-4cb6-8f7a-0e294c7f2abf",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 512,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Interior edge of a humble Warring States Chu cottage in an unreal clean sunlit haven. Low deep timber eaves are the focus. Rows of sun-dried medicine herbs in plain tied bundles hang under them, varied sizes, one old dark pottery bottle and straw mat inside. Doorway beside the eaves, pale warm off-white light meets the faint blue reflection of water under the sill, extremely subtle, no visible dirt floor outside, no grand palace. A sparse lived-in modest space of safety for a character who grew up on the road. No people or letters. Painterly art matching references, blue-grey wood with gold highlights and muted ochre greens. 16:9, anchors in middle third.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113258,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/herb-eaves"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/chu-courtyard.png"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/shoal.png"
+          }
+        }
+      },
+      "outputSha256": "349796f78075bddb871f22cf2602ea03a8129e0faea5aca3cc9bd33201f84161"
+    },
+    {
+      "id": "office-video",
+      "promptId": "edacdd0e-b0ab-47e4-b355-e7c51b5dd8ff",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Repaint the featured contemporary tutor's office from reference 1 in late evening. Same dark desks, soft curtains, books, mildly drooping plant, lamp and heater, same viewing angle and subdued realistic visual novel illustration. Open unbranded laptop on the desk facing the player, soft blue reflection and completely unreadable screen, a small stack of freshly printed paper within the light of a warm desk lamp. Quiet simple video call mood, no floating effects or text, no people. Outdoors only dark navy window reflection. Keep laptop near center on a tablet crop and lower frame clear for story UI.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113259,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/office-video"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/office.png"
+          }
+        }
+      },
+      "outputSha256": "e856f2d1225aeec6a32ef288ca829f27f4308abb4180e46790d971848fed8c85"
+    },
+    {
+      "id": "trail-smile-matched",
+      "promptId": "72ae18c2-d842-477b-aaef-86d4d86b6b79",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Same complete painterly student portrait in Image 1. Preserve pose, face shape, figure scale, tousled short black hair, round glasses, T-shirt, backpack and exact position of cardigan on his left forearm. Preserve the portrait crop, neck and shoulder anatomy and pink background. Redraw the entire unified illustration with one subtle closed-mouth warm smile and slightly softened eyes. Keep his head angle, hand position and both sides of the collar as shown. Natural brushwork. No change to any other pose or object.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "VAEEncode",
+          "inputs": {
+            "pixels": [
+              "20",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113261,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 0.58,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/trail-smile-matched"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/trail-source.png"
+          }
+        }
+      },
+      "outputSha256": "93ef3eee7d7861ac1f6c1f6c6c4f8ae862c7bbddfd4e8a9e521278171df9f0a5"
+    },
+    {
+      "id": "song-summit",
+      "promptId": "47a860f5-eb55-4ad7-8062-f72c3664f8d1",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 512,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Image 1 is the character identity and game sprite framing reference. Image 2 is the end-of-story mountain clothing and specific outfit reference. Create exactly one continuous, complete, calm hand-painted character sprite in the original Chinese visual-novel style, shown from above head to upper thighs, natural slim neck, shoulders and identical facial identity. Clean accurate silhouette. teenage Song Jiashu, the friendly animated young friend from reference 1, warm expressive face, short dark slightly messy hair. Light tan casual windbreaker with cream T-shirt, exact clothing from the teenager on far right in reference 2. A slight open friendly smile, natural shoulders and an easy relaxed stance. Use subdued realistic brushwork and soft overcast colors. Flat uniform solid bright magenta #e800e8 backdrop for matte extraction, no drop shadow, scenery, floor or second figure. No logos or text.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 864,
+            "height": 1152,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113264,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/song-summit"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/song-key.png"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/summit.png"
+          }
+        }
+      },
+      "outputSha256": "de0ae39be7574403c0fddf817acef426449759a33bbc1fed1a4d162f74434935"
+    },
+    {
+      "id": "summit-mobile-insert",
+      "promptId": "238dbf2e-da88-4f1a-a2ab-f433f24567cd",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Native portrait 3:4 close insert of the exact summit in Image 1. Show TWO young people only, Tang Jin and Shen Ci, waist-up. Tang Jin on left, calm teenage girl with black ponytail, sage olive backpack and oat jacket, hands a narrow unbranded notebook to the boy on right in an open navy jacket over an ivory shirt, dark short hair and small healed eyebrow scar (no blood). Each has just one hand contacting the notebook at opposite ends, the other hands down and clear. She lets go after he takes it. Three-quarter side view preserves their identities, they look at each other or the book. NO other people in this close insert. Familiar ridge, softly painted calm golden late-afternoon river backdrop, no fog, muted gold and blue green. Place the notebook at 56% image height, keep arms and shoulders natural and the bottom quarter clear for the UI. No writing.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 768,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113265,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/summit-mobile-insert"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/summit.png"
+          }
+        }
+      },
+      "outputSha256": "a6ca4e27fec878ddec19af3a4a2685a642c8994b9bdd75ceae451edb77cb0f2a"
+    },
+    {
+      "id": "riverside-night",
+      "promptId": "30bb1189-ffd9-4b26-867e-89e8d2d6c74f",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Paint a quiet riverbank on a Chu night with laterally flowing water, using Image 1 brushwork and river color but viewed from a low bank at the water's edge. Dark mountains and modest natural bank, restrained moonlight highlighting ripples, one broken old wooden post by the shallows, Chinese painterly realism, no lanterns, no boat, no human, no text. Confined muted colors and quiet negative space so a speaker silhouette is optional. Natural nocturnal reflection.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113267,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/riverside-night"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/old-river.png"
+          }
+        }
+      },
+      "outputSha256": "9f1e65fdf767a326289c487f7d6f60d787bd761e0b977bcacecedd4aebba3153"
+    },
+    {
+      "id": "minister-hall",
+      "promptId": "23b96e0d-0ade-46b5-8812-69cf07cae1a4",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Interior of a powerful Chu Warring States minister's household at night, detailed Chinese painterly realism with materials close to reference. An enclosed private reception hall of dark timber, deep-red lacquer pillars, warm hanging oil lanterns, a few bronze food vessels, a translucent plain curtain, rich but restrained. Low seating, mat, lacquer tray. No king's throne, no palace-sized space, no figures, no lettering, darker lower foreground for captions. Red and dusky amber lighting.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113268,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/minister-hall"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/chu-courtyard.png"
+          }
+        }
+      },
+      "outputSha256": "089036c1126ff4152895fad3be05394264848b8ed713964534e346a5f51ca83e"
+    },
+    {
+      "id": "minister-ancestor",
+      "promptId": "49f4d63f-4c1c-4f7e-9ca6-7d79a3c994ba",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Private ancestral room in the house of an ancient Chu ritual official. A low dark timber hall, daylight filtered through light smoke above half burned incense, small unlettered ancestral tablet, turtle shell, yarrow stems and a shallow lacquer offering dish with withered fruit. Human-scale domestic reception hall, Warring States Chinese materials, coherent with reference's matte muted paint, no people, no printed text, natural light and camera.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113269,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/minister-ancestor"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/chu-courtyard.png"
+          }
+        }
+      },
+      "outputSha256": "b9dd4be3c52aa3d5362b3366bbbbae41be624d1d00047b725ca67b33e36bb941"
+    },
+    {
+      "id": "minister-veteran",
+      "promptId": "a0012f70-5731-43bd-862f-f0d0a3e68bb5",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Quiet humble ancient Chu veteran's small rural courtyard outside town in daylight. Restrained weathered dark timber and packed-earth walls as reference, low wall and battered unadorned wooden door, a bit of dried vine on the wall, worn door sill, two small unglazed jars. No stone guardian, no luxury and no person. Faint late autumn, spare realistic ink-influenced painterly style and muted earthen colors. Landscape composition with blank lower edge.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113270,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/minister-veteran"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/chu-courtyard.png"
+          }
+        }
+      },
+      "outputSha256": "b47335b739742fd43156da4d399d95826d520b9df098d7eb60ba431feb5533f0"
+    },
+    {
+      "id": "minister-orange",
+      "promptId": "bcf4542c-569e-4579-a6b4-5820357fbe9f",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Ancient Chu old councilor's modest small city residence. Weathered dark timber, grey earthen plaster and small threshold follow reference's restrained painterly style. A living orange tree grows just outside the gate in a small courtyard, a few mute yellow-green leaves blowing lightly, mostly empty branches and low brick. The tree is the distinct focus, softly lit overcast late autumn, no people or modern objects, no signage.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113271,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/minister-orange"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/chu-courtyard.png"
+          }
+        }
+      },
+      "outputSha256": "070b47bda81a6f7f0fb4595deea966d2cfa35ca06b289cc0ae4e5bdfe70f0dcb"
+    },
+    {
+      "id": "minister-inlaw",
+      "promptId": "42b1ee77-6b75-4257-85c8-dfd56d33e9fa",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Ancient Chu noble family's grand gate at dusk, painterly naturalism matching the reference but imposing. Wide lintel covered in fresh restrained vermilion lacquer, dark timber doors, low walls, one weathered crouching stone guardian beast on either side of entrance. Pale street stones. Natural soft light, Warring States visual language, no modern lantern strings, no lettering or people. Dark and warm olive and vermilion.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113272,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/minister-inlaw"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/chu-courtyard.png"
+          }
+        }
+      },
+      "outputSha256": "ed7e6a42fab5f074567273daa895a01072b88049eb5903d71597739eddad5de2"
+    },
+    {
+      "id": "six-at-shoal-left",
+      "promptId": "ee1673ad-3cd9-424e-9ff5-a2df476a0560",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 512,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Image 1 is a close overhead insert showing exactly six CHINESE ancient protagonists in the same boat resting with eyes shut. Image 2 is the establishing shot, framing and lighting. Preserve exactly six distinct people and every important outfit in Image 1, produce a wide high angle view with full heads and more deck at left and right. Very important corrections: fourth person from left, brick red robe, is a girl with only one hand, attached to her right arm, which appears on viewer LEFT of her body in this overhead view. On viewer RIGHT of the torso sits empty, folded fabric of her missing left arm, flat and inert with NO wrist or hand. The small dry herbs lie by her one hand. Fifth person from left has a subtle muted birthmark on her own left cheek, which is on viewer RIGHT of her nose. Her viewer LEFT cheek is clean. Her right hand holds a small wrinkled scrap with simple unfinished double-handled pot sketch. Keep the youngest in the center with a child's folded garment. Keep the first girl's white blindfold and small red necklace with a much smaller soaked paper boat. Second wears ivory with a few strands of incomplete straw braid placed by his hand, not a giant pile, sixth in white and blue has both empty hands. Preserve closed eyes, calm natural poses, credible proportions, lifelike modest lighting and quiet shallow water. No text, no injuries, no onlookers.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113273,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/six-at-shoal-left"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/six-close-reference.png"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/shoal.png"
+          }
+        }
+      },
+      "outputSha256": "c5df0d2eea2c6752850cfa2a36421ccf32b8242093455beba11da06f3b4dc98f"
+    },
+    {
+      "id": "porridge-handoff-one-arm",
+      "promptId": "228eb770-bfa2-4466-84fd-211a02902638",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 512,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "One close elderly-woman-to-girl gesture in a Chinese historical visual novel, muted hand-painted naturalism. At dawn elderly woman in faded hemp extends both her old hands from screen left, offering the bowl of hot white rice porridge with the same coarse dark clay and rim notch as Image 1. From screen right the character in Image 2, an older teenage girl in a rust-brown cross collar Chu robe, uses ONLY HER RIGHT HAND to take the bowl from underneath. Her opposite LEFT sleeve is visibly flat and empty, folded and secured against chest. The empty sleeve ends against the torso with no hand and cannot touch bowl. Exactly THREE hands total, two of the old woman and one of the girl. Focus on one visibly chipped bowl and delicate quiet body language, subtle plume of warm steam, no faces needed. Rough timber and hazy reeds in background, no text, no other people. Wide 16:9 with central quiet well-read gestures.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113274,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/porridge-handoff-one-arm"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/notched-bowl-reference.png"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/portrait-xua-v3.webp"
+          }
+        }
+      },
+      "outputSha256": "398ca09eae9a2a9d933c092dfda29c25b9f6e6bd12144fc5aed5cc257690337a"
+    },
+    {
+      "id": "old-stake",
+      "promptId": "ca96c08c-d791-4524-9036-aa3b5af040b2",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 512,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Ancient wooden boat in clear quiet shallows against a shallow mudbank river, matching reference naturalist painterly colors. Very close crop of one weathered old stake beside the side of a wooden boat. One narrow red cord leads from stake out of frame over gunwale; some damp red fibers trail into the clear water, understated soft morning light. Small cold ripples and a few reeds at the edge. No people or body parts, no other props, no text. Readable center 70% with distance between stake and boat, empty lower quarter.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113275,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/old-stake"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/shoal.png"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/old-river.png"
+          }
+        }
+      },
+      "outputSha256": "bd232a604d673833f49a407469f605da23c16c858ad4d7957298a156e18f1c18"
+    },
+    {
+      "id": "porridge-board-landscape",
+      "promptId": "ab634775-20b7-466e-a23b-f0684075ce2e",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 768,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "把参考图重构成横幅 16:9 的分镜插画。画面右边必须有一块竖直立在大青石上约高六十厘米的修长旧棕色木板，底部两小块石头靠住板脚，木板无文字，保留参考的竖直体积与老旧斑驳纹理，保持木板全身可见。木板与左前方的大黑粗陶碗相邻。陶碗内是一层薄凉粥，碗沿只有一个小米粒宽、边缘浅色的旧豁口，和参考图一模一样。画面所需的两个道具就是黑碗和竖立的旧棕木板。镜头稍微后退，芦苇和低浅河水自然延伸到两侧。像参考图一样的低饱和自然镜头，克制、安静。不要任何文字、水印、现代器物、金属、符号或者其它道具。",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 114759,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1.0,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/porridge-board-landscape"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/porridge-portrait-source.png"
+          },
+          "is_changed": [
+            "09fc5692c0e46192f93df202f6fec3d2de18f1445d578b175761423320152ac8"
+          ]
+        }
+      },
+      "outputSha256": "3ec0a2dd7709cd26c9bd5cf4afbb68bb6203a1c35c7fb47f75fceb0923f9388b"
+    },
+    {
+      "id": "porridge-bowl-wide",
+      "promptId": "92b58df4-ff05-42d2-82bf-964394b5ac4d",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 640,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Recompose Image 1 as a quiet 16:9 shot of ONLY the exact same chipped black-brown rough ceramic bowl filled with cooled rice porridge. Prominent old notch on front right lip must be clearly visible. Keep the same stone under it, river setting and reeds, late autumn overcast lighting. There are NO other objects in frame, NO plaque or wood, NO person, NO steam, NO text. Bowl closer now, composed above the horizontal center of the canvas, with soft spare foreground below. Existing cinematic naturalistic painted visual novel style.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 114702,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1.0,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/porridge-bowl-wide"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/porridge-portrait-source.png"
+          },
+          "is_changed": [
+            "09fc5692c0e46192f93df202f6fec3d2de18f1445d578b175761423320152ac8"
+          ]
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/porridge.png"
+          },
+          "is_changed": [
+            "0a05d9b55d18150994b638300538901fd3e512622439f7228e61b38bc20ec86a"
+          ]
+        }
+      },
+      "outputSha256": "af480ee5469a194774f7b4d610bf806c2676c2d083daee83c778933ea842de58"
+    },
+    {
+      "id": "shen-summit-empty",
+      "promptId": "000b2953-166e-48ac-9bcf-8124b143fc40",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 512,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Image 1 is the identity and painted sprite style reference. Image 2 is the mountaintop scene wardrobe reference: Shen Ci is the teenage boy seen from back in a deep navy track jacket, immediately to the right of the girl. Repaint a single isolated character completely from head through upper thighs in the Chinese painterly visual novel style of Image 1. Shen Ci, a quiet reserved teenage boy, short untidy black hair, the same slim face and age as image 1, a small scar at the outer end of his left eyebrow, natural continuous jaw, neck, shoulder and upper torso. He wears a dark navy unhooded lightly structured soft track jacket with thin cream piping through the shoulder seam and sleeve, worn open over a simple ivory crew-neck T-shirt and charcoal trousers. Exactly this familiar face and wardrobe, three-quarter turn facing left with eyes level and gently downcast, reserved neutral expression, his weight settled naturally. Both hands are completely empty: his near arm hangs naturally with empty fingers visible, the far hand casually tucked in his trouser pocket. Portray the beat just before he receives the book, so his body and hands have no book, notebook, props, backpack, bag or accessories. Soft hand-painted impasto texture and subtle brushwork, anatomically coherent, restrained realistic color like Image 1. Isolated on flat uniform vivid magenta #e800e8 for background removal, no shadows on backdrop, no text, no scenery, no other figure.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 864,
+            "height": 1152,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113382,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1.0,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/shen-summit-empty"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/shen-key.png"
+          },
+          "is_changed": [
+            "b27264c1141cb57cf9c8123d9b1b3b4940c4d2e042c7532ac5486be15a00df8c"
+          ]
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/summit.png"
+          },
+          "is_changed": [
+            "1591f3733b6b1ae792fdec9be0741f90451e141f40ed5ea92e9cc76f2d3d8b13"
+          ]
+        }
+      },
+      "outputSha256": "555be4dba4edfed7c4bb6eaf97c1108f2b1a8cad7b56a664548e43c418d5c32c"
+    },
+    {
+      "id": "tang-summit-empty",
+      "promptId": "c4001ec2-250b-43cd-9504-a219826aeec2",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 512,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Image 1 is the character identity and painted sprite style reference. Image 2 is the mountaintop scene wardrobe reference: Tang Jin is the teenage girl with the dark ponytail and pale gray oat jacket. Repaint a single isolated character completely from head through upper thighs in the Chinese painterly visual novel style of Image 1. She is Tang Jin, the same Chinese high school teenager with dark eyes, fine fringe, distinct high ponytail, the same slim face and age as Image 1, serious but attentive expression, normal continuous head, neck, shoulders and torso anatomy. Keep her summit outfit from Image 2: a warm pale oat-grey lightweight collared jacket, white crew-neck cotton top, slate trousers and muted olive green canvas backpack with visible straps. Three-quarter view, stands naturally with gaze toward the viewer's left, shoulders neutral. This is the page immediately after she put her small book into the closed backpack, so both hands are completely empty, no book or notebook anywhere on her body. Her right hand lightly holds the backpack shoulder strap at upper chest level and her left arm is down and relaxed with empty fingers visible. The book is entirely out of sight. Soft visible naturalistic hand-painted strokes, restrained colors and the gentle illustration style of image 1. Flat uniform solid vivid magenta #e800e8 backdrop for color key, no shadows on backdrop, no scenery, no logo, no lettering, no other person.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 864,
+            "height": 1152,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 113383,
+            "steps": 24,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1.0,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Overseas-20261125/tang-summit-empty"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/tang-key.png"
+          },
+          "is_changed": [
+            "a465c23f035f683d3f40cfeb7f330828c77411c0a0c6103a5c8490efb24a1885"
+          ]
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Overseas-20261125/summit.png"
+          },
+          "is_changed": [
+            "1591f3733b6b1ae792fdec9be0741f90451e141f40ed5ea92e9cc76f2d3d8b13"
+          ]
+        }
+      },
+      "outputSha256": "326764f6648f750022f024e435159437334db704a3201c521a82a5ea21272bcb"
+    }
+  ],
+  "assets": [
+    {
+      "asset": "portrait-linyue-trail",
+      "source": "trail-neutral",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "96cc7e031dff4c33fbcc493678cb6030a13f30b0de7aff55d0d2f499fabc3c47"
+    },
+    {
+      "asset": "portrait-linyue-trail-m",
+      "source": "portrait-linyue-trail",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "c8c367df98030b8ccfa66bd6bfe3a40bdc941c827cdc25ad8c1d9efed79edf0a"
+    },
+    {
+      "asset": "portrait-linyue-trail-smile",
+      "source": "trail-smile-matched",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "5f750fb9faec03a5127b9596e410125bdd329f3df1c80f7d30817c557decc537"
+    },
+    {
+      "asset": "portrait-linyue-trail-smile-m",
+      "source": "portrait-linyue-trail-smile",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "0f7ab408d644b256150f34aa8ec3d004302ef573b35d7247c85d99b5707abb56"
+    },
+    {
+      "asset": "portrait-linyue-overseas-light",
+      "source": "appearance-light",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "c2d471f01b2a3fbf5b2968f66a66a894e57047a2f53b2d444ecd9ce053bd835d"
+    },
+    {
+      "asset": "portrait-linyue-overseas-light-m",
+      "source": "portrait-linyue-overseas-light",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "1f86a755665e86bcb22edca41c435741d2052a949137d3bd3dc0201b65c0db09"
+    },
+    {
+      "asset": "portrait-linyue-overseas-deep",
+      "source": "appearance-deep",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "d4dd83fac8109ba04f9257423ed8fd5731e2230b75447b1af84b1381858e8a4a"
+    },
+    {
+      "asset": "portrait-linyue-overseas-deep-m",
+      "source": "portrait-linyue-overseas-deep",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "528a13d6c306657b51ffaeca07864d855bdfc41fc43287924755ec1c7aaba84c"
+    },
+    {
+      "asset": "portrait-shen-summit",
+      "source": "shen-summit-empty",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "1d95db2c2f1ccbe6d772f42b43fde5a6887ef9b41e3f0cb39bed2bb0a7674544"
+    },
+    {
+      "asset": "portrait-shen-summit-m",
+      "source": "portrait-shen-summit",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "2d32003289cb4b83b5729c436c5d74672383ef5dea07aa0d77ed593c49556ae2"
+    },
+    {
+      "asset": "portrait-tang-summit",
+      "source": "tang-summit-empty",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "b0993cda3fa583f5493175491786d2433d85d419c0928ac20a890eb70a4a467c"
+    },
+    {
+      "asset": "portrait-tang-summit-m",
+      "source": "portrait-tang-summit",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "e9ce2e53f754865766f9f91e499c0d9f81f165a9131222d11bd1ae80af790e12"
+    },
+    {
+      "asset": "portrait-song-summit",
+      "source": "song-summit",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "88af0da22ee7c7476fc23e739432d56813b8c9bab1fdf5a97d82e80c131a2870"
+    },
+    {
+      "asset": "portrait-song-summit-m",
+      "source": "portrait-song-summit",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "22ff4e36d080c1b3d7543efb602aacbf3d70eea850cee7e8f38fad527b69b722"
+    },
+    {
+      "asset": "cg-modern-summit-r4-m",
+      "source": "summit-mobile-insert",
+      "size": [
+        768,
+        1024
+      ],
+      "losslessSha256": "1d9709baa2695d5dd0bd5dba515ba4ccec08bb82c14a917922528065b719454d"
+    },
+    {
+      "asset": "cg-modern-porridge-plaque-m",
+      "source": "porridge-mobile",
+      "size": [
+        768,
+        1024
+      ],
+      "losslessSha256": "73c23f94ca9aff6af760c27fc6fd46e15c17a5f27c67f672902041918f2793b9"
+    },
+    {
+      "asset": "cg-modern-porridge-plaque",
+      "source": "porridge-board-landscape",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "6fdd07bc0434790c557f7e863b1fa0468ba39d51d89e2a719c12ed5ef9861e0f"
+    },
+    {
+      "asset": "cg-modern-cold-porridge",
+      "source": "porridge-bowl-wide",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "39afdefe7e8ec3a551229e41b5247ddbe9331874d824476eaf7e40adc382b32a"
+    },
+    {
+      "asset": "cg-modern-porridge-offering",
+      "source": "porridge-handoff-one-arm",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "e398ccfe17d3ddbef0ea9393334d4cd5fd4198121c8ce9a7c44b4b65700080e6"
+    },
+    {
+      "asset": "cg-modern-quiet-shoal-six",
+      "source": "six-at-shoal-left",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "bc6fde7e4527d1f915782ce603895ef6c329d6a06d14f58e9f449bc48cb1d215"
+    },
+    {
+      "asset": "cg-modern-shoal-cord",
+      "source": "old-stake",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "381f4e7effa1fb88d2b16469318b732aaa4309f2f0729602b80e725f5a075cf2"
+    },
+    {
+      "asset": "modern-herb-eaves",
+      "source": "herb-eaves",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "1d06b9087f55b11b38f5d5f4d1e4948362065093225e3a765a7a6e6501ed8c0e"
+    },
+    {
+      "asset": "modern-office-video",
+      "source": "office-video",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "5261a24977f784ed8b2ffefceb3dc8346be23ec277eb5a9c7f6d85c597ae0460"
+    },
+    {
+      "asset": "modern-night-river",
+      "source": "riverside-night",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "2ed20a42297e55b317d7f26419eabb0c85cef28a35de9ad525c6af3df023cde2"
+    },
+    {
+      "asset": "modern-minister-hall",
+      "source": "minister-hall",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "86571638781e8bdd84522f307fc2b95215353f31f6e36f61257f64c300833843"
+    },
+    {
+      "asset": "modern-minister-ancestor",
+      "source": "minister-ancestor",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "9897d4a379a9d7e9e4f87b2c0eb90b48b916f15199a206f2bbc1eb85239da491"
+    },
+    {
+      "asset": "modern-minister-veteran",
+      "source": "minister-veteran",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "28c26342e417e45a0eb9ff535b4f48f7b5c703ceb8a3df303f12e34a34b4cde3"
+    },
+    {
+      "asset": "modern-minister-orange",
+      "source": "minister-orange",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "17dd98ea6c0235b1068786b3855b016c5b8f08fc258f70c9e3ddd3357fc2fc35"
+    },
+    {
+      "asset": "modern-minister-inlaw",
+      "source": "minister-inlaw",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "6f7d230219c0714f820e5c8a27ab9533ba71c4e9a7a9447642ce90ea4738155a"
+    },
+    {
+      "asset": "cg-modern-word-stall-r3-overseas-light",
+      "source": "cg-modern-word-stall-r3",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "005304f03ce9bfcdcaae5fc4a69009deab78d16f58416149ada32216a72ec1ec"
+    },
+    {
+      "asset": "cg-modern-word-stall-r3-overseas-deep",
+      "source": "cg-modern-word-stall-r3",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "c1534d4fd42c51acfbb1bed7262cebafb9fa7a71be724c69a7867e7669e1a206"
+    },
+    {
+      "asset": "cg-modern-word-stall-r3-overseas-light-m",
+      "source": "cg-modern-word-stall-r3-m",
+      "size": [
+        966,
+        783
+      ],
+      "losslessSha256": "e926692885a2fbbcf9c207e840374eace683ee00c0fe77b2dfbe15d684e24272"
+    },
+    {
+      "asset": "cg-modern-word-stall-r3-overseas-deep-m",
+      "source": "cg-modern-word-stall-r3-m",
+      "size": [
+        966,
+        783
+      ],
+      "losslessSha256": "40b977cdaa2f6f5eb5298c407771eed54d8cc3b75c3b7327ba5d58eab7bf574c"
+    },
+    {
+      "asset": "cg-modern-jade-palm-r2-overseas-light",
+      "source": "cg-modern-jade-palm-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "e6eb303b944e658606884a7a2a2655c79463eaf585e9abd465ae8050661caaf8"
+    },
+    {
+      "asset": "cg-modern-jade-palm-r2-overseas-deep",
+      "source": "cg-modern-jade-palm-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "6bcc3cc258983e707d3bea056211bc8e6ae80af09300213f29c2c7ca27b22a0e"
+    },
+    {
+      "asset": "cg-modern-jade-palm-r2-overseas-light-m",
+      "source": "cg-modern-jade-palm-r2-m",
+      "size": [
+        844,
+        720
+      ],
+      "losslessSha256": "ac615c8918d9f332a7c49020f2194baf0eead430daf8fcf26b79c27a31ee3d94"
+    },
+    {
+      "asset": "cg-modern-jade-palm-r2-overseas-deep-m",
+      "source": "cg-modern-jade-palm-r2-m",
+      "size": [
+        844,
+        720
+      ],
+      "losslessSha256": "a31bd5fd163b25592af3e072160b574e8877a9efe6facf7fb7fbd30d29e6525f"
+    },
+    {
+      "asset": "cg-modern-dorm-unease-r2-overseas-light",
+      "source": "cg-modern-dorm-unease-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "a1bd806e55ebd880ca68f90a2ae973ade55fe8c69eccdf9bb3c279a306eb380f"
+    },
+    {
+      "asset": "cg-modern-dorm-unease-r2-overseas-deep",
+      "source": "cg-modern-dorm-unease-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "580f98566358f5ce59e603fed554b41539f08e2048728c0c54249ce30931cc80"
+    },
+    {
+      "asset": "cg-modern-dorm-carving-r2-overseas-light",
+      "source": "cg-modern-dorm-carving-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "dc96d24006d875c2bbb4f5d65746ed7235a85ea05998d12dd8c78422d3516a9d"
+    },
+    {
+      "asset": "cg-modern-dorm-carving-r2-overseas-deep",
+      "source": "cg-modern-dorm-carving-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "519b4bbfa35c11fcf9907bd62c12a7c09d98fee56ffad1c62c761375eb4a486f"
+    },
+    {
+      "asset": "cg-modern-dorm-dark-r2-overseas-light",
+      "source": "cg-modern-dorm-dark-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "adbf697a22d47b21dfe0befafa81fd5e98275cda68bea957dba4b4d07170a3a0"
+    },
+    {
+      "asset": "cg-modern-dorm-dark-r2-overseas-deep",
+      "source": "cg-modern-dorm-dark-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "52521ecac5ce50d3f0e173d9a58d309eff2249e6bf4543df4ba707c396eb32dc"
+    },
+    {
+      "asset": "cg-modern-jade-light-r2-overseas-light",
+      "source": "cg-modern-jade-light-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "5703d4021a3ecce4666419bdfdf643d477133cef5ce466bb326b147aeab967c2"
+    },
+    {
+      "asset": "cg-modern-jade-light-r2-overseas-deep",
+      "source": "cg-modern-jade-light-r2",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "f1d080cf52582ed86526aea7d7666c5b672448d2a31a7e1c2b2ee50bde04fb78"
+    },
+    {
+      "asset": "cg-modern-dorm-unease-r2-overseas-light-m",
+      "source": "cg-modern-dorm-unease-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "d81d7e0794974ba438facafc180306897ed32c41c89315f61b9bad5a02e90c0e"
+    },
+    {
+      "asset": "cg-modern-dorm-unease-r2-overseas-deep-m",
+      "source": "cg-modern-dorm-unease-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "2f3086ed5422cff636fbee693768f93ea5bef2cb91ef1ffd9c933cb68298d13b"
+    },
+    {
+      "asset": "cg-modern-dorm-carving-r2-overseas-light-m",
+      "source": "cg-modern-dorm-carving-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "7a2ffe7b4207dc3b41cf6d1dfbee8fd7fd13ef04307d8c69a01faea38f703bab"
+    },
+    {
+      "asset": "cg-modern-dorm-carving-r2-overseas-deep-m",
+      "source": "cg-modern-dorm-carving-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "e2fd764500b40f598a10c904f5add4b63876c906a9393a8416198cba202323c4"
+    },
+    {
+      "asset": "cg-modern-dorm-dark-r2-overseas-light-m",
+      "source": "cg-modern-dorm-dark-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "8e78bed304c37a6a155fb7db878f5db17fca775983cc5adcbcb076b51c0433f3"
+    },
+    {
+      "asset": "cg-modern-dorm-dark-r2-overseas-deep-m",
+      "source": "cg-modern-dorm-dark-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "c7da62023a0470cd25289da3f4bf1b88312574875de1b280e4e8fba2815a3a5d"
+    },
+    {
+      "asset": "cg-modern-jade-light-r2-overseas-light-m",
+      "source": "cg-modern-jade-light-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "5b9bb9dfece08118f3fbdc2c293ca325301f9e067a937f580aea2f9620485bd7"
+    },
+    {
+      "asset": "cg-modern-jade-light-r2-overseas-deep-m",
+      "source": "cg-modern-jade-light-r2-m",
+      "size": [
+        768,
+        720
+      ],
+      "losslessSha256": "e08ff639baa055b2ffb684c53f9849de0bee999c5d4b7a3e764c0526836a5db4"
+    },
+    {
+      "asset": "cg-modern-noodles-overseas-light",
+      "source": "cg-modern-noodles",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "c6f4f77779d95364e1beaeb64d343c7ec9cb43b7bea713d9647b52db130763ad"
+    },
+    {
+      "asset": "cg-modern-noodles-overseas-deep",
+      "source": "cg-modern-noodles",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "1dcb0ede2146a4f337677b835d2f17c6020b5417f1cb15e46b3cde26c5f0578b"
+    },
+    {
+      "asset": "cg-modern-notebook-open-overseas-light",
+      "source": "cg-modern-notebook-open",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "23a7c668c5b7d1700427fb20220e887ff87e40bd13cf609804b8cd223deebd01"
+    },
+    {
+      "asset": "cg-modern-notebook-open-overseas-deep",
+      "source": "cg-modern-notebook-open",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "664b4e46669f1486bafe77a377fc4fbe6c53cf471815095984be9cb02179bcb8"
+    },
+    {
+      "asset": "cg-modern-translation-r3-overseas-light",
+      "source": "cg-modern-translation-r3",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "cf315a1dff297f27e1c0976e91a40cb28bf6d621135648a53e6a3b6cf84b77c8"
+    },
+    {
+      "asset": "cg-modern-translation-r3-overseas-deep",
+      "source": "cg-modern-translation-r3",
+      "size": [
+        1280,
+        720
+      ],
+      "losslessSha256": "833d001e852352577d98f4e610ff4060e12969467d9541b8abb92f19da1b72d9"
+    },
+    {
+      "asset": "cg-modern-notebook-open-overseas-light-m",
+      "source": "cg-modern-notebook-open-m",
+      "size": [
+        1100,
+        655
+      ],
+      "losslessSha256": "cad2bd97cb6e12557f37822eeff37417740b61efae9937dd07fdf5efc1785b41"
+    },
+    {
+      "asset": "cg-modern-notebook-open-overseas-deep-m",
+      "source": "cg-modern-notebook-open-m",
+      "size": [
+        1100,
+        655
+      ],
+      "losslessSha256": "2eeff19782b0b574c835535e60c263633b62d77991b9a9cc1453c94afe2862aa"
+    },
+    {
+      "asset": "cg-modern-translation-r3-overseas-light-m",
+      "source": "cg-modern-translation-r3-m",
+      "size": [
+        1100,
+        655
+      ],
+      "losslessSha256": "dfde208156a47317622b7809002071ebadbc52e738834f478b580465168ce843"
+    },
+    {
+      "asset": "cg-modern-translation-r3-overseas-deep-m",
+      "source": "cg-modern-translation-r3-m",
+      "size": [
+        1100,
+        655
+      ],
+      "losslessSha256": "1c0c3225c3c49407bc4e8889bd5509866547551ce1e674f35b902988d8182aa1"
+    },
+    {
+      "asset": "cg-modern-paper-overseas-light",
+      "source": "cg-modern-paper",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "71411f8bafd8a7e46b70e726536bdccaec85dd550995e5095caf889031aaaacf"
+    },
+    {
+      "asset": "cg-modern-paper-overseas-deep",
+      "source": "cg-modern-paper",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "cdc89490ad52b48648b328ff4389a8d6d7d55866a742fb995d4554d2d5e751e8"
+    },
+    {
+      "asset": "cg-modern-paper-note-overseas-light",
+      "source": "cg-modern-paper-note",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "b0e262ce09a7698c906c9e6affb899b6c2d88b0eb86ea4fd84450012afe3cd4f"
+    },
+    {
+      "asset": "cg-modern-paper-note-overseas-deep",
+      "source": "cg-modern-paper-note",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "002e505dc1d315e096e0b12f72b80186ce534cdcca49ab86b0b35e60b8419e29"
+    },
+    {
+      "asset": "cg-modern-paper-note-overseas-light-m",
+      "source": "cg-modern-paper-note-m",
+      "size": [
+        1200,
+        740
+      ],
+      "losslessSha256": "ea378dc974688f08fb7150b9433649e85cd033d6ab8b5ca0bfef2b060f50c01f"
+    },
+    {
+      "asset": "cg-modern-paper-note-overseas-deep-m",
+      "source": "cg-modern-paper-note-m",
+      "size": [
+        1200,
+        740
+      ],
+      "losslessSha256": "288a118d803c377b38f0f4a9cd7482d28a303f2be1e05c4aaecd25bcc22b61d5"
+    },
+    {
+      "asset": "cg-modern-glance-r4-overseas-light",
+      "source": "cg-modern-glance-r4",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "7de22c1d08b2b540e0b9e84faac2be94aece4331bd02bddba2494a21d9df0fbd"
+    },
+    {
+      "asset": "cg-modern-glance-r4-overseas-deep",
+      "source": "cg-modern-glance-r4",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "3b7eb63f6311dc4cc07a8fc3e145008495d7343bc1400547ba58d45fdae3e123"
+    },
+    {
+      "asset": "cg-modern-summit-r4-overseas-light",
+      "source": "cg-modern-summit-r4",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "01efed6b8e412be0829270ea0c63ef0f2e872d03ca8d5c10107b146de6e31529"
+    },
+    {
+      "asset": "cg-modern-summit-r4-overseas-deep",
+      "source": "cg-modern-summit-r4",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "e18fba1032fc27e167102b1ec14b0ec3d77f3b2a92570144ae875a1b2ba28726"
+    },
+    {
+      "asset": "cg-modern-photo-r4-overseas-light",
+      "source": "cg-modern-photo-r4",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "9b6efb897b25097950e458e8c04e2d92299d9809caac41a9b6ed8f21940b370e"
+    },
+    {
+      "asset": "cg-modern-photo-r4-overseas-deep",
+      "source": "cg-modern-photo-r4",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "cca5984fc4567e75deec68ede865eb3be71fc74971b2c79588646cfd9c182a1e"
+    },
+    {
+      "asset": "modern-street-arrival-r3-overseas-light",
+      "source": "modern-street-arrival-r3",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "90470b941a46aa5a185a990e71bac552c6a06c335d537b501f9058b907f9867f"
+    },
+    {
+      "asset": "modern-street-arrival-r3-overseas-deep",
+      "source": "modern-street-arrival-r3",
+      "size": [
+        1536,
+        864
+      ],
+      "losslessSha256": "776898e350d3707d1bf6194b9b523274864589fea7e43c3a42315acf8fe1ab2a"
+    },
+    {
+      "asset": "cg-modern-summit-r4-overseas-light-m",
+      "source": "cg-modern-summit-r4-m",
+      "size": [
+        768,
+        1024
+      ],
+      "losslessSha256": "1d9709baa2695d5dd0bd5dba515ba4ccec08bb82c14a917922528065b719454d"
+    },
+    {
+      "asset": "cg-modern-summit-r4-overseas-deep-m",
+      "source": "cg-modern-summit-r4-m",
+      "size": [
+        768,
+        1024
+      ],
+      "losslessSha256": "1d9709baa2695d5dd0bd5dba515ba4ccec08bb82c14a917922528065b719454d"
+    },
+    {
+      "asset": "portrait-linyue-modern-thoughtful-overseas-light",
+      "source": "portrait-linyue-modern-thoughtful",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "01a67b2be6572ec7567c32e5155c5aa697b419bb3503505796248e562bde27f6"
+    },
+    {
+      "asset": "portrait-linyue-modern-thoughtful-overseas-light-m",
+      "source": "portrait-linyue-modern-thoughtful",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "12659815b29e08880ace99621327c74b2b00c7b2297954a8664d0c2642aca16a"
+    },
+    {
+      "asset": "portrait-linyue-modern-thoughtful-overseas-deep",
+      "source": "portrait-linyue-modern-thoughtful",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "cdb9bfd2811bf34fc75d272754530882e55fcb30c71d41b1cfd7c8bda4d68280"
+    },
+    {
+      "asset": "portrait-linyue-modern-thoughtful-overseas-deep-m",
+      "source": "portrait-linyue-modern-thoughtful",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "95b83b12279fede90212aaf7fa619b9951b61f22e9a05e3bab7ce6ed3665b90b"
+    },
+    {
+      "asset": "portrait-linyue-modern-puzzled-overseas-light",
+      "source": "portrait-linyue-modern-puzzled",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "4e9e1996cb5fb38501ff31c8aee91102549f41c5326badc2ace9e7477b6492c3"
+    },
+    {
+      "asset": "portrait-linyue-modern-puzzled-overseas-light-m",
+      "source": "portrait-linyue-modern-puzzled",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "daacdbfe3a331c35f6599e3852da2fbb23288a18cc8eb342b5d3bd95fa705a4c"
+    },
+    {
+      "asset": "portrait-linyue-modern-puzzled-overseas-deep",
+      "source": "portrait-linyue-modern-puzzled",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "b523aaf18e75ce1d4c0d8fa4291216fac250227419a258b89d2e5cd21abf1548"
+    },
+    {
+      "asset": "portrait-linyue-modern-puzzled-overseas-deep-m",
+      "source": "portrait-linyue-modern-puzzled",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "822c81e8a2b955c41ec09a0f6d62a366f4a0f6676280c74bfe475f44e42e46ad"
+    },
+    {
+      "asset": "portrait-linyue-modern-smile-overseas-light",
+      "source": "portrait-linyue-modern-smile",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "ba5e92c1770b95aee95324f4dc54caf0f2a31807524106c3737ddcdb2a0d624d"
+    },
+    {
+      "asset": "portrait-linyue-modern-smile-overseas-light-m",
+      "source": "portrait-linyue-modern-smile",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "8b868175dfa730d1ebb378dfb396171bd2fd62b33dd2d90dc2930970a5b3b3c5"
+    },
+    {
+      "asset": "portrait-linyue-modern-smile-overseas-deep",
+      "source": "portrait-linyue-modern-smile",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "ad26e21e6f3c4033f92aa72fde15536ece616cbe9d83b59967a88ab08b746a58"
+    },
+    {
+      "asset": "portrait-linyue-modern-smile-overseas-deep-m",
+      "source": "portrait-linyue-modern-smile",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "8785e76a09591ec39c68fd0c70a7605061f1f4fe986156989cb91078176add73"
+    },
+    {
+      "asset": "portrait-linyue-trail-overseas-light",
+      "source": "portrait-linyue-trail",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "c99976b74edd2d835c0621bbe83484b84bb93c25c2df5c803d488cc0b9cb1df6"
+    },
+    {
+      "asset": "portrait-linyue-trail-overseas-light-m",
+      "source": "portrait-linyue-trail",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "face93fec623f0cb5f2cb649291bbed14aa30bf10ed51371fb7eaf067830c353"
+    },
+    {
+      "asset": "portrait-linyue-trail-overseas-deep",
+      "source": "portrait-linyue-trail",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "15f368e3afd971cb762cd8123d576dbd310afb579eebadab8e6b1c656c33cd3a"
+    },
+    {
+      "asset": "portrait-linyue-trail-overseas-deep-m",
+      "source": "portrait-linyue-trail",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "b3d4d31bf8256787485b24677b8d32b81145c08fa14bc4bf16d553117d444ecd"
+    },
+    {
+      "asset": "portrait-linyue-trail-smile-overseas-light",
+      "source": "portrait-linyue-trail-smile",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "deb3196b436e9dc3d2ad22fa8f0653b11641e015183256b26c82e83b9e6677c9"
+    },
+    {
+      "asset": "portrait-linyue-trail-smile-overseas-light-m",
+      "source": "portrait-linyue-trail-smile",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "eceeff06e7870f7d270ef139b992449a248b8912feb964f881addcbf420b2575"
+    },
+    {
+      "asset": "portrait-linyue-trail-smile-overseas-deep",
+      "source": "portrait-linyue-trail-smile",
+      "size": [
+        864,
+        1152
+      ],
+      "losslessSha256": "adcbd3db5a39c6209b417153e250e67de8b791da943a37e5fe9e3bb49b8a1132"
+    },
+    {
+      "asset": "portrait-linyue-trail-smile-overseas-deep-m",
+      "source": "portrait-linyue-trail-smile",
+      "size": [
+        640,
+        853
+      ],
+      "losslessSha256": "1fbbb234ba95258ab6bb9c7c12ae7eb1819a888b1f9a0da5454916f77a037362"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-questi
 export type MusicId = typeof MUSIC_IDS[number];
 export const AMBIENCE_IDS = ['river', 'rain', 'hearth', 'wind', 'winter', 'room', 'night', 'street', 'marsh', 'underwater', 'cave', 'palace'] as const;
 export type AmbienceId = typeof AMBIENCE_IDS[number];
-export const EFFECT_IDS = ['page', 'choice', 'bookmark', 'bronze', 'triple-bell', 'ritual-drum', 'hull', 'alarm', 'school-bell', 'door', 'wood-latch', 'bamboo', 'cloth', 'ceramic', 'splash', 'oar', 'drop', 'electric', 'chair', 'steps', 'stone', 'string-snap', 'ball', 'bike-bell', 'flute', 'crow', 'pottery', 'heartbeat'] as const;
+export const EFFECT_IDS = ['page', 'choice', 'bookmark', 'bronze', 'triple-bell', 'ritual-drum', 'hull', 'alarm', 'school-bell', 'door', 'wood-latch', 'bamboo', 'cloth', 'ceramic', 'splash', 'oar', 'drop', 'electric', 'chair', 'steps', 'stone', 'string-snap', 'ball', 'bike-bell', 'flute', 'crow', 'pottery', 'heartbeat', 'dorm-bowl', 'camera-shutter'] as const;
 export type EffectId = typeof EFFECT_IDS[number];
 export interface Track { id: MusicId; title: string; subtitle: string; bpm: number; keyscale: string; file: string; seconds: number }
 export const SOUNDTRACK = rawSoundtrack as Track[];
@@ -52,6 +52,9 @@ export interface ScoreFrame {
   ambience: [AmbienceId, number][];
   events: SoundEvent[];
   transition: number;
+  musicFade?: number;
+  ambienceFade?: number;
+  prepareEffects?: readonly EffectId[];
 }
 
 // Authored against the screenplay's scene and block IDs. Paragraph changes keep
@@ -162,8 +165,12 @@ const ACCENTS: Record<string, Effect[]> = {
   'A-8:11:1': [e('steps', .24, .3)],
   'B-5-5:8:2': [e('cloth', .12, .2)],
   'B-10-4:11:4': [e('bamboo', .12, .7)],
-  'modern-o-4-1:24:0': [e('ceramic', .24, .12, -.12)],
+  'modern-o-4-1:24:0': [e('dorm-bowl', .30, .10, -.08)],
   'modern-o-5-1:8:0': [e('page', .18, .06, .12)],
+  'modern-o-5-2:4:0': [e('electric', .1, .25)],
+  'modern-o-5-2:8:0': [e('page', .17, .14, .10)],
+  'modern-o-5-6:9:0': [e('cloth', .15, .18, .08)],
+  'modern-o-5-7:17:0': [e('camera-shutter', .32, .09, .04)],
 };
 
 const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
@@ -171,14 +178,23 @@ const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
   'modern-library': [['room', .28]],
   'modern-classroom': [['room', .28]],
   'modern-office': [['room', .3], ['street', .07]],
+  'modern-office-video': [['room', .24], ['street', .035]],
   'modern-mountain-path': [['wind', .3]],
   'modern-sunset': [['wind', .2], ['river', .1]],
+  'modern-night-river': [['river', .32]],
+  'modern-herb-eaves': [['wind', .11], ['river', .07]],
+  'cg-modern-porridge-offering': [['wind', .14], ['river', .12]],
   [MODERN_ARRIVAL_ART]: [['street', .46]],
   [MODERN_STALL_ART]: [['street', .37]],
   'cg-modern-jade-palm-r2': [['street', .37]],
   'modern-dorm-quiet-r2': [['room', .36], ['street', .06]],
   'modern-royal-wall-night': [['wind', .48]],
   'modern-chu-courtyard': [['wind', .2]],
+  'modern-minister-hall': [['palace', .25], ['hearth', .09]],
+  'modern-minister-ancestor': [['palace', .18], ['wind', .07]],
+  'modern-minister-veteran': [['wind', .2]],
+  'modern-minister-orange': [['wind', .18]],
+  'modern-minister-inlaw': [['wind', .12], ['palace', .08]],
   'modern-river-aboard': [['river', .8], ['wind', .17]],
   'cg-modern-noodles': [['room', .35]],
   [MODERN_NOTEBOOK_ART]: [['room', .22]],
@@ -226,19 +242,52 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
       frame.musicGain = .3;
       frame.ambience = block >= 26 ? [['rain', .48], ['room', .1]] : [['room', .18]];
     }
+    if (beat.background === 'modern-night-river') {
+      if (sceneId === 'modern-o-2-1') frame.ambience = [['river', .32], ['night', .18]];
+      if (sceneId === 'modern-o-2-2' || sceneId === 'modern-o-2-4') frame.ambience = [['river', .32], ['wind', .14]];
+    }
     if (sceneId === 'modern-k-G-1') frame.ambience = [];
     else if (sceneId.startsWith('modern-k-G-')) frame.ambience = [['river', .17], ['wind', .1]];
-    if (frame.music === 'modern-return') frame.musicGain = beat.id === 'modern-o-4-1:24:0' ? .51 : .72;
+    if (frame.music === 'modern-return') {
+      frame.musicGain = .72;
+      if (block === 22 || block === 23) frame.prepareEffects = ['dorm-bowl'];
+      if (block === 24) {
+        frame.cue = beat.id;
+        frame.musicGain = .24;
+        frame.musicFade = .14;
+        frame.ambience = [['room', .23], ['street', .06]];
+        frame.ambienceFade = .32;
+      }
+      if (block === 25) frame.musicFade = 1.25;
+    }
     if (frame.music === 'modern-untranslated') {
       const atNotebook = sceneId === 'modern-o-4-2' && block >= 8 && block <= 10;
       frame.musicGain = atNotebook ? .19 : .71;
       if (atNotebook) frame.transition = 1.1;
     }
-    if (frame.music === 'modern-ascent') frame.musicGain = sceneId === 'modern-o-5-5' && block >= 4 && block <= 6 ? .43 : .74;
+    if (frame.music === 'modern-ascent') {
+      frame.musicGain = sceneId === 'modern-o-5-5' && block >= 4 && block <= 6 ? .43 : .74;
+      if (beat.id === 'modern-o-5-6:9:0') frame.cue = beat.id;
+    }
     if (frame.music === 'modern-afterglow') {
       const atShutter = beat.kind === 'text' && block >= 17 && block <= 18;
-      frame.musicGain = atShutter ? .42 : .76;
-      if (atShutter) frame.transition = 1.1;
+      frame.musicGain = atShutter ? .20 : .76;
+      if (block >= 5 && block <= 14) {
+        frame.ambience = [['river', .045]];
+        frame.ambienceFade = 1.4;
+      }
+      if (block === 15 || block === 16) {
+        frame.prepareEffects = ['camera-shutter'];
+        frame.ambience = [['wind', .11], ['river', .045]];
+        frame.ambienceFade = .65;
+      }
+      if (atShutter) {
+        frame.cue = 'modern-o-5-7:17:0';
+        frame.musicFade = .13;
+        frame.ambience = [['wind', .06], ['river', .045]];
+        frame.ambienceFade = .24;
+      }
+      if (block === 19) frame.musicFade = 1.25;
     }
   }
   if (ACCENTS[beat.id]) frame.events.push({ id: beat.id, effects: ACCENTS[beat.id] });

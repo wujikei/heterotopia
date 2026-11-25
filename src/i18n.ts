@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import type { Language } from './types';
-import { LANGUAGES, storyText, translate } from './localeText';
+import { choiceText, LANGUAGES, storyText, translate } from './localeText';
 import type { Catalog, LanguagePack } from './localeText';
 
 export { LANGUAGES };
@@ -53,6 +53,10 @@ export function tr<T>(value: T): T {
 
 export function localizePage(id: string, source: string): string {
   return storyText(id, source, packs.get(language));
+}
+
+export function localizeChoice(id: string, source: string): string {
+  return choiceText(id, source, packs.get(language));
 }
 
 export function dateLocale(): string {

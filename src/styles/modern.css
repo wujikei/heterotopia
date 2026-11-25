@@ -153,6 +153,26 @@
     padding: 8px 8px 9px 16px;
   }
   .app--play:not(.app--hidden):has(.scene-art:is([data-art="cg-modern-notebook-open"], [data-art="cg-modern-translation-r3"], [data-art="cg-modern-paper-note"])) .dialogue-body { margin: 0; }
+  .app--play:not(.app--hidden) .scene-art:is([data-art="cg-modern-summit-r4"], [data-art="cg-modern-porridge-plaque"]) {
+    background: #031014;
+  }
+  .app--play:not(.app--hidden) .scene-art:is([data-art="cg-modern-summit-r4"], [data-art="cg-modern-porridge-plaque"]) .scene-image--previous { display: none; }
+  .app--play:not(.app--hidden) .scene-art:is([data-art="cg-modern-summit-r4"], [data-art="cg-modern-porridge-plaque"]) .scene-image--current {
+    inset: 58px 12px 16px 46%;
+    width: auto;
+    height: auto;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: none;
+    animation: none;
+    mask-image: none;
+  }
+  .app--play:not(.app--hidden):has(.scene-art:is([data-art="cg-modern-summit-r4"], [data-art="cg-modern-porridge-plaque"])) .dialogue {
+    right: 54%;
+    padding: 8px 8px 9px 16px;
+  }
+  .app--play:not(.app--hidden):has(.scene-art:is([data-art="cg-modern-summit-r4"], [data-art="cg-modern-porridge-plaque"])) .dialogue-body { margin: 0; }
 }
 @media (max-aspect-ratio: 3/4) {
   .app--play:not(.app--hidden) .scene-art:is([data-art="modern-street-arrival-r3"], [data-art="cg-modern-word-stall-r3"]) .scene-image--previous {
@@ -221,7 +241,17 @@
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
   }
+  .app--play .scene-art[data-composition="portrait"] {
+    --modern-cg-height: min(133.333vw, 100dvh);
+  }
+  .app--play:not(.app--hidden):not(:has(.ending-screen:not(.ending-screen--clean))) .scene-art[data-composition="portrait"] .scene-image--current {
+    --cg-stage-avail: max(0px, calc(var(--r2-reading-top, 74dvh) - var(--cg-stage-top) - 12px));
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }
+.scene-art[data-composition="portrait"] .scene-image--previous,
+.scene-art .scene-image--previous[data-composition="portrait"] { display: none; }
 .reduced-motion .scene-art[data-art$="-r2"] .scene-image {
   animation: none;
   transition: none;

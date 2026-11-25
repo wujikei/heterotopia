@@ -148,6 +148,8 @@ try {
   });
   assert.match(modernSource, /现代线|问字摊/);
   await modernPage.getByRole('button', { name: '去问', exact: true }).click();
+  await modernPage.getByRole('button', { name: '选择文化传统' }).click();
+  await modernPage.getByRole('button', { name: '带着这个问题启程' }).click();
   await modernPage.locator('.game-screen').waitFor();
   await modernPage.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
   await modernPage.getByTestId('dialogue-text').waitFor();

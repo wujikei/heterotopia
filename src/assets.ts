@@ -5,6 +5,7 @@ const avifNames = new Set(manifest.avif);
 const mobileNames = new Set(manifest.mobile);
 const originals: Readonly<Partial<Record<string, string>>> = manifest.originals;
 const mobileOriginals: Readonly<Partial<Record<string, string>>> = manifest.mobileOriginals;
+export const registeredArtwork = (name: string) => !!originals[name] || avifNames.has(name);
 const failedUntil = new Map<string, number>();
 export const imageUrl = (url: string) => typeof document === 'undefined' || url.startsWith('data:') ? url : new URL(url, document.baseURI).href;
 let avif = false;

@@ -1,3 +1,5 @@
+import type { OverseasOpeningIdentity } from './overseasIdentity';
+
 export type Route = 'prologue' | 'common' | 'royal' | 'kunlun' | 'return';
 export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home' | `modern-${string}`;
 export type Campaign = 'original' | 'overseas';
@@ -24,6 +26,7 @@ export interface HistoryEntry { id: string; sceneId: string; speaker: string; te
 export interface GameState {
   version: 1;
   campaign?: Campaign;
+  overseasIdentity?: OverseasOpeningIdentity;
   sceneId: string;
   beatId: string;
   inventory: string[];

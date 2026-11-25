@@ -1,5 +1,6 @@
 import type { Campaign, GameState, Profile } from './types';
 import type { MusicId } from './score';
+import { validOverseasIdentity } from './overseasIdentity';
 
 export const isModern = (id: string) => id.startsWith('modern-');
 export const campaignOf = (value?: { campaign?: Campaign } | null): Campaign => value?.campaign === 'overseas' ? 'overseas' : 'original';
@@ -131,5 +132,9 @@ export function modernInventory(sceneId: string, previous: string[]): string[] {
 }
 
 export function restoreModernState(state: GameState): GameState {
-  return isModern(state.sceneId) ? { ...state, inventory: modernInventory(state.sceneId, state.inventory) } : state;
+  if (!isModern(state.sceneId)) return state;
+  const restored = { ...state, inventory: modernInventory(state.sceneId, state.inventory) };
+  // Ignore an unknown future definition without discarding a playable save.
+  if (!validOverseasIdentity(restored.overseasIdentity)) delete restored.overseasIdentity;
+  return restored;
 }
