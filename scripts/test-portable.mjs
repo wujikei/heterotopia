@@ -84,7 +84,7 @@ async function open(fixture, viewport = { width: 1440, height: 900 }, { persiste
       localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(data.state));
     }
   }, fixture);
-  const page = await context.newPage();
+  const page = context.pages()[0] ?? await context.newPage();
   page.on('console', message => {
     if (message.text().startsWith('portable-settings-at-navigation')) {
       storageEvents.push({ context: contexts.indexOf(context), value: message.text() });
@@ -109,6 +109,81 @@ async function open(fixture, viewport = { width: 1440, height: 900 }, { persiste
   }, background);
   await page.evaluate(() => Promise.all(document.getAnimations().filter(animation => animation.effect?.getTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {}))));
   return page;
+}
+
+async function verifyPersistentSave() {
+  // Run file-origin persistence in its own renderer, before decoding the entire
+  // media library. Those checks keep hundreds of MiB of embedded data alive.
+  const page = await open(undefined, undefined, { persistent: true });
+  await page.getByRole('heading', { name: '异托邦' }).waitFor();
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  const quality = page.getByRole('switch', { name: '轻量模式', exact: true });
+  assert.equal(await quality.getAttribute('aria-checked'), 'false');
+  await quality.click();
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? '{}').lightweight === true);
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
+  await reloadAndCheck(page, () => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero), 'lightweight title art');
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  assert.equal(await quality.getAttribute('aria-checked'), 'true');
+  await quality.click();
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ORIGINALS__.hero));
+  await page.getByRole('button', { name: '关闭', exact: true }).click();
+
+  await page.getByRole('button', { name: '启程', exact: true }).click();
+  await page.locator('.game-screen').waitFor();
+  await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
+  await page.getByTestId('dialogue-text').waitFor();
+  await page.waitForTimeout(200);
+  await page.screenshot({ path: artifact('08-offline-opening.png') });
+  assert.equal(await page.locator('.location-name').textContent(), BACKGROUNDS['dream-boat'].subtitle);
+  const bookmarked = await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')));
+  await page.keyboard.press('s');
+  await page.locator('.save-slot-main').first().click();
+  await page.getByRole('button', { name: '关闭', exact: true }).click();
+  await page.getByRole('button', { name: '继续', exact: true }).click();
+  await page.waitForFunction(id => {
+    const saved = JSON.parse(localStorage.getItem('heterotopia.v1.autosave') ?? 'null');
+    return saved && saved.beatId !== id;
+  }, bookmarked.beatId);
+  await page.keyboard.press('l');
+  await page.locator('.save-slot--filled .save-slot-main').first().click();
+  await page.waitForFunction(id => {
+    const saved = JSON.parse(localStorage.getItem('heterotopia.v1.autosave') ?? 'null');
+    return saved?.beatId === id && document.querySelector('.dialogue-text')?.dataset.beatId === id;
+  }, bookmarked.beatId);
+  await reloadAndCheck(page, () => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled), 'the saved page');
+  assert.ok(await page.getByRole('button', { name: /^续梦/ }).isEnabled());
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: '导出旅途', exact: true }).click();
+  const download = await downloadPromise;
+  const testSave = artifact('synthetic-offline-test-save.json');
+  await download.saveAs(testSave);
+  const exported = JSON.parse(await readFile(testSave, 'utf8'));
+  assert.equal(exported.format, 'heterotopia-save');
+  assert.equal(exported.slots[0].state.beatId, bookmarked.beatId);
+  // The reopened browser must recover the real file-origin storage from disk.
+  await page.context().close();
+  const reopened = await chromium.launchPersistentContext(durableProfile, { headless: true, offline: true });
+  contexts.push(reopened);
+  const restoredPage = reopened.pages()[0] ?? await reopened.newPage();
+  restoredPage.on('pageerror', error => errors.push(error.message));
+  restoredPage.on('requestfailed', request => errors.push(`${request.url().slice(0, 160)}: ${request.failure()?.errorText}`));
+  restoredPage.on('request', request => {
+    if (/^https?:/.test(request.url())) errors.push(`Unexpected network dependency after restart: ${request.url()}`);
+  });
+  await restoredPage.goto(gameUrl);
+  await restoredPage.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
+  const restoredStorage = await restoredPage.evaluate(() => ({
+    state: JSON.parse(localStorage.getItem('heterotopia.v1.autosave')),
+    slots: JSON.parse(localStorage.getItem('heterotopia.v1.slots')),
+    settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')),
+  }));
+  assert.equal(restoredStorage.state.beatId, bookmarked.beatId);
+  assert.equal(restoredStorage.slots[0].state.beatId, bookmarked.beatId);
+  assert.equal(restoredStorage.settings.lightweight, false);
+  await reopened.close();
+  return { bookmarked, testSave };
 }
 
 try {
@@ -138,8 +213,8 @@ try {
     assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
     assert.ok(html.includes('<script type="application/octet-stream" id="portable-media-'), 'single-file media must remain inert during startup');
   }
-  const page = await open(undefined, undefined, { persistent: true });
-  await page.getByRole('heading', { name: '异托邦' }).waitFor();
+  const { bookmarked, testSave } = await verifyPersistentSave();
+  const page = await open();
   const modernPage = await open();
   await modernPage.getByRole('button', { name: /林越.*现代新卷/ }).click();
   const modernSource = await modernPage.evaluate(async () => {
@@ -230,20 +305,6 @@ try {
   }, Object.keys(imageManifest.originals ?? {}));
   assert.deepEqual(originalIntegrity.missingOriginals, []);
   assert.deepEqual(originalIntegrity.brokenOriginals, []);
-  // Both quality modes must remain functional with networking disabled,
-  // including the stored setting after reopening the single HTML file.
-  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
-  const quality = page.getByRole('switch', { name: '轻量模式', exact: true });
-  assert.equal(await quality.getAttribute('aria-checked'), 'false');
-  await quality.click();
-  await page.waitForFunction(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? '{}').lightweight === true);
-  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
-  await reloadAndCheck(page, () => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero), 'lightweight title art');
-  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
-  assert.equal(await quality.getAttribute('aria-checked'), 'true');
-  await quality.click();
-  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ORIGINALS__.hero));
-  await page.getByRole('button', { name: '关闭', exact: true }).click();
   const expectedAudio = JSON.parse(await readFile(new URL('../public/audio/manifest.json', import.meta.url), 'utf8')).files;
   const audioIntegrity = await page.evaluate(async expectedFiles => {
     const assets = globalThis.__HETEROTOPIA_AUDIO__ ?? {};
@@ -269,54 +330,7 @@ try {
   assert.deepEqual(audioIntegrity.missingAudio, []);
   assert.deepEqual(audioIntegrity.brokenAudio, []);
   assert.equal(audioIntegrity.audioAssets, expectedAudio.length);
-  await page.getByRole('button', { name: '启程', exact: true }).click();
-  await page.locator('.game-screen').waitFor();
-  await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
-  await page.getByTestId('dialogue-text').waitFor();
-  await page.waitForTimeout(200);
-  await page.screenshot({ path: artifact('08-offline-opening.png') });
-  assert.equal(await page.locator('.location-name').textContent(), BACKGROUNDS['dream-boat'].subtitle);
-  const bookmarked = await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')));
-  await page.keyboard.press('s');
-  await page.locator('.save-slot-main').first().click();
-  await page.getByRole('button', { name: '关闭', exact: true }).click();
-  await page.getByRole('button', { name: '继续', exact: true }).click();
-  await page.keyboard.press('l');
-  await page.locator('.save-slot--filled .save-slot-main').first().click();
-  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId), bookmarked.beatId);
-  await reloadAndCheck(page, () => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled), 'the saved page');
-  assert.ok(await page.getByRole('button', { name: /^续梦/ }).isEnabled());
-  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: '导出旅途', exact: true }).click();
-  const download = await downloadPromise;
-  const testSave = artifact('synthetic-offline-test-save.json');
-  await download.saveAs(testSave);
-  const exported = JSON.parse(await readFile(testSave, 'utf8'));
-  assert.equal(exported.format, 'heterotopia-save');
-  assert.equal(exported.slots[0].state.beatId, bookmarked.beatId);
-  // No init script, snapshot restore, or manual re-seeding is allowed here:
-  // the ordinary profile must recover the actual offline save from disk.
   await page.context().close();
-  const reopened = await chromium.launchPersistentContext(durableProfile, { headless: true, offline: true });
-  contexts.push(reopened);
-  const restoredPage = await reopened.newPage();
-  restoredPage.on('pageerror', error => errors.push(error.message));
-  restoredPage.on('requestfailed', request => errors.push(`${request.url().slice(0, 160)}: ${request.failure()?.errorText}`));
-  restoredPage.on('request', request => {
-    if (/^https?:/.test(request.url())) errors.push(`Unexpected network dependency after restart: ${request.url()}`);
-  });
-  await restoredPage.goto(gameUrl);
-  await restoredPage.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
-  const restoredStorage = await restoredPage.evaluate(() => ({
-    state: JSON.parse(localStorage.getItem('heterotopia.v1.autosave')),
-    slots: JSON.parse(localStorage.getItem('heterotopia.v1.slots')),
-    settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')),
-  }));
-  assert.equal(restoredStorage.state.beatId, bookmarked.beatId);
-  assert.equal(restoredStorage.slots[0].state.beatId, bookmarked.beatId);
-  assert.equal(restoredStorage.settings.lightweight, false);
-  await reopened.close();
   const importedPage = await open();
   await importedPage.getByRole('button', { name: '阅读设置', exact: true }).click();
   await importedPage.locator('input[type=file]').setInputFiles(testSave);
