@@ -651,6 +651,28 @@
       "integratedLUFS": -28.45,
       "truePeakDB": -9.47,
       "source": "Original deterministic procedural sound design"
+    },
+    {
+      "file": "music-chu-night-river.mp3",
+      "title": "七夜问河",
+      "kind": "music",
+      "loop": true,
+      "seconds": 56.0,
+      "bytes": 1345592,
+      "integratedLUFS": -18.42,
+      "truePeakDB": -1.99,
+      "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "music-chu-storm.mp3",
+      "title": "风囊开了",
+      "kind": "music",
+      "loop": true,
+      "seconds": 56.66667,
+      "bytes": 1361893,
+      "integratedLUFS": -18.26,
+      "truePeakDB": -2.86,
+      "source": "Local ACE-Step 1.5"
     }
   ]
 }

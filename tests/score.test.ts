@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import test from 'node:test';
-import { compileScene, newGame, newProfile, SCENES } from '../src/engine';
-import { AMBIENCE_IDS, CUE_EFFECTS, EFFECT_IDS, MUSIC_BY_SCENE, MUSIC_IDS, ORIGINAL_MUSIC_IDS, scoreFrame, SOUNDTRACK, unlockedTracks } from '../src/score';
+import { campaignScenes, compileScene, newGame, newProfile, sceneById, SCENES } from '../src/engine';
+import { AMBIENCE_IDS, CUE_EFFECTS, EFFECT_IDS, MUSIC_BY_SCENE, MUSIC_IDS, ORIGINAL_MUSIC_IDS, scoreFrame, SOUNDTRACK, tracksForVisit, unlockedTracks } from '../src/score';
+import { OVERSEAS_MUSIC_BY_SCENE } from '../src/data/overseasScore';
+import { MODERN_BLACKOUTS } from '../src/data/modernStaging';
 import { loadStory } from '../src/story.ts';
 
 await loadStory();
@@ -33,7 +35,28 @@ test('all scenes have authored music, valid environmental layers and stable scre
   }
   for (const id of Object.keys(CUE_EFFECTS)) {
     const [scene, index] = id.split(':');
-    assert.equal(SCENES.find(item => item.id === scene)?.blocks[Number(index)].tag.split('·')[0], '音效');
+    assert.equal(sceneById(scene).blocks[Number(index)].tag.split('·')[0], '音效', id);
+  }
+});
+
+test('all overseas scenes have deliberate cues and no campus track in ancient Chu', () => {
+  const scenes = campaignScenes('overseas');
+  assert.deepEqual(Object.keys(OVERSEAS_MUSIC_BY_SCENE).sort(), scenes.map(scene => scene.id).sort());
+  const profile = newProfile('overseas');
+  for (const scene of scenes) {
+    const choices = Object.fromEntries(scene.blocks.flatMap(block => block.when ? [[block.when.choice, block.when.value]] : []));
+    for (const tradition of ['1', '2', '3', '4'] as const) {
+      for (const item of compileScene(scene.id, profile, { choices, inventory: [], overseasIdentity: { tone: 'neutral', tradition } })) {
+        const frame = scoreFrame(scene.id, item);
+        if (frame.music) assert.ok(tracksForVisit(scene.id).includes(frame.music), item.id);
+        assert.notEqual(frame.music, 'paper-note', item.id);
+        if (!/^modern-o-(0-[12]|[45]-)/.test(scene.id)) assert.ok(!frame.music?.startsWith('modern-'), item.id);
+        assert.ok(frame.ambience.length <= 2);
+        frame.ambience.forEach(([id, level]) => { assert.ok(AMBIENCE_IDS.includes(id)); assert.ok(level >= 0 && level <= 1); });
+        if (MODERN_BLACKOUTS.has(item.id)) assert.equal(frame.music, null, item.id);
+      }
+      if (scene.id !== 'modern-o-2-6') break;
+    }
   }
 });
 
@@ -63,6 +86,53 @@ test('the overseas opening crossfades into its own theme and keeps it through th
   assert.equal(carving.music, quiet.music);
   assert.equal(blackout.music, quiet.music);
   assert.ok(carving.musicGain < quiet.musicGain);
+  const cut = frame('modern-o-0-2', 'modern-o-0-2:29:0');
+  assert.equal(cut.music, null);
+  assert.equal(cut.prepareMusic, 'ritual');
+  assert.deepEqual(cut.ambience, [['rain', .24]]);
+});
+
+test('the rite, seven nights and Kunlun storm use distinct beds at the actual story cuts', () => {
+  const frame = (id: string) => scoreFrame(id.split(':')[0], beat(id.split(':')[0], id));
+  const arrival = frame('modern-o-0-3:2:0');
+  const gaze = frame('modern-o-0-3:20:0');
+  const ceremony = frame('modern-o-0-4:2:0');
+  assert.equal(arrival.music, 'ritual');
+  assert.ok(arrival.releaseBeforeLoad && arrival.transition < 1);
+  assert.equal(gaze.music, arrival.music);
+  assert.equal(ceremony.music, arrival.music);
+  assert.deepEqual(gaze.ambience.map(([id]) => id), ['rain', 'hearth']);
+  assert.equal(arrival.events[0].effects[0].id, 'bronze');
+  for (let night = 1; night <= 7; night++) {
+    const sceneId = `modern-o-2-${night}`;
+    const page = compileScene(sceneId, newProfile('overseas'), { choices: {}, inventory: [], overseasIdentity: { tone: 'neutral', tradition: '3' } })[0];
+    assert.equal(scoreFrame(sceneId, page).music, 'chu-night-river');
+  }
+  assert.equal(frame('modern-c-1-13:2:0').music, 'old-jade');
+  assert.equal(frame('modern-k-D-4:9:0').prepareMusic, 'chu-storm');
+  assert.equal(frame('modern-k-D-5:3:0').music, 'chu-storm');
+  assert.ok(frame('modern-k-D-5:3:0').events.some(event => event.effects.some(effect => effect.id === 'splash')));
+  assert.equal(frame('modern-k-D-6:1:0').music, 'chu-storm');
+  assert.equal(frame('modern-k-D-7:1:0').music, null);
+  assert.deepEqual(frame('modern-k-D-7:1:0').ambience, [['river', .23]]);
+  const memory = frame('modern-k-E-7:5:0');
+  assert.equal(beat('modern-k-E-7','modern-k-E-7:5:0').background, 'modern-dorm');
+  assert.equal(memory.music, 'river-of-names');
+  assert.deepEqual(memory.ambience.map(([id]) => id), ['river', 'wind']);
+  assert.equal(frame('modern-k-F-6:10:0').music, null);
+  assert.deepEqual(frame('modern-k-G-4:7:0').ambience, []);
+});
+
+test('V6 thins the dream and return before bringing back a domestic theme', () => {
+  const frame = (id: string) => scoreFrame(id.split(':')[0], beat(id.split(':')[0], id));
+  assert.equal(frame('0-7:11:0').music, null);
+  assert.equal(frame('0-9:10:0').music, 'old-jade');
+  assert.equal(frame('0-10:17:0').music, 'under-current');
+  assert.ok(frame('0-10:17:0').releaseBeforeLoad);
+  assert.equal(frame('1-1:3:0').music, 'hearth');
+  assert.equal(frame('1-4:17:0').music, 'ritual');
+  assert.equal(frame('终-2:3:0').music, null);
+  assert.equal(frame('终-2:5:0').music, 'light-in-kitchen');
 });
 
 test('the overseas return and finale cues follow the notebook, climb and shutter', () => {
