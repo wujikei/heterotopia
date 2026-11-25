@@ -177,7 +177,10 @@ try {
       else { await hold; await route.continue(); }
     }), { lightweight: false }, seed);
     await page.getByRole('button', { name: /^续梦/ }).click();
-    await page.locator('.scene-image--current[data-art="modern-street-arrival-r3"]').waitFor();
+    const arrived = page.locator('.scene-image--current[data-art="modern-street-arrival-r3"]');
+    await arrived.waitFor();
+    assert.equal(await arrived.evaluate(image => getComputedStyle(image).animationName), 'none', 'Reduced motion never starts the reveal from a hidden first frame');
+    assert.equal(await page.locator('.scene-image--previous').isVisible(), false, 'Reduced motion never flashes the title behind story art');
     await page.keyboard.press('Enter');
     await page.locator('.dialogue-text[data-beat-id="modern-o-0-1:5:0"]').waitFor();
     await page.locator('.scene-image--current[data-art="modern-street-arrival-r3"]').waitFor({ state: 'detached' });

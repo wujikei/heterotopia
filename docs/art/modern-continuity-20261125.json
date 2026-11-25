@@ -1296,8 +1296,8 @@
       "source": "lin-yue-trail",
       "edit": "使用原 R2 脸部和新服装，保留圆框眼镜与军绿背包。",
       "master": "resources/art-src/modern-continuity/portrait-linyue-trail.png",
-      "masterSha256": "289b9d5b1192b833945d3bff5c92cd8eda303a972529433c26a3688147322824",
-      "losslessSha256": "53a3ecb3d41707968e60f7c3936b437927d536a06cfc50564d60f791f896b30a",
+      "masterSha256": "04e5601f0e2189361a4d594ff24720dd74a47092c085c227de62ae59239fb2fb",
+      "losslessSha256": "97b9cc8c50064b1d72433e20bd4fd759900ff9b7babfa9b9529eb79849e45aa6",
       "size": [
         864,
         1152
@@ -1308,7 +1308,7 @@
           640,
           853
         ],
-        "losslessSha256": "c1eaa0464bf06d43936375d680122db0345a6241b789551fa1ab59331d111adc"
+        "losslessSha256": "2d82b503f176ceccbac607742c7e22fe02bbfccca9095390b031c6ab837ab1a4"
       }
     },
     {
@@ -1316,8 +1316,8 @@
       "source": "lin-yue-trail",
       "edit": "同体型，继承原 R2 微笑表情。",
       "master": "resources/art-src/modern-continuity/portrait-linyue-trail-smile.png",
-      "masterSha256": "65ecd193de118ef43a776f80562acda153cef4c92c8bb491d205c584f07fad9a",
-      "losslessSha256": "56db175f51472cdee5cb1c1a37b9fb9685ae534c272b1db3f6055f81bc5bb5e2",
+      "masterSha256": "06ce85f8263219f450de1cdd8645839e97510a396fed9c3acb043e73b0aed8ae",
+      "losslessSha256": "691859c917993b03b0944e56c071f3560bc2d0385996d48f8958b9e302a590be",
       "size": [
         864,
         1152
@@ -1328,7 +1328,7 @@
           640,
           853
         ],
-        "losslessSha256": "019732630ce7ca54f3eff77d9a685dbc3301c1506b9d5664a87afaa599dc9561"
+        "losslessSha256": "d2f49d7714618c68a402bd424578df6f7fae9119df181f5a57bd9856731f3108"
       }
     }
   ]

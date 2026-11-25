@@ -104,7 +104,8 @@ try {
         return fail ? route.fulfill({ status: 404, body: 'Synthetic missing CG format' }) : route.continue();
       }));
     const source = await displayed(page, missing === 'all' ? checkpoint.beat.background : checkpoint.cg.file,
-      missing === 'avif' ? '-m\\.webp' : missing === 'both' ? 'snow-hands\\.webp' : '\\.(avif|webp)');
+      missing === 'avif' ? '-m\\.webp' : missing === 'both' ? 'snow-hands\\.(avif|webp)' : '\\.(avif|webp)');
+    if (missing === 'both') assert.ok(source.width > source.height, 'Missing mobile assets must reach the desktop composition');
     results.push({ fallback: missing, source });
     await context.close();
   }

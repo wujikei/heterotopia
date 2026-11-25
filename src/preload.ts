@@ -1,11 +1,15 @@
-import { imageFallback, imageUrl, recordImageFailure } from './assets';
+import { imageFailed, imageFallback, imageUrl, recordImageFailure } from './assets';
 
 type CachedImage = { promise: Promise<string>; pending?: HTMLImageElement };
 const images = new Map<string, CachedImage>();
+const fallbackLoads = new Map<string, Promise<string>>();
 
 /** A fulfilled promise means the image can be painted, including data: images. */
 export function preloadImage(url: string, priority: 'high' | 'low' | 'auto' = 'auto'): Promise<string> {
   const key = imageUrl(url);
+  const recovering = fallbackLoads.get(key);
+  if (recovering && imageFailed(key)) return recovering;
+  fallbackLoads.delete(key);
   const cached = images.get(key);
   if (cached) {
     if (priority === 'high' && cached.pending) cached.pending.fetchPriority = 'high';
@@ -40,7 +44,11 @@ export function preloadImage(url: string, priority: 'high' | 'low' | 'auto' = 'a
     recordImageFailure(key);
     const fallback = imageFallback(url);
     if (fallback) {
-      void preloadImage(fallback, priority).then(resolve, reject);
+      fallbackLoads.set(key, entry.promise);
+      void preloadImage(fallback, priority).then(resolve, error => {
+        if (fallbackLoads.get(key) === entry.promise) fallbackLoads.delete(key);
+        reject(error);
+      });
       return;
     }
     reject(new Error(`Image unavailable: ${url.slice(0, 100)}`));

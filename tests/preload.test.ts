@@ -40,6 +40,7 @@ test('preloading deduplicates URLs, waits for decoding, supports onload fallback
     assert.equal(instances[5].src, './art/test.webp');
     const webp = preloadImage('./art/test.webp');
     assert.equal(instances.length, 6, 'the fallback shares the existing WebP request');
+    assert.equal(preloadImage('./art/test.avif'), avif, 'concurrent readers share the fallback path');
     instances[5].onload!(); finishDecode();
     assert.equal(await avif, await webp);
     assert.equal(isDecoded('./art/test.avif'), false);
