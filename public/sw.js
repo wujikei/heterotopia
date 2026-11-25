@@ -1,9 +1,8 @@
 /* __BUILD_MANIFEST__ */
 // To recover from a broken release, see docs/reviews/perf-1.md.
 const SCOPE = new URL(self.registration.scope);
-const FORMAT = new URL(self.location.href).searchParams.get('format') === 'avif' ? 'avif' : 'webp';
 const PREFIX = `heterotopia-${encodeURIComponent(SCOPE.pathname)}-`;
-const CACHE = `${PREFIX}${BUILD_VERSION}-${FORMAT}`;
+const CACHE = `${PREFIX}${BUILD_VERSION}`;
 const INDEX = new URL('index.html', SCOPE).href;
 const absolute = path => new URL(path, SCOPE).href;
 
@@ -18,11 +17,10 @@ async function store(cache, request, response) {
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    const files = PRECACHE_URLS.filter(path => !path.endsWith(`hero.${FORMAT === 'avif' ? 'webp' : 'avif'}`));
     // Failed precaching must leave the previous working version in charge.
     try {
       // Keep background installation from opening a burst of parallel downloads.
-      const queue = [...files];
+      const queue = [...PRECACHE_URLS];
       const fill = async () => {
         while (queue.length) {
           const request = new Request(absolute(queue.shift()), { cache: 'no-store' });
@@ -57,7 +55,7 @@ self.addEventListener('message', event => {
   if (event.data?.type === 'WARM_ART') event.waitUntil((async () => {
     const url = new URL(event.data.url, SCOPE);
     const relative = url.pathname.slice(SCOPE.pathname.length);
-    if (url.origin !== SCOPE.origin || !['art/hero.avif', 'art/hero.webp', 'art-original/hero.png', 'art-original/hero.webp'].includes(relative)) return;
+    if (url.origin !== SCOPE.origin || !/^(?:art\/(?:hero|modern-sunset)\.(?:avif|webp)|art-original\/(?:hero|modern-sunset)\.(?:png|webp))$/.test(relative)) return;
     const cache = await caches.open(CACHE);
     if (await cache.match(url.href)) return;
     const response = await fetch(url.href);

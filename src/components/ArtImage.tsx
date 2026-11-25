@@ -1,10 +1,11 @@
 import { useState, useSyncExternalStore } from 'react';
 import type { ImgHTMLAttributes } from 'react';
-import { asset, assetSources, avifEnabled, imageFailed, recordImageFailure, artQuality, subscribeArtQuality, artViewport, subscribeArtViewport } from '../assets';
+import { asset, assetSources, avifEnabled, imageFailed, recordImageFailure, artQuality, subscribeArtQuality, subscribeArtFormat, artViewport, subscribeArtViewport } from '../assets';
 
 /** Native responsive selection; a failed AVIF still has a real WebP fallback. */
 export function ArtImage({ name, responsive = true, ...props }: { name: string; responsive?: boolean } & Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'srcSet'>) {
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
+  useSyncExternalStore(subscribeArtFormat, avifEnabled, () => false);
   useSyncExternalStore(subscribeArtViewport, artViewport, () => 'false:false');
   const sources = assetSources(name);
   const [, retry] = useState(0);
@@ -13,7 +14,7 @@ export function ArtImage({ name, responsive = true, ...props }: { name: string; 
   const preferred = avifEnabled();
   return <picture style={{ display: 'contents' }}>
     {preferred && mobile?.avif && !imageFailed(mobile.avif) && <source media={mobile.media} type="image/avif" srcSet={mobile.avif} />}
-    {mobile && <source media={mobile.media} type="image/webp" srcSet={mobile.webp} />}
+    {mobile && <source media={mobile.media} type={mobile.type} srcSet={mobile.webp} />}
     {preferred && sources.avif && !imageFailed(sources.avif) && <source type="image/avif" srcSet={sources.avif} />}
     <source type={sources.type} srcSet={sources.webp} />
     {/* WebKit can fetch src before picture is attached; match the prefetch. */}

@@ -46,8 +46,8 @@ const server = createServer(async (request, response) => {
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}/heterotopia/`;
 let context;
-async function launch() {
-  context = await browserType.launchPersistentContext(profile, { headless: true, viewport: { width: 390, height: 844 } });
+async function launch(profilePath = profile) {
+  context = await browserType.launchPersistentContext(profilePath, { headless: true, viewport: { width: 390, height: 844 } });
   const page = context.pages()[0] || await context.newPage();
   page.setDefaultTimeout(45000);
   page.on('pageerror', error => errors.push(error.message));
@@ -62,7 +62,18 @@ async function waitForAsync(predicate, argument) {
   }
 }
 try {
-  let page = await launch();
+  let page = await launch(await mkdtemp(path.join(output, 'overseas-profile-')));
+  await context.addInitScript(() => localStorage.setItem('heterotopia.v1.campaign', '"overseas"'));
+  await page.goto(base);
+  const overseasTitle = new URL('art-original/modern-sunset.webp', base).href;
+  await waitForAsync(async url => !!await caches.match(url), overseasTitle);
+  assert.ok(!hits.some(file => /^(?:art|art-original)\/hero\./.test(file)), 'Only the selected title image should warm');
+  await context.setOffline(true);
+  await page.reload();
+  await page.waitForFunction(url => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(url), overseasTitle);
+  results.push({ check: 'the saved overseas title warms and renders offline without requesting the original title', passed: true });
+  await context.close();
+  page = await launch();
   await page.goto(base);
   await page.getByRole('heading', { name: '异托邦' }).waitFor();
   await page.waitForFunction(() => !!navigator.serviceWorker?.controller, null, { timeout: 45000 });

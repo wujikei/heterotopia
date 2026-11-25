@@ -1,45 +1,48 @@
 import { t, tr, useLocale } from '../i18n';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { asset } from '../data/world';
-import { backgroundImageForUrl, artQuality, subscribeArtQuality, artViewport, subscribeArtViewport } from '../assets';
+import { artQuality, subscribeArtQuality, artViewport, subscribeArtViewport, avifEnabled, subscribeArtFormat } from '../assets';
 import { preloadImage } from '../preload';
+
+type ArtLayer = { name: string; url: string };
 
 export function SceneArt({ name, motion = true, cg, readingId }: { name: string; motion?: boolean; cg?: string; readingId: string | null }) {
   useLocale();
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
+  useSyncExternalStore(subscribeArtFormat, avifEnabled, () => false);
   useSyncExternalStore(subscribeArtViewport, artViewport, () => 'false:false');
   const art = useRef<HTMLDivElement>(null);
   const target = cg || name;
   const selected = asset(target);
-  const [loaded, setLoaded] = useState({ name: target, url: selected });
-  const [previous, setPrevious] = useState<{ name: string; url: string } | null>(null);
+  const [{ loaded, previous }, setLayers] = useState<{ loaded: ArtLayer | null; previous: ArtLayer | null }>({ loaded: null, previous: null });
   useEffect(() => {
     let cancelled = false;
+    const clearOldArt = () => setLayers(current => current.loaded?.name === target ? current : { loaded: null, previous: null });
+    // Keep the crossfade for ready artwork. Long requests can finish without
+    // making dialogue play against the previous location indefinitely.
+    const timer = setTimeout(clearOldArt, 1250);
     const show = async () => {
-      let displayed = target;
-      let url: string;
-      try { url = await preloadImage(selected); }
-      catch {
-        if (!cg) return;
-        displayed = name;
-        try { url = await preloadImage(asset(name)); } catch { return; }
+      let next: ArtLayer;
+      try {
+        next = { name: target, url: await preloadImage(selected, 'high') };
+      } catch {
+        if (cancelled) return;
+        if (target === name) { clearOldArt(); return; }
+        try { next = { name, url: await preloadImage(asset(name), 'high') }; }
+        catch { if (!cancelled) clearOldArt(); return; }
       }
       if (cancelled) return;
-      const next = { name: displayed, url };
-      setLoaded(current => {
-        if (current.url === next.url || new URL(current.url, document.baseURI).href === next.url) return current;
-        setPrevious(current);
-        return next;
-      });
+      clearTimeout(timer);
+      setLayers(current => current.loaded?.url === next.url && current.loaded.name === next.name ? current : { loaded: next, previous: current.loaded });
     };
     void show();
-    return () => { cancelled = true; };
-  }, [target, selected, name, cg]);
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [target, selected, name]);
   useEffect(() => {
     if (!previous) return;
-    const timer = setTimeout(() => setPrevious(null), 1700);
+    const timer = setTimeout(() => setLayers(current => ({ ...current, previous: null })), 1700);
     return () => clearTimeout(timer);
-  }, [previous, loaded]);
+  }, [previous]);
   useEffect(() => {
     const element = art.current;
     if ((!target.endsWith('-r2') && !target.startsWith('cg-modern-')) || readingId === null) {
@@ -62,10 +65,10 @@ export function SceneArt({ name, motion = true, cg, readingId }: { name: string;
     const frame = requestAnimationFrame(measure);
     void document.fonts.ready.then(measure);
     return () => { active = false; observer.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(frame); };
-  }, [target, loaded.url, readingId]);
-  return <div ref={art} data-art={loaded.name} className={`scene-art ${loaded.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
-    {tr(previous && <div className="scene-image scene-image--previous" data-art={previous.name} style={{ backgroundImage: backgroundImageForUrl(previous.url) }} />)}
-    <div key={loaded.url} className="scene-image scene-image--current" data-art={loaded.name} style={{ backgroundImage: backgroundImageForUrl(loaded.url) }} />
+  }, [target, loaded?.url, readingId]);
+  return <div ref={art} data-art={loaded?.name} className={`scene-art ${loaded?.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
+    {tr(previous && <div className="scene-image scene-image--previous" data-art={previous.name} style={{ backgroundImage: `url("${previous.url}")` }} />)}
+    {tr(loaded && <div key={loaded.url} className="scene-image scene-image--current" data-art={loaded.name} style={{ backgroundImage: `url("${loaded.url}")` }} />)}
     <div className="scene-shade" />
     <div className="scene-grain" />
   </div>;

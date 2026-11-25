@@ -3,7 +3,11 @@ import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
 import { asset, assetSources } from '../src/assets';
 import { cgForBeat, cgUnlocked, CGS } from '../src/data/cgs';
-import { compileScene, currentBeat, enterScene, newGame, newProfile } from '../src/engine';
+import { actorForBeat } from '../src/actors';
+import { actorPortraitName } from '../src/data/actorVariants';
+import { compileScene, currentBeat, enterScene, newGame, newProfile, sceneById } from '../src/engine';
+import { MODERN_GLANCE_ART, MODERN_PHOTO_ART, MODERN_SUMMIT_ART } from '../src/modern';
+import { scoreFrame } from '../src/score';
 import { loadStory } from '../src/story';
 
 await loadStory('overseas');
@@ -93,6 +97,73 @@ test('an existing page bookmark restores the same text and deterministic new sta
   assert.equal(first.background, 'cg-modern-dorm-carving-r2');
   assert.deepEqual(currentBeat(old, profile), first, 'replay and skipped compilation have no mutable staging cursor');
   assert.deepEqual(old.choices, entered.choices);
+});
+
+test('ancient locations and CGs survive dialogue and narrated comparisons', () => {
+  const expected = {
+    'modern-r-A-6': 'tomb',
+    'modern-r-A-6a': 'study',
+    'modern-r-B-12': 'modern-chu-courtyard',
+    'modern-r-D-11': 'palace',
+    'modern-k-A-1': 'hut',
+    'modern-k-D-2': 'modern-river-aboard',
+    'modern-k-D-3': 'modern-river-aboard',
+    'modern-k-D-5': 'cg-modern-storm',
+    'modern-k-D-6': 'cg-modern-storm',
+    'modern-k-E-1': 'cg-modern-cloud-lord',
+    'modern-k-E-5': 'cg-modern-siming',
+    'modern-k-E-6': 'cg-modern-shaosiming',
+    'modern-k-F-1': 'cg-modern-kunlun-light',
+  };
+  for (const [sceneId, background] of Object.entries(expected)) {
+    const beats = pages(sceneId);
+    assert.ok(beats.length, sceneId);
+    for (const beat of beats) assert.equal(beat.background, background, beat.id);
+  }
+  const houses = pages('modern-r-C-1a');
+  assert.ok(houses.some(b => b.background === 'study') && houses.some(b => b.background === 'palace'));
+  assert.ok(houses.some(b => b.background === 'modern-chu-courtyard'));
+  assert.ok(houses.every(b => b.background !== 'ruins'));
+  const briefMemory = pages('modern-k-E-7');
+  assert.deepEqual(briefMemory.filter(beat => beat.background === 'modern-dorm').map(beat => beat.id), ['modern-k-E-7:5:0']);
+  assert.equal(briefMemory.find(beat => beat.id === 'modern-k-E-7:6:0')?.background, 'light-river');
+});
+
+test('return and finale images appear after their scripted actions and old gallery unlocks survive', () => {
+  for (const [id, background, sourceAnchor] of [
+    ['modern-o-4-1:11:0', 'modern-library', /翻原典/],
+    ['modern-o-4-1:12:0', 'modern-dorm-quiet-r2', /不懂在哪/],
+    ['modern-o-4-1:14:0', 'modern-classroom', /课堂上第一次举手/],
+    ['modern-o-4-1:19:0', 'modern-dorm-quiet-r2', /夜里，室友/],
+    ['modern-o-4-1:25:0', 'modern-dorm-quiet-r2', /电脑前/],
+    ['modern-o-5-5:4:0', MODERN_GLANCE_ART, /亮黄外套/],
+    ['modern-o-5-5:9:0', 'modern-mountain-path', /消失不见/],
+    ['modern-o-5-6:4:0', 'modern-sunset', /沈辞！/],
+    ['modern-o-5-6:9:0', MODERN_SUMMIT_ART, /笔记递过去/],
+    ['modern-o-5-7:15:0', 'modern-sunset', /拍照啦/],
+    ['modern-o-5-7:17:0', MODERN_PHOTO_ART, /按下快门/],
+    ['modern-k-G-1:1:0', 'river', /舟很轻/],
+    ['modern-k-G-1:2:0', 'cg-modern-quiet-shoal', /蜷着/],
+    ['modern-k-G-2:1:0', 'cg-modern-cold-porridge', /一碗粥/],
+    ['modern-k-G-2:3:0', 'cg-modern-porridge-plaque', /一块木牌/],
+    ['modern-k-G-3:14:0', 'cg-modern-porridge-plaque', /他们听不见了/],
+    ['modern-k-G-4:1:0', 'cg-modern-quiet-shoal', /红绳的另一头/],
+    ['modern-k-G-4:4:0', 'river', /人去舟空/],
+  ] as const) {
+    const beat = pages(id.split(':')[0]).find(item => item.id === id);
+    assert.ok(beat?.kind === 'text', id);
+    assert.match(beat.text, sourceAnchor, id);
+    assert.equal(beat.background, background, id);
+  }
+  const trail = pages('modern-o-5-4');
+  const actor = actorForBeat(trail.find(beat => beat.id === 'modern-o-5-4:14:0')!, sceneById('modern-o-5-4'), trail);
+  assert.ok(actor);
+  assert.equal(actorPortraitName(actor), 'portrait-linyue-trail-smile');
+  const photo = CGS.find(cg => cg.id === 'modern-photo')!;
+  assert.equal(cgUnlocked(photo, { ...profile, art: ['cg-modern-photo'] }), true);
+  const quiet = scoreFrame('modern-k-G-1', pages('modern-k-G-1')[0]);
+  assert.equal(quiet.music, null);
+  assert.deepEqual(quiet.ambience, []);
 });
 
 test('reviewed r2 crops load in original quality on portrait screens and survive rotation', () => {

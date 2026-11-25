@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 import { advance, choose, completeEnding, continueEnding, currentBeat, newGame, newProfile, recordProgress } from '../src/engine.ts';
 import { BACKGROUNDS, CHARACTERS, MODERN_CHARACTERS } from '../src/data/world.ts';
-import { MODERN_SCENE_ART } from '../src/modern.ts';
+import { modernStagedArtNames } from '../src/data/modernStaging.ts';
 import { loadStory } from '../src/story.ts';
 import { CGS, cgForBeat } from '../src/data/cgs.ts';
 import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
@@ -137,7 +137,7 @@ try {
   const expected = [
     ...RELIC_ART,
     ...Object.keys(BACKGROUNDS).flatMap(name => [name, `${name}-thumb`]),
-    ...[...new Set(Object.values(MODERN_SCENE_ART))].flatMap(name => [name, `${name}-thumb`]),
+    ...modernStagedArtNames(),
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
     ...CHARACTERS.map(c => `portrait-${c.key}-face`),
     ...MODERN_CHARACTERS.flatMap(c => [portraitName(c.key), `portrait-${c.key}-face`]),
@@ -194,6 +194,7 @@ try {
   await mobileCGPage.setViewportSize({ width: 390, height: 844 });
   await mobileCGPage.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__['cg-s06-snow-hands-m']));
   await mobileCGPage.screenshot({ path: artifact('art-direction-1-offline-mobile.png') });
+  await mobileCGPage.context().close();
   const originalIntegrity = await page.evaluate(async expectedNames => {
     const originals = globalThis.__HETEROTOPIA_ORIGINALS__ ?? {};
     const missingOriginals = expectedNames.filter(name => !originals[name]?.startsWith('data:image/'));
@@ -262,7 +263,16 @@ try {
   await page.locator('.save-slot--filled .save-slot-main').first().click();
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId), bookmarked.beatId);
   await page.reload();
-  await page.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
+  await page.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled)).catch(async error => {
+    const afterReload = await page.evaluate(() => ({
+      screen: document.querySelector('.app')?.className ?? null,
+      hasAutosave: !!localStorage.getItem('heterotopia.v1.autosave'),
+      hasSettings: !!localStorage.getItem('heterotopia.v1.settings'),
+      imageCount: Object.keys(globalThis.__HETEROTOPIA_ORIGINALS__ ?? {}).length,
+      audioCount: Object.keys(globalThis.__HETEROTOPIA_AUDIO__ ?? {}).length,
+    })).catch(() => null);
+    throw new Error(`Offline ${edition} did not restore the saved page on reload: ${JSON.stringify({ afterReload, errors, storageEvents })}`, { cause: error });
+  });
   assert.ok(await page.getByRole('button', { name: /^续梦/ }).isEnabled());
   await page.getByRole('button', { name: '阅读设置', exact: true }).click();
   const downloadPromise = page.waitForEvent('download');

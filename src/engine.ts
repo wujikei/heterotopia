@@ -1,7 +1,8 @@
 import { MODERN_SCENES, SCENES, isStoryReady } from './story';
 import { CHARACTERS, MODERN_CHARACTERS } from './data/world';
 import { timeOfDayBackground } from './data/timeOfDay';
-import { campaignOf, isModern, modernBackground, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_SCENE_ART, MODERN_RETURN_ENDING, modernReturnMemory } from './modern';
+import { campaignOf, isModern, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_RETURN_ENDING, modernReturnMemory } from './modern';
+import { modernOpeningArt, MODERN_PAGE_CUTS, MODERN_PAGE_INSERTS, MODERN_STAGE_CUTS } from './data/modernStaging';
 import type { Beat, Campaign, ChoiceBeat, EndingId, GameState, Profile, Scene, TextBeat } from './types';
 
 export { STORY, SCENES, loadStory, isStoryReady } from './story';
@@ -119,14 +120,14 @@ export function compileScene(sceneId: string, profile: Profile, state: Pick<Game
 
 function compileModernScene(scene: Scene, profile: Profile, state: Pick<GameState, 'choices' | 'inventory'>): Beat[] {
   const beats: Beat[] = [];
-  let background = MODERN_SCENE_ART[scene.id] ?? scene.background, atmosphere = '', audioCueId = '', direction = '';
+  let background = modernOpeningArt(scene), atmosphere = '', audioCueId = '', direction = '';
   let cast: string[] = [];
   scene.blocks.forEach((block, index) => {
     if (block.domesticOnly || block.when && state.choices[block.when.choice] !== block.when.value) return;
     const text = block.lines.join('\n');
     const tag = block.tag.split('·')[0];
     const base = () => ({ id: `${scene.id}:${index}`, background, atmosphere, audioCueId, direction, cast: [...cast] });
-    if (tag === '背景') { background = modernBackground(scene, text, background); return; }
+    if (tag === '背景') { background = MODERN_STAGE_CUTS[`${scene.id}:${index}`] ?? background; return; }
     if (tag === '音效') { atmosphere = text; audioCueId = `${scene.id}:${index}`; return; }
     if (tag === '演出') { direction = text; return; }
     if (tag === '立绘') { cast = [...CHARACTERS, ...MODERN_CHARACTERS].filter(c => text.includes(c.name)).map(c => c.key); return; }
@@ -148,12 +149,13 @@ function compileModernScene(scene: Scene, profile: Profile, state: Pick<GameStat
     }
     const [speaker, ...moods] = block.tag.split('·');
     (block.pages ?? block.lines).forEach((sourcePage, pageIndex) => {
+      const id = `${scene.id}:${index}:${pageIndex}`;
       const page = block.returnMemory ? modernReturnMemory(state.choices) ?? sourcePage : sourcePage;
-      background = modernBackground(scene, page, background);
+      background = MODERN_PAGE_CUTS[id] ?? background;
       const activeSpeaker = speaker === '旁白' ? '' : speaker;
       const who = [...CHARACTERS, ...MODERN_CHARACTERS].find(c => c.name === activeSpeaker || activeSpeaker === '大巫祝' && c.key === 'wuyang');
       if (who) cast = [who.key];
-      beats.push({ ...base(), id: `${scene.id}:${index}:${pageIndex}`, kind: 'text', speaker: activeSpeaker, mood: moods.join('·'), text: page });
+      beats.push({ ...base(), id, background: MODERN_PAGE_INSERTS[id] ?? background, kind: 'text', speaker: activeSpeaker, mood: moods.join('·'), text: page });
     });
     direction = '';
   });

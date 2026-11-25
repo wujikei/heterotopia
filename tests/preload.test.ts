@@ -37,10 +37,35 @@ test('preloading deduplicates URLs, waits for decoding, supports onload fallback
     instances[3].onload!(); finishDecode(); await retry;
     const avif = preloadImage('./art/test.avif');
     instances[4].onerror!();
-    assert.equal(instances[4].src, './art/test.webp');
-    assert.equal(preloadImage('./art/test.webp'), avif);
-    instances[4].onload!(); finishDecode(); await avif;
-    assert.equal(isDecoded('./art/test.avif'), true);
+    assert.equal(instances[5].src, './art/test.webp');
+    const webp = preloadImage('./art/test.webp');
+    assert.equal(instances.length, 6, 'the fallback shares the existing WebP request');
+    instances[5].onload!(); finishDecode();
+    assert.equal(await avif, await webp);
+    assert.equal(isDecoded('./art/test.avif'), false);
     assert.equal(isDecoded('./art/test.webp'), true);
   } finally { globalThis.Image = original; }
+});
+
+test('a timed-out request can be retried at the original size', async t => {
+  const original = globalThis.Image;
+  const requests: string[] = [];
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  globalThis.Image = class {
+    set src(url: string) { requests.push(url); }
+    removeAttribute() {}
+  } as unknown as typeof Image;
+  try {
+    const url = './art-original/hero.webp';
+    const first = assert.rejects(preloadImage(url), /Image timed out/);
+    t.mock.timers.tick(30000);
+    await first;
+    const retry = assert.rejects(preloadImage(url), /Image timed out/);
+    assert.deepEqual(requests, [url, url]);
+    t.mock.timers.tick(30000);
+    await retry;
+  } finally {
+    globalThis.Image = original;
+    t.mock.timers.reset();
+  }
 });

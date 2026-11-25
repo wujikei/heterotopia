@@ -15,9 +15,12 @@ const destination = path.resolve(process.env.VN_PORTABLE_OUTPUT || (standalone
 let html = await readFile(path.join(dist, 'index.html'), 'utf8');
 const assetMap = {};
 const manifest = JSON.parse(await readFile(path.join(root, 'src/data/art-manifest.json'), 'utf8'));
-const mobileCGs = new Set(manifest.mobile.filter(name => name.startsWith('cg-')).map(name => `${name}-m.webp`));
+const mobileArt = new Set([
+  ...manifest.mobile.filter(name => name.startsWith('cg-')),
+  ...Object.keys(manifest.mobileOriginals),
+].map(name => `${name}-m.webp`));
 for (const name of await readdir(path.join(dist, 'art'))) {
-  if (!name.endsWith('.webp') || (name.endsWith('-m.webp') && !mobileCGs.has(name))) continue;
+  if (!name.endsWith('.webp') || (name.endsWith('-m.webp') && !mobileArt.has(name))) continue;
   const image = await readFile(path.join(dist, 'art', name));
   assetMap[name.slice(0, -5)] = `data:image/webp;base64,${image.toString('base64')}`;
 }

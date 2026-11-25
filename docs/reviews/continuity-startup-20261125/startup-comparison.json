@@ -1,0 +1,362 @@
+[
+  {
+    "name": "原篇 · 1366×768",
+    "label": "before",
+    "round": 0,
+    "controlsMs": 1746,
+    "requestMs": 1748,
+    "decodeMs": 5987,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 408204,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-metadata.woff2",
+      "/fonts/story-serif-ui-semibold.woff2",
+      "/fonts/story-serif-regular.woff2"
+    ],
+    "firstContentfulPaint": 2264
+  },
+  {
+    "name": "原篇 · 1366×768",
+    "label": "after",
+    "round": 0,
+    "controlsMs": 1503,
+    "requestMs": 384,
+    "decodeMs": 4169,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1744
+  },
+  {
+    "name": "原篇 · 1366×768",
+    "label": "after",
+    "round": 1,
+    "controlsMs": 1501,
+    "requestMs": 388,
+    "decodeMs": 4186,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1728
+  },
+  {
+    "name": "原篇 · 1366×768",
+    "label": "before",
+    "round": 1,
+    "controlsMs": 1332,
+    "requestMs": 1333,
+    "decodeMs": 5549,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 408204,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-metadata.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1580
+  },
+  {
+    "name": "原篇 · 1366×768",
+    "label": "before",
+    "round": 2,
+    "controlsMs": 1319,
+    "requestMs": 1320,
+    "decodeMs": 5543,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 408204,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-metadata.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1568
+  },
+  {
+    "name": "原篇 · 1366×768",
+    "label": "after",
+    "round": 2,
+    "controlsMs": 1495,
+    "requestMs": 385,
+    "decodeMs": 4173,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1724
+  },
+  {
+    "name": "原篇 · 390×844",
+    "label": "before",
+    "round": 0,
+    "controlsMs": 1324,
+    "requestMs": 1324,
+    "decodeMs": 5557,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 408204,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-metadata.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1512
+  },
+  {
+    "name": "原篇 · 390×844",
+    "label": "after",
+    "round": 0,
+    "controlsMs": 1501,
+    "requestMs": 386,
+    "decodeMs": 4187,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1688
+  },
+  {
+    "name": "原篇 · 390×844",
+    "label": "after",
+    "round": 1,
+    "controlsMs": 1516,
+    "requestMs": 384,
+    "decodeMs": 4174,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1700
+  },
+  {
+    "name": "原篇 · 390×844",
+    "label": "before",
+    "round": 1,
+    "controlsMs": 1317,
+    "requestMs": 1318,
+    "decodeMs": 5546,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 408204,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-metadata.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1516
+  },
+  {
+    "name": "原篇 · 390×844",
+    "label": "before",
+    "round": 2,
+    "controlsMs": 1313,
+    "requestMs": 1314,
+    "decodeMs": 5537,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 408204,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-metadata.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1496
+  },
+  {
+    "name": "原篇 · 390×844",
+    "label": "after",
+    "round": 2,
+    "controlsMs": 1494,
+    "requestMs": 387,
+    "decodeMs": 4177,
+    "nativeSize": [
+      1344,
+      768
+    ],
+    "imageBytes": 1057798,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1676
+  },
+  {
+    "name": "现代卷 · 1366×768",
+    "label": "before",
+    "round": 0,
+    "controlsMs": 1321,
+    "requestMs": 1322,
+    "decodeMs": 8143,
+    "nativeSize": [
+      1536,
+      864
+    ],
+    "imageBytes": 1498548,
+    "fontBytes": 774116,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-semibold.woff2",
+      "/fonts/story-serif-metadata.woff2"
+    ],
+    "firstContentfulPaint": 1564
+  },
+  {
+    "name": "现代卷 · 1366×768",
+    "label": "after",
+    "round": 0,
+    "controlsMs": 1499,
+    "requestMs": 385,
+    "decodeMs": 5838,
+    "nativeSize": [
+      1536,
+      864
+    ],
+    "imageBytes": 1498548,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1716
+  },
+  {
+    "name": "现代卷 · 1366×768",
+    "label": "after",
+    "round": 1,
+    "controlsMs": 1507,
+    "requestMs": 387,
+    "decodeMs": 5856,
+    "nativeSize": [
+      1536,
+      864
+    ],
+    "imageBytes": 1498548,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1724
+  },
+  {
+    "name": "现代卷 · 1366×768",
+    "label": "before",
+    "round": 1,
+    "controlsMs": 1313,
+    "requestMs": 1314,
+    "decodeMs": 8125,
+    "nativeSize": [
+      1536,
+      864
+    ],
+    "imageBytes": 1498548,
+    "fontBytes": 774116,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-semibold.woff2",
+      "/fonts/story-serif-metadata.woff2"
+    ],
+    "firstContentfulPaint": 1556
+  },
+  {
+    "name": "现代卷 · 1366×768",
+    "label": "before",
+    "round": 2,
+    "controlsMs": 1325,
+    "requestMs": 1326,
+    "decodeMs": 8152,
+    "nativeSize": [
+      1536,
+      864
+    ],
+    "imageBytes": 1498548,
+    "fontBytes": 774116,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-regular.woff2",
+      "/fonts/story-serif-semibold.woff2",
+      "/fonts/story-serif-metadata.woff2"
+    ],
+    "firstContentfulPaint": 1580
+  },
+  {
+    "name": "现代卷 · 1366×768",
+    "label": "after",
+    "round": 2,
+    "controlsMs": 1510,
+    "requestMs": 394,
+    "decodeMs": 5845,
+    "nativeSize": [
+      1536,
+      864
+    ],
+    "imageBytes": 1498548,
+    "fontBytes": 58780,
+    "fonts": [
+      "/fonts/story-serif-ui.woff2",
+      "/fonts/story-serif-ui-semibold.woff2"
+    ],
+    "firstContentfulPaint": 1728
+  }
+]

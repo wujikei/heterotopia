@@ -15,6 +15,8 @@ function read<T>(key: string, fallback: T, campaign: Campaign = 'original'): T {
   } catch { return fallback; }
 }
 
+export const loadCampaign = (): Campaign => read<unknown>('campaign', null) === 'overseas' ? 'overseas' : 'original';
+
 export function persist(key: string, value: unknown, campaign: Campaign = 'original'): boolean {
   try { localStorage.setItem(PREFIX + scopedKey(key, campaign), JSON.stringify(value)); return true; }
   catch { return false; }

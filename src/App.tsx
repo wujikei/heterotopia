@@ -11,7 +11,7 @@ import { ActorLayer } from './components/ActorLayer';
 import { UpdateNotice } from './components/UpdateNotice';
 import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
-import { asset, BACKGROUNDS, CHARACTERS, endingsForCampaign, portraitAsset } from './data/world';
+import { asset, BACKGROUNDS, endingsForCampaign } from './data/world';
 import { campaignOf, modernFinal, restoreModernState } from './modern';
 import { actorForBeat } from './actors';
 import { actorPortraitName } from './data/actorVariants';
@@ -24,7 +24,7 @@ import { afterFirstScreen } from './idle';
 import { warmReadingFonts } from './fonts';
 import { isStoryReady, loadStory } from './story';
 import { advance, campaignScenes, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES, sceneById } from './engine';
-import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist as store, validState } from './storage';
+import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadCampaign, loadProfile, loadSettings, loadSlots, persist as store, validState } from './storage';
 import { scoreFrame } from './score';
 import { replayHistory } from './reading';
 import { autoDelayFor } from './autoReading';
@@ -97,9 +97,7 @@ function IconButton({ label, children, onClick, className = '', active = false, 
 }
 
 export default function App() {
-  const [campaign, setCampaign] = useState<Campaign>(() => {
-    try { return JSON.parse(localStorage.getItem('heterotopia.v1.campaign') ?? 'null') === 'overseas' ? 'overseas' : 'original'; } catch { return 'original'; }
-  });
+  const [campaign, setCampaign] = useState(loadCampaign);
   return <CampaignApp key={campaign} campaign={campaign} onCampaign={next => { store('campaign', next); setCampaign(next); }} />;
 }
 
@@ -216,8 +214,8 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   }, [switchLanguage]);
 
   const scene = game ? sceneById(game.sceneId) : SCENES[0];
-  const beat = useMemo(() => game && storyReady ? currentBeat(game, profile) : null, [game, profile, storyReady]);
-  const beats = useMemo(() => game && storyReady ? compileScene(game.sceneId, profile, game) : [], [game, profile, storyReady]);
+  const beats = useMemo(() => screen === 'play' && game && storyReady ? compileScene(game.sceneId, profile, game) : [], [screen, game, profile, storyReady]);
+  const beat = beats.find(item => item.id === game?.beatId) ?? beats[0] ?? null;
   const text = beat?.kind === 'text' ? localizePage(beat.id, beat.text) : '';
   const typing = useTypewriter(screen === 'play' ? `${beat?.id}:${language}` : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? campaign === 'overseas' ? 'modern-sunset' : 'hero' : beat?.background ?? 'hero';
@@ -290,35 +288,30 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     const sceneList = campaignScenes(campaign);
     const next = scene.script === 'modern' ? scene.next ? sceneById(scene.next) : undefined : sceneList[sceneList.findIndex(item => item.id === game.sceneId) + 1];
     const upcoming = next ? compileScene(next.id, currentProfile.current, game) : [];
-    const portraits = new Set<string>();
-    // Prefetch the actual costumes and poses selected for these pages.
-    for (const [items, location] of [[current, scene], [upcoming, next]] as const) {
-      if (!location) continue;
-      for (const item of items) {
-        const actor = actorForBeat(item, location, items);
-        if (actor) portraits.add(asset(actorPortraitName(actor)));
-      }
-    }
     const position = Math.max(0, current.findIndex(item => item.id === game.beatId));
-    const nearest = current.slice(position).map(item => actorForBeat(item, scene, current)).find(Boolean);
-    const urgent = [
-      ...(nearest ? [preloadImage(asset(actorPortraitName(nearest)), 'high')] : []),
-      preloadImage(asset(cgForBeat(current[position], scene.id)?.file || current[position].background)),
-    ];
+    const urgentArt = cgForBeat(current[position], scene.id);
+    const activeActor = settings.showSprites && !urgentArt ? actorForBeat(current[position], scene, current) : undefined;
+    const urgent = [preloadImage(asset(urgentArt?.file ?? current[position].background), 'high')];
+    if (activeActor) urgent.push(preloadImage(asset(actorPortraitName(activeActor)), 'high'));
     let cancelled = false;
     let stopIdle: (() => void) | undefined;
-    // The first visible person must not compete with speculative scenery.
-    void Promise.allSettled(urgent).then(async () => {
+    // Fetch ahead in reading order without competing with the visible scene.
+    void Promise.allSettled(urgent).then(() => {
       if (cancelled) return;
-      const rest = [...portraits, ...new Set([
-        ...current.map(item => asset(cgForBeat(item, scene.id)?.file || item.background)),
-        ...upcoming.map(item => asset(cgForBeat(item, next!.id)?.file || item.background)),
-      ])];
-      await Promise.allSettled(rest.map(url => preloadImage(url, 'low')));
-      if (!cancelled) stopIdle = prefetchWhenIdle(CHARACTERS.map(character => portraitAsset(character.key)));
+      const images = new Set<string>();
+      for (const [items, location, from] of [[current, scene, position], [upcoming, next, 0]] as const) {
+        if (!location) continue;
+        for (const item of items.slice(from)) {
+          const art = cgForBeat(item, location.id);
+          images.add(asset(art?.file ?? item.background));
+          const actor = settings.showSprites && !art ? actorForBeat(item, location, items) : undefined;
+          if (actor) images.add(asset(actorPortraitName(actor)));
+        }
+      }
+      stopIdle = prefetchWhenIdle([...images]);
     });
     return () => { cancelled = true; stopIdle?.(); };
-  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight, campaign]);
+  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight, settings.showSprites, campaign]);
 
   useEffect(() => {
     if (!intro) return;
@@ -410,10 +403,10 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       const location = sceneById(state.sceneId);
       const items = compileScene(state.sceneId, currentProfile.current, state);
       const position = Math.max(0, items.findIndex(item => item.id === state.beatId));
-      const nearest = items.slice(position).map(item => actorForBeat(item, location, items)).find(Boolean);
-      const currentBeatArt = cgForBeat(items[position], location.id)?.file || items[position].background;
-      const critical = [preloadImage(asset(currentBeatArt), 'high')];
-      if (nearest) critical.push(preloadImage(asset(actorPortraitName(nearest)), 'high'));
+      const currentCG = cgForBeat(items[position], location.id);
+      const actor = settings.showSprites && !currentCG ? actorForBeat(items[position], location, items) : undefined;
+      const critical = [preloadImage(asset(currentCG?.file ?? items[position].background), 'high')];
+      if (actor) critical.push(preloadImage(asset(actorPortraitName(actor)), 'high'));
       let timer = 0;
       // Keep a stalled image from blocking the story; loading failures stay retryable.
       await Promise.race([Promise.allSettled(critical), new Promise(resolve => { timer = window.setTimeout(resolve, 4000); })]);

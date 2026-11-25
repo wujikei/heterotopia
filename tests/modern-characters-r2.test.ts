@@ -43,7 +43,8 @@ test('each modern direction still matches its authored speaker and exact page, w
     const actor=actorForBeat(beat,scene,beats);
     assert.equal(actor?.character.key,direction.character,id);
     assert.equal(actor?.expression,direction.expression,id);
-    assert.equal(actorPortraitName(actor!),portraitNameFor(direction.character,direction.expression));
+    const expectedPortrait=id==='modern-o-5-4:14:0'?'portrait-linyue-trail-smile':portraitNameFor(direction.character,direction.expression);
+    assert.equal(actorPortraitName(actor!),expectedPortrait,id);
   }
   const beats=compileScene('modern-o-0-5',p,g),spoken=beats.find(b=>b.kind==='text'&&b.speaker==='林越');
   assert.ok(spoken);

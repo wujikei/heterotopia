@@ -75,3 +75,28 @@ test('missing mobile formats decode the full landscape fallback and return its r
     assert.equal(imageFailed('./art/cg-test-responsive-m.webp'), true);
   } finally { globalThis.Image = original; }
 });
+
+test('a missing portrait CG master keeps desktop original quality', async () => {
+  const originalImage = globalThis.Image;
+  const originalMedia = globalThis.matchMedia;
+  let image!: { src: string; onerror: () => void; onload: () => Promise<void> };
+  globalThis.Image = class {
+    src = ''; onerror = () => {}; onload = async () => {}; decode = async () => {};
+    constructor() { image = this; }
+  } as unknown as typeof Image;
+  globalThis.matchMedia = (() => ({ matches: true })) as unknown as typeof matchMedia;
+  try {
+    const art = 'cg-modern-word-stall-r3';
+    const mobile = asset(art);
+    assert.equal(mobile, './art-original/cg-modern-word-stall-r3-m.webp');
+    const loaded = preloadImage(mobile);
+    image.onerror();
+    assert.equal(image.src, './art-original/cg-modern-word-stall-r3.webp');
+    await image.onload();
+    assert.equal(await loaded, './art-original/cg-modern-word-stall-r3.webp');
+    assert.equal(asset(art), './art-original/cg-modern-word-stall-r3.webp');
+  } finally {
+    globalThis.Image = originalImage;
+    globalThis.matchMedia = originalMedia;
+  }
+});

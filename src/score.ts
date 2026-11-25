@@ -1,7 +1,8 @@
 import rawSoundtrack from './data/soundtrack.json';
 import type { Beat, EndingId, Profile } from './types';
 import { sceneById } from './engine';
-import { isModern, modernMusic, MODERN_ARRIVAL_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_SCENE_ART, MODERN_STALL_ART, MODERN_TRANSLATION_ART } from './modern';
+import { isModern, modernMusic, MODERN_ARRIVAL_ART, MODERN_GLANCE_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_PHOTO_ART, MODERN_STALL_ART, MODERN_SUMMIT_ART, MODERN_TRANSLATION_ART } from './modern';
+import { modernOpeningArt } from './data/modernStaging';
 
 export const ORIGINAL_MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
 export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-question', 'modern-return', 'modern-untranslated', 'modern-ascent', 'modern-afterglow'] as const;
@@ -74,7 +75,7 @@ export const TRACK_ART: Record<MusicId, string> = {
   'last-flute': 'snow', 'river-of-names': 'light-river', 'light-in-kitchen': 'home',
   'modern-street': MODERN_ARRIVAL_ART, 'modern-question': 'cg-modern-dorm-carving-r2',
   'modern-return': 'cg-modern-noodles', 'modern-untranslated': MODERN_TRANSLATION_ART,
-  'modern-ascent': 'modern-mountain-path', 'modern-afterglow': 'cg-modern-photo',
+  'modern-ascent': 'modern-mountain-path', 'modern-afterglow': MODERN_PHOTO_ART,
 };
 
 const FORMER_MODERN_TRACKS: Partial<Record<string, MusicId>> = {
@@ -85,7 +86,7 @@ export function tracksForVisit(sceneId: string): MusicId[] {
   if (!isModern(sceneId)) return MUSIC_BY_SCENE[sceneId] ? [MUSIC_BY_SCENE[sceneId]] : [];
   const scene = sceneById(sceneId);
   if (scene.id !== sceneId) return [];
-  const track = modernMusic(sceneId, MODERN_SCENE_ART[sceneId] ?? scene.background);
+  const track = modernMusic(sceneId, modernOpeningArt(scene));
   const former = FORMER_MODERN_TRACKS[sceneId];
   return former && track ? [track, former] : track ? [track] : [];
 }
@@ -168,6 +169,7 @@ const ACCENTS: Record<string, Effect[]> = {
 const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
   'modern-dorm': [['room', .4], ['street', .1]],
   'modern-library': [['room', .28]],
+  'modern-classroom': [['room', .28]],
   'modern-office': [['room', .3], ['street', .07]],
   'modern-mountain-path': [['wind', .3]],
   'modern-sunset': [['wind', .2], ['river', .1]],
@@ -176,14 +178,16 @@ const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
   'cg-modern-jade-palm-r2': [['street', .37]],
   'modern-dorm-quiet-r2': [['room', .36], ['street', .06]],
   'modern-royal-wall-night': [['wind', .48]],
+  'modern-chu-courtyard': [['wind', .2]],
+  'modern-river-aboard': [['river', .8], ['wind', .17]],
   'cg-modern-noodles': [['room', .35]],
   [MODERN_NOTEBOOK_ART]: [['room', .22]],
   [MODERN_TRANSLATION_ART]: [['room', .22]],
   'cg-modern-paper': [['room', .25], ['street', .07]],
   [MODERN_PAPER_NOTE_ART]: [['room', .25], ['street', .07]],
-  'cg-modern-glance': [['wind', .28]],
-  'cg-modern-summit': [['wind', .25]],
-  'cg-modern-photo': [['wind', .15], ['river', .08]],
+  [MODERN_GLANCE_ART]: [['wind', .28]],
+  [MODERN_SUMMIT_ART]: [['wind', .25]],
+  [MODERN_PHOTO_ART]: [['wind', .15], ['river', .08]],
   hero: [['river', .65], ['wind', .12]], 'dream-boat': [['river', .7], ['wind', .15]],
   bedroom: [['room', .25], ['street', .18]], home: [['room', .3], ['street', .15]],
   'bedroom-morning': [['room', .25], ['street', .22]],
@@ -222,9 +226,8 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
       frame.musicGain = .3;
       frame.ambience = block >= 26 ? [['rain', .48], ['room', .1]] : [['room', .18]];
     }
-    if (sceneId.startsWith('modern-k-G-')) {
-      frame.ambience = [['river', .17], ['wind', .1]];
-    }
+    if (sceneId === 'modern-k-G-1') frame.ambience = [];
+    else if (sceneId.startsWith('modern-k-G-')) frame.ambience = [['river', .17], ['wind', .1]];
     if (frame.music === 'modern-return') frame.musicGain = beat.id === 'modern-o-4-1:24:0' ? .51 : .72;
     if (frame.music === 'modern-untranslated') {
       const atNotebook = sceneId === 'modern-o-4-2' && block >= 8 && block <= 10;
