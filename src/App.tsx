@@ -19,6 +19,7 @@ import { relicForBeat } from './data/relics';
 import type { RelicId } from './data/relics';
 import { locationForBeat } from './scenePresentation';
 import { cgForBeat } from './data/cgs';
+import { MODERN_BLACKOUTS } from './data/modernStaging';
 import { prefetchWhenIdle, preloadImage } from './preload';
 import { afterFirstScreen } from './idle';
 import { warmReadingFonts } from './fonts';
@@ -220,6 +221,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const typing = useTypewriter(screen === 'play' ? `${beat?.id}:${language}` : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? campaign === 'overseas' ? 'modern-sunset' : 'hero' : beat?.background ?? 'hero';
   const cg = screen === 'play' && beat ? cgForBeat(beat, scene.id) : undefined;
+  const blackout = beat !== null && MODERN_BLACKOUTS.has(beat.id);
   const relic = screen === 'play' && beat?.kind === 'text' ? relicForBeat(beat.id) : undefined;
 
   useLayoutEffect(() => setArtQuality(settings.lightweight), [settings.lightweight]);
@@ -619,8 +621,8 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const toastNotice = toast && <div className={`toast ${modal ? 'toast--inline' : ''}`} key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span><span>{t(toast, ...toastParameters.current)}</span><button onClick={() => setToast('')} aria-label={t("关闭提示")}><X size={13} /></button></div>;
 
   return <main className={`app app--${screen} ${modal ? 'app--modal' : ''} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`}>
-    <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} />
-    <Atmosphere scene={background} reduced={settings.reducedMotion} />
+    <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} blackout={blackout} />
+    <Atmosphere scene={background} reduced={settings.reducedMotion || blackout} />
 
     {tr(screen === 'home' ? <div className="home-screen" inert={!!modal} onPointerDownCapture={event => { if (confirmRestart && event.target instanceof Element && !event.target.closest('.start-button')) setConfirmRestart(false); }}>
       <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label={t("关于异托邦")}><BoatMark /><span>{t("异托邦")}<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />{campaign === 'overseas' ? '汉字、远行与另一条来处' : t("一场未尽的楚地远行")}<span className="tiny-line" /></div><div className="header-tools"><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={tr(fullscreen ? '退出全屏' : '全屏')} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label={t("阅读设置")} onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
@@ -656,7 +658,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       <div className="sr-only" aria-live="polite" aria-atomic="true">{tr(!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? t("{0}{1}", beat.speaker ? t("{0}：", beat.speaker) : '', text) : '')}</div>
       {tr(showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label={t("阅读提示")}><CircleHelp size={16} aria-hidden="true" /><p>{t("点击画面继续，点「回看」重读。")}<small>{t("更多操作可在阅读设置中查看。")}</small></p><button onClick={dismissReadingHint}>{t("知道了")}</button></aside>)}
 
-      {tr(settings.showSprites && !intro && !cg && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} />)}
+      {tr(settings.showSprites && !intro && !cg && !blackout && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} />)}
       {tr(beat.kind === 'text' && <><button className="advance-surface" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文')} tabIndex={-1} />
         <section className={`dialogue dialogue--${lineKind}`} aria-label={t("故事正文")} inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />

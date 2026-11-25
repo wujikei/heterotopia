@@ -216,6 +216,13 @@ export const MODERN_PAGE_INSERTS: Readonly<Partial<Record<string, string>>> = {
   'modern-k-E-7:5:0': 'modern-dorm',
 };
 
+export const MODERN_BLACKOUTS: ReadonlySet<string> = new Set([
+  'modern-o-0-2:29:0',
+  'modern-r-A-8:12:0', 'modern-r-A-8:13:0', 'modern-r-A-8:14:0', 'modern-r-A-8:15:0', 'modern-r-A-8:16:0',
+  'modern-r-B-8:21:0',
+  'modern-k-G-4:7:0',
+]);
+
 export function modernOpeningArt(scene: Scene): string {
   return OPENING_ART[scene.id] ?? scene.background;
 }

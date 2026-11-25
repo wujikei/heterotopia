@@ -195,6 +195,23 @@ try {
     await context.close();
   }
   {
+    const seed = { ...state, campaign: 'overseas', sceneId: 'modern-o-0-2', beatId: 'modern-o-0-2:28:0' };
+    const { context, page } = await open(undefined, undefined, { lightweight: false }, seed);
+    await page.getByRole('button', { name: /^续梦/ }).click();
+    await page.locator('.scene-image--current[data-art="cg-modern-jade-light-r2"]').waitFor();
+    await page.keyboard.press('ArrowRight');
+    const blackout = page.locator('.scene-art[data-art="blackout"]');
+    await blackout.waitFor();
+    await page.waitForFunction(() => {
+      const layer = document.querySelector('.scene-art[data-art="blackout"]');
+      return layer && getComputedStyle(layer).backgroundColor === 'rgb(0, 0, 0)';
+    });
+    assert.equal(await page.locator('.scene-image, .actor').count(), 0);
+    assert.match(await page.locator('.dialogue-text').getAttribute('aria-label'), /切黑/);
+    results.push({ check: 'the scripted blackout clears background and portraits while preserving the saved page', passed: true });
+    await context.close();
+  }
+  {
     const { context, page } = await open(undefined, page => page.route('**/assets/story-*.js', route => route.abort()));
     const start = page.locator('.start-button');
     await start.click();

@@ -6,7 +6,7 @@ import { preloadImage } from '../preload';
 
 type ArtLayer = { name: string; url: string };
 
-export function SceneArt({ name, motion = true, cg, readingId }: { name: string; motion?: boolean; cg?: string; readingId: string | null }) {
+export function SceneArt({ name, motion = true, cg, readingId, blackout = false }: { name: string; motion?: boolean; cg?: string; readingId: string | null; blackout?: boolean }) {
   useLocale();
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
   useSyncExternalStore(subscribeArtFormat, avifEnabled, () => false);
@@ -66,6 +66,7 @@ export function SceneArt({ name, motion = true, cg, readingId }: { name: string;
     void document.fonts.ready.then(measure);
     return () => { active = false; observer.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(frame); };
   }, [target, loaded?.url, readingId]);
+  if (blackout) return <div key="blackout" ref={art} className="scene-art scene-art--blackout" data-art="blackout" aria-hidden="true" />;
   return <div ref={art} data-art={loaded?.name} className={`scene-art ${loaded?.name.startsWith('cg-') ? 'scene-art--cg' : ''} ${motion ? 'scene-art--motion' : ''}`} aria-hidden="true">
     {tr(previous && <div className="scene-image scene-image--previous" data-art={previous.name} style={{ backgroundImage: `url("${previous.url}")` }} />)}
     {tr(loaded && <div key={loaded.url} className="scene-image scene-image--current" data-art={loaded.name} style={{ backgroundImage: `url("${loaded.url}")` }} />)}
