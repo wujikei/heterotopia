@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium, firefox, webkit } from 'playwright';
-import { compileScene, newGame, newProfile, SCENES } from '../src/engine.ts';
+import { compileScene, enterScene, newGame, newProfile, SCENES } from '../src/engine.ts';
 import { loadStory } from '../src/story.ts';
 
 await loadStory();
@@ -21,7 +21,7 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
   const gateAutoplay = name === 'chromium' && deviceBrowser === browser;
   const context = await deviceBrowser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, acceptDownloads: true });
   contexts.push(context);
-  await context.addInitScript(({ fixture: data, forceMedia, muted, gateAutoplay }) => {
+  await context.addInitScript(({ fixture: data, forceMedia, muted, gateAutoplay, traceRamps }) => {
     if (!sessionStorage.getItem('synthetic-audio-test')) {
       localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
       if (data) {
@@ -63,7 +63,7 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
         return activated ? play.apply(this, args) : Promise.reject(new DOMException('Test policy requires a trusted gesture', 'NotAllowedError'));
       };
     }
-    const trace = window.__audioTest = { requests: [], starts: [], stops: [], gains: [], contexts: [], buffers: [], media: [], mediaElements: [] };
+    const trace = window.__audioTest = { requests: [], starts: [], stops: [], gains: [], ramps: [], contexts: [], buffers: [], media: [], mediaElements: [] };
     const files = new WeakMap(), decoded = new WeakMap();
     const fetchOriginal = window.fetch;
     window.fetch = async (...args) => {
@@ -92,11 +92,21 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
         });
       };
       proto.createGain = function() { const gain = createGain.call(this); trace.gains.push(gain); return gain; };
+      if (traceRamps) {
+        const ramp = AudioParam.prototype.linearRampToValueAtTime;
+        AudioParam.prototype.linearRampToValueAtTime = function(value, at) {
+          trace.ramps.push({ gain: trace.gains.findIndex(gain => gain.gain === this), value, at });
+          return ramp.call(this, value, at);
+        };
+      }
       proto.createBufferSource = function() {
         const source = createSource.call(this), start = source.start.bind(source), stop = source.stop.bind(source), context = this;
+        let gain = -1;
+        const connect = source.connect.bind(source);
+        source.connect = (destination, ...args) => { gain = trace.gains.indexOf(destination); return connect(destination, ...args); };
         let record;
         source.start = (...args) => {
-          record = { file: decoded.get(source.buffer), loop: source.loop, at: context.currentTime, when: args[0] ?? 0, offset: args[1] ?? 0, ended: false };
+          record = { file: decoded.get(source.buffer), loop: source.loop, at: context.currentTime, when: args[0] ?? 0, offset: args[1] ?? 0, ended: false, gain };
           trace.starts.push(record); return start(...args);
         };
         source.stop = (...args) => { trace.stops.push({ file: decoded.get(source.buffer), at: context.currentTime, when: args[0] ?? 0 }); return stop(...args); };
@@ -110,7 +120,7 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
       if (!trace.mediaElements.includes(this)) trace.mediaElements.push(this);
       return play.call(this);
     };
-  }, { fixture, forceMedia, muted, gateAutoplay });
+  }, { fixture, forceMedia, muted, gateAutoplay, traceRamps: name === 'chromium' });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
   page.on('response', response => { if (response.status() >= 400 && !response.url().includes('favicon.ico')) errors.push(`${response.status()} ${response.url()}`); });
@@ -353,6 +363,68 @@ try {
     checks.push('No Web Audio: media fallback or graceful silent reading, with functional settings and listening-room download');
   }
   if (name === 'chromium') {
+    await loadStory('overseas');
+    const cues = [
+      ['modern-o-4-1:23:0', 'modern-return', '留一碗面', { effect: 'dorm-bowl', gain: .24, release: .72 }],
+      ['modern-o-4-2:10:0', 'modern-untranslated', '留白里的「何」'],
+      ['modern-o-5-6:4:0', 'modern-ascent', '从这里上去'],
+      ['modern-o-5-7:16:0', 'modern-afterglow', '半规落日', { effect: 'camera-shutter', gain: .20, release: .76 }],
+    ];
+    for (const [beatId, id, title, foley] of cues) {
+      const profile = newProfile('overseas');
+      const state = { ...enterScene(newGame(profile), profile, beatId.split(':')[0]), beatId };
+      const sample = await open();
+      const file = `music-${id}.mp3`;
+      try {
+        await sample.getByRole('button', { name: /林越.*现代新卷/ }).click();
+        await sample.getByRole('button', { name: '阅读设置', exact: true }).click();
+        const save = { format: 'heterotopia-save', version: 1, profile, state, slots: [] };
+        await sample.locator('input[type=file]').setInputFiles({ name: 'modern-audio-test.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(save)) });
+        await sample.getByRole('button', { name: '关闭提示', exact: true }).click();
+        await sample.keyboard.press('Escape');
+        await sample.getByRole('button', { name: /^续梦/ }).click();
+        await sample.locator('.game-screen').waitFor();
+        await closeIntro(sample);
+        await sample.locator(`[data-beat-id="${beatId}"]`).waitFor();
+        await waitFor(sample, file);
+        assert.equal(await sample.evaluate(file => window.__audioTest.starts.some(voice => voice.file === file && voice.loop), file), true);
+        if (foley) {
+          const effectFile = `sfx-${foley.effect}.mp3`;
+          await sample.waitForFunction(effectFile => window.__audioTest.buffers.some(buffer => buffer.file === effectFile), effectFile);
+          assert.equal(await count(sample, effectFile), 0, 'Approaching the authored cue can decode it but must not play it');
+          await sample.getByRole('button', { name: '继续', exact: true }).click();
+          await waitFor(sample, effectFile);
+          const ramp = await sample.evaluate(({ file, effectFile, gain }) => {
+            const { starts, ramps } = window.__audioTest;
+            const track = starts.find(voice => voice.file === file);
+            const effect = starts.find(voice => voice.file === effectFile);
+            const duck = ramps.findLast(step => step.gain === track.gain && Math.abs(step.value - gain) < .0001);
+            return { duck: duck?.at ?? null, start: effect.when };
+          }, { file, effectFile, gain: foley.gain });
+          assert.ok(ramp.duck !== null && ramp.duck <= ramp.start + .025, JSON.stringify(ramp));
+          await sample.waitForTimeout(210);
+          const nextPages = foley.effect === 'camera-shutter' ? 2 : 1;
+          for (let pageIndex = 0; pageIndex < nextPages; pageIndex++) {
+            await sample.getByRole('button', { name: '继续', exact: true }).click();
+            await sample.waitForTimeout(210);
+          }
+          assert.equal(await count(sample, effectFile), 1, 'A continuing cue must not fire again');
+          assert.equal(await count(sample, file), 1, 'The same track must keep playing through the foley');
+          assert.ok(await sample.evaluate(({ file, release }) => {
+            const { starts, ramps } = window.__audioTest;
+            const track = starts.find(voice => voice.file === file);
+            return Math.abs(ramps.findLast(step => step.gain === track.gain)?.value - release) < .0001;
+          }, { file, release: foley.release }), 'The music returns to its original gain');
+        }
+        await sample.getByRole('button', { name: '打开菜单', exact: true }).click();
+        await sample.getByRole('button', { name: '听水集', exact: true }).click();
+        assert.equal(await sample.getByRole('button', { name: `试听《${title}》`, exact: true }).getAttribute('aria-pressed'), 'true');
+        await sample.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
+      } finally { await sample.context().close(); }
+    }
+    checks.push('All four overseas cues decoded, started looping on their story pages and appeared unlocked in the listening room');
+    checks.push('The bowl and shutter predecoded, hit once after music ducking, and let the same score recover');
+
     // An isolated test device permits autoplay; production code changes no policy.
     const permittedBrowser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
     try {

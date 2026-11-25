@@ -6,6 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a1c22" />
     <meta name="description" content="异托邦，一部关于远行、记忆与回家的楚地奇幻视觉小说。循着水声，记住每一个名字。" />
+    <script>
+      (() => {
+        if (location.protocol === 'file:') return;
+        let artwork = 'hero';
+        try {
+          const campaign = JSON.parse(localStorage.getItem('heterotopia.v1.campaign'));
+          if (campaign === 'overseas') artwork = 'modern-sunset';
+        } catch {}
+        try {
+          const settings = JSON.parse(localStorage.getItem('heterotopia.v1.settings'));
+          if (settings?.lightweight === true) return;
+        } catch {}
+        const preload = document.createElement('link');
+        preload.rel = 'preload';
+        preload.as = 'image';
+        preload.fetchPriority = 'low';
+        preload.href = `./art-original/${artwork}.webp`;
+        document.head.append(preload);
+      })();
+    </script>
     <title>异托邦 · 循着水声，回家</title>
   </head>
   <body>

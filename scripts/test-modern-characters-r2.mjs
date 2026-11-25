@@ -65,7 +65,12 @@ try{
    if(n<17)await next(page);
   }
   await page.getByRole('button',{name:'回看',exact:true}).click();
-  const replay=page.getByRole('button',{name:/^重读：.*第三声落下去/});await replay.waitFor();await replay.click();
+  const replay=page.getByRole('button',{name:/^重读：.*第三声落下去/});
+  await replay.waitFor({timeout:6000}).catch(async error=>{
+   const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('heterotopia.v1.overseas.autosave')||'null'));
+   throw new Error(`${viewLabel}: unable to replay at ${state?.beatId} with recent pages ${JSON.stringify(state?.history?.slice(-6))}`,{cause:error});
+  });
+  await replay.click();
   await page.waitForFunction(()=>document.querySelector('[data-testid="dialogue-text"]')?.dataset.beatId==='modern-o-0-2:15:0');
   await page.waitForTimeout(220);await next(page);await visibleArt(page,`${viewLabel}-replayed-carving`);await home(page);
   await importSeed(page,modernAcceptanceSeed('modern-o-4-1','modern-o-4-1:19:0'));

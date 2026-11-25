@@ -6,6 +6,7 @@ export const ACTOR_LIGHT: Record<string, 'warm' | 'cold'> = {
   'bedroom-evening': 'warm', 'snow-night': 'cold',
   'modern-dorm-quiet-r2': 'cold', 'modern-dorm': 'cold',
   'modern-street-arrival-r2': 'warm', 'modern-library': 'warm',
+  'modern-street-arrival-r3': 'warm', 'modern-royal-wall-night': 'cold',
   'modern-office': 'warm', 'modern-mountain-path': 'cold',
   'modern-sunset': 'warm',
 };

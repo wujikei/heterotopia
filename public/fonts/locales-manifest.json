@@ -3,15 +3,15 @@
   "license": "SIL Open Font License 1.1",
   "fonts": {
     "story-latin.woff2": {
-      "glyphs": 109,
-      "bytes": 69468,
-      "sha256": "8c19cc40c7f12ca76f3065777b620a71cd2a71e43bddd69b9b45a108a63c4aa8",
+      "glyphs": 110,
+      "bytes": 69780,
+      "sha256": "9a71a9af16df6fe15b5e87180bbb85f66f2d5aa16f21aac6d4e37ec5e11532ba",
       "sourceSha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9"
     },
     "story-japanese.woff2": {
-      "glyphs": 1712,
-      "bytes": 830568,
-      "sha256": "6f7ca1b5a9b03688b4671c13f4a734d7265524e8c306f975ccc158077c761882",
+      "glyphs": 1723,
+      "bytes": 835332,
+      "sha256": "31d8a707f50cf32ad0104e147f9ca4c6114f7ebe7be81dab01704cdb6972ad25",
       "sourceSha256": "d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3"
     }
   }

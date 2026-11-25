@@ -12,15 +12,16 @@ const manifest = JSON.parse(await readFile(new URL('../src/data/art-manifest.jso
 const results = [];
 const errors = [];
 const state = { version: 1, sceneId: '0-4', beatId: '0-4:7:0', inventory: [], choices: {}, history: [], cycle: 1 };
-async function open(viewport = { width: 1280, height: 800 }, setup, settings = {}) {
+async function open(viewport = { width: 1280, height: 800 }, setup, settings = {}, seed = state) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: viewport.width < 760 ? 3 : 1, serviceWorkers: 'block' });
-  await context.addInitScript(({ state, settings }) => {
+  await context.addInitScript(({ seed, settings }) => {
     if (sessionStorage.getItem('synthetic-asset-test')) return;
-    localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(state));
+    localStorage.setItem('heterotopia.v1.campaign', JSON.stringify(seed.campaign || 'original'));
+    localStorage.setItem(seed.campaign === 'overseas' ? 'heterotopia.v1.overseas.autosave' : 'heterotopia.v1.autosave', JSON.stringify(seed));
     localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, muted: true, reducedMotion: true, lightweight: true, ...settings }));
     localStorage.setItem('heterotopia.v1.readingHint', 'true');
     sessionStorage.setItem('synthetic-asset-test', 'true');
-  }, { state, settings });
+  }, { seed, settings });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
   await setup?.(page);
@@ -29,6 +30,50 @@ async function open(viewport = { width: 1280, height: 800 }, setup, settings = {
   return { context, page };
 }
 try {
+  for (const scenario of [
+    { campaign: 'original', lightweight: false, expected: /\/art-original\/hero\.webp$/ },
+    { campaign: 'overseas', lightweight: false, expected: /\/art-original\/modern-sunset\.webp$/ },
+    { campaign: 'overseas', lightweight: true, expected: /\/art\/modern-sunset\.webp$/ },
+  ]) {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block' });
+    await context.addInitScript(({ campaign, lightweight }) => {
+      localStorage.setItem('heterotopia.v1.campaign', JSON.stringify(campaign));
+      localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ muted: true, lightweight }));
+      const decode = HTMLImageElement.prototype.decode;
+      HTMLImageElement.prototype.decode = function(...args) {
+        if (this.src.startsWith('data:image/avif')) {
+          window.__avifProbeStillPending = true;
+          return new Promise(() => {});
+        }
+        return decode.apply(this, args);
+      };
+    }, scenario);
+    const page = await context.newPage();
+    const failures = [];
+    page.on('response', response => { if (response.status() >= 400) failures.push(response.url()); });
+    const titleRequest = page.waitForRequest(request => scenario.expected.test(request.url()));
+    let unlockScript;
+    const entryGate = new Promise(resolve => { unlockScript = resolve; });
+    if (!scenario.lightweight) {
+      await page.route('**/assets/index-*.js', async route => { await entryGate; await route.continue(); });
+    }
+    const navigation = page.goto(base);
+    try {
+      await titleRequest;
+    } finally { unlockScript(); }
+    await navigation;
+    await page.getByRole('heading', { name: '异托邦' }).waitFor();
+    assert.equal(await page.evaluate(() => window.__avifProbeStillPending === true), true, 'The title must render without waiting for AVIF support detection');
+    const bodyFonts = await page.evaluate(async () => {
+      await document.fonts.ready;
+      return performance.getEntriesByType('resource').filter(entry => /\/story-serif-(?:regular|semibold)\.woff2$/.test(entry.name)).map(entry => entry.name);
+    });
+    assert.deepEqual(bodyFonts, [], 'Title glyphs must not pull down the story font');
+    assert.deepEqual(failures, []);
+    results.push({ check: `${scenario.campaign} title and artwork start while the AVIF probe is pending`, lightweight: scenario.lightweight, passed: true });
+    await context.close();
+  }
+
   for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
     const { context, page } = await open(viewport);
     const failures = [];
@@ -112,6 +157,80 @@ try {
     const { context, page } = await open(undefined, page => page.route('**/art-original/*.webp', route => route.fulfill({ status: 404, body: 'Synthetic missing original' })), { lightweight: false });
     await page.waitForFunction(() => /\/art\/hero\.(avif|webp)/.test(document.querySelector('.scene-image--current')?.style.backgroundImage || ''));
     results.push({ check: 'missing original falls back to a lightweight background', passed: true });
+    await context.close();
+  }
+  {
+    const seed = { ...state, campaign: 'overseas', sceneId: 'modern-o-0-1', beatId: 'modern-o-0-1:7:0' };
+    const { context, page } = await open({ width: 390, height: 844 }, page =>
+      page.route('**/art-original/cg-modern-word-stall-r3-m.webp', route => route.fulfill({ status: 404 })), { lightweight: false }, seed);
+    await page.getByRole('button', { name: /^续梦/ }).click();
+    await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes('/art-original/cg-modern-word-stall-r3.webp'));
+    results.push({ check: 'missing mobile master uses desktop lossless CG', passed: true });
+    await context.close();
+  }
+  for (const missing of [false, true]) {
+    const seed = { ...state, campaign: 'overseas', sceneId: 'modern-o-0-1', beatId: 'modern-o-0-1:4:0' };
+    let release;
+    const hold = new Promise(resolve => { release = resolve; });
+    const { context, page } = await open(undefined, page => page.route(/\/cg-modern-word-stall-r3\.(?:webp|avif)$/, async route => {
+      if (missing) await route.fulfill({ status: 404 });
+      else { await hold; await route.continue(); }
+    }), { lightweight: false }, seed);
+    await page.getByRole('button', { name: /^续梦/ }).click();
+    const arrived = page.locator('.scene-image--current[data-art="modern-street-arrival-r3"]');
+    await arrived.waitFor();
+    assert.equal(await arrived.evaluate(image => getComputedStyle(image).animationName), 'none', 'Reduced motion never starts the reveal from a hidden first frame');
+    assert.equal(await page.locator('.scene-image--previous').isVisible(), false, 'Reduced motion never flashes the title behind story art');
+    await page.keyboard.press('Enter');
+    await page.locator('.dialogue-text[data-beat-id="modern-o-0-1:5:0"]').waitFor();
+    await page.locator('.scene-image--current[data-art="modern-street-arrival-r3"]').waitFor({ state: 'detached' });
+    if (missing) {
+      await page.locator('.scene-image--current').waitFor({ state: 'detached' });
+      assert.match(await page.locator('.dialogue-text').getAttribute('aria-label'), /手写的招牌/);
+    } else {
+      release();
+      await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes('/art-original/cg-modern-word-stall-r3.webp'));
+    }
+    results.push({ check: missing ? 'missing CG leaves readable text over a neutral stage' : 'slow original paints when ready without leaving the old scene in place', passed: true });
+    await context.close();
+  }
+  {
+    const seed = { ...state, campaign: 'overseas', sceneId: 'modern-o-0-2', beatId: 'modern-o-0-2:28:0' };
+    const { context, page } = await open(undefined, undefined, { lightweight: false }, seed);
+    await page.getByRole('button', { name: /^续梦/ }).click();
+    await page.locator('.scene-image--current[data-art="cg-modern-jade-light-r2"]').waitFor();
+    await page.keyboard.press('ArrowRight');
+    const blackout = page.locator('.scene-art[data-art="blackout"]');
+    await blackout.waitFor();
+    await page.waitForFunction(() => {
+      const layer = document.querySelector('.scene-art[data-art="blackout"]');
+      return layer && getComputedStyle(layer).backgroundColor === 'rgb(0, 0, 0)';
+    });
+    assert.equal(await page.locator('.scene-image, .actor').count(), 0);
+    assert.equal(await page.locator('.dialogue-text').getAttribute('aria-label'), '');
+    // The story intentionally ignores a second advance inside its 180 ms input guard.
+    await page.waitForTimeout(200);
+    await page.keyboard.press('ArrowRight');
+    await page.waitForFunction(() => !document.querySelector('.scene-art[data-art="blackout"]'));
+    results.push({ check: 'the scripted blackout clears art and stays silent while allowing the story to advance', passed: true });
+    await context.close();
+  }
+  {
+    const sceneId = 'modern-k-G-2';
+    const id = `${sceneId}:2:0`;
+    const history = [{ id, sceneId, speaker: '', kind: 'text', text: '（就是 C-3 那位老妇人送的那碗。没有人收。）' }];
+    const seed = { ...state, campaign: 'overseas', sceneId, beatId: `${sceneId}:3:0`, history };
+    const { context, page } = await open({ width: 390, height: 844 }, undefined, {}, seed);
+    await page.getByRole('button', { name: /^续梦/ }).click();
+    await page.locator('.dialogue-text').waitFor();
+    await page.keyboard.press('ArrowLeft');
+    const entry = page.getByRole('button', { name: /重读.*临行那天，老妇人送来的那碗粥/ });
+    await entry.waitFor();
+    assert.equal(await page.locator('.history-content').getByText(/C-3/).count(), 0);
+    await entry.click();
+    await page.locator(`.dialogue-text[data-beat-id="${id}"]`).waitFor();
+    assert.match(await page.locator('.dialogue-text').getAttribute('aria-label'), /临行那天，老妇人送来的那碗粥/);
+    results.push({ check: 'mobile backlog cleans the old C-3 caption and replays its original page', passed: true });
     await context.close();
   }
   {

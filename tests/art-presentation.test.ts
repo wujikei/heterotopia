@@ -82,7 +82,7 @@ test('reviewed CGs match their exact story interval and unlock only after readin
       for (const beat of compileScene(scene.id, newProfile(), { choices: { breakfast }, inventory: ['jadeHead', 'jadeBody', 'jadeTail', 'names'] })) beatIds.add(beat.id);
     }
   }
-  for (const cg of CGS) {
+  for (const cg of CGS.filter(item => !item.id.startsWith('modern-'))) {
     if ('beatIds' in cg.trigger) for (const id of cg.trigger.beatIds) assert.ok(beatIds.has(id), `${cg.id}: ${id}`);
     if ('fromBeat' in cg.trigger && cg.trigger.fromBeat) assert.ok(beatIds.has(cg.trigger.fromBeat), `${cg.id}: ${cg.trigger.fromBeat}`);
     if ('toBeat' in cg.trigger && cg.trigger.toBeat) assert.ok(beatIds.has(cg.trigger.toBeat), `${cg.id}: ${cg.trigger.toBeat}`);

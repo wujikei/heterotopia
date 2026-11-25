@@ -1,5 +1,6 @@
-import { asset, avifEnabled, isPortable } from './assets';
+import { asset, isPortable } from './assets';
 import { afterFirstScreen } from './idle';
+import { loadCampaign } from './storage';
 
 let waiting: ServiceWorker | null = null;
 let refreshing = false;
@@ -17,7 +18,7 @@ export function registerSiteCache(): void {
   if (!import.meta.env.PROD || isPortable() || location.protocol === 'file:' || !('serviceWorker' in navigator)) return;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (refreshing) location.reload(); });
   afterFirstScreen(() => {
-    void document.fonts.ready.then(() => navigator.serviceWorker.register(`./sw.js?format=${avifEnabled() ? 'avif' : 'webp'}`, { scope: './', updateViaCache: 'none' })).then(registration => {
+    void navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' }).then(registration => {
       const report = async () => {
         // WebKit can emit "installed" before this registration object's waiting
         // property updates. Reading the registration again observes that change.
@@ -30,7 +31,10 @@ export function registerSiteCache(): void {
       });
       // Cache only the title image this reader selected. Lightweight readers
       // never download a full PNG merely because the worker is installing.
-      void navigator.serviceWorker.ready.then(current => current.active?.postMessage({ type: 'WARM_ART', url: new URL(asset('hero'), document.baseURI).href }));
+      void navigator.serviceWorker.ready.then(current => {
+        const title = loadCampaign() === 'overseas' ? 'modern-sunset' : 'hero';
+        current.active?.postMessage({ type: 'WARM_ART', url: new URL(asset(title), document.baseURI).href });
+      });
     }).catch(() => { /* caching failure must never prevent reading */ });
   }, 2400);
 }

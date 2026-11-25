@@ -14,6 +14,8 @@ const cases=[
  ['carving','modern-o-0-2','modern-o-0-2:17:0','cg-modern-dorm-carving-r2'],
  ['blackout','modern-o-0-2','modern-o-0-2:21:0','cg-modern-dorm-dark-r2'],
  ['light','modern-o-0-2','modern-o-0-2:28:0','cg-modern-jade-light-r2'],
+ ['notebook-handoff','modern-o-5-6','modern-o-5-6:9:0','cg-modern-summit-r4',true],
+ ['porridge-plaque','modern-k-G-2','modern-k-G-2:3:0','cg-modern-porridge-plaque',true],
 ];
 let observed=0;
 try {
@@ -23,7 +25,7 @@ try {
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base);
   await page.getByRole('button',{name:/林越.*现代新卷/}).click();
-  for(const [label,scene,id,art] of cases) {
+  for(const [label,scene,id,art,nativePortrait] of cases) {
    const profile=newProfile('overseas');
    const state={...enterScene(newGame(profile),profile,scene),beatId:id};
    const expected=currentBeat(state,profile);
@@ -38,7 +40,15 @@ try {
    const resume=page.getByRole('button',{name:/^续梦/});
    if(await resume.isVisible())await resume.click();
    const intro=page.getByTestId('chapter-intro');if(await intro.isVisible())await intro.click();
-   await page.waitForFunction(art=>document.querySelector('.scene-image--current')?.getAttribute('data-art')===art,art);
+   await page.waitForFunction(art=>document.querySelector('.scene-image--current')?.getAttribute('data-art')===art,art)
+    .catch(async error => {
+      const current = await page.evaluate(() => ({
+        art: document.querySelector('.scene-image--current')?.getAttribute('data-art'),
+        text: document.querySelector('[data-testid="dialogue-text"]')?.getAttribute('aria-label'),
+        intro: !!document.querySelector('[data-testid="chapter-intro"]'),
+      }));
+      throw new Error(`${label} ${viewport.width}×${viewport.height} expected ${art}. ${JSON.stringify(current)}`, { cause: error });
+    });
    const hint=page.getByRole('button',{name:'知道了',exact:true});if(await hint.isVisible())await hint.click();
    const notice=page.getByRole('button',{name:'关闭提示',exact:true});if(await notice.isVisible())await notice.click();
    await page.waitForTimeout(650);
@@ -46,16 +56,35 @@ try {
    const geometry=await page.locator('.scene-image--current').evaluate(el=>{
     const style=getComputedStyle(el),rect=el.getBoundingClientRect();
     const dialogue=document.querySelector('.dialogue-text').getBoundingClientRect();
-    return {animation:style.animationName,url:style.backgroundImage,x:rect.x,y:rect.y,w:rect.width,h:rect.height,textY:dialogue.y,scroll:document.documentElement.scrollWidth,inner:innerWidth};
+    return {animation:style.animationName,url:style.backgroundImage,x:rect.x,y:rect.y,w:rect.width,h:rect.height,textY:dialogue.y,scroll:document.documentElement.scrollWidth,inner:innerWidth,composition:el.parentElement.dataset.composition,fit:style.backgroundSize};
    });
-   assert.equal(geometry.animation,viewport.reduced||viewport.width/viewport.height<=.75?'none':'modern-r2-arrive','portrait action is statically painted; wide art has one short fade, never infinite drift');
+   if(!nativePortrait) assert.equal(geometry.animation,viewport.reduced||viewport.width/viewport.height<=.75?'none':'modern-r2-arrive','portrait action is statically painted; wide art has one short fade, never infinite drift');
    assert.ok(geometry.scroll<=geometry.inner+1,'no document horizontal overflow');
    if(viewport.width/viewport.height<=.75) {
     assert.match(geometry.url,/-m\.webp/,'original-quality mobile crop must load');
     assert.ok(geometry.y>=viewport.height*.09,'action window starts below navigation');
     assert.ok(geometry.y+geometry.h<=geometry.textY+1,`art action window stays above the reading line: ${label}/${viewport.width} ${JSON.stringify(geometry)}`);
-   } else assert.doesNotMatch(geometry.url,/-m\.webp/,'landscape returns to wide art');
+    if(nativePortrait) {
+     assert.equal(geometry.composition,'portrait');
+     assert.equal(geometry.fit,'contain');
+     assert.ok(geometry.h>=viewport.height*.4,`native portrait has room to read the props: ${JSON.stringify(geometry)}`);
+    }
+   } else {
+    assert.doesNotMatch(geometry.url,/-m\.webp/,'landscape returns to wide art');
+    assert.equal(geometry.composition, undefined);
+    if(nativePortrait && viewport.height<=520) {
+     assert.equal(geometry.fit,'contain');
+     assert.ok(geometry.x>=viewport.width*.45,'short landscape keeps the objects clear of the reading box');
+    }
+   }
    if(out)await page.screenshot({path:`${out}/${viewport.width}x${viewport.height}-${label}${viewport.reduced?'-reduced':''}.png`});
+   if(nativePortrait && viewport.width===390 && !viewport.reduced) {
+    await page.setViewportSize({width:844,height:390});
+    await page.waitForFunction(()=>!document.querySelector('.scene-art').dataset.composition);
+    await page.setViewportSize({width:390,height:844});
+    await page.waitForFunction(()=>document.querySelector('.scene-art').dataset.composition==='portrait');
+    assert.equal(await page.getByTestId('dialogue-text').getAttribute('aria-label'),expected.text);
+   }
    if(label==='carving' && viewport.width===390) {
     await page.setViewportSize({width:844,height:390});
     await page.waitForFunction(()=>!getComputedStyle(document.querySelector('.scene-image--current')).backgroundImage.includes('-m.webp'));

@@ -333,9 +333,9 @@ def main():
                 'modernSourceSha256': hashlib.sha256(MODERN.read_bytes()).hexdigest(),
                 'pageCount': sum(len(b.get('pages', [])) for s in SCENES for b in s['blocks']),
                 'scenes': SCENES, 'royalEndings': royal_ends}
-    dest.write_text(json.dumps(metadata, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+    dest.write_text(json.dumps(metadata, ensure_ascii=False, indent=2)+'\n', encoding='utf-8', newline='\n')
     index = {**metadata, 'scenes': [{k:v for k,v in s.items() if k!='blocks'} for s in SCENES]}
-    (ROOT/'src/data/modern-index.json').write_text(json.dumps(index, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+    (ROOT/'src/data/modern-index.json').write_text(json.dumps(index, ensure_ascii=False, indent=2)+'\n', encoding='utf-8', newline='\n')
     (ROOT/'public/原著剧本-海外现代线.txt').write_bytes(MODERN.read_bytes())
     (ROOT/'public/原著剧本-剧情增补.txt').write_bytes(SOURCE.read_bytes())
     print(f"Modern campaign: {len(SCENES)} scenes, {metadata['pageCount']} pages; V6 unchanged.")

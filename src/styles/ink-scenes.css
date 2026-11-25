@@ -38,6 +38,9 @@
     opacity: 1;
   }
 }
+.reduced-motion .scene-image--current { animation-name: none !important; }
+.reduced-motion .scene-image--previous { display: none; }
+.scene-art--blackout { background: #000; }
 
 .chapter-intro {
   position: absolute;

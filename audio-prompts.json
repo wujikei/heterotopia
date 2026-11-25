@@ -379,6 +379,16 @@
       "id": "sfx-heartbeat",
       "title": "近处心跳",
       "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-dorm-bowl",
+      "title": "宿舍瓷碗落桌",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-camera-shutter",
+      "title": "山顶轻快门",
+      "source": "Original deterministic procedural sound design"
     }
   ]
 }

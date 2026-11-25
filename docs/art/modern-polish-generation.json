@@ -1,0 +1,781 @@
+{
+  "date": "2026-11-24",
+  "art": {
+    "model": "Local ComfyUI 0.44.2 / Qwen-Image 2.1",
+    "references": {
+      "word-stall-layout": "resources/art-src/modern/cg-modern-word-stall.png",
+      "jade-scale": "resources/art-src/modern-r2/cg-modern-jade-palm-r2.png",
+      "street-layout": "resources/art-src/modern-r2/modern-street-arrival-r2.png",
+      "lin-yue-identity": "public/art/portrait-linyue-modern.webp",
+      "royal-wall": "public/art-original/cg-modern-last-geese.webp",
+      "night-style": "public/art-original/ruins.webp",
+      "royal-wall-night-a": "resources/art-src/modern-polish/generated/royal-wall-night-a.png"
+    },
+    "jobs": [
+      {
+        "name": "word-stall-a",
+        "promptId": "c1cc2863-3d5c-4dde-81e5-05be632bbb12",
+        "asset": "cg-modern-word-stall-r3",
+        "selected": true,
+        "graph": {
+          "1": {
+            "class_type": "UNETLoader",
+            "inputs": {
+              "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          "2": {
+            "class_type": "CLIPLoader",
+            "inputs": {
+              "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+              "type": "qwen_image",
+              "device": "default"
+            }
+          },
+          "3": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+            }
+          },
+          "4": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "1",
+                0
+              ],
+              "shift": 3.1
+            }
+          },
+          "5": {
+            "class_type": "TextEncodeQwenImage21",
+            "inputs": {
+              "clip": [
+                "2",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ],
+              "resolution": 576,
+              "images": {
+                "image_1": [
+                  "20",
+                  0
+                ],
+                "image_2": [
+                  "21",
+                  0
+                ]
+              },
+              "prompt": "图1是这张既有场景图，也是需要精修的底图。保持同一对人物的脸型、年龄、肤色与关系、林越的圆框眼镜、灰蓝开衫白圆领和军绿背包、老太太的银发发髻和棕灰棉衣，以及俯看桌面的双人视线。仍是同一条黄昏砖街、右后方的修鞋摊、同一暖灰手绘厚涂游戏。调整构图让两张脸和桌上手势都位于画面中间偏上，保留手绘的柔软边缘。\n核心修改是桌上四枚透孔小青白玉扣：图2只给出手里的玉扣厚度和颜色。桌上每枚只有指尖指节宽，尺寸约拇指宽，四枚之间留出空隙，集中在桌面左中小区域；老太太落下的食指在旁边，可以对比出小巧尺寸。右侧摆一小捆短旧竹签，端头参差，堆叠而非细长筷子。桌后方、两人中间砖墙下有一块素色旧牛皮纸板手写小牌，牌面近乎正对视角，写「问字，不问命」，略歪但易读，牌面和桌面有明显比例差。画面下部以桌沿、桌腿和石地的柔和暗影留给对白。16:9 横向游戏 CG，低饱和的暖灰、石蓝、纸米黄与青白玉，斜阳描亮老太太发梢与玉的孔边。",
+              "negative_prompt": ""
+            }
+          },
+          "6": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1536,
+              "height": 864,
+              "batch_size": 1
+            }
+          },
+          "7": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "4",
+                0
+              ],
+              "seed": 241211,
+              "steps": 22,
+              "cfg": 3.8,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1,
+              "positive": [
+                "5",
+                0
+              ],
+              "negative": [
+                "5",
+                1
+              ],
+              "latent_image": [
+                "6",
+                0
+              ]
+            }
+          },
+          "8": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "7",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ]
+            }
+          },
+          "9": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "8",
+                0
+              ],
+              "filename_prefix": "Qwen2.1/Heterotopia/Polish-2026-11-24/word-stall-a"
+            }
+          },
+          "20": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/word-stall-layout.png"
+            }
+          },
+          "21": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/jade-scale.png"
+            }
+          }
+        },
+        "source": "resources/art-src/modern-polish/generated/word-stall-a.png",
+        "sourceSHA256": "a34acf4d940bc35eee21d13d9e19df46987e1503662a4b149a52981f675e9279",
+        "master": "resources/art-src/modern-polish/cg-modern-word-stall-r3.png",
+        "masterSHA256": "bbfb3db0ffa4196cf025cd3e349ef9cad5148d6edd13b536f4d1952146c7a46c"
+      },
+      {
+        "name": "street-a",
+        "promptId": "84d20d74-ebc9-4725-85f7-3b393c85f0ff",
+        "asset": null,
+        "selected": false,
+        "graph": {
+          "1": {
+            "class_type": "UNETLoader",
+            "inputs": {
+              "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          "2": {
+            "class_type": "CLIPLoader",
+            "inputs": {
+              "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+              "type": "qwen_image",
+              "device": "default"
+            }
+          },
+          "3": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+            }
+          },
+          "4": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "1",
+                0
+              ],
+              "shift": 3.1
+            }
+          },
+          "5": {
+            "class_type": "TextEncodeQwenImage21",
+            "inputs": {
+              "clip": [
+                "2",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ],
+              "resolution": 576,
+              "images": {
+                "image_1": [
+                  "20",
+                  0
+                ],
+                "image_2": [
+                  "21",
+                  0
+                ],
+                "image_3": [
+                  "22",
+                  0
+                ]
+              },
+              "prompt": "《异托邦》现代海外卷开场环境原画，横画幅 16:9。图1给出旧街黄昏透视和鞋摊位置，图2给出男主林越的头发、针织开衫、白圆领和军绿色帆布书包身份，图3给出既有游戏厚涂笔触、冷砖和暖光。画海外大学城边缘一条窄旧街，灰红砖公寓和玻璃小店，路面是略旧的柏油和砖沿，暖琥珀日光从远端楼缝斜进来。左边一扇普通饮品店玻璃窗和素朴窄灯箱，左中景一段斑驳旧砖墙上有叠刷多年的褪色中文字、手写 Latin 字母与几枚陌生喷漆笔画，文字是环境肌理。右中景有一张可辨的低木修鞋台、几双待修皮鞋和一只木鞋楦。中心略偏左一个抱着几本书的东亚大学生从背侧走远，灰蓝开衫肩线和绿色包在光中能认出，人物占画面约四分之一高度。把砖墙、男生和鞋摊放在中景并紧凑围成纵深，竖屏看中央仍明白他往哪里走。底部是空路面与温和阴影。自然写实厚涂插画、细纸纹、压低饱和，光落在街尾和橱窗上，空间安静可住人。",
+              "negative_prompt": ""
+            }
+          },
+          "6": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1536,
+              "height": 864,
+              "batch_size": 1
+            }
+          },
+          "7": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "4",
+                0
+              ],
+              "seed": 241212,
+              "steps": 22,
+              "cfg": 3.8,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1,
+              "positive": [
+                "5",
+                0
+              ],
+              "negative": [
+                "5",
+                1
+              ],
+              "latent_image": [
+                "6",
+                0
+              ]
+            }
+          },
+          "8": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "7",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ]
+            }
+          },
+          "9": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "8",
+                0
+              ],
+              "filename_prefix": "Qwen2.1/Heterotopia/Polish-2026-11-24/street-a"
+            }
+          },
+          "20": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/street-layout.png"
+            }
+          },
+          "21": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/lin-yue-identity.png"
+            }
+          },
+          "22": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/word-stall-layout.png"
+            }
+          }
+        }
+      },
+      {
+        "name": "street-b",
+        "promptId": "0c34a13a-3424-4b3e-be9d-cac4406ffb88",
+        "asset": "modern-street-arrival-r3",
+        "selected": true,
+        "graph": {
+          "1": {
+            "class_type": "UNETLoader",
+            "inputs": {
+              "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          "2": {
+            "class_type": "CLIPLoader",
+            "inputs": {
+              "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+              "type": "qwen_image",
+              "device": "default"
+            }
+          },
+          "3": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+            }
+          },
+          "4": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "1",
+                0
+              ],
+              "shift": 3.1
+            }
+          },
+          "5": {
+            "class_type": "TextEncodeQwenImage21",
+            "inputs": {
+              "clip": [
+                "2",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ],
+              "resolution": 576,
+              "images": {
+                "image_1": [
+                  "20",
+                  0
+                ],
+                "image_2": [
+                  "21",
+                  0
+                ]
+              },
+              "prompt": "《异托邦》现代卷同一条海外大学城旧街的全景，延续图1的砖街透视和夕光色调，图2是林越的绿帆布背包和灰蓝针织衣参考。平视 28 毫米宽镜头，观众站在街口，林越已走出十余米，只占画框约四分之一高度。他在中央小路，背着绿色旧背包，右臂怀抱书，背侧走向街墙拐角处。两边带垂直窗框的旧砖公寓、小店玻璃窗，墙根砖沿与一段旧柏油。左侧中景玻璃窗里看得见有吸管的透明奶茶杯，窗边窄灯箱是均匀乳白磨砂玻璃、边框有使用的旧痕。墙角一段灰红砖墙有薄薄交叠的旧颜料、飞溅笔触和褪色的几个不同书写形体，模糊融进砖色。右中景近墙一张矮木修鞋台，摆三只旧皮鞋、木鞋楦与小锤。远处街口的琥珀光沿墙角和湿路面呼吸，近处灰蓝阴影宁静。有清晰可走的纵深，从入画的街沿、修鞋台到远处行人。16:9 手绘自然写实厚涂，青灰、棕红、暖米金，保有细纸纹和柔和湿笔边缘，静物真实，画幅下四分之一有一整片连贯的柔和路面。",
+              "negative_prompt": ""
+            }
+          },
+          "6": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1536,
+              "height": 864,
+              "batch_size": 1
+            }
+          },
+          "7": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "4",
+                0
+              ],
+              "seed": 241213,
+              "steps": 22,
+              "cfg": 3.8,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1,
+              "positive": [
+                "5",
+                0
+              ],
+              "negative": [
+                "5",
+                1
+              ],
+              "latent_image": [
+                "6",
+                0
+              ]
+            }
+          },
+          "8": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "7",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ]
+            }
+          },
+          "9": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "8",
+                0
+              ],
+              "filename_prefix": "Qwen2.1/Heterotopia/Polish-2026-11-24/street-b"
+            }
+          },
+          "20": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/street-layout.png"
+            }
+          },
+          "21": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/lin-yue-identity.png"
+            }
+          }
+        },
+        "source": "resources/art-src/modern-polish/generated/street-b.png",
+        "sourceSHA256": "47d5cd92500ad9849a4fd337c2d0eb97f883381c48eb2b3a107b267ae8fa73d1",
+        "master": "resources/art-src/modern-polish/modern-street-arrival-r3.png",
+        "masterSHA256": "519c4cdcc6480c5b74f8bdf38a1212c66f372f485e08e0870d0d2e465a05c007"
+      },
+      {
+        "name": "royal-wall-night-a",
+        "promptId": "54cb1806-c4e2-4dbd-bbee-97556bbfa2d3",
+        "asset": null,
+        "selected": false,
+        "graph": {
+          "1": {
+            "class_type": "UNETLoader",
+            "inputs": {
+              "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          "2": {
+            "class_type": "CLIPLoader",
+            "inputs": {
+              "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+              "type": "qwen_image",
+              "device": "default"
+            }
+          },
+          "3": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+            }
+          },
+          "4": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "1",
+                0
+              ],
+              "shift": 3.1
+            }
+          },
+          "5": {
+            "class_type": "TextEncodeQwenImage21",
+            "inputs": {
+              "clip": [
+                "2",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ],
+              "resolution": 576,
+              "images": {
+                "image_1": [
+                  "20",
+                  0
+                ],
+                "image_2": [
+                  "21",
+                  0
+                ]
+              },
+              "prompt": "《异托邦》王裔线的环境背景，古楚寿春城墙的夜晚。参考图1的夯土与木构城墙轮廓，用同一世界历史材质。参考图2的深青夜色、手绘厚涂和微暖暗部。画从城头步道看向墙外的低平原和远方天际，石土女墙在近处左右围成一个可站两名立绘的安静空间，半边墙面能被远方天际极淡的暗红火光轻轻映亮，天边有薄烟和云。前景有风拂过的朴素窄布旗一角和几道潮湿石缝，墙外古城压在幽蓝夜里，近景留出人物立绘位置。环境空景，叙事焦点停在静默的城防和低远的暗红。16:9 宽画幅，低饱和青灰、墨蓝、深赭，真实土石纹理，克制电影光，画面由石土和夜色构成，底部适合对白。",
+              "negative_prompt": ""
+            }
+          },
+          "6": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1536,
+              "height": 864,
+              "batch_size": 1
+            }
+          },
+          "7": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "4",
+                0
+              ],
+              "seed": 241214,
+              "steps": 22,
+              "cfg": 3.8,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1,
+              "positive": [
+                "5",
+                0
+              ],
+              "negative": [
+                "5",
+                1
+              ],
+              "latent_image": [
+                "6",
+                0
+              ]
+            }
+          },
+          "8": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "7",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ]
+            }
+          },
+          "9": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "8",
+                0
+              ],
+              "filename_prefix": "Qwen2.1/Heterotopia/Polish-2026-11-24/royal-wall-night"
+            }
+          },
+          "20": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/royal-wall.png"
+            }
+          },
+          "21": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/night-style.png"
+            }
+          }
+        },
+        "source": "resources/art-src/modern-polish/generated/royal-wall-night-a.png",
+        "sourceSHA256": "4e4b65fb175978fdf56314e87d857b5635538f09344acafd163baaa487854fb3"
+      },
+      {
+        "name": "royal-wall-night-b",
+        "promptId": "92b5d2a8-3d22-4ef3-b9c8-c7fab540110c",
+        "asset": "modern-royal-wall-night",
+        "selected": true,
+        "graph": {
+          "1": {
+            "class_type": "UNETLoader",
+            "inputs": {
+              "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          "2": {
+            "class_type": "CLIPLoader",
+            "inputs": {
+              "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+              "type": "qwen_image",
+              "device": "default"
+            }
+          },
+          "3": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+            }
+          },
+          "4": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "1",
+                0
+              ],
+              "shift": 3.1
+            }
+          },
+          "5": {
+            "class_type": "TextEncodeQwenImage21",
+            "inputs": {
+              "clip": [
+                "2",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ],
+              "resolution": 576,
+              "images": {
+                "image_1": [
+                  "20",
+                  0
+                ]
+              },
+              "prompt": "对图1作局部改绘，保留同一座寿春城头的古楚夯土女墙、布旗、湿石路和低沉天际，远火仍在右方。左侧墙边的近处改为完全空着的一段步道，沿路直接看见未被遮挡的女墙与地砖，画面只呈现城墙与远景，是稍后叠加角色的游戏空景。云间冷月把蓝灰空气提亮一档，远方微红火光打亮石缝与女墙的边缘，手绘质感在暗处仍清晰，前后层次明确。16:9，色调深青灰与暗赭红，柔和笔触，情绪是城头夜风与两人独处前的寂静。",
+              "negative_prompt": ""
+            }
+          },
+          "6": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1536,
+              "height": 864,
+              "batch_size": 1
+            }
+          },
+          "7": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "4",
+                0
+              ],
+              "seed": 241215,
+              "steps": 22,
+              "cfg": 3.8,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1,
+              "positive": [
+                "5",
+                0
+              ],
+              "negative": [
+                "5",
+                1
+              ],
+              "latent_image": [
+                "6",
+                0
+              ]
+            }
+          },
+          "8": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "7",
+                0
+              ],
+              "vae": [
+                "3",
+                0
+              ]
+            }
+          },
+          "9": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "8",
+                0
+              ],
+              "filename_prefix": "Qwen2.1/Heterotopia/Polish-2026-11-24/royal-wall-night-b"
+            }
+          },
+          "20": {
+            "class_type": "LoadImage",
+            "inputs": {
+              "image": "Qwen2.1/Heterotopia/Polish-2026-11-24/royal-wall-night-a.png"
+            }
+          }
+        },
+        "source": "resources/art-src/modern-polish/generated/royal-wall-night-b.png",
+        "sourceSHA256": "7f1560539ee22c713c7d1cf01ef680a1f75e567884649a1b0316490d0a119af3",
+        "master": "resources/art-src/modern-polish/modern-royal-wall-night.png",
+        "masterSHA256": "e72d1b1cf1e08fbc0334ce08caaebd70b9e57173c35b4e6d642ef6066a70626a"
+      }
+    ]
+  },
+  "music": {
+    "model": "Local ComfyUI / ACE-Step 1.5 Turbo + 1.7B planner",
+    "jobs": [
+      {
+        "settings": {
+          "caption": "Original intimate instrumental score for a literary visual novel, for an international student walking home past old brick shop windows in late afternoon. 72 BPM, 4/4, D major with a gently open sixth. Felt upright piano alone speaks a memorable ascending three-note question D E A on beats 1 2 4, answering quietly downward E D with a long pause. Soft fingerpicked acoustic guitar uses light harmonics and a warm cello holds rare single notes underneath. Leave silence between phrases, soft piano felt, natural human timing, an unhurried walk, stable room sound and a calm repeating arrangement. Open D add9 harmony at beginning and end, gentle dynamics throughout. Instrumental chamber score for reading.",
+          "lyrics": "[Instrumental]",
+          "duration": 36,
+          "bpm": 72,
+          "keyscale": "D major",
+          "timesignature": "4",
+          "language": "en",
+          "preset": "quality",
+          "seed": 241201
+        },
+        "promptId": "fde94425-6058-446a-9423-cd5246a7fd49",
+        "audition": "试听-异乡街角"
+      },
+      {
+        "settings": {
+          "caption": "Original quiet instrumental chamber score for a literary game. A student at a desk at night asks the same short question again. 72 BPM, 4/4, open D suspended harmony. Intimate felt upright piano with the brief ascending three-note question D E A on beats 1 2 4, a very quiet downward answer and long silence. A warm sustained cello harmonic and occasional low bowed note emerge from the depth of the same small room. Barely audible fingerpicked acoustic guitar harmonics carry warmth from the daylight theme. Stable gentle levels and a very sparse phrase every four measures. Keep transitions gradual, ending on the same open D add9 color as the opening. Instrumental score leaves room for reading.",
+          "lyrics": "[Instrumental]",
+          "duration": 36,
+          "bpm": 72,
+          "keyscale": "D major",
+          "timesignature": "4",
+          "language": "en",
+          "preset": "quality",
+          "seed": 241202
+        },
+        "promptId": "73b7ec42-051b-42cf-8ce4-d70c383e77e6",
+        "audition": "试听-何的回声"
+      },
+      {
+        "settings": {
+          "caption": "Original intimate instrumental score for a literary visual novel, for an international student walking home past old brick shop windows in late afternoon. 72 BPM, 4/4, D major with a gently open sixth. Felt upright piano alone speaks a memorable ascending three-note question D E A on beats 1 2 4, answering quietly downward E D with a long pause. Soft fingerpicked acoustic guitar uses light harmonics and a warm cello holds rare single notes underneath. Leave silence between phrases, soft piano felt, natural human timing, an unhurried walk, stable room sound and a calm repeating arrangement. Open D add9 harmony at beginning and end, gentle dynamics throughout. Instrumental chamber score for reading. Slowly open out over two minutes with three variations of the same short question, small changes of voicing and position rather than new melodies. Very soft return to the sparse opening before the end.",
+          "lyrics": "[Instrumental]",
+          "duration": 120,
+          "bpm": 72,
+          "keyscale": "D major",
+          "timesignature": "4",
+          "language": "en",
+          "preset": "quality",
+          "seed": 241221
+        },
+        "promptId": "92c92f7e-766c-4510-add3-f862d644f58e",
+        "id": "modern-street",
+        "title": "异乡街角",
+        "subtitle": "在旧街拐角听见自己的问题",
+        "trimAtSeconds": 112,
+        "source": "artifacts/modern-polish/music/modern-street-ace-master.flac",
+        "sourceSHA256": "4203b66e9ac7ed658d19fa2daf63bbb5614e15f0706c9ec4d2bdbceb6adbf037"
+      },
+      {
+        "settings": {
+          "caption": "Original quiet instrumental chamber score for a literary game. A student at a desk at night asks the same short question again. 72 BPM, 4/4, open D suspended harmony. Intimate felt upright piano with the brief ascending three-note question D E A on beats 1 2 4, a very quiet downward answer and long silence. A warm sustained cello harmonic and occasional low bowed note emerge from the depth of the same small room. Barely audible fingerpicked acoustic guitar harmonics carry warmth from the daylight theme. Stable gentle levels and a very sparse phrase every four measures. Keep transitions gradual, ending on the same open D add9 color as the opening. Instrumental score leaves room for reading. Let the sound remain held and gentle for one minute forty seconds. Shape a long nearly silent middle and keep the final passage as spacious as the opening. This is the calm underneath a surreal scene.",
+          "lyrics": "[Instrumental]",
+          "duration": 100,
+          "bpm": 72,
+          "keyscale": "D major",
+          "timesignature": "4",
+          "language": "en",
+          "preset": "quality",
+          "seed": 241222
+        },
+        "promptId": "8db77773-423b-49e0-acb3-870c1b307aa7",
+        "id": "modern-question",
+        "title": "何的回声",
+        "subtitle": "第三声之后，投影仍亮着",
+        "trimAtSeconds": 91,
+        "source": "artifacts/modern-polish/music/modern-question-ace-master.flac",
+        "sourceSHA256": "c22d5ec37cb69d0230d9437ec3b9a5863671efa7a86cd3b20ab40b927786785e"
+      }
+    ]
+  }
+}

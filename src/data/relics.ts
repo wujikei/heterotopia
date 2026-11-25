@@ -1,6 +1,6 @@
-import type { GameState, Profile } from '../types';
+import type { Campaign, GameState, Profile } from '../types';
 
-export type RelicId = 'map' | 'jade-tail' | 'jade-head' | 'jade-body' | 'jade-joined' | 'birds' | 'bone' | 'flute-old' | 'flute-mi' | 'flute-mi-broken' | 'names';
+export type RelicId = 'map' | 'jade-tail' | 'jade-head' | 'jade-body' | 'jade-joined' | 'birds' | 'bone' | 'flute-old' | 'flute-mi' | 'flute-mi-broken' | 'names' | 'question-jade';
 export type Relic = {
   id: RelicId;
   group: string;
@@ -13,11 +13,13 @@ export type Relic = {
   source: string;
   reveal: readonly string[];
   inventory?: string;
+  campaign?: Campaign;
 };
 
 // Exact, reviewed pages. Visiting a scene or owning an engine flag does not
 // reveal a drawing. The register also supplies the optional reading shortcut.
 export const RELICS: readonly Relic[] = [
+  { id: 'question-jade', group: 'question-jade', title: '何字玉扣', art: 'prop-question-jade', mark: '何', material: '青白玉 · 圆孔', detail: '孔边的“何”刻得很深，玉面已被摩挲得温润。', quote: '刻痕很深，像被人摩挲了很多年。', source: '海外旧街 · 问字摊', reveal: ['modern-o-0-1:18:0', 'modern-o-0-1:27:0', 'modern-o-0-2:9:0'], inventory: 'questionJade', campaign: 'overseas' },
   { id: 'map', group: 'map', title: '古图', art: 'prop-map', mark: '图', material: '茶色纸 · 墨与淡赭', detail: '山川与星斗画得极细。河岸挤着细小的人影，一叶舟停在画边，船尾留着一角白衣。', quote: '纸面呈茶色，边角一小块暗红。', source: '操场 · 夕阳与古图', reveal: ['0-9:10:0', '0-10:12:0'], inventory: 'map' },
   { id: 'jade-tail', group: 'jade', title: '鸟尾残玉', art: 'prop-jade-tail', mark: '玉', material: '青白玉 · 卷尾', detail: '木匣弹开，红绢上只剩一段细小卷起的鸟尾。玉贴着掌心，微凉。', quote: '鸟的身体已经断了，只留下细小卷起的尾。', source: '戌家 · 月相木匣', reveal: ['1-5:13:0'], inventory: 'jadeTail' },
   { id: 'jade-head', group: 'jade', title: '鸟首残玉', art: 'prop-jade-head', mark: '玉', material: '青白玉 · 眼孔', detail: '屈衡取出的第二角。鸟眼的小孔仍在，灯光能从那里透过。', quote: '鸟头的一角，眼孔还在，压在那三根手指下。', source: '屈宅 · 后堂', reveal: ['A-2:7:1', 'A-2:16:0'], inventory: 'jadeHead' },
@@ -35,7 +37,8 @@ export const RELIC_ART = RELICS.map(relic => relic.art);
 const byId = new Map(RELICS.map(relic => [relic.id, relic]));
 export const relicById = (id: string): Relic | undefined => byId.get(id as RelicId);
 export const relicForBeat = (beatId: string): Relic | undefined => RELICS.find(relic => relic.reveal.includes(beatId));
-export const relicUnlocked = (relic: Relic, profile: Profile): boolean => relic.reveal.some(id => profile.read.includes(id));
+export const relicUnlocked = (relic: Relic, profile: Profile): boolean =>
+  (!relic.campaign || relic.campaign === (profile.campaign ?? 'original')) && relic.reveal.some(id => profile.read.includes(id));
 
 /** One card per object, with only the most recent *seen* state on its cover. */
 export function seenRelics(profile: Profile): Relic[] {

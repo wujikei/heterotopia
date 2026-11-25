@@ -1,4 +1,4 @@
-import { activateLanguage, getLanguage, loadLanguage, localizePage, t, tr, useLocale } from './i18n';
+import { activateLanguage, getLanguage, loadLanguage, localizeChoice, localizePage, t, tr, useLocale } from './i18n';
 import { AudioButton } from './components/AudioButton';
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { ArrowRight, Check, ChevronDown, ChevronRight, CircleHelp, Feather, Pause, Play, SkipForward, X } from 'lucide-react';
@@ -11,20 +11,23 @@ import { ActorLayer } from './components/ActorLayer';
 import { UpdateNotice } from './components/UpdateNotice';
 import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
-import { asset, BACKGROUNDS, CHARACTERS, endingsForCampaign, portraitAsset } from './data/world';
+import { asset, BACKGROUNDS, endingsForCampaign } from './data/world';
 import { campaignOf, modernFinal, restoreModernState } from './modern';
-import { actorForBeat } from './actors';
-import { actorPortraitName } from './data/actorVariants';
+import { actorForBeat, portraitCandidatesForActor } from './actors';
+import { overseasArt } from './overseasArt';
+import type { OverseasOpeningIdentity } from './overseasIdentity';
 import { relicForBeat } from './data/relics';
 import type { RelicId } from './data/relics';
 import { locationForBeat } from './scenePresentation';
+import { presentChapterTitle, presentSceneTitle } from './editorial';
 import { cgForBeat } from './data/cgs';
+import { MODERN_BLACKOUTS } from './data/modernStaging';
 import { prefetchWhenIdle, preloadImage } from './preload';
 import { afterFirstScreen } from './idle';
 import { warmReadingFonts } from './fonts';
 import { isStoryReady, loadStory } from './story';
-import { advance, campaignScenes, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, revisitScene, SCENES, sceneById } from './engine';
-import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadProfile, loadSettings, loadSlots, persist as store, validState } from './storage';
+import { advance, campaignScenes, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, restoreEditorialBookmark, revisitScene, SCENES, sceneById } from './engine';
+import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadCampaign, loadProfile, loadSettings, loadSlots, persist as store, validState } from './storage';
 import { scoreFrame } from './score';
 import { replayHistory } from './reading';
 import { autoDelayFor } from './autoReading';
@@ -41,15 +44,17 @@ const GalleryView = lazy(() => import('./components/Library').then(module => ({ 
 const JournalView = lazy(() => import('./components/Library').then(module => ({ default: module.JournalView })));
 const SaveView = lazy(() => import('./components/Library').then(module => ({ default: module.SaveView })));
 const SettingsView = lazy(() => import('./components/Library').then(module => ({ default: module.SettingsView })));
+const OverseasOpening = lazy(() => import('./components/OverseasOpening'));
 
-type ModalName = 'chapters' | 'characters' | 'gallery' | 'journal' | 'settings' | 'saves' | 'history' | 'menu' | 'about' | 'music';
+type ModalName = 'chapters' | 'characters' | 'gallery' | 'journal' | 'settings' | 'saves' | 'history' | 'menu' | 'about' | 'music' | 'overseas-opening';
 type Intro = { chapter: string; title: string; subtitle: string };
 function openingIntro(state: GameState, profile: Profile): Intro {
   const scene = sceneById(state.sceneId);
-  const [chapter, ...title] = scene.chapter.split(' ');
+  const chapterTitle = presentChapterTitle(scene);
+  const [chapter, ...title] = chapterTitle.split(' ');
   const opening = currentBeat(state, profile);
-  return { chapter: title.length ? chapter : '终章', title: title.join(' ') || scene.chapter,
-    subtitle: BACKGROUNDS[opening.background]?.subtitle ?? scene.title };
+  return { chapter: title.length ? chapter : '终章', title: title.join(' ') || chapterTitle,
+    subtitle: locationForBeat(scene, opening) };
 }
 
 const LIBRARY: { name: ModalName; text: string; note: string; icon: typeof InkPath }[] = [
@@ -97,9 +102,7 @@ function IconButton({ label, children, onClick, className = '', active = false, 
 }
 
 export default function App() {
-  const [campaign, setCampaign] = useState<Campaign>(() => {
-    try { return JSON.parse(localStorage.getItem('heterotopia.v1.campaign') ?? 'null') === 'overseas' ? 'overseas' : 'original'; } catch { return 'original'; }
-  });
+  const [campaign, setCampaign] = useState(loadCampaign);
   return <CampaignApp key={campaign} campaign={campaign} onCampaign={next => { store('campaign', next); setCampaign(next); }} />;
 }
 
@@ -216,12 +219,14 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   }, [switchLanguage]);
 
   const scene = game ? sceneById(game.sceneId) : SCENES[0];
-  const beat = useMemo(() => game && storyReady ? currentBeat(game, profile) : null, [game, profile, storyReady]);
-  const beats = useMemo(() => game && storyReady ? compileScene(game.sceneId, profile, game) : [], [game, profile, storyReady]);
+  const beats = useMemo(() => screen === 'play' && game && storyReady ? compileScene(game.sceneId, profile, game) : [], [screen, game, profile, storyReady]);
+  const beat = beats.find(item => item.id === game?.beatId) ?? beats[0] ?? null;
   const text = beat?.kind === 'text' ? localizePage(beat.id, beat.text) : '';
   const typing = useTypewriter(screen === 'play' ? `${beat?.id}:${language}` : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? campaign === 'overseas' ? 'modern-sunset' : 'hero' : beat?.background ?? 'hero';
   const cg = screen === 'play' && beat ? cgForBeat(beat, scene.id) : undefined;
+  const tone = campaign === 'overseas' ? game?.overseasIdentity?.tone : undefined;
+  const blackout = beat !== null && MODERN_BLACKOUTS.has(beat.id);
   const relic = screen === 'play' && beat?.kind === 'text' ? relicForBeat(beat.id) : undefined;
 
   useLayoutEffect(() => setArtQuality(settings.lightweight), [settings.lightweight]);
@@ -290,35 +295,30 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     const sceneList = campaignScenes(campaign);
     const next = scene.script === 'modern' ? scene.next ? sceneById(scene.next) : undefined : sceneList[sceneList.findIndex(item => item.id === game.sceneId) + 1];
     const upcoming = next ? compileScene(next.id, currentProfile.current, game) : [];
-    const portraits = new Set<string>();
-    // Prefetch the actual costumes and poses selected for these pages.
-    for (const [items, location] of [[current, scene], [upcoming, next]] as const) {
-      if (!location) continue;
-      for (const item of items) {
-        const actor = actorForBeat(item, location, items);
-        if (actor) portraits.add(asset(actorPortraitName(actor)));
-      }
-    }
     const position = Math.max(0, current.findIndex(item => item.id === game.beatId));
-    const nearest = current.slice(position).map(item => actorForBeat(item, scene, current)).find(Boolean);
-    const urgent = [
-      ...(nearest ? [preloadImage(asset(actorPortraitName(nearest)), 'high')] : []),
-      preloadImage(asset(cgForBeat(current[position], scene.id)?.file || current[position].background)),
-    ];
+    const urgentArt = cgForBeat(current[position], scene.id);
+    const activeActor = settings.showSprites && !urgentArt ? actorForBeat(current[position], scene, current) : undefined;
+    const urgent = [preloadImage(asset(overseasArt(urgentArt?.file ?? current[position].background, tone)), 'high')];
+    if (activeActor) urgent.push(preloadImage(asset(portraitCandidatesForActor(activeActor, tone)[0]), 'high'));
     let cancelled = false;
     let stopIdle: (() => void) | undefined;
-    // The first visible person must not compete with speculative scenery.
-    void Promise.allSettled(urgent).then(async () => {
+    // Fetch ahead in reading order without competing with the visible scene.
+    void Promise.allSettled(urgent).then(() => {
       if (cancelled) return;
-      const rest = [...portraits, ...new Set([
-        ...current.map(item => asset(cgForBeat(item, scene.id)?.file || item.background)),
-        ...upcoming.map(item => asset(cgForBeat(item, next!.id)?.file || item.background)),
-      ])];
-      await Promise.allSettled(rest.map(url => preloadImage(url, 'low')));
-      if (!cancelled) stopIdle = prefetchWhenIdle(CHARACTERS.map(character => portraitAsset(character.key)));
+      const images = new Set<string>();
+      for (const [items, location, from] of [[current, scene, position], [upcoming, next, 0]] as const) {
+        if (!location) continue;
+        for (const item of items.slice(from)) {
+          const art = cgForBeat(item, location.id);
+          images.add(asset(overseasArt(art?.file ?? item.background, tone)));
+          const actor = settings.showSprites && !art ? actorForBeat(item, location, items) : undefined;
+          if (actor) images.add(asset(portraitCandidatesForActor(actor, tone)[0]));
+        }
+      }
+      stopIdle = prefetchWhenIdle([...images]);
     });
     return () => { cancelled = true; stopIdle?.(); };
-  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight, campaign]);
+  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight, settings.showSprites, campaign, tone]);
 
   useEffect(() => {
     if (!intro) return;
@@ -406,14 +406,15 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     readingLoad.current = true; setLoadingReading(true); setReadingError(false);
     try {
       await loadStory(campaign); setStoryReady(true);
-      const state = stateForReading();
+      const state = restoreEditorialBookmark(stateForReading(), currentProfile.current);
       const location = sceneById(state.sceneId);
       const items = compileScene(state.sceneId, currentProfile.current, state);
       const position = Math.max(0, items.findIndex(item => item.id === state.beatId));
-      const nearest = items.slice(position).map(item => actorForBeat(item, location, items)).find(Boolean);
-      const currentBeatArt = cgForBeat(items[position], location.id)?.file || items[position].background;
-      const critical = [preloadImage(asset(currentBeatArt), 'high')];
-      if (nearest) critical.push(preloadImage(asset(actorPortraitName(nearest)), 'high'));
+      const currentCG = cgForBeat(items[position], location.id);
+      const actor = settings.showSprites && !currentCG ? actorForBeat(items[position], location, items) : undefined;
+      const tone = state.overseasIdentity?.tone;
+      const critical = [preloadImage(asset(overseasArt(currentCG?.file ?? items[position].background, tone)), 'high')];
+      if (actor) critical.push(preloadImage(asset(portraitCandidatesForActor(actor, tone)[0]), 'high'));
       let timer = 0;
       // Keep a stalled image from blocking the story; loading failures stay retryable.
       await Promise.race([Promise.allSettled(critical), new Promise(resolve => { timer = window.setTimeout(resolve, 4000); })]);
@@ -424,14 +425,21 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     finally { readingLoad.current = false; setLoadingReading(false); }
   };
 
-  const start = async () => {
+  const start = async (identity?: OverseasOpeningIdentity) => {
     setConfirmRestart(false);
     void sound.unlock(settings); sound.click('bell');
-    const state = await prepareReading(() => newGame(currentProfile.current));
+    const state = await prepareReading(() => newGame(currentProfile.current, identity));
     if (!state) return;
     entryPointerGuardAt.current = performance.now() + 260;
     previousScene.current = state.sceneId; setIntro(openingIntro(state, currentProfile.current));
     setGame(state); setScreen('play'); closeModal(); setAuto(false); stopSkipping(); setHidden(false);
+  };
+
+  const requestStart = () => {
+    if (campaign === 'overseas') {
+      void sound.unlock(settings);
+      openModal('overseas-opening');
+    } else void start();
   };
 
   const resume = async (state = game) => {
@@ -494,7 +502,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const toggleAuto = () => { sound.click('toggle'); setAuto(value => !value); stopSkipping(); };
 
   const jump = async (id: string) => {
-    if ((id === '0-1' || id === 'modern-o-0-1') && !profile.visited.includes(id)) { start(); return; }
+    if ((id === '0-1' || id === 'modern-o-0-1') && !profile.visited.includes(id)) { requestStart(); return; }
     void sound.unlock(settings);
     const jumped = await prepareReading(() => revisitScene(game ?? newGame(currentProfile.current), currentProfile.current, id));
     if (!jumped) return;
@@ -609,15 +617,16 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const lineKind = beat?.kind !== 'text' ? 'speech' : !beat.speaker ? 'narration' : beat.mood.includes('内心') ? 'inner' : 'speech';
   const homeSeal = language === 'zh' ? '归' : language === 'ja' ? '帰' : 'H';
   const position = Math.max(0, beats.findIndex(item => item.id === beat?.id));
-  const locationName = beat ? locationForBeat(scene, beat) : scene.title;
+  const locationName = beat ? locationForBeat(scene, beat) : presentSceneTitle(scene);
   const modalSeals: Record<Settings['language'], Record<ModalName, string>> = {
-    zh: { chapters: '迹', characters: '名', gallery: '绘', journal: '记', settings: '听', saves: '签', history: '回', menu: '憩', about: '梦', music: '水' },
-    en: { chapters: 'R', characters: 'N', gallery: 'A', journal: 'J', settings: 'S', saves: 'B', history: 'E', menu: 'R', about: 'D', music: 'M' },
-    ja: { chapters: '路', characters: '名', gallery: '絵', journal: '記', settings: '聴', saves: '栞', history: '回', menu: '休', about: '夢', music: '音' },
-    de: { chapters: 'W', characters: 'N', gallery: 'B', journal: 'N', settings: 'E', saves: 'L', history: 'E', menu: 'R', about: 'T', music: 'K' },
+    zh: { chapters: '迹', characters: '名', gallery: '绘', journal: '记', settings: '听', saves: '签', history: '回', menu: '憩', about: '梦', music: '水', 'overseas-opening': '何' },
+    en: { chapters: 'R', characters: 'N', gallery: 'A', journal: 'J', settings: 'S', saves: 'B', history: 'E', menu: 'R', about: 'D', music: 'M', 'overseas-opening': 'Y' },
+    ja: { chapters: '路', characters: '名', gallery: '絵', journal: '記', settings: '聴', saves: '栞', history: '回', menu: '休', about: '夢', music: '音', 'overseas-opening': '何' },
+    de: { chapters: 'W', characters: 'N', gallery: 'B', journal: 'N', settings: 'E', saves: 'L', history: 'E', menu: 'R', about: 'T', music: 'K', 'overseas-opening': 'Y' },
   };
   const modalInfo: Record<ModalName, [string, string]> = {
-    chapters: ['行迹', '走过的水路'], characters: ['人物志', '记住他们的名字'], gallery: ['浮生绘卷', '一程山河'], journal: ['旅人手记', '河水记得的事'], settings: ['听风与读字', '按你自己的节奏'], saves: ['一枚书签', '留住一个瞬间'], history: ['方才的话', '水面上的回声'], menu: ['梦间小憩', '在河边歇一歇'], about: ['关于此梦', '水声未散之前'], music: ['听水集', '河上的十一支曲子'],
+    chapters: ['行迹', '走过的水路'], characters: ['人物志', '记住他们的名字'], gallery: ['浮生绘卷', '一程山河'], journal: ['旅人手记', '河水记得的事'], settings: ['听风与读字', '按你自己的节奏'], saves: ['一枚书签', '留住一个瞬间'], history: ['方才的话', '水面上的回声'], menu: ['梦间小憩', '在河边歇一歇'], about: ['关于此梦', '水声未散之前'], music: ['听水集', campaign === 'overseas' ? '现代卷 · 旅途原声' : '河上的十一支曲子'],
+    'overseas-opening': ['林越的来处', '海外现代篇'],
   };
   const endingSeal = beat?.kind === 'ending'
     ? beat.ending === 'home' || modernFinal(beat.ending) ? language === 'en' ? 'END' : language === 'de' ? 'ENDE' : campaign === 'overseas' ? '问归' : t('团圆')
@@ -626,8 +635,8 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const toastNotice = toast && <div className={`toast ${modal ? 'toast--inline' : ''}`} key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span><span>{t(toast, ...toastParameters.current)}</span><button onClick={() => setToast('')} aria-label={t("关闭提示")}><X size={13} /></button></div>;
 
   return <main className={`app app--${screen} ${modal ? 'app--modal' : ''} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`}>
-    <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} />
-    <Atmosphere scene={background} reduced={settings.reducedMotion} />
+    <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} blackout={blackout} tone={tone} />
+    <Atmosphere scene={background} reduced={settings.reducedMotion || blackout} />
 
     {tr(screen === 'home' ? <div className="home-screen" inert={!!modal} onPointerDownCapture={event => { if (confirmRestart && event.target instanceof Element && !event.target.closest('.start-button')) setConfirmRestart(false); }}>
       <header className="home-header"><button className="brand" onClick={() => openModal('about')} aria-label={t("关于异托邦")}><BoatMark /><span>{t("异托邦")}<small>HETEROTOPIA</small></span></button><div className="home-header-note"><span className="tiny-line" />{campaign === 'overseas' ? '汉字、远行与另一条来处' : t("一场未尽的楚地远行")}<span className="tiny-line" /></div><div className="header-tools"><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton><IconButton label={tr(fullscreen ? '退出全屏' : '全屏')} onClick={() => void toggleFullscreen()}><InkFrame size={19} /></IconButton><IconButton label={t("阅读设置")} onClick={() => openModal('settings')}><InkWind size={20} /></IconButton></div></header>
@@ -638,12 +647,12 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
         <div className="home-verse"><span>{campaign === 'overseas' ? '问字，不问命。' : t("魂兮归来。")}</span><p>{campaign === 'overseas' ? '念对了，它会带你去问的人面前。' : t("看路，也看看走路的人。")}</p></div>
         <nav className="campaign-selector" aria-label="选择故事卷">
           <button aria-pressed={campaign === 'original'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('original')}>沈辞 · 原篇</button>
-          <button aria-pressed={campaign === 'overseas'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('overseas')}>林越 · 现代新卷<span>新</span></button>
+          <button aria-pressed={campaign === 'overseas'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('overseas')}>林越 · 现代新卷</button>
         </nav>
-        <p className="campaign-note">{campaign === 'overseas' ? <>问字，不问命。<span>双卷独立存档 · 两条旅途之后，留在这一边（亦可直接开卷）。</span></> : <>{t("双卷独立，各自留存")}<span>{t("建议先读原篇；也可直接切换现代新卷。")}</span></>}</p>
+        <p className="campaign-note">{campaign === 'overseas' ? t("双卷独立存档，现代卷可直接开卷。") : <>{t("双卷独立，各自留存")}<span>{t("建议先读原篇；也可直接切换现代新卷。")}</span></>}</p>
         <nav className={`home-main-menu ${game ? 'home-main-menu--resume' : ''}`} aria-label={t("启程菜单")}>
-          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'} ${confirmRestart ? 'is-confirming' : ''}`} disabled={loadingReading || !!languagePending} aria-live="polite" onBlur={() => setConfirmRestart(false)} onClick={() => { if (game && !confirmRestart) { setConfirmRestart(true); return; } setConfirmRestart(false); void start(); }}><span className="cta-glow" aria-hidden="true" /><strong>{tr(confirmRestart ? (campaign === 'overseas' ? '再点一次，重走这一程' : '再点一次，重新启程') : game ? (campaign === 'overseas' ? '重走这一程' : '重新启程') : (campaign === 'overseas' ? '去问' : '启程'))}</strong>{tr(confirmRestart && <small>{t("将覆盖此刻自动留存")}</small>)}<BoatMark className="cta-boat" /></button>
-          <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game || loadingReading || !!languagePending} onClick={event => { entryPointerPos.current = event.detail > 0 ? { x: event.clientX, y: event.clientY } : null; void resume(); }}><span className="cta-glow" aria-hidden="true" /><strong>{t("续梦")}</strong><small>{tr(game ? t("{0} · {1}", sceneById(game.sceneId).chapter, t(sceneById(game.sceneId).title)) : '此刻尚无未尽的梦')}</small></button>
+          <button className={`start-button ${game ? 'cta-secondary' : 'cta-primary'} ${confirmRestart ? 'is-confirming' : ''}`} disabled={loadingReading || !!languagePending} aria-live="polite" onBlur={() => setConfirmRestart(false)} onClick={() => { if (game && !confirmRestart) { setConfirmRestart(true); return; } setConfirmRestart(false); requestStart(); }}><span className="cta-glow" aria-hidden="true" /><strong>{tr(confirmRestart ? (campaign === 'overseas' ? '再点一次，重走这一程' : '再点一次，重新启程') : game ? (campaign === 'overseas' ? '重走这一程' : '重新启程') : (campaign === 'overseas' ? '去问' : '启程'))}</strong>{tr(confirmRestart && <small>{t("将覆盖此刻自动留存")}</small>)}<BoatMark className="cta-boat" /></button>
+          <button className={`continue-button ${game ? 'cta-primary' : 'cta-secondary'}`} disabled={!game || loadingReading || !!languagePending} onClick={event => { entryPointerPos.current = event.detail > 0 ? { x: event.clientX, y: event.clientY } : null; void resume(); }}><span className="cta-glow" aria-hidden="true" /><strong>{t("续梦")}</strong><small>{tr(game ? t("{0} · {1}", presentChapterTitle(scene), t(presentSceneTitle(scene))) : '此刻尚无未尽的梦')}</small></button>
         </nav>
         {tr((loadingReading || languagePending) && <p className="reading-load" role="status">{languagePending ? t("正在切换语言…") : t("正在载入旅途…")}</p>)}
         {tr(readingError && <p className="reading-load" role="alert"><button onClick={() => location.reload()}>{t("刷新重试")}</button></p>)}
@@ -659,16 +668,16 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       if ((language === 'en' || language === 'de') && dialogue && dialogue.scrollHeight > dialogue.clientHeight + 2) return;
       if (event.deltaY < -8 && !modal && !intro && !hidden && beat.kind === 'text') openModal('history');
     }}>
-      {tr(beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label={t("查看行迹")}><span className="location-copy"><span className="location-chapter">{tr(scene.chapter)}</span><span className="location-name">{tr(locationName)}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label={t("打开旅人手记")}>{campaign === 'overseas' ? <span className="modern-seal-mark">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small />}</button><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{tr(audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">{t("点击开启声音")}</span>)}<IconButton label={t("打开菜单")} onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>)}
+      {tr(beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label={t("查看行迹")}><span className="location-copy"><span className="location-chapter">{tr(presentChapterTitle(scene))}</span><span className="location-name">{tr(locationName)}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label={t("打开旅人手记")}>{campaign === 'overseas' ? <span className="modern-seal-mark">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small />}</button><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{tr(audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">{t("点击开启声音")}</span>)}<IconButton label={t("打开菜单")} onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>)}
       <div className="sr-only" aria-live="polite" aria-atomic="true">{tr(!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? t("{0}{1}", beat.speaker ? t("{0}：", beat.speaker) : '', text) : '')}</div>
       {tr(showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label={t("阅读提示")}><CircleHelp size={16} aria-hidden="true" /><p>{t("点击画面继续，点「回看」重读。")}<small>{t("更多操作可在阅读设置中查看。")}</small></p><button onClick={dismissReadingHint}>{t("知道了")}</button></aside>)}
 
-      {tr(settings.showSprites && !intro && !cg && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} />)}
+      {tr(settings.showSprites && !intro && !cg && !blackout && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} tone={tone} />)}
       {tr(beat.kind === 'text' && <><button className="advance-surface" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文')} tabIndex={-1} />
         <section className={`dialogue dialogue--${lineKind}`} aria-label={t("故事正文")} inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />
           <div className="dialogue-body">
-            {tr(relic && !hidden && !intro && <button className="relic-cue" onClick={() => { openModal('journal', { keepAuto: true }); setJournalRelic(relic.id); }} aria-label={tr(t("细看{0}", relic.title))}><InkBrush size={15} /><span>{t("物笺 ·")}{' '}{tr(relic.title)}</span><ArrowRight size={13} /></button>)}
+            {tr(relic && !hidden && !intro && <button className="relic-cue" data-relic={relic.id} onClick={() => { openModal('journal', { keepAuto: true }); setJournalRelic(relic.id); }} aria-label={tr(t("细看{0}", relic.title))}><InkBrush size={15} /><span>{t("物笺 ·")}{' '}{tr(relic.title)}</span><ArrowRight size={13} /></button>)}
             {tr(beat.speaker && <div className="speaker"><span className="speaker-seal"><strong>{tr(beat.speaker)}</strong></span>{tr(beat.mood && <span className="speaker-mood">{tr(beat.mood)}</span>)}</div>)}
             <button className="dialogue-advance" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(typing.done ? '继续' : '立即显示全文')}><p className="dialogue-text" data-testid="dialogue-text" data-beat-id={beat.id} aria-label={text}><span aria-hidden="true">{text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{text.slice(typing.count)}</span><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true" /></p></button>
             <footer className="dialogue-footer">
@@ -692,7 +701,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
         {tr(hidden && <div className="hidden-hint">{t("点击画面，或按 H，继续听故事。")}</div>)}
       </>)}
 
-      {tr(beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label={t("命运选择")}><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{tr(beat.prompt)}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{tr(beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} aria-keyshortcuts={String(i + 1)} title={tr(t("按 {0} 选择", i + 1))} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[language][i] ?? i + 1}</span><span className="choice-copy"><strong>{tr(choice.disabled ? '尚未听见的名字' : choice.title)}</strong><small>{tr(choice.disabled ? choice.hint : choice.detail)}</small></span><span className="choice-stamp" aria-hidden="true" onAnimationStart={event => stampAtContact(choice.key, event.animationName)}>{t("定")}</span></button>))}</div>{tr(game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{tr(game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。')}</span></div>)}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />{t("在分路前，留一枚书签")}</button></section>)}
+      {tr(beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label={t("命运选择")}><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{tr(beat.prompt)}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{tr(beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} aria-keyshortcuts={String(i + 1)} title={tr(t("按 {0} 选择", i + 1))} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[language][i] ?? i + 1}</span><span className="choice-copy"><strong>{choice.disabled ? t("尚未听见的名字") : localizeChoice(`${beat.id}:${choice.key}`, choice.title)}</strong><small>{tr(choice.disabled ? choice.hint : choice.detail)}</small></span><span className="choice-stamp" aria-hidden="true" onAnimationStart={event => stampAtContact(choice.key, event.animationName)}>{t("定")}</span></button>))}</div>{tr(game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{tr(game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。')}</span></div>)}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />{t("在分路前，留一枚书签")}</button></section>)}
 
       {tr(beat.kind === 'ending' && <section className={`ending-screen ending-screen--${beat.ending} ${hidden ? 'ending-screen--clean' : ''}`} aria-label={tr(t("结局 · {0}", ENDINGS[beat.ending].title))}>
         <div className="ending-effects" aria-hidden="true"><span className="ending-ink" /><span className="ending-ripple" /></div>
@@ -714,11 +723,11 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       {tr(intro && <button className="chapter-intro" data-testid="chapter-intro" onClick={() => setIntro(null)} aria-label={t("进入故事")}><span className="intro-ink" aria-hidden="true" /><span className="intro-ripple" aria-hidden="true" /><span className="intro-scroll"><span className="intro-chapter">{tr(intro.chapter)}</span><h2>{tr(intro.title)}</h2><span className="intro-subtitle">{t(intro.subtitle).replace(/\s*·\s*/g, '・')}</span></span><span className="intro-seal" aria-hidden="true">{t(intro.chapter === '终章' ? '归' : intro.chapter).slice(0, 2)}</span><span className="intro-click">{t("点击，听水声继续。")}</span></button>)}
     </div> : null)}
 
-    {tr(modal && <Modal title={tr(modalInfo[modal][0])} eyebrow={tr(modalInfo[modal][1])} seal={modalSeals[language][modal]} onClose={closeModal} onBack={modalParent ? backModal : undefined} backLabel={tr(modalParent === 'menu' ? '返回小憩' : modalParent ? t("返回{0}", modalInfo[modalParent][0]) : undefined)} restoreFocus={restoreModalFocus} notice={toastNotice} className={`modal--${modal}`}>
+    {tr(modal && <Modal title={tr(modalInfo[modal][0])} eyebrow={tr(modalInfo[modal][1])} seal={modalSeals[language][modal]} onClose={closeModal} closeDisabled={modal === 'overseas-opening' && loadingReading} onBack={modalParent ? backModal : undefined} backLabel={tr(modalParent === 'menu' ? '返回小憩' : modalParent ? t("返回{0}", modalInfo[modalParent][0]) : undefined)} restoreFocus={restoreModalFocus} notice={toastNotice} className={`modal--${modal}`}>
       <Suspense fallback={<p role="status">{t("正在展开书页…")}</p>}>
       {tr(modal === 'chapters' && <ChaptersView profile={profile} currentScene={screen === 'play' ? game?.sceneId : undefined} onJump={jump} />)}
-      {tr(modal === 'characters' && <CharactersView profile={profile} />)}
-      {tr(modal === 'gallery' && <GalleryView profile={profile} />)}
+      {tr(modal === 'characters' && <CharactersView profile={profile} tone={tone} />)}
+      {tr(modal === 'gallery' && <GalleryView profile={profile} tone={tone} />)}
       {tr(modal === 'journal' && <JournalView state={game} profile={profile} initialRelic={journalRelic} />)}
       {tr(modal === 'settings' && <SettingsView languagePending={languagePending} languageError={languageError} settings={settings} onChange={changeSettings} onMusic={() => openModal('music')} onExport={() => { exportSave(profile, game, slots); notify('旅途存档已导出。'); }} onImport={file => void importFile(file)} onReset={() => { changeSettings({ ...DEFAULT_SETTINGS, language: settings.language }); notify('阅读设置已恢复。'); }} />)}
       {tr(modal === 'saves' && <SaveView slots={slots} state={game} profile={profile} autosave={loadAutosave(campaign)} initialMode={saveMode} onSave={saveSlot} onLoad={state => { resume(state); notify('书页翻回了那一刻。'); }} onDelete={deleteSlot} />)}
@@ -726,6 +735,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       {tr(modal === 'menu' && <div className="pause-content">{campaign === 'overseas' ? <span className="modern-seal-mark modern-seal-mark--large">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} />}<p>{t("不用急。水也可以慢慢流。")}</p><div className="pause-buttons">{tr(screen === 'play' && <button className="gold-button" onClick={closeModal}>{t("继续此梦")}{' '}<Play size={15} /></button>)}<div className="pause-grid">{tr(LIBRARY.map(item => <button key={item.name} onClick={() => openModal(item.name)}><item.icon size={24} /><span>{tr(item.text)}</span><small>{tr(item.note)}</small></button>))}</div><div className="pause-rows"><button className="pause-row" onClick={() => openSaves('save')}><InkBookmark />{t("存读档")}<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('music')}><InkDrop />{t("听水集")}<ChevronRight size={16} /></button><button className="pause-row" onClick={() => openModal('settings')}><InkWind />{t("阅读设置")}<ChevronRight size={16} /></button></div>{tr(screen === 'play' && <button className={`pause-row pause-row--home ${confirmHome ? 'is-confirming' : ''}`} onClick={() => { if (confirmHome) toHome(); else setConfirmHome(true); }} aria-live="polite"><InkReturn />{tr(confirmHome ? '再点一次，回到标题' : '回到标题')}<small>{tr(confirmHome ? '此刻已自动留存，可随时续梦' : '此刻已自动留存')}</small></button>)}</div></div>)}
       {tr(modal === 'about' && <AboutView campaign={campaign} />)}
       {tr(modal === 'music' && <MusicRoom profile={profile} settings={settings} onChange={changeSettings} />)}
+      {tr(modal === 'overseas-opening' && <OverseasOpening initial={game?.overseasIdentity} loading={loadingReading} onBegin={identity => { void start(identity); }} />)}
       </Suspense>
     </Modal>)}
     {tr(!modal && toastNotice)}

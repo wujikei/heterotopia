@@ -1,0 +1,40 @@
+[
+  {
+    "file": "music-modern-street.mp3",
+    "title": "异乡街角",
+    "kind": "music",
+    "loop": true,
+    "seconds": 108.66667,
+    "bytes": 2609501,
+    "integratedLUFS": -18.38,
+    "truePeakDB": -2.75,
+    "source": "Local ACE-Step 1.5",
+    "sourceSHA256": "4203b66e9ac7ed658d19fa2daf63bbb5614e15f0706c9ec4d2bdbceb6adbf037",
+    "wavSHA256": "c5c17d1af79ae9b9de80d4283714d46c5226d649569edb8bd619b2d8aa05f2f6",
+    "sha256": "06744396eb1f870ff437752f04560bba73593fa6936c28b7967206d62b0fa93c",
+    "sourceSeconds": 120.0,
+    "trimAtSeconds": 112,
+    "overlapSeconds": 3.3333333333333335,
+    "loopSeamAmplitude": 0.0020882170647382736,
+    "sampleRate": 44100
+  },
+  {
+    "file": "music-modern-question.mp3",
+    "title": "何的回声",
+    "kind": "music",
+    "loop": true,
+    "seconds": 87.66667,
+    "bytes": 2105442,
+    "integratedLUFS": -18.33,
+    "truePeakDB": -2.75,
+    "source": "Local ACE-Step 1.5",
+    "sourceSHA256": "c22d5ec37cb69d0230d9437ec3b9a5863671efa7a86cd3b20ab40b927786785e",
+    "wavSHA256": "fccf18559021f75074354d93993c49fce4bbd65e4f68078e1fa06e373e0708ea",
+    "sha256": "c06cf3741eb51f0b9366c49845796b308bedaf36caf43411431e6cc734afdfc4",
+    "sourceSeconds": 100.0,
+    "trimAtSeconds": 91,
+    "overlapSeconds": 3.3333333333333335,
+    "loopSeamAmplitude": 0.0005842139944434166,
+    "sampleRate": 44100
+  }
+]

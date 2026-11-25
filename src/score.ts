@@ -1,12 +1,15 @@
 import rawSoundtrack from './data/soundtrack.json';
 import type { Beat, EndingId, Profile } from './types';
-import { isModern, modernMusic } from './modern';
+import { sceneById } from './engine';
+import { isModern, modernMusic, MODERN_ARRIVAL_ART, MODERN_GLANCE_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_PHOTO_ART, MODERN_STALL_ART, MODERN_SUMMIT_ART, MODERN_TRANSLATION_ART } from './modern';
+import { modernOpeningArt } from './data/modernStaging';
 
-export const MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
+export const ORIGINAL_MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
+export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-question', 'modern-return', 'modern-untranslated', 'modern-ascent', 'modern-afterglow'] as const;
 export type MusicId = typeof MUSIC_IDS[number];
 export const AMBIENCE_IDS = ['river', 'rain', 'hearth', 'wind', 'winter', 'room', 'night', 'street', 'marsh', 'underwater', 'cave', 'palace'] as const;
 export type AmbienceId = typeof AMBIENCE_IDS[number];
-export const EFFECT_IDS = ['page', 'choice', 'bookmark', 'bronze', 'triple-bell', 'ritual-drum', 'hull', 'alarm', 'school-bell', 'door', 'wood-latch', 'bamboo', 'cloth', 'ceramic', 'splash', 'oar', 'drop', 'electric', 'chair', 'steps', 'stone', 'string-snap', 'ball', 'bike-bell', 'flute', 'crow', 'pottery', 'heartbeat'] as const;
+export const EFFECT_IDS = ['page', 'choice', 'bookmark', 'bronze', 'triple-bell', 'ritual-drum', 'hull', 'alarm', 'school-bell', 'door', 'wood-latch', 'bamboo', 'cloth', 'ceramic', 'splash', 'oar', 'drop', 'electric', 'chair', 'steps', 'stone', 'string-snap', 'ball', 'bike-bell', 'flute', 'crow', 'pottery', 'heartbeat', 'dorm-bowl', 'camera-shutter'] as const;
 export type EffectId = typeof EFFECT_IDS[number];
 export interface Track { id: MusicId; title: string; subtitle: string; bpm: number; keyscale: string; file: string; seconds: number }
 export const SOUNDTRACK = rawSoundtrack as Track[];
@@ -49,6 +52,9 @@ export interface ScoreFrame {
   ambience: [AmbienceId, number][];
   events: SoundEvent[];
   transition: number;
+  musicFade?: number;
+  ambienceFade?: number;
+  prepareEffects?: readonly EffectId[];
 }
 
 // Authored against the screenplay's scene and block IDs. Paragraph changes keep
@@ -70,10 +76,25 @@ export const TRACK_ART: Record<MusicId, string> = {
   'river-home': 'hero', 'paper-note': 'classroom-day', hearth: 'hut', 'river-journey': 'river',
   'old-jade': 'study', ritual: 'ritual', 'under-current': 'marsh', 'small-goodbyes': 'mountain',
   'last-flute': 'snow', 'river-of-names': 'light-river', 'light-in-kitchen': 'home',
+  'modern-street': MODERN_ARRIVAL_ART, 'modern-question': 'cg-modern-dorm-carving-r2',
+  'modern-return': 'cg-modern-noodles', 'modern-untranslated': MODERN_TRANSLATION_ART,
+  'modern-ascent': 'modern-mountain-path', 'modern-afterglow': MODERN_PHOTO_ART,
 };
 
+const FORMER_MODERN_TRACKS: Partial<Record<string, MusicId>> = {
+  'modern-o-4-1': 'small-goodbyes', 'modern-o-4-2': 'small-goodbyes', 'modern-o-5-7': 'light-in-kitchen',
+};
+
+export function tracksForVisit(sceneId: string): MusicId[] {
+  if (!isModern(sceneId)) return MUSIC_BY_SCENE[sceneId] ? [MUSIC_BY_SCENE[sceneId]] : [];
+  const scene = sceneById(sceneId);
+  if (scene.id !== sceneId) return [];
+  const track = modernMusic(sceneId, modernOpeningArt(scene));
+  const former = FORMER_MODERN_TRACKS[sceneId];
+  return former && track ? [track, former] : track ? [track] : [];
+}
 export function unlockedTracks(profile: Pick<Profile, 'visited'>): MusicId[] {
-  return [...new Set<MusicId>(['river-home', ...profile.visited.map(id => MUSIC_BY_SCENE[id]).filter((id): id is MusicId => !!id)])];
+  return [...new Set<MusicId>(['river-home', ...profile.visited.flatMap(tracksForVisit)])];
 }
 
 const e = (id: EffectId, gain = .65, at = 0, pan = 0): Effect => ({ id, gain, at, pan });
@@ -144,19 +165,45 @@ const ACCENTS: Record<string, Effect[]> = {
   'A-8:11:1': [e('steps', .24, .3)],
   'B-5-5:8:2': [e('cloth', .12, .2)],
   'B-10-4:11:4': [e('bamboo', .12, .7)],
+  'modern-o-4-1:24:0': [e('dorm-bowl', .30, .10, -.08)],
+  'modern-o-5-1:8:0': [e('page', .18, .06, .12)],
+  'modern-o-5-2:4:0': [e('electric', .1, .25)],
+  'modern-o-5-2:8:0': [e('page', .17, .14, .10)],
+  'modern-o-5-6:9:0': [e('cloth', .15, .18, .08)],
+  'modern-o-5-7:17:0': [e('camera-shutter', .32, .09, .04)],
 };
 
 const ENVIRONMENTS: Record<string, [AmbienceId, number][]> = {
   'modern-dorm': [['room', .4], ['street', .1]],
   'modern-library': [['room', .28]],
+  'modern-classroom': [['room', .28]],
   'modern-office': [['room', .3], ['street', .07]],
+  'modern-office-video': [['room', .24], ['street', .035]],
   'modern-mountain-path': [['wind', .3]],
   'modern-sunset': [['wind', .2], ['river', .1]],
-  'cg-modern-word-stall': [['street', .45]],
+  'modern-night-river': [['river', .32]],
+  'modern-herb-eaves': [['wind', .11], ['river', .07]],
+  'cg-modern-porridge-offering': [['wind', .14], ['river', .12]],
+  [MODERN_ARRIVAL_ART]: [['street', .46]],
+  [MODERN_STALL_ART]: [['street', .37]],
+  'cg-modern-jade-palm-r2': [['street', .37]],
+  'modern-dorm-quiet-r2': [['room', .36], ['street', .06]],
+  'modern-royal-wall-night': [['wind', .48]],
+  'modern-chu-courtyard': [['wind', .2]],
+  'modern-minister-hall': [['palace', .25], ['hearth', .09]],
+  'modern-minister-ancestor': [['palace', .18], ['wind', .07]],
+  'modern-minister-veteran': [['wind', .2]],
+  'modern-minister-orange': [['wind', .18]],
+  'modern-minister-inlaw': [['wind', .12], ['palace', .08]],
+  'modern-river-aboard': [['river', .8], ['wind', .17]],
   'cg-modern-noodles': [['room', .35]],
-  'cg-modern-translation': [['room', .2]],
-  'cg-modern-glance': [['wind', .28]],
-  'cg-modern-photo': [['wind', .15], ['river', .08]],
+  [MODERN_NOTEBOOK_ART]: [['room', .22]],
+  [MODERN_TRANSLATION_ART]: [['room', .22]],
+  'cg-modern-paper': [['room', .25], ['street', .07]],
+  [MODERN_PAPER_NOTE_ART]: [['room', .25], ['street', .07]],
+  [MODERN_GLANCE_ART]: [['wind', .28]],
+  [MODERN_SUMMIT_ART]: [['wind', .25]],
+  [MODERN_PHOTO_ART]: [['wind', .15], ['river', .08]],
   hero: [['river', .65], ['wind', .12]], 'dream-boat': [['river', .7], ['wind', .15]],
   bedroom: [['room', .25], ['street', .18]], home: [['room', .3], ['street', .15]],
   'bedroom-morning': [['room', .25], ['street', .22]],
@@ -187,17 +234,61 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
     events: [{ id: beat.audioCueId, effects: CUE_EFFECTS[beat.audioCueId] ?? [] }],
   };
   if (isModern(sceneId)) {
-    frame.music = modernMusic(sceneId, beat);
+    frame.music = modernMusic(sceneId, beat.background);
     frame.transition = 3.5;
+    if (sceneId === 'modern-o-0-1') frame.musicGain = beat.background === MODERN_ARRIVAL_ART ? .68 : .55;
+    if (sceneId === 'modern-o-0-2') frame.musicGain = .57;
     if (sceneId === 'modern-o-0-2' && block >= 15) {
       frame.musicGain = .3;
       frame.ambience = block >= 26 ? [['rain', .48], ['room', .1]] : [['room', .18]];
     }
-    if (sceneId.startsWith('modern-k-G-')) {
-      frame.music = null;
-      frame.ambience = [['river', .17], ['wind', .1]];
+    if (beat.background === 'modern-night-river') {
+      if (sceneId === 'modern-o-2-1') frame.ambience = [['river', .32], ['night', .18]];
+      if (sceneId === 'modern-o-2-2' || sceneId === 'modern-o-2-4') frame.ambience = [['river', .32], ['wind', .14]];
     }
-    if (sceneId === 'modern-o-5-7') frame.musicGain = .65;
+    if (sceneId === 'modern-k-G-1') frame.ambience = [];
+    else if (sceneId.startsWith('modern-k-G-')) frame.ambience = [['river', .17], ['wind', .1]];
+    if (frame.music === 'modern-return') {
+      frame.musicGain = .72;
+      if (block === 22 || block === 23) frame.prepareEffects = ['dorm-bowl'];
+      if (block === 24) {
+        frame.cue = beat.id;
+        frame.musicGain = .24;
+        frame.musicFade = .14;
+        frame.ambience = [['room', .23], ['street', .06]];
+        frame.ambienceFade = .32;
+      }
+      if (block === 25) frame.musicFade = 1.25;
+    }
+    if (frame.music === 'modern-untranslated') {
+      const atNotebook = sceneId === 'modern-o-4-2' && block >= 8 && block <= 10;
+      frame.musicGain = atNotebook ? .19 : .71;
+      if (atNotebook) frame.transition = 1.1;
+    }
+    if (frame.music === 'modern-ascent') {
+      frame.musicGain = sceneId === 'modern-o-5-5' && block >= 4 && block <= 6 ? .43 : .74;
+      if (beat.id === 'modern-o-5-6:9:0') frame.cue = beat.id;
+    }
+    if (frame.music === 'modern-afterglow') {
+      const atShutter = beat.kind === 'text' && block >= 17 && block <= 18;
+      frame.musicGain = atShutter ? .20 : .76;
+      if (block >= 5 && block <= 14) {
+        frame.ambience = [['river', .045]];
+        frame.ambienceFade = 1.4;
+      }
+      if (block === 15 || block === 16) {
+        frame.prepareEffects = ['camera-shutter'];
+        frame.ambience = [['wind', .11], ['river', .045]];
+        frame.ambienceFade = .65;
+      }
+      if (atShutter) {
+        frame.cue = 'modern-o-5-7:17:0';
+        frame.musicFade = .13;
+        frame.ambience = [['wind', .06], ['river', .045]];
+        frame.ambienceFade = .24;
+      }
+      if (block === 19) frame.musicFade = 1.25;
+    }
   }
   if (ACCENTS[beat.id]) frame.events.push({ id: beat.id, effects: ACCENTS[beat.id] });
   if (sceneId === '0-1' && block >= 6) { frame.music = 'paper-note'; frame.transition = .18; }

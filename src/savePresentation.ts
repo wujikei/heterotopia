@@ -1,20 +1,23 @@
 import { locationForBeat } from './scenePresentation';
-import { currentBeat, sceneById } from './engine';
+import { presentChapterTitle, presentSceneTitle, presentStoryText } from './editorial';
+import { currentBeat, restoreEditorialBookmark, sceneById } from './engine';
 import type { GameState, Profile } from './types';
 
-export function slotPresentation(state: GameState, profile: Profile, display: (id: string, text: string) => string = (_id, text) => text, limit = 20, wrapWords = false) {
+export function slotPresentation(state: GameState, profile: Profile, display: (id: string, text: string) => string = presentStoryText, limit = 20, wrapWords = false) {
   const scene = sceneById(state.sceneId);
-  const fallback = { background: scene.background, title: scene.title, chapter: scene.chapter, excerpt: '' };
+  const fallback = { background: scene.background, title: presentSceneTitle(scene), chapter: presentChapterTitle(scene), excerpt: '' };
   try {
-    const beat = currentBeat(state, profile);
+    const restored = restoreEditorialBookmark(state, profile);
+    const beat = currentBeat(restored, profile);
     // currentBeat intentionally falls back to the first page for obsolete saves.
     // That page is not necessarily where this bookmark was made.
-    if (beat.id !== state.beatId) return fallback;
+    if (beat.id !== restored.beatId) return fallback;
     const text = beat.kind === 'text' ? display(beat.id, beat.text) : '';
+    const location = restored.sceneId === scene.id ? scene : sceneById(restored.sceneId);
     return {
       background: beat.background,
-      title: locationForBeat(scene, beat),
-      chapter: scene.chapter,
+      title: locationForBeat(location, beat),
+      chapter: presentChapterTitle(location),
       excerpt: excerpt(text, limit, wrapWords),
     };
   } catch { return fallback; }

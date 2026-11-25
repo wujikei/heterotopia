@@ -5,6 +5,7 @@ import { advance, campaignScenes, choose, compileScene, completeEnding, continue
 import { loadStory, MODERN_SCENES } from '../src/story';
 import { actorForBeat } from '../src/actors';
 import { modernComplete, MODERN_ENDINGS, MODERN_RETURN_ENDING, restoreModernState } from '../src/modern';
+import { OVERSEAS_REFLECTION_CHOICE, OVERSEAS_REFLECTION_SCENE, OVERSEAS_TRADITIONS } from '../src/overseasIdentity';
 import type { GameState, Profile } from '../src/types';
 
 await loadStory('overseas');
@@ -51,8 +52,8 @@ test('both source corpora stay separate, every new scene compiles and narrative 
   }
   const overseas = newProfile('overseas');
   const opening = compileScene('modern-o-0-1', overseas, { choices: {}, inventory: [] });
-  assert.equal(opening.find(beat => beat.kind === 'text')?.background, 'modern-street-arrival-r2');
-  assert.equal(opening.find(beat => beat.id === 'modern-o-0-1:7:0')?.background, 'cg-modern-word-stall');
+  assert.equal(opening.find(beat => beat.kind === 'text')?.background, 'modern-street-arrival-r3');
+  assert.equal(opening.find(beat => beat.id === 'modern-o-0-1:7:0')?.background, 'cg-modern-word-stall-r3');
   assert.equal(opening.find(beat => beat.id === 'modern-o-0-1:18:0')?.background, 'cg-modern-jade-palm-r2');
   const projection = compileScene('modern-o-0-2', overseas, { choices: {}, inventory: [] });
   assert.equal(projection.find(beat => beat.id === 'modern-o-0-2:17:0')?.background, 'cg-modern-dorm-carving-r2');
@@ -108,6 +109,31 @@ test('culture reflections are exclusive; the interlude cannot unlock a finale fr
   assert.ok(!texts.join('').includes('佛陀'));
   const old = { ...p, endings: ['blade' as const, 'kunlun' as const], visited:['modern-o-5-1'] };
   assert.equal(revisitScene(start, old, 'modern-o-5-1'), start);
+});
+
+test('opening traditions follow the same playthrough to the river and through old or new saves', () => {
+  const profile = { ...newProfile('overseas'), visited: [OVERSEAS_REFLECTION_SCENE] };
+  const anchors = ['苏格拉底', '伊本·西那', '佛陀', '未知生，焉知死'];
+  for (const [index, { id }] of OVERSEAS_TRADITIONS.entries()) {
+    const identity = { tone: 'deep' as const, tradition: id };
+    const start = newGame(profile, identity);
+    const atRiver = revisitScene({ ...start, choices: { [OVERSEAS_REFLECTION_CHOICE]: id === '1' ? '2' : '1' } }, profile, OVERSEAS_REFLECTION_SCENE);
+    assert.equal(atRiver.sceneId, OVERSEAS_REFLECTION_SCENE);
+    const restored = restoreModernState(JSON.parse(JSON.stringify(atRiver)));
+    assert.deepEqual(restored.overseasIdentity, identity);
+    const beats = compileScene(restored.sceneId, profile, restored);
+    assert.ok(beats.every(beat => beat.kind !== 'choice'));
+    const dialogue = beats.map(beat => beat.kind === 'text' ? beat.text : '').join('');
+    for (const [other, anchor] of anchors.entries()) assert.equal(dialogue.includes(anchor), other === index, `${id} / ${anchor}`);
+    assert.doesNotMatch(dialogue, /跨文化这一处/);
+  }
+  const legacy = enterScene(newGame(profile), profile, OVERSEAS_REFLECTION_SCENE, true);
+  assert.equal(legacy.beatId, OVERSEAS_REFLECTION_CHOICE);
+  const unfamiliar = JSON.parse(JSON.stringify({ ...legacy, overseasIdentity: { tone: 'v2', tradition: '5' } }));
+  const beat = currentBeat(restoreModernState(unfamiliar), profile);
+  assert.ok(beat.kind === 'choice');
+  assert.deepEqual(beat.choices.map(({ key }) => key), ['1', '2', '3', '4']);
+  assert.doesNotMatch(beat.choices.map(({ title }) => title).join(''), /区域|中东|欧洲|南亚/);
 });
 
 test('playable intra-scene choices show only their selected authored response', () => {

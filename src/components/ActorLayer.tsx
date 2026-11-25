@@ -1,25 +1,24 @@
 import { tr, useLocale } from '../i18n';
 import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
-import { actorForBeat, actorInCast } from '../actors';
+import { actorForBeat, actorInCast, portraitCandidatesForActor } from '../actors';
 import type { StageActor } from '../actors';
 import { ACTOR_LIGHT } from '../data/actorLight';
 import { asset } from '../assets';
-import { actorPortraitCandidates, actorPortraitName } from '../data/actorVariants';
 import { ArtImage } from './ArtImage';
 import { preloadImage } from '../preload';
 import type { Beat, Scene } from '../types';
+import type { OverseasTone } from '../overseasIdentity';
 
 type Layer = { id: number; sceneId: string; actor: StageActor; phase: 'pending' | 'active' | 'exit'; idle: boolean; cross: boolean; instant: boolean; returning?: boolean };
 let mountId = 0;
 
-function ActorFigure({ layer, background, onReady, onError }: {
-  layer: Layer; background: string; onReady: (id: number, delayed: boolean) => void; onError: (id: number) => void;
+function ActorFigure({ layer, background, tone, onReady, onError }: {
+  layer: Layer; background: string; tone?: OverseasTone; onReady: (id: number, delayed: boolean) => void; onError: (id: number) => void;
 }) {
   useLocale();
   const { actor, id } = layer;
-  const desiredName = actorPortraitName(actor);
-  const candidates = actorPortraitCandidates(actor);
+  const candidates = portraitCandidatesForActor(actor, tone);
   const candidateKey = candidates.join(',');
   const figure = useRef<HTMLDivElement>(null);
   const currentPortrait = useRef('');
@@ -56,7 +55,7 @@ function ActorFigure({ layer, background, onReady, onError }: {
       ++request.current;
       if (timer) clearTimeout(timer);
     };
-  }, [candidateKey, desiredName, id, onReady, onError, layer.instant]);
+  }, [candidateKey, id, onReady, onError, layer.instant]);
   const duration = layer.instant ? '0ms' : layer.returning ? '180ms' : layer.phase === 'exit' || layer.cross ? '220ms' : layer.idle ? '180ms' : '400ms';
   const light = ACTOR_LIGHT[background];
   return <div ref={figure} className={`actor actor--${actor.character.key} actor--${layer.phase} ${layer.idle ? 'actor--idle' : 'actor--speaking'} ${layer.cross ? 'actor--cross' : ''} ${light ? `actor--${light}` : ''}`}
@@ -71,8 +70,8 @@ function ActorFigure({ layer, background, onReady, onError }: {
 }
 
 /** The stage survives narration. Only decoded replacements can retire its actor. */
-export const ActorLayer = memo(function ActorLayer({ beat, scene, beats, reducedMotion, skipping }: {
-  beat: Beat; scene: Scene; beats: Beat[]; reducedMotion: boolean; skipping: boolean;
+export const ActorLayer = memo(function ActorLayer({ beat, scene, beats, reducedMotion, skipping, tone }: {
+  beat: Beat; scene: Scene; beats: Beat[]; reducedMotion: boolean; skipping: boolean; tone?: OverseasTone;
 }) {
   useLocale();
   const desired = actorForBeat(beat, scene, beats);
@@ -127,5 +126,5 @@ export const ActorLayer = memo(function ActorLayer({ beat, scene, beats, reduced
     return () => clearTimeout(timer);
   }, [layers]);
 
-  return <>{tr(layers.filter(layer => layer.sceneId === scene.id).map(layer => <ActorFigure key={layer.id} layer={layer} background={beat.background} onReady={ready} onError={failed} />))}</>;
+  return <>{tr(layers.filter(layer => layer.sceneId === scene.id).map(layer => <ActorFigure key={layer.id} layer={layer} background={beat.background} tone={tone} onReady={ready} onError={failed} />))}</>;
 });

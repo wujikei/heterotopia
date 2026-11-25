@@ -5,12 +5,14 @@ import { actorForBeat } from '../src/actors';
 import { ACTOR_VARIANTS, POSE_BEATS, actorPortraitCandidates, actorPortraitName } from '../src/data/actorVariants';
 import { cgForBeat } from '../src/data/cgs';
 import { BEAT_OVERRIDES } from '../src/data/expressions';
-import { compileScene, newGame, newProfile, SCENES } from '../src/engine';
+import artManifest from '../src/data/art-manifest.json';
+import { campaignScenes, compileScene, newGame, newProfile, SCENES } from '../src/engine';
 import { loadStory } from '../src/story';
 import { locationForBeat } from '../src/scenePresentation';
 import { slotPresentation } from '../src/savePresentation';
 
 await loadStory();
+await loadStory('overseas');
 const profile = newProfile();
 function at(sceneId: string, id: string) {
   const scene = SCENES.find(scene => scene.id === sceneId)!;
@@ -60,8 +62,10 @@ test('returning from the alley switches the background at the original paragraph
 
 test('each delivered costume or pose appears on an actual page outside a CG', () => {
   const found = new Set<string>();
-  for (const scene of SCENES) {
-    const beats = compileScene(scene.id, profile, { choices: { breakfast: 'B' }, inventory: ['jadeHead', 'jadeBody', 'jadeTail', 'names'] });
+  const scenes = [...SCENES, ...campaignScenes('overseas')];
+  const modernProfile = newProfile('overseas');
+  for (const scene of scenes) {
+    const beats = compileScene(scene.id, scene.script === 'modern' ? modernProfile : profile, { choices: { breakfast: 'B' }, inventory: ['jadeHead', 'jadeBody', 'jadeTail', 'names'] });
     for (const beat of beats) {
       const actor = actorForBeat(beat, scene, beats);
       if (actor && !cgForBeat(beat, scene.id)) found.add(`${actor.character.key}/${actor.variant}`);
@@ -89,7 +93,9 @@ test('every registered variant and inherited expression has transparent masters 
   for (const [key, variants] of Object.entries(ACTOR_VARIANTS)) for (const [variant, expressions] of Object.entries(variants)) {
     for (const expression of expressions!) {
       const name = actorPortraitName({ character: { key }, variant: variant as keyof typeof variants, expression });
-      await access(new URL(`../resources/art-src/variants/${name}.png`, import.meta.url));
+      const master = (artManifest.masters as Record<string, string>)[name];
+      assert.ok(master, name);
+      await access(new URL(`../${master}`, import.meta.url));
       for (const suffix of ['.webp', '.avif', '-m.webp', '-m.avif']) await access(new URL(`../public/art/${name}${suffix}`, import.meta.url));
     }
   }

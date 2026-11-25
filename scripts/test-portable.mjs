@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 import { advance, choose, completeEnding, continueEnding, currentBeat, newGame, newProfile, recordProgress } from '../src/engine.ts';
 import { BACKGROUNDS, CHARACTERS, MODERN_CHARACTERS } from '../src/data/world.ts';
-import { MODERN_SCENE_ART } from '../src/modern.ts';
+import { modernStagedArtNames } from '../src/data/modernStaging.ts';
 import { loadStory } from '../src/story.ts';
 import { CGS, cgForBeat } from '../src/data/cgs.ts';
 import { AVAILABLE, portraitNameFor } from '../src/data/expressions.ts';
@@ -33,6 +33,24 @@ const contexts = [];
 const storageEvents = [];
 const durableProfile = await mkdtemp(path.join(tmpdir(), 'heterotopia-offline-'));
 const imageManifest = JSON.parse(await readFile(new URL('../src/data/art-manifest.json', import.meta.url), 'utf8'));
+
+async function reloadAndCheck(page, check, label) {
+  await page.reload();
+  try {
+    await page.waitForFunction(check, null, { polling: 200 });
+  } catch (error) {
+    const state = await page.evaluate(() => ({
+      screen: document.querySelector('.app')?.className ?? null,
+      stage: document.querySelector('.scene-image--current')?.getAttribute('data-art') ?? null,
+      readyState: document.readyState,
+      hasAutosave: !!localStorage.getItem('heterotopia.v1.autosave'),
+      lightweight: JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? 'null')?.lightweight,
+      imageCount: Object.keys(globalThis.__HETEROTOPIA_ORIGINALS__ ?? {}).length,
+      audioCount: Object.keys(globalThis.__HETEROTOPIA_AUDIO__ ?? {}).length,
+    })).catch(() => null);
+    throw new Error(`Offline ${edition} did not restore ${label}: ${JSON.stringify({ state, errors, storageEvents })}`, { cause: error });
+  }
+}
 
 function walk(until, selections, state = newGame(newProfile()), profile = newProfile()) {
   for (let step = 0; step < 3000; step++) {
@@ -66,7 +84,7 @@ async function open(fixture, viewport = { width: 1440, height: 900 }, { persiste
       localStorage.setItem('heterotopia.v1.autosave', JSON.stringify(data.state));
     }
   }, fixture);
-  const page = await context.newPage();
+  const page = context.pages()[0] ?? await context.newPage();
   page.on('console', message => {
     if (message.text().startsWith('portable-settings-at-navigation')) {
       storageEvents.push({ context: contexts.indexOf(context), value: message.text() });
@@ -93,6 +111,81 @@ async function open(fixture, viewport = { width: 1440, height: 900 }, { persiste
   return page;
 }
 
+async function verifyPersistentSave() {
+  // Run file-origin persistence in its own renderer, before decoding the entire
+  // media library. Those checks keep hundreds of MiB of embedded data alive.
+  const page = await open(undefined, undefined, { persistent: true });
+  await page.getByRole('heading', { name: '异托邦' }).waitFor();
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  const quality = page.getByRole('switch', { name: '轻量模式', exact: true });
+  assert.equal(await quality.getAttribute('aria-checked'), 'false');
+  await quality.click();
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? '{}').lightweight === true);
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
+  await reloadAndCheck(page, () => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero), 'lightweight title art');
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  assert.equal(await quality.getAttribute('aria-checked'), 'true');
+  await quality.click();
+  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ORIGINALS__.hero));
+  await page.getByRole('button', { name: '关闭', exact: true }).click();
+
+  await page.getByRole('button', { name: '启程', exact: true }).click();
+  await page.locator('.game-screen').waitFor();
+  await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
+  await page.getByTestId('dialogue-text').waitFor();
+  await page.waitForTimeout(200);
+  await page.screenshot({ path: artifact('08-offline-opening.png') });
+  assert.equal(await page.locator('.location-name').textContent(), BACKGROUNDS['dream-boat'].subtitle);
+  const bookmarked = await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')));
+  await page.keyboard.press('s');
+  await page.locator('.save-slot-main').first().click();
+  await page.getByRole('button', { name: '关闭', exact: true }).click();
+  await page.getByRole('button', { name: '继续', exact: true }).click();
+  await page.waitForFunction(id => {
+    const saved = JSON.parse(localStorage.getItem('heterotopia.v1.autosave') ?? 'null');
+    return saved && saved.beatId !== id;
+  }, bookmarked.beatId);
+  await page.keyboard.press('l');
+  await page.locator('.save-slot--filled .save-slot-main').first().click();
+  await page.waitForFunction(id => {
+    const saved = JSON.parse(localStorage.getItem('heterotopia.v1.autosave') ?? 'null');
+    return saved?.beatId === id && document.querySelector('.dialogue-text')?.dataset.beatId === id;
+  }, bookmarked.beatId);
+  await reloadAndCheck(page, () => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled), 'the saved page');
+  assert.ok(await page.getByRole('button', { name: /^续梦/ }).isEnabled());
+  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: '导出旅途', exact: true }).click();
+  const download = await downloadPromise;
+  const testSave = artifact('synthetic-offline-test-save.json');
+  await download.saveAs(testSave);
+  const exported = JSON.parse(await readFile(testSave, 'utf8'));
+  assert.equal(exported.format, 'heterotopia-save');
+  assert.equal(exported.slots[0].state.beatId, bookmarked.beatId);
+  // The reopened browser must recover the real file-origin storage from disk.
+  await page.context().close();
+  const reopened = await chromium.launchPersistentContext(durableProfile, { headless: true, offline: true });
+  contexts.push(reopened);
+  const restoredPage = reopened.pages()[0] ?? await reopened.newPage();
+  restoredPage.on('pageerror', error => errors.push(error.message));
+  restoredPage.on('requestfailed', request => errors.push(`${request.url().slice(0, 160)}: ${request.failure()?.errorText}`));
+  restoredPage.on('request', request => {
+    if (/^https?:/.test(request.url())) errors.push(`Unexpected network dependency after restart: ${request.url()}`);
+  });
+  await restoredPage.goto(gameUrl);
+  await restoredPage.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
+  const restoredStorage = await restoredPage.evaluate(() => ({
+    state: JSON.parse(localStorage.getItem('heterotopia.v1.autosave')),
+    slots: JSON.parse(localStorage.getItem('heterotopia.v1.slots')),
+    settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')),
+  }));
+  assert.equal(restoredStorage.state.beatId, bookmarked.beatId);
+  assert.equal(restoredStorage.slots[0].state.beatId, bookmarked.beatId);
+  assert.equal(restoredStorage.settings.lightweight, false);
+  await reopened.close();
+  return { bookmarked, testSave };
+}
+
 try {
   if (sharded) {
     const shardManifest = JSON.parse(await readFile(new URL('./离线资源/manifest.json', gameUrl), 'utf8'));
@@ -116,9 +209,12 @@ try {
       await missingPage.goto(missingFile.href);
       await missingPage.locator('[data-portable-error]').filter({ hasText: '离线资源没有放齐。' }).waitFor();
     } finally { await missingContext.close(); }
-  } else assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
-  const page = await open(undefined, undefined, { persistent: true });
-  await page.getByRole('heading', { name: '异托邦' }).waitFor();
+  } else {
+    assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
+    assert.ok(html.includes('<script type="application/octet-stream" id="portable-media-'), 'single-file media must remain inert during startup');
+  }
+  const { bookmarked, testSave } = await verifyPersistentSave();
+  const page = await open();
   const modernPage = await open();
   await modernPage.getByRole('button', { name: /林越.*现代新卷/ }).click();
   const modernSource = await modernPage.evaluate(async () => {
@@ -127,17 +223,19 @@ try {
   });
   assert.match(modernSource, /现代线|问字摊/);
   await modernPage.getByRole('button', { name: '去问', exact: true }).click();
+  await modernPage.getByRole('button', { name: '选择文化传统' }).click();
+  await modernPage.getByRole('button', { name: '带着这个问题启程' }).click();
   await modernPage.locator('.game-screen').waitFor();
   await modernPage.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
   await modernPage.getByTestId('dialogue-text').waitFor();
-  await modernPage.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'modern-street-arrival-r2');
+  await modernPage.waitForFunction(() => document.querySelector('.scene-image--current')?.getAttribute('data-art') === 'modern-street-arrival-r3');
   await modernPage.setViewportSize({ width: 390, height: 844 });
   assert.equal(await modernPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await modernPage.context().close();
   const expected = [
     ...RELIC_ART,
     ...Object.keys(BACKGROUNDS).flatMap(name => [name, `${name}-thumb`]),
-    ...[...new Set(Object.values(MODERN_SCENE_ART))].flatMap(name => [name, `${name}-thumb`]),
+    ...modernStagedArtNames(),
     ...CHARACTERS.map(c => `portrait-${c.key}${c.key === 'xua' ? '-v3' : c.key === 'tu' ? '-v2' : ''}`),
     ...CHARACTERS.map(c => `portrait-${c.key}-face`),
     ...MODERN_CHARACTERS.flatMap(c => [portraitName(c.key), `portrait-${c.key}-face`]),
@@ -194,6 +292,7 @@ try {
   await mobileCGPage.setViewportSize({ width: 390, height: 844 });
   await mobileCGPage.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__['cg-s06-snow-hands-m']));
   await mobileCGPage.screenshot({ path: artifact('art-direction-1-offline-mobile.png') });
+  await mobileCGPage.context().close();
   const originalIntegrity = await page.evaluate(async expectedNames => {
     const originals = globalThis.__HETEROTOPIA_ORIGINALS__ ?? {};
     const missingOriginals = expectedNames.filter(name => !originals[name]?.startsWith('data:image/'));
@@ -206,21 +305,6 @@ try {
   }, Object.keys(imageManifest.originals ?? {}));
   assert.deepEqual(originalIntegrity.missingOriginals, []);
   assert.deepEqual(originalIntegrity.brokenOriginals, []);
-  // Both quality modes must remain functional with networking disabled,
-  // including the stored setting after reopening the single HTML file.
-  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
-  const quality = page.getByRole('switch', { name: '轻量模式', exact: true });
-  assert.equal(await quality.getAttribute('aria-checked'), 'false');
-  await quality.click();
-  await page.waitForFunction(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? '{}').lightweight === true);
-  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
-  await page.reload();
-  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
-  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
-  assert.equal(await quality.getAttribute('aria-checked'), 'true');
-  await quality.click();
-  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ORIGINALS__.hero));
-  await page.getByRole('button', { name: '关闭', exact: true }).click();
   const expectedAudio = JSON.parse(await readFile(new URL('../public/audio/manifest.json', import.meta.url), 'utf8')).files;
   const audioIntegrity = await page.evaluate(async expectedFiles => {
     const assets = globalThis.__HETEROTOPIA_AUDIO__ ?? {};
@@ -245,56 +329,8 @@ try {
   }, expectedAudio);
   assert.deepEqual(audioIntegrity.missingAudio, []);
   assert.deepEqual(audioIntegrity.brokenAudio, []);
-  assert.equal(audioIntegrity.audioAssets, 51);
-  await page.getByRole('button', { name: '启程', exact: true }).click();
-  await page.locator('.game-screen').waitFor();
-  await page.evaluate(() => document.querySelector('[data-testid="chapter-intro"]')?.click());
-  await page.getByTestId('dialogue-text').waitFor();
-  await page.waitForTimeout(200);
-  await page.screenshot({ path: artifact('08-offline-opening.png') });
-  assert.equal(await page.locator('.location-name').textContent(), BACKGROUNDS['dream-boat'].subtitle);
-  const bookmarked = await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')));
-  await page.keyboard.press('s');
-  await page.locator('.save-slot-main').first().click();
-  await page.getByRole('button', { name: '关闭', exact: true }).click();
-  await page.getByRole('button', { name: '继续', exact: true }).click();
-  await page.keyboard.press('l');
-  await page.locator('.save-slot--filled .save-slot-main').first().click();
-  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId), bookmarked.beatId);
-  await page.reload();
-  await page.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
-  assert.ok(await page.getByRole('button', { name: /^续梦/ }).isEnabled());
-  await page.getByRole('button', { name: '阅读设置', exact: true }).click();
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: '导出旅途', exact: true }).click();
-  const download = await downloadPromise;
-  const testSave = artifact('synthetic-offline-test-save.json');
-  await download.saveAs(testSave);
-  const exported = JSON.parse(await readFile(testSave, 'utf8'));
-  assert.equal(exported.format, 'heterotopia-save');
-  assert.equal(exported.slots[0].state.beatId, bookmarked.beatId);
-  // No init script, snapshot restore, or manual re-seeding is allowed here:
-  // the ordinary profile must recover the actual offline save from disk.
+  assert.equal(audioIntegrity.audioAssets, expectedAudio.length);
   await page.context().close();
-  const reopened = await chromium.launchPersistentContext(durableProfile, { headless: true, offline: true });
-  contexts.push(reopened);
-  const restoredPage = await reopened.newPage();
-  restoredPage.on('pageerror', error => errors.push(error.message));
-  restoredPage.on('requestfailed', request => errors.push(`${request.url().slice(0, 160)}: ${request.failure()?.errorText}`));
-  restoredPage.on('request', request => {
-    if (/^https?:/.test(request.url())) errors.push(`Unexpected network dependency after restart: ${request.url()}`);
-  });
-  await restoredPage.goto(gameUrl);
-  await restoredPage.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled));
-  const restoredStorage = await restoredPage.evaluate(() => ({
-    state: JSON.parse(localStorage.getItem('heterotopia.v1.autosave')),
-    slots: JSON.parse(localStorage.getItem('heterotopia.v1.slots')),
-    settings: JSON.parse(localStorage.getItem('heterotopia.v1.settings')),
-  }));
-  assert.equal(restoredStorage.state.beatId, bookmarked.beatId);
-  assert.equal(restoredStorage.slots[0].state.beatId, bookmarked.beatId);
-  assert.equal(restoredStorage.settings.lightweight, false);
-  await reopened.close();
   const importedPage = await open();
   await importedPage.getByRole('button', { name: '阅读设置', exact: true }).click();
   await importedPage.locator('input[type=file]').setInputFiles(testSave);
@@ -351,7 +387,7 @@ try {
   await relicPage.screenshot({ path: artifact('17-name-slips-offline-mobile.png') });
   assert.deepEqual(errors, []);
   await writeFile(new URL('portable-results.json', output), JSON.stringify({ testedAt: new Date().toISOString(), edition, mode: 'file:// with networking disabled; isolated synthetic test journeys', ...integrity, ...originalIntegrity, qualitySwitch: true, durableProfileRestart: true, ...audioIntegrity, errors }, null, 2));
-  console.log('Offline checks passed: original and overseas stories, original and lightweight art, delivered CGs and expressions, both quality modes across reload, fonts and all 51 audio files; saves, import/export, mobile choices, ending and return. No network requests.');
+  console.log(`Offline checks passed: both stories and art quality modes, fonts and all ${expectedAudio.length} audio files; saves, import/export, mobile choices, ending and return. No network requests.`);
 } catch (error) {
   const diagnostics = await Promise.all(contexts.flatMap(context => context.pages()).map(async page => {
     try {

@@ -1,4 +1,5 @@
 import type { Language } from './types';
+import { presentChoiceLabel, presentStoryText } from './editorial';
 
 export type Catalog = Record<string, string>;
 export interface LanguagePack { ui: Catalog; story: Catalog }
@@ -14,7 +15,15 @@ export function translate(source: string, catalog: Catalog, parameters: unknown[
 }
 
 export function storyText(id: string, source: string, pack?: LanguagePack): string {
+  const display = presentStoryText(id, source);
+  if (!display) return display;
+  if (display !== source) return pack?.ui[display] ?? display;
   return pack?.story[id] ?? pack?.ui[source] ?? source;
+}
+
+export function choiceText(id: string, source: string, pack?: LanguagePack): string {
+  const display = presentChoiceLabel(id, source);
+  return pack?.ui[display] ?? display;
 }
 
 export const LANGUAGES: { id: Language; name: string; html: string }[] = [

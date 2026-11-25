@@ -1,0 +1,1335 @@
+{
+  "date": "2026-11-25",
+  "engine": "Local ComfyUI / Qwen-Image 2.1",
+  "jobs": [
+    {
+      "id": "mountain-photo",
+      "promptId": "d0c73b09-08b7-436b-a747-ca944aed8946",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Use Image 1 as the original painted game frame. Match the source's 16:9 framing, each identity, facial expressions, exact positions, poses, direction of gaze, hair, lighting, painterly colors and background. Local costume continuity fix only. Lin Yue is the young East Asian man with round thin-framed glasses and a moss green backpack at left. He has taken off his slate-blue knitted cardigan. He wears a plain cream-white crew-neck short-sleeve T-shirt, bare forearms, and the same green backpack straps. The removed slate-blue cardigan hangs visibly in soft folds over his left forearm. Keep his face recognizable, make his hands natural. Keep other people's clothing and poses as in the source. No logos, new characters or lettering. The glasses man is the leftmost of three friends in the photograph, smiling with teeth showing. Maintain the spacing of the three faces, railing and river.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "VAEEncode",
+          "inputs": {
+            "pixels": [
+              "20",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511241,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 0.82,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/mountain-photo"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/mountain-photo.png"
+          }
+        }
+      },
+      "sourceFile": "mountain-photo_00001_.png",
+      "sourceSha256": "8c9a82c050029e12c13636bf8e93d6e2dadd3fa92adbf2017ed8637e2211deb3"
+    },
+    {
+      "id": "mountain-summit",
+      "promptId": "2f79e565-899e-479f-a7bf-c6821039b9e9",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Use Image 1 as the original painted game frame. Match the source's 16:9 framing, each identity, facial expressions, exact positions, poses, direction of gaze, hair, lighting, painterly colors and background. Local costume continuity fix only. Lin Yue is the young East Asian man with round thin-framed glasses and a moss green backpack at left. He has taken off his slate-blue knitted cardigan. He wears a plain cream-white crew-neck short-sleeve T-shirt, bare forearms, and the same green backpack straps. The removed slate-blue cardigan hangs visibly in soft folds over his left forearm. Keep his face recognizable, make his hands natural. Keep other people's clothing and poses as in the source. No logos, new characters or lettering. Preserve the girl passing a thin notebook to the navy-jacketed boy and his friend's gesture. Lin Yue stands at the left edge outside the half-circle observing.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "VAEEncode",
+          "inputs": {
+            "pixels": [
+              "20",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511242,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 0.82,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/mountain-summit"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/mountain-summit.png"
+          }
+        }
+      },
+      "sourceFile": "mountain-summit_00001_.png",
+      "sourceSha256": "5160a18e8da70e84fa82bd8e1915d33664af619be7dbb779a2051a7495c2f4f9"
+    },
+    {
+      "id": "mountain-glance",
+      "promptId": "e681215f-bd28-45e2-80e4-b8361e2bb5bd",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Use Image 1 as the original painted game frame. Match the source's 16:9 framing, each identity, facial expressions, exact positions, poses, direction of gaze, hair, lighting, painterly colors and background. Local costume continuity fix only. Lin Yue is the young East Asian man with round thin-framed glasses and a moss green backpack at left. He has taken off his slate-blue knitted cardigan. He wears a plain cream-white crew-neck short-sleeve T-shirt, bare forearms, and the same green backpack straps. The removed slate-blue cardigan hangs visibly in soft folds over his left forearm. Keep his face recognizable, make his hands natural. Keep other people's clothing and poses as in the source. No logos, new characters or lettering. Preserve the girl in the vivid yellow jacket looking over her shoulder with a bottle of water in the crowded stone stairway.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "VAEEncode",
+          "inputs": {
+            "pixels": [
+              "20",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511243,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 0.82,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/mountain-glance"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/mountain-glance.png"
+          }
+        }
+      },
+      "sourceFile": "mountain-glance_00001_.png",
+      "sourceSha256": "1f48d721d3489d201eaec3c074e407190a6d612e301218655e9539c341f0a793"
+    },
+    {
+      "id": "quiet-shoal",
+      "promptId": "7842ca7f-be6c-4181-9c37-6b06be481361",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "Wide 16:9 hand-painted Chinese historical visual novel still. The references establish muted naturalistic painterly style, weather-worn wood, reeds and rough-plank ancient Chu boat. Slight downward view from silent bank toward the same long frail boat aground in shallow still water. Clear late morning with fine pinpricks of sunlight. Empty bank and reeds, no onlookers. Inside the boat exactly six young travellers in simple weathered Chu-era linen are curled quietly like sleeping, with visible simple clothes and small faces, uncovered. Thin layer of clean water between timber planks. Tiny red cord and folded paper boat at one neck. A piece of damp paper next to a child's open hand. Restrained distant rendering, no injury, no blood. Center the small boat at mid-distance, crop-safe at 3/4 aspect ratio. Lovely indifferent daylight, tea-green and blue-green shallows, unadorned timber and muddy bank. Soft water below leaves room for in-game text. No lettering.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511244,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/quiet-shoal"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/shoal-reference.png"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/river-reference.webp"
+          }
+        }
+      },
+      "sourceFile": "quiet-shoal_00001_.png",
+      "sourceSha256": "c2655ac523c742385750c65452027d5638832147a5d78b227749e518cef707a7"
+    },
+    {
+      "id": "porridge-and-plaque",
+      "promptId": "97afab6b-9d6f-47a5-873f-f0fd07caff59",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "New close insert in the same muted Chinese historical visual novel as references, wide 16:9. On an empty quiet shallow river bank, one small rough ceramic bowl of cold thick rice porridge on a large flat stone in the central left of frame. Opaque rice with wrinkled matte cooled skin, no steam. To its right is one narrow upright weathered wood name tablet with its base sunk into soil and braced by two low pebbles. One column of several faint old incisions grows smaller down the board, marks mostly soft with an unfinished final mark. Reed stalks and river light out of focus behind. Clear low-contrast sunlight, objects in same plane of focus, soft ripples, period materials, careful natural brushwork. Keep both bowl and full plaque in the central half of frame, above the reading area. Quiet, elegiac and unadorned, no people, no boat, no printed letters or modern objects.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511245,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/porridge-and-plaque"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/river-reference.webp"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/shoal-reference.png"
+          }
+        }
+      },
+      "sourceFile": "porridge-and-plaque_00001_.png",
+      "sourceSha256": "b78ca2c18b5696d13fa5060b94d6b368c5fc050c21baabdff6325293393fd417"
+    },
+    {
+      "id": "overseas-classroom",
+      "promptId": "0c42ec68-a463-422d-8b4d-3ac970d8f65b",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "New establishing visual novel background for the same overseas university as reference in a different room. Naturalist hand-painted illustration, muted warm grey daylight, desaturated window frames, calm wood textures. Modest higher education seminar classroom seen at student eye level midway back, looking across two rows of simple desks toward a teaching whiteboard and lecturer's table. A few shut notebooks on desks. Lived-in, ordinary contemporary campus detail. Empty classroom allows game character layers. No people, no library shelves, no signage, no readable letters. Horizontal 16:9 with teaching space centered and visible in a vertical crop.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511246,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/overseas-classroom"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/library-reference.png"
+          }
+        }
+      },
+      "sourceFile": "overseas-classroom_00001_.png",
+      "sourceSha256": "896e22786c9c3159c1d9181b1160db89ec6f5e3fd986862de9c4c04d8f1b45c3"
+    },
+    {
+      "id": "chu-courtyard",
+      "promptId": "7cede17f-3c70-408d-99dd-e829e1d23495",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "New 16:9 period background for a late Warring States Chu residence, matching the reference's naturalistic painterly detail, wood grain and reserved muted palette. Seen across a small lived-in enclosed courtyard from its shaded wooden veranda, dry stone path and packed earth, low plaster-and-rammed-earth perimeter walls, austere Chu-era dark timber post-and-beam low roof buildings, plain tile roof and muted traces of dark red lacquer. Afternoon sidelight casts a strong shadow across exactly one half of the quiet yard, foreground cool, lit section warm. Narrow strip of clouded sky, sparse dry leaves, a plain wooden stool by the wall, architecture supported by realistic timber construction. No river, no distant village vista, no people, no text, no medieval temple ornaments or ornate gates. Simple staged space for character sprites and captions.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511247,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/chu-courtyard"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/study-reference.webp"
+          }
+        }
+      },
+      "sourceFile": "chu-courtyard_00001_.png",
+      "sourceSha256": "fd0741711fc4383540a9a97b40e2b2298775d73f2d1c8a3f46a6f33823f88efc"
+    },
+    {
+      "id": "quiet-river-aboard",
+      "promptId": "c3644a6e-daa2-4a93-8c33-241e72ead803",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ],
+              "image_2": [
+                "21",
+                0
+              ]
+            },
+            "prompt": "New 16:9 ancient Chu visual novel background. Hand-painted naturalism and subdued teal-gray water like the references. First person from inside the same small weathered open rough plank boat seen in Image 1, looking past its low bow as it travels downstream. The old boards and edge of boat in the lower center establish the player's position. Broad water over the rest of the frame, dark green low banks and hills far in haze, flat calm, subtle moving daylight, some clouds. Water and wooden prow show quiet forward movement. Small boat visibly moving at midstream, no mooring, no dock, no other boat, no people or limbs, no modern objects, no lettering. A quiet ordinary river day before the storm. The center framed prow can survive narrow cropping.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1536,
+            "height": 864,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511248,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/quiet-river-aboard"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/storm-reference.png"
+          }
+        },
+        "21": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/river-reference.webp"
+          }
+        }
+      },
+      "sourceFile": "quiet-river-aboard_00001_.png",
+      "sourceSha256": "10360bc5852538d44ff6264597a9fd37c720a40ac295934dd53c7c80e812a133"
+    },
+    {
+      "id": "lin-yue-trail",
+      "promptId": "e915a8f4-059d-4465-809a-2067ea250292",
+      "graph": {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "ModelSamplingAuraFlow",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "shift": 3.1
+          }
+        },
+        "5": {
+          "class_type": "TextEncodeQwenImage21",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "resolution": 576,
+            "images": {
+              "image_1": [
+                "20",
+                0
+              ]
+            },
+            "prompt": "Edit image 1 into a half-length standing visual novel character sprite with the exact same young adult Lin Yue face, round thin metal glasses, black hair, proportions, angle, and moss green backpack. Same direct gaze, shoulders and face framed in the upper half. He now wears a plain slightly off-white short sleeve crew-neck cotton T-shirt, with bare arms. He has taken off the slate-blue cardigan from the source and has it draped in soft folds over his left forearm, which is held horizontally close to his waist. Clean silhouette, natural hands, one backpack. Exact face identity and hair. Flat uniform solid magenta background RGB 225,0,225 for alpha keying, no drop shadow, no texture in background, no scenery, no lettering. Keep head size and registration of the reference. Match hand-painted naturalistic style and subdued colors. Full head and arms visible.",
+            "negative_prompt": ""
+          }
+        },
+        "6": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 864,
+            "height": 1152,
+            "batch_size": 1
+          }
+        },
+        "7": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "seed": 2511249,
+            "steps": 22,
+            "cfg": 3.8,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "5",
+              1
+            ],
+            "latent_image": [
+              "6",
+              0
+            ]
+          }
+        },
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "7",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "Qwen2.1/Heterotopia/Continuity-2026-11-25/lin-yue-trail"
+          }
+        },
+        "20": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "Qwen2.1/Heterotopia/Continuity-2026-11-25/lin-yue-portrait.png"
+          }
+        }
+      },
+      "sourceFile": "lin-yue-trail_00001_.png",
+      "sourceSha256": "6827de8d4ac1ac1d97246da68451d73536b3cbede94949b5955a2405614fa4b1"
+    }
+  ],
+  "exports": [
+    {
+      "asset": "cg-modern-glance-r4",
+      "source": "mountain-glance",
+      "edit": "替换林越外套状态，保留亮黄外套与水瓶。",
+      "master": "resources/art-src/modern-continuity/cg-modern-glance-r4.png",
+      "masterSha256": "4c34a078bfc7f7432b24067734a57a7d2a9209a0e4d2b92985f7b52656206bbf",
+      "losslessSha256": "467102ef68b00529bc759cc5b77bef566bf06aecc04568ee5e7b254859d67d50",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "cg-modern-summit-r4",
+      "source": "mountain-summit",
+      "edit": "持衣站在圈外，唐瑾递还笔记时入画。",
+      "master": "resources/art-src/modern-continuity/cg-modern-summit-r4.png",
+      "masterSha256": "1591f3733b6b1ae792fdec9be0741f90451e141f40ed5ea92e9cc76f2d3d8b13",
+      "losslessSha256": "e9ef21d52cc4dce7adb6f7ce461ffb2a61e500806baf85ed9dab525b31043670",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "cg-modern-photo-r4",
+      "source": "mountain-photo",
+      "edit": "把林越候选的局部服装与表情合入旧合照，保留原落日、河谷及另外两人的像素。",
+      "master": "resources/art-src/modern-continuity/cg-modern-photo-r4.png",
+      "masterSha256": "abc5bb597233af6932585c3754e4064a372a87eb58b0feee7cc0a92ba358468c",
+      "losslessSha256": "886a53315f05a9e20be6856f88b3c93c4d6833d471a17b4feb591f063169c194",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "cg-modern-quiet-shoal",
+      "source": "quiet-shoal",
+      "edit": "调整船舱的遮挡细节及纸船、红绳的尺度。",
+      "master": "resources/art-src/modern-continuity/cg-modern-quiet-shoal.png",
+      "masterSha256": "a2c7b370232a224f0c7812ed568b3c56ae8e19a0a17eba4b8ead1b4abaad1a52",
+      "losslessSha256": "75a99eb2cfe6ee9a4771d0f0039bbbbdc5861f75e884275b156379ef92898eb3",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "cg-modern-porridge-plaque",
+      "source": "porridge-and-plaque",
+      "edit": "重绘木牌刻痕并照原稿补刻荼，结尾保留断笔。",
+      "master": "resources/art-src/modern-continuity/cg-modern-porridge-plaque.png",
+      "masterSha256": "0a05d9b55d18150994b638300538901fd3e512622439f7228e61b38bc20ec86a",
+      "losslessSha256": "bb45190438b38f52918e8421001bd4a8035c21d52c351b5f6bf1bc1bb8b4b09c",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "cg-modern-cold-porridge",
+      "source": "porridge-and-plaque",
+      "edit": "取同镜头的冷粥近景，木牌在后续原句入画。",
+      "master": "resources/art-src/modern-continuity/cg-modern-cold-porridge.png",
+      "masterSha256": "f3ac921079bfc8c44c449085c54883159596c9b399d72d2882db77451360bd58",
+      "losslessSha256": "5df6a512dabadfbd8fefad518a926c256db66af0dcbb77004d5242543f68bce7",
+      "size": [
+        742,
+        417
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "modern-chu-courtyard",
+      "source": "chu-courtyard",
+      "edit": "用于原稿明确写到院内的场景。",
+      "master": "resources/art-src/modern-continuity/modern-chu-courtyard.png",
+      "masterSha256": "a3eaaad041cb1e1057ce96bab268ca0f00d8b662ec07874135a42c227e584838",
+      "losslessSha256": "097ee23d80e4cc55f1e6f1db65ecfa7472615f9c31f3e956580889223cc33c6b",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "modern-classroom",
+      "source": "overseas-classroom",
+      "edit": "第一次举手及后续课堂对白。",
+      "master": "resources/art-src/modern-continuity/modern-classroom.png",
+      "masterSha256": "e7824db7d5a7672d281abad2fc7132438b0af98063756bcc6fee9eb0d3633376",
+      "losslessSha256": "d73dd67a9024df3f3b12d04267f44d6e9f75957cc747f1fa6f879954b92f6e12",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "modern-river-aboard",
+      "source": "quiet-river-aboard",
+      "edit": "用航行中的舷内机位接续渡口与风暴。",
+      "master": "resources/art-src/modern-continuity/modern-river-aboard.png",
+      "masterSha256": "8a7ea3e1909e21dcb314afa41d04475e77a8d0533f3b0938387cfb17e0dec6e2",
+      "losslessSha256": "fa6a903d0e0ff181f982d086403052288ec34313581a3864cefcff1f1e133133",
+      "size": [
+        1536,
+        864
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset": "portrait-linyue-trail",
+      "source": "lin-yue-trail",
+      "edit": "使用原 R2 脸部和新服装，保留圆框眼镜与军绿背包。",
+      "master": "resources/art-src/modern-continuity/portrait-linyue-trail.png",
+      "masterSha256": "04e5601f0e2189361a4d594ff24720dd74a47092c085c227de62ae59239fb2fb",
+      "losslessSha256": "97b9cc8c50064b1d72433e20bd4fd759900ff9b7babfa9b9529eb79849e45aa6",
+      "size": [
+        864,
+        1152
+      ],
+      "mode": "RGBA",
+      "mobile": {
+        "size": [
+          640,
+          853
+        ],
+        "losslessSha256": "2d82b503f176ceccbac607742c7e22fe02bbfccca9095390b031c6ab837ab1a4"
+      }
+    },
+    {
+      "asset": "portrait-linyue-trail-smile",
+      "source": "lin-yue-trail",
+      "edit": "同体型，继承原 R2 微笑表情。",
+      "master": "resources/art-src/modern-continuity/portrait-linyue-trail-smile.png",
+      "masterSha256": "06ce85f8263219f450de1cdd8645839e97510a396fed9c3acb043e73b0aed8ae",
+      "losslessSha256": "691859c917993b03b0944e56c071f3560bc2d0385996d48f8958b9e302a590be",
+      "size": [
+        864,
+        1152
+      ],
+      "mode": "RGBA",
+      "mobile": {
+        "size": [
+          640,
+          853
+        ],
+        "losslessSha256": "d2f49d7714618c68a402bd424578df6f7fae9119df181f5a57bd9856731f3108"
+      }
+    }
+  ]
+}

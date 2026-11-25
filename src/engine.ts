@@ -1,7 +1,11 @@
 import { MODERN_SCENES, SCENES, isStoryReady } from './story';
 import { CHARACTERS, MODERN_CHARACTERS } from './data/world';
 import { timeOfDayBackground } from './data/timeOfDay';
-import { campaignOf, isModern, modernBackground, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_SCENE_ART, MODERN_RETURN_ENDING, modernReturnMemory } from './modern';
+import { campaignOf, isModern, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_RETURN_ENDING, modernReturnMemory } from './modern';
+import { modernOpeningArt, MODERN_PAGE_CUTS, MODERN_PAGE_INSERTS, MODERN_STAGE_CUTS } from './data/modernStaging';
+import { OVERSEAS_REFLECTION_CHOICE, OVERSEAS_REFLECTION_SCENE, OVERSEAS_TRADITIONS, presentOverseasReflection, traditionForReflection } from './overseasIdentity';
+import { isOmittedPage, isSilentPage, presentChoiceLabel } from './editorial';
+import type { OverseasOpeningIdentity } from './overseasIdentity';
 import type { Beat, Campaign, ChoiceBeat, EndingId, GameState, Profile, Scene, TextBeat } from './types';
 
 export { STORY, SCENES, loadStory, isStoryReady } from './story';
@@ -72,10 +76,12 @@ function makeChoices(scene: Scene, base: Omit<ChoiceBeat, 'kind' | 'prompt' | 'c
   return { ...base, kind: 'choice', prompt: prompts[scene.id] ?? '你将如何选择？', choices: options[scene.id] ?? [] };
 }
 
-export function compileScene(sceneId: string, profile: Profile, state: Pick<GameState, 'choices' | 'inventory'>): Beat[] {
+type SceneState = Pick<GameState, 'choices' | 'inventory' | 'overseasIdentity'>;
+
+export function compileScene(sceneId: string, profile: Profile, state: SceneState): Beat[] {
   if (!isStoryReady(isModern(sceneId) ? 'overseas' : 'original')) throw new Error('剧情尚未载入，请先 await loadStory()。');
   const scene = sceneById(sceneId);
-  if (scene.script === 'modern') return compileModernScene(scene, profile, state);
+  if (scene.script === 'modern') return compileModernScene(scene, profile, state).filter(beat => !isOmittedPage(beat.id));
   const beats: Beat[] = [];
   let background = scene.background;
   let cast: string[] = [];
@@ -117,22 +123,31 @@ export function compileScene(sceneId: string, profile: Profile, state: Pick<Game
   return beats.map(beat => ({ ...beat, background: timeOfDayBackground(sceneId, beat) }));
 }
 
-function compileModernScene(scene: Scene, profile: Profile, state: Pick<GameState, 'choices' | 'inventory'>): Beat[] {
+function compileModernScene(scene: Scene, profile: Profile, state: SceneState): Beat[] {
   const beats: Beat[] = [];
-  let background = MODERN_SCENE_ART[scene.id] ?? scene.background, atmosphere = '', audioCueId = '', direction = '';
+  const reflection = scene.id === OVERSEAS_REFLECTION_SCENE;
+  let background = modernOpeningArt(scene), atmosphere = '', audioCueId = '', direction = '';
   let cast: string[] = [];
   scene.blocks.forEach((block, index) => {
-    if (block.domesticOnly || block.when && state.choices[block.when.choice] !== block.when.value) return;
+    if (block.domesticOnly) return;
+    if (block.when) {
+      const selected = block.when.choice === OVERSEAS_REFLECTION_CHOICE ? traditionForReflection(state) : state.choices[block.when.choice];
+      if (selected !== block.when.value) return;
+    }
     const text = block.lines.join('\n');
     const tag = block.tag.split('·')[0];
     const base = () => ({ id: `${scene.id}:${index}`, background, atmosphere, audioCueId, direction, cast: [...cast] });
-    if (tag === '背景') { background = modernBackground(scene, text, background); return; }
+    if (tag === '背景') { background = MODERN_STAGE_CUTS[`${scene.id}:${index}`] ?? background; return; }
     if (tag === '音效') { atmosphere = text; audioCueId = `${scene.id}:${index}`; return; }
     if (tag === '演出') { direction = text; return; }
     if (tag === '立绘') { cast = [...CHARACTERS, ...MODERN_CHARACTERS].filter(c => text.includes(c.name)).map(c => c.key); return; }
     if (tag === '选择') {
-      if (modernInterlude(scene.id) && modernComplete(profile)) {
-        beats.push({ ...base(), kind: 'choice', prompt: '两条路都已走过。这一次，留在这一边。', choices: [{ key: 'return', title: '把自己的句子写下去', detail: '继续现代卷尾声。', target: 'modern-o-5-1' }] });
+      if (reflection) {
+        // A new journey carries this memory from its opening. A legacy journey
+        // keeps the original choice ID, including saves stopped on this page.
+        if (!state.overseasIdentity) beats.push({ ...base(), kind: 'choice', prompt: '在这句问话里，你想起了什么？', choices: OVERSEAS_TRADITIONS.map(({ id, phrase }) => ({ key: id, title: phrase, detail: '' })) });
+      } else if (modernInterlude(scene.id) && modernComplete(profile)) {
+        beats.push({ ...base(), kind: 'choice', prompt: '两条路都已走过。这一次，留在这一边。', choices: [{ key: 'return', title: '把自己的句子写下去', detail: '去导师办公室。', target: 'modern-o-5-1' }] });
       } else if (modernInterlude(scene.id)) {
         beats.push({ ...base(), kind: 'choice', prompt: '想再走一趟。这一次，把另一条路走完。', choices: [{ key: 'return', title: '回到马车旁', detail: '记忆留在身上；这一夜的物件，仍在原处。', target: 'modern-c-1-13' }] });
       } else {
@@ -142,18 +157,19 @@ function compileModernScene(scene: Scene, profile: Profile, state: Pick<GameStat
           return alreadyWalked ? { ...option, disabled: true, hint: '这一条路已经走过。接着走还未去过的另一边。' } : option;
         });
         // Experience remains; physical objects are restored at the next fork.
-        beats.push({ ...base(), kind: 'choice', prompt: scene.id === 'modern-o-2-6' ? '你从哪个文化圈来？' : modernInterlude(scene.id) ? '再走一趟。你会接过谁递来的食物？' : '这一刻，你如何回答？', choices });
+        beats.push({ ...base(), kind: 'choice', prompt: '这一刻，你如何回答？', choices });
       }
       return;
     }
     const [speaker, ...moods] = block.tag.split('·');
     (block.pages ?? block.lines).forEach((sourcePage, pageIndex) => {
-      const page = block.returnMemory ? modernReturnMemory(state.choices) ?? sourcePage : sourcePage;
-      background = modernBackground(scene, page, background);
+      const id = `${scene.id}:${index}:${pageIndex}`;
+      const page = block.returnMemory ? modernReturnMemory(state.choices) ?? sourcePage : presentOverseasReflection(id, sourcePage);
+      background = MODERN_PAGE_CUTS[id] ?? background;
       const activeSpeaker = speaker === '旁白' ? '' : speaker;
       const who = [...CHARACTERS, ...MODERN_CHARACTERS].find(c => c.name === activeSpeaker || activeSpeaker === '大巫祝' && c.key === 'wuyang');
       if (who) cast = [who.key];
-      beats.push({ ...base(), id: `${scene.id}:${index}:${pageIndex}`, kind: 'text', speaker: activeSpeaker, mood: moods.join('·'), text: page });
+      beats.push({ ...base(), id, background: MODERN_PAGE_INSERTS[id] ?? background, kind: 'text', speaker: activeSpeaker, mood: moods.join('·'), text: page });
     });
     direction = '';
   });
@@ -164,6 +180,18 @@ function compileModernScene(scene: Scene, profile: Profile, state: Pick<GameStat
 export function currentBeat(state: GameState, profile: Profile): Beat {
   const beats = compileScene(state.sceneId, profile, state);
   return beats.find(beat => beat.id === state.beatId) ?? beats[0];
+}
+
+/** A legacy bookmark can point to an editorial note between two playable pages. */
+export function restoreEditorialBookmark(state: GameState, profile: Profile): GameState {
+  if (!isOmittedPage(state.beatId)) return state;
+  const scene = sceneById(state.sceneId);
+  const beats = compileModernScene(scene, profile, state);
+  const position = beats.findIndex(beat => beat.id === state.beatId);
+  if (position < 0) return state;
+  const next = beats.find((beat, index) => index > position && !isOmittedPage(beat.id));
+  if (next) return { ...state, beatId: next.id };
+  return scene.next ? enterScene(state, profile, scene.next) : state;
 }
 
 function inventoryForScene(sceneId: string, previous: string[]): string[] {
@@ -186,8 +214,8 @@ export function enterScene(state: GameState, profile: Profile, sceneId: string, 
   return { ...next, beatId: (atChoice ? beats.find(beat => beat.kind === 'choice') : beats[0])?.id ?? beats[0].id };
 }
 
-export function newGame(profile: Profile): GameState {
-  if (campaignOf(profile) === 'overseas') return enterScene({ version: 1, campaign: 'overseas', sceneId: 'modern-o-0-1', beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, 'modern-o-0-1');
+export function newGame(profile: Profile, overseasIdentity?: OverseasOpeningIdentity): GameState {
+  if (campaignOf(profile) === 'overseas') return enterScene({ version: 1, campaign: 'overseas', ...(overseasIdentity ? { overseasIdentity } : {}), sceneId: 'modern-o-0-1', beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, 'modern-o-0-1');
   return enterScene({ version: 1, sceneId: '0-1', beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, '0-1');
 }
 
@@ -205,12 +233,15 @@ export function recordProgress(state: GameState, profile: Profile): Profile {
 }
 
 function logBeat(state: GameState, beat: TextBeat): GameState {
+  if (isSilentPage(beat.id)) return state;
   const last = state.history.at(-1);
   if (last?.id === beat.id) return state;
   return { ...state, history: [...state.history.slice(-1199), { id: beat.id, sceneId: state.sceneId, speaker: beat.speaker, text: beat.text, kind: 'text' }] };
 }
 
 export function advance(state: GameState, profile: Profile): GameState {
+  const restored = restoreEditorialBookmark(state, profile);
+  if (restored !== state) return restored;
   const beat = currentBeat(state, profile);
   if (beat.kind !== 'text') return state;
   const logged = logBeat(state, beat);
@@ -232,10 +263,11 @@ export function choose(state: GameState, profile: Profile, optionKey: string): G
   if (beat.kind !== 'choice') return state;
   const choice = beat.choices.find(option => option.key === optionKey);
   if (!choice || choice.disabled) return state;
+  const choiceId = `${beat.id}:${choice.key}`;
   const next = {
     ...state,
     choices: { ...state.choices, [isModern(state.sceneId) ? beat.id : state.sceneId === '0-2' ? 'breakfast' : state.sceneId]: choice.key },
-    history: [...state.history, { id: `${beat.id}:${choice.key}`, sceneId: state.sceneId, speaker: '选择', text: choice.title, kind: 'choice' as const }],
+    history: [...state.history, { id: choiceId, sceneId: state.sceneId, speaker: '选择', text: presentChoiceLabel(choiceId, choice.title), kind: 'choice' as const }],
   };
   if (modernInterlude(state.sceneId) && choice.key === 'return' && state.cycle < 2) {
     return enterScene({ ...next, choices: { ...next.choices, 'modern-cycle': 'first-return' }, cycle: state.cycle + 1 }, profile, choice.target!);
