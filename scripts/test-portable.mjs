@@ -34,6 +34,24 @@ const storageEvents = [];
 const durableProfile = await mkdtemp(path.join(tmpdir(), 'heterotopia-offline-'));
 const imageManifest = JSON.parse(await readFile(new URL('../src/data/art-manifest.json', import.meta.url), 'utf8'));
 
+async function reloadAndCheck(page, check, label) {
+  await page.reload();
+  try {
+    await page.waitForFunction(check, null, { polling: 200 });
+  } catch (error) {
+    const state = await page.evaluate(() => ({
+      screen: document.querySelector('.app')?.className ?? null,
+      stage: document.querySelector('.scene-image--current')?.getAttribute('data-art') ?? null,
+      readyState: document.readyState,
+      hasAutosave: !!localStorage.getItem('heterotopia.v1.autosave'),
+      lightweight: JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? 'null')?.lightweight,
+      imageCount: Object.keys(globalThis.__HETEROTOPIA_ORIGINALS__ ?? {}).length,
+      audioCount: Object.keys(globalThis.__HETEROTOPIA_AUDIO__ ?? {}).length,
+    })).catch(() => null);
+    throw new Error(`Offline ${edition} did not restore ${label}: ${JSON.stringify({ state, errors, storageEvents })}`, { cause: error });
+  }
+}
+
 function walk(until, selections, state = newGame(newProfile()), profile = newProfile()) {
   for (let step = 0; step < 3000; step++) {
     profile = recordProgress(state, profile);
@@ -116,7 +134,10 @@ try {
       await missingPage.goto(missingFile.href);
       await missingPage.locator('[data-portable-error]').filter({ hasText: '离线资源没有放齐。' }).waitFor();
     } finally { await missingContext.close(); }
-  } else assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
+  } else {
+    assert.ok(!/<script\b[^>]*src=/.test(html), 'single file has no external scripts');
+    assert.ok(html.includes('<script type="application/octet-stream" id="portable-media-'), 'single-file media must remain inert during startup');
+  }
   const page = await open(undefined, undefined, { persistent: true });
   await page.getByRole('heading', { name: '异托邦' }).waitFor();
   const modernPage = await open();
@@ -215,8 +236,7 @@ try {
   await quality.click();
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('heterotopia.v1.settings') ?? '{}').lightweight === true);
   await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
-  await page.reload();
-  await page.waitForFunction(() => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero));
+  await reloadAndCheck(page, () => document.querySelector('.scene-image--current')?.style.backgroundImage.includes(globalThis.__HETEROTOPIA_ASSETS__.hero), 'lightweight title art');
   await page.getByRole('button', { name: '阅读设置', exact: true }).click();
   assert.equal(await quality.getAttribute('aria-checked'), 'true');
   await quality.click();
@@ -262,17 +282,7 @@ try {
   await page.keyboard.press('l');
   await page.locator('.save-slot--filled .save-slot-main').first().click();
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('heterotopia.v1.autosave')).beatId), bookmarked.beatId);
-  await page.reload();
-  await page.waitForFunction(() => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled)).catch(async error => {
-    const afterReload = await page.evaluate(() => ({
-      screen: document.querySelector('.app')?.className ?? null,
-      hasAutosave: !!localStorage.getItem('heterotopia.v1.autosave'),
-      hasSettings: !!localStorage.getItem('heterotopia.v1.settings'),
-      imageCount: Object.keys(globalThis.__HETEROTOPIA_ORIGINALS__ ?? {}).length,
-      audioCount: Object.keys(globalThis.__HETEROTOPIA_AUDIO__ ?? {}).length,
-    })).catch(() => null);
-    throw new Error(`Offline ${edition} did not restore the saved page on reload: ${JSON.stringify({ afterReload, errors, storageEvents })}`, { cause: error });
-  });
+  await reloadAndCheck(page, () => [...document.querySelectorAll('button')].some(button => /^续梦/.test(button.textContent) && !button.disabled), 'the saved page');
   assert.ok(await page.getByRole('button', { name: /^续梦/ }).isEnabled());
   await page.getByRole('button', { name: '阅读设置', exact: true }).click();
   const downloadPromise = page.waitForEvent('download');

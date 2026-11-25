@@ -39,23 +39,50 @@ for (const name of await readdir(path.join(dist, 'audio'))) {
   const audio = await readFile(path.join(dist, 'audio', name));
   audioMap[name] = `data:audio/mpeg;base64,${audio.toString('base64')}`;
 }
-let embedded = `<script>globalThis.__HETEROTOPIA_ASSETS__=${JSON.stringify(assetMap)};globalThis.__HETEROTOPIA_ORIGINALS__={};globalThis.__HETEROTOPIA_AUDIO__={};globalThis.__HETEROTOPIA_SOURCE__="data:text/plain;charset=utf-8;base64,${source.toString('base64')}";globalThis.__HETEROTOPIA_MODERN_SOURCE__="data:text/plain;charset=utf-8;base64,${modernSource.toString('base64')}";</script>`;
+const sourceUrls = `globalThis.__HETEROTOPIA_SOURCE__="data:text/plain;charset=utf-8;base64,${source.toString('base64')}";globalThis.__HETEROTOPIA_MODERN_SOURCE__="data:text/plain;charset=utf-8;base64,${modernSource.toString('base64')}";`;
+const media = [['__HETEROTOPIA_ORIGINALS__', originalMap], ['__HETEROTOPIA_AUDIO__', audioMap]];
 const payloads = [];
-let payload = '';
-const shardBudget = 24 * 1024 * 1024;
-for (const [globalName, map] of [['__HETEROTOPIA_ORIGINALS__', originalMap], ['__HETEROTOPIA_AUDIO__', audioMap]]) {
-  for (const [name, value] of Object.entries(map)) {
-    const assignment = `globalThis.${globalName}[${JSON.stringify(name)}]=${JSON.stringify(value)};\n`;
-    if (Buffer.byteLength(assignment) > shardBudget) throw new Error(`Asset exceeds the local shard budget: ${name}`);
-    if (payload && Buffer.byteLength(payload) + Buffer.byteLength(assignment) > shardBudget) { payloads.push(payload); payload = ''; }
-    payload += assignment;
-  }
-}
-if (payload) payloads.push(payload);
+let embedded;
 await mkdir(path.dirname(destination), { recursive: true });
 if (standalone) {
-  embedded += payloads.map(code => `<script>${code}</script>`).join('');
+  // The browser parses media as inert text and materializes each URL on demand.
+  // The large file no longer runs hundreds of megabytes of JavaScript literals on reload.
+  const data = [];
+  const index = {};
+  for (const [globalName, map] of [['__HETEROTOPIA_ASSETS__', assetMap], ...media]) {
+    index[globalName] = {};
+    for (const [name, url] of Object.entries(map)) {
+      const id = `portable-media-${data.length + 1}`;
+      data.push(`<script type="application/octet-stream" id="${id}">${url}</script>`);
+      index[globalName][name] = id;
+    }
+  }
+  embedded = data.join('') + `<script>(() => {
+    for (const [key, index] of Object.entries(${JSON.stringify(index)})) {
+      const files = Object.create(null);
+      for (const [name, id] of Object.entries(index)) {
+        const data = document.getElementById(id);
+        if (!data) continue;
+        let url;
+        Object.defineProperty(files, name, { enumerable: true, get: () => url ??= data.textContent });
+      }
+      globalThis[key] = files;
+    }
+    ${sourceUrls}
+  })();</script>`;
 } else {
+  embedded = `<script>globalThis.__HETEROTOPIA_ASSETS__=${JSON.stringify(assetMap)};globalThis.__HETEROTOPIA_ORIGINALS__={};globalThis.__HETEROTOPIA_AUDIO__={};${sourceUrls}</script>`;
+  let payload = '';
+  const shardBudget = 24 * 1024 * 1024;
+  for (const [globalName, map] of media) {
+    for (const [name, value] of Object.entries(map)) {
+      const assignment = `globalThis.${globalName}[${JSON.stringify(name)}]=${JSON.stringify(value)};\n`;
+      if (Buffer.byteLength(assignment) > shardBudget) throw new Error(`Asset exceeds the local shard budget: ${name}`);
+      if (payload && Buffer.byteLength(payload) + Buffer.byteLength(assignment) > shardBudget) { payloads.push(payload); payload = ''; }
+      payload += assignment;
+    }
+  }
+  if (payload) payloads.push(payload);
   const folder = path.join(path.dirname(destination), '离线资源');
   await mkdir(folder, { recursive: true });
   const manifestPath = path.join(folder, 'manifest.json');
