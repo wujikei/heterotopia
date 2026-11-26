@@ -21,17 +21,23 @@ export function shenciInventory(scene: Scene, old: string[]) {
 
 export function compileShenci(scene: Scene, profile: Profile, state: Pick<GameState, 'choices'>): Beat[] {
   let background = scene.background, cast: string[] = [], atmosphere = '', audioCueId = '', direction = '';
+  let musicCue: string | undefined, ambienceCue: string | undefined, stageEffect: string | undefined, stageCueId: string | undefined, blackout = false, section = 0;
   const beats: Beat[] = [];
   for (const [i, b] of scene.blocks.entries()) {
     const id = `${scene.id}:${i}`;
     if (b.when && state.choices[b.when.choice] !== b.when.value) continue;
     if (b.royalCollapseOnly && !/shenci-royal-(?:e1|g1|g2)$/.test(state.choices[SHENCI_RETURN_ENDING] ?? '')) continue;
     const text = b.lines.join('\n');
-    if (b.background) background = b.background;
-    const base = () => ({ id, background, cast: [...cast], atmosphere, audioCueId, direction });
+    const marker = scene.sections?.findIndex(entry => entry.start === i) ?? -1;
+    if (marker >= 0) section = marker;
+    if (b.background) { background = b.background; blackout = false; }
+    if (b.musicCue) { musicCue = b.musicCue; stageEffect = undefined; stageCueId = undefined; }
+    if (b.ambienceCue) ambienceCue = b.ambienceCue;
+    if (b.stageEffect) { stageEffect = b.stageEffect; stageCueId = id; }
+    const base = () => ({ id, background, cast: [...cast], atmosphere, audioCueId, direction, musicCue, ambienceCue, stageEffect, stageCueId, section });
     const [speaker, ...moods] = b.tag.split('·');
     if (speaker === '背景') continue;
-    if (speaker === '演出') { direction = text; continue; }
+    if (speaker === '演出') { direction = text; if (b.blackout) blackout = true; continue; }
     if (speaker === '音效') { atmosphere = text; audioCueId = id; continue; }
     if (speaker === '立绘') {
       cast = [...new Set([...text.matchAll(/沈辞|唐瑾|宋嘉树|阿媪|屈衡|巫阳|大巫祝|老觋|母亲|狗子|道士|周老师|雩|芈|荼|媭|沅|棠|戌/g)].flatMap(m => (characterFor(m[0]) ?? extraFor(m[0]))?.key ?? []))];
@@ -55,11 +61,11 @@ export function compileShenci(scene: Scene, profile: Profile, state: Pick<GameSt
     const actor = characterFor(who) ?? extraFor(scene.route === 'return' && who === '老师' ? '周老师' : who);
     if (actor) cast = [actor.key];
     for (const [pageIndex,page] of (b.pages ?? b.lines).entries()) {
-      beats.push({ ...base(), id: `${id}:${pageIndex}`, kind: 'text', speaker: who, mood: moods.join('·') || (page.startsWith('（心里）') ? '内心' : ''), text: page, ...(b.blackout ? { blackout: true } : {}), ...(b.effects?.length ? { effects: b.effects } : {}) });
+      beats.push({ ...base(), id: `${id}:${pageIndex}`, kind: 'text', speaker: who, mood: moods.join('·') || (page.startsWith('（心里）') ? '内心' : ''), text: page, ...(b.blackout || blackout ? { blackout: true } : {}), ...(pageIndex === 0 && b.effects?.length ? { effects: b.effects } : {}) });
     }
     direction = '';
   }
-  const endingBase = { id: `${scene.id}:ending`, background, cast, atmosphere, audioCueId, direction: '' };
+  const endingBase = { id: `${scene.id}:ending`, background, cast, atmosphere, audioCueId, direction: '', musicCue, ambienceCue, section };
   if (scene.ending) beats.push({ ...endingBase, kind: 'ending', ending: scene.ending });
   if (scene.interlude) {
     const done = shenciComplete(profile);

@@ -219,7 +219,7 @@ export function enterScene(state: GameState, profile: Profile, sceneId: string, 
 }
 
 export function newGame(profile: Profile, overseasIdentity?: OverseasOpeningIdentity): GameState {
-  if (campaignOf(profile) === 'shenci') return enterScene({ version: 1, campaign: 'shenci', sceneId: SHENCI_START, beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, SHENCI_START);
+  if (campaignOf(profile) === 'shenci') return enterScene({ version: 1, campaign: 'shenci', scriptRevision: 2, sceneId: SHENCI_START, beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, SHENCI_START);
   if (campaignOf(profile) === 'overseas') return enterScene({ version: 1, campaign: 'overseas', ...(overseasIdentity ? { overseasIdentity } : {}), sceneId: 'modern-o-0-1', beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, 'modern-o-0-1');
   return enterScene({ version: 1, sceneId: '0-1', beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, '0-1');
 }

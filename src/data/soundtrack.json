@@ -169,5 +169,14 @@
     "keyscale": "C minor",
     "file": "music-chu-storm.mp3",
     "seconds": 56.66667
+  },
+  {
+    "id": "shenci-playful",
+    "title": "街角的小岔子",
+    "subtitle": "轻拨弦与错拍：给玩笑留半拍",
+    "bpm": 112,
+    "keyscale": "C major",
+    "file": "music-shenci-playful.mp3",
+    "seconds": 60.0
   }
 ]

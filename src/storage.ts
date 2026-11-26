@@ -6,7 +6,7 @@ import type { Campaign, GameState, Profile, SaveSlot, Settings } from './types';
 
 const PREFIX = 'heterotopia.v1.';
 const validScenes = new Set([...SCENES, ...MODERN_SCENES, ...SHENCI_SCENES].map(s => s.id));
-const scopedKey = (key: string, campaign: Campaign) => campaign !== 'original' && ['profile', 'autosave', 'slots'].includes(key) ? `${campaign}.${key}` : key;
+const scopedKey = (key: string, campaign: Campaign) => campaign !== 'original' && ['profile', 'autosave', 'slots'].includes(key) ? `${campaign === 'shenci' ? 'shenci-r2' : campaign}.${key}` : key;
 
 function read<T>(key: string, fallback: T, campaign: Campaign = 'original'): T {
   try {
@@ -74,6 +74,7 @@ export function validState(value: unknown, campaign?: Campaign): value is GameSt
   return !!s && s.version === 1 && typeof s.sceneId === 'string' && validScenes.has(s.sceneId)
     && (s.campaign === undefined || s.campaign === 'original' || s.campaign === 'overseas' || s.campaign === 'shenci')
     && campaignForScene(s.sceneId) === campaignOf(s)
+    && (s.campaign !== 'shenci' || s.scriptRevision === 2)
     && (campaign === undefined || campaignOf(s) === campaign)
     && typeof s.beatId === 'string' && Array.isArray(s.inventory) && s.inventory.every(v => typeof v === 'string')
     && !!s.choices && typeof s.choices === 'object' && Array.isArray(s.history)

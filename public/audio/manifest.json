@@ -673,6 +673,17 @@
       "integratedLUFS": -18.26,
       "truePeakDB": -2.86,
       "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "music-shenci-playful.mp3",
+      "title": "街角的小岔子",
+      "kind": "music",
+      "loop": true,
+      "seconds": 60.0,
+      "bytes": 1441376,
+      "integratedLUFS": -18.27,
+      "truePeakDB": -4.2,
+      "source": "Original procedural plucked-string synthesis by scripts/build_shenci_playful.py; no samples"
     }
   ]
 }

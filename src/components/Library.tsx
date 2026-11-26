@@ -58,11 +58,11 @@ export function ChaptersView({ profile, currentScene, onJump }: { profile: Profi
       </div>
       <ol className="scene-list">
         {tr(scenes.map((scene, index) => {
-          const unlocked = profile.visited.includes(scene.id) || scene.id === '0-1' || scene.id === 'modern-o-0-1';
+          const unlocked = profile.visited.includes(scene.id) || ['0-1','modern-o-0-1','shenci-d-0-1'].includes(scene.id);
           const current = currentScene === scene.id;
           const [time, ...place] = t(presentSceneTitle(scene)).split('·');
-          return <li key={scene.id}><button className={`scene-row ${current ? 'scene-row--current' : ''} ${unlocked ? '' : 'scene-row--locked'}`} disabled={!unlocked} onClick={() => onJump(scene.id)}>
-            <span className="scene-row-node" aria-hidden="true" /><span className="scene-row-index">{tr(String(index + 1).padStart(2, '0'))}</span><span className="scene-row-copy"><strong>{tr(place.join(' · ') || time)}</strong><small>{tr(place.length ? time : presentChapterTitle(scene))}</small></span><span className="scene-row-status">{tr(!unlocked ? '未至' : current ? '此刻' : <>{t("重游")}<ArrowRight size={15} strokeWidth={1.2} /></>)}</span>
+          return <li key={scene.id}>{campaignOf(profile) === 'shenci' && (index === 0 || scenes[index-1].chapter !== scene.chapter) && <h4 className="shenci-chapter-label">{scene.chapter}</h4>}<button className={`scene-row ${current ? 'scene-row--current' : ''} ${unlocked ? '' : 'scene-row--locked'}`} disabled={!unlocked} onClick={() => onJump(scene.id)}>
+            <span className="scene-row-node" aria-hidden="true" /><span className="scene-row-index">{tr(String(index + 1).padStart(2, '0'))}</span><span className="scene-row-copy"><strong>{tr(place.join(' · ') || time)}</strong><small>{tr(place.length ? time : presentChapterTitle(scene))}{unlocked && scene.sections ? ` · ${scene.sections.length} 节` : null}</small></span><span className="scene-row-status">{tr(!unlocked ? '未至' : current ? '此刻' : <>{t("重游")}<ArrowRight size={15} strokeWidth={1.2} /></>)}</span>
           </button></li>;
         }))}
       </ol>

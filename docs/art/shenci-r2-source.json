@@ -1,0 +1,112 @@
+{
+  "shenci-reeds-dawn": {
+    "attachment": "01a21873-38af-712c-a5b0-0155146fa78b.png",
+    "sha256": "3d12da33d7f535d8f21076fcf2ccf798317abbeba9e25af23cc76dc3702292ae",
+    "panel": "upper",
+    "size": [
+      1536,
+      640
+    ],
+    "brightness": 1.02
+  },
+  "shenci-valley-dawn": {
+    "attachment": "01a21873-38af-712c-a5b0-0155146fa78b.png",
+    "sha256": "3d12da33d7f535d8f21076fcf2ccf798317abbeba9e25af23cc76dc3702292ae",
+    "panel": "lower",
+    "size": [
+      1536,
+      640
+    ],
+    "brightness": 1.0
+  },
+  "shenci-underwater-eaves": {
+    "attachment": "01a21873-38ad-7689-a17f-f27b060e6216.png",
+    "sha256": "4ffc0afb7b9c9d1764dddddd04f22fdc5abf198486cac0f7b623b8d6480473bf",
+    "panel": "lower",
+    "size": [
+      1536,
+      640
+    ],
+    "brightness": 1.08
+  },
+  "shenci-sky-opening": {
+    "attachment": "01a21873-38ad-7689-a17f-f6a9f3012654.png",
+    "sha256": "009adbe9a6f762e07256bc23bb172a2286d67e142673793d89ddfe471360f739",
+    "panel": "upper",
+    "size": [
+      1536,
+      640
+    ],
+    "brightness": 1.0
+  },
+  "shenci-sky-golden": {
+    "attachment": "01a21873-38ad-7689-a17f-f6a9f3012654.png",
+    "sha256": "009adbe9a6f762e07256bc23bb172a2286d67e142673793d89ddfe471360f739",
+    "panel": "lower",
+    "size": [
+      1536,
+      640
+    ],
+    "brightness": 1.03
+  },
+  "shenci-night-mooring": {
+    "attachment": "01a21873-38af-712c-a5af-e878f894b302.png",
+    "sha256": "50d43f5a4e9886f1e860de67d43368ebbb94c7d9cb407ee023e90bc17ee518fa",
+    "panel": "full",
+    "size": [
+      1536,
+      864
+    ],
+    "brightness": 1.07
+  },
+  "shenci-ritual-steps": {
+    "attachment": "01a21873-38af-712c-a5af-f27b041ad530.jpg",
+    "sha256": "ee891faeb169727f811e449cb7bbe469d1306c5dd0380d286e305f1a22b378e2",
+    "panel": "full",
+    "size": [
+      1045,
+      588
+    ],
+    "brightness": 1.04
+  },
+  "shenci-curtain-altar": {
+    "attachment": "01a21873-38af-712c-a5af-f5c7e06a058c.jpg",
+    "sha256": "792d6d514aedb1c5d4c6301a680cc162076be94bf8c1816de6116809c236947b",
+    "panel": "full",
+    "size": [
+      1536,
+      640
+    ],
+    "brightness": 1.06
+  },
+  "shenci-wuyang-departure": {
+    "attachment": "01a21873-38af-712c-a5af-f83880a8ec22.png",
+    "sha256": "dada1ea34f5d1dd1e610f09bd061caafee21eecfd8674928fa742e74a3050f8f",
+    "panel": "upper",
+    "size": [
+      1536,
+      864
+    ],
+    "brightness": 1.04
+  },
+  "shenci-wuyang-procession": {
+    "attachment": "01a21873-38af-712c-a5af-f83880a8ec22.png",
+    "sha256": "dada1ea34f5d1dd1e610f09bd061caafee21eecfd8674928fa742e74a3050f8f",
+    "panel": "lower",
+    "size": [
+      1536,
+      864
+    ],
+    "brightness": 1.04
+  },
+  "shenci-displaced-road": {
+    "attachment": "01a21873-38af-712c-a5af-fcdeeb0969e3.jpg",
+    "sha256": "44cdf33c1d00fe8669aaaac4b70c6056f2df2e06faae1189be466eeef8be9757",
+    "panel": "full",
+    "size": [
+      970,
+      546
+    ],
+    "brightness": 1.0
+  }
+}

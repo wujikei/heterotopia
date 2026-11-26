@@ -502,7 +502,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const toggleAuto = () => { sound.click('toggle'); setAuto(value => !value); stopSkipping(); };
 
   const jump = async (id: string) => {
-    if ((id === '0-1' || id === 'modern-o-0-1') && !profile.visited.includes(id)) { requestStart(); return; }
+    if ((id === '0-1' || id === 'modern-o-0-1' || id === 'shenci-d-0-1') && !profile.visited.includes(id)) { requestStart(); return; }
     void sound.unlock(settings);
     const jumped = await prepareReading(() => revisitScene(game ?? newGame(currentProfile.current), currentProfile.current, id));
     if (!jumped) return;
@@ -540,6 +540,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       const data = JSON.parse(await file.text());
       if (data?.format !== 'heterotopia-save' || data.version !== 1 || data.profile?.version !== 1) throw new Error('format');
       if (campaignOf(data.profile) !== campaign) { notify('请先切换到这份存档对应的故事卷，再导入。'); return; }
+      if (campaign === 'shenci' && [data.state, ...(Array.isArray(data.slots) ? data.slots.map((slot: SaveSlot | null) => slot?.state) : [])].some(s => s?.campaign === 'shenci' && s.scriptRevision !== 2)) { notify('这是上一版沈辞书签。剧本页序已调整，请用上一版预览打开。'); return; }
       const incoming = data.profile as Profile;
       if (!['visited', 'read', 'art', 'met', 'endings'].every(key => Array.isArray(incoming[key as keyof Profile]))) throw new Error('profile');
       const defaults = newProfile(campaign);
@@ -617,6 +618,9 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const lineKind = beat?.kind !== 'text' ? 'speech' : !beat.speaker ? 'narration' : beat.mood.includes('内心') ? 'inner' : 'speech';
   const homeSeal = language === 'zh' ? '归' : language === 'ja' ? '帰' : 'H';
   const position = Math.max(0, beats.findIndex(item => item.id === beat?.id));
+  const section = scene.sections?.[beat?.section ?? 0];
+  const sectionBeats = section ? beats.filter(item => item.section === beat?.section) : beats;
+  const sectionPage = section && beat ? Math.max(1, sectionBeats.findIndex(item => item.id === beat.id) + 1) : position + 1;
   const locationName = beat ? locationForBeat(scene, beat) : presentSceneTitle(scene);
   const modalSeals: Record<Settings['language'], Record<ModalName, string>> = {
     zh: { chapters: '迹', characters: '名', gallery: '绘', journal: '记', settings: '听', saves: '签', history: '回', menu: '憩', about: '梦', music: '水', 'overseas-opening': '何' },
@@ -625,7 +629,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     de: { chapters: 'W', characters: 'N', gallery: 'B', journal: 'N', settings: 'E', saves: 'L', history: 'E', menu: 'R', about: 'T', music: 'K', 'overseas-opening': 'Y' },
   };
   const modalInfo: Record<ModalName, [string, string]> = {
-    chapters: ['行迹', '走过的水路'], characters: ['人物志', '记住他们的名字'], gallery: ['浮生绘卷', '一程山河'], journal: ['旅人手记', '河水记得的事'], settings: ['听风与读字', '按你自己的节奏'], saves: ['一枚书签', '留住一个瞬间'], history: ['方才的话', '水面上的回声'], menu: ['梦间小憩', '在河边歇一歇'], about: ['关于此梦', '水声未散之前'], music: ['听水集', campaign === 'overseas' ? '现代卷 · 旅途原声' : '河上的十一支曲子'],
+    chapters: ['行迹', '走过的水路'], characters: ['人物志', '记住他们的名字'], gallery: ['浮生绘卷', '一程山河'], journal: ['旅人手记', '河水记得的事'], settings: ['听风与读字', '按你自己的节奏'], saves: ['一枚书签', '留住一个瞬间'], history: ['方才的话', '水面上的回声'], menu: ['梦间小憩', '在河边歇一歇'], about: ['关于此梦', '水声未散之前'], music: ['听水集', campaign === 'overseas' ? '现代卷 · 旅途原声' : campaign === 'shenci' ? '沈辞新版 · 随旅途展开' : '河上的十一支曲子'],
     'overseas-opening': ['林越的来处', '海外现代篇'],
   };
   const endingSeal = beat?.kind === 'ending'
@@ -634,7 +638,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     : '';
   const toastNotice = toast && <div className={`toast ${modal ? 'toast--inline' : ''}`} key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span><span>{t(toast, ...toastParameters.current)}</span><button onClick={() => setToast('')} aria-label={t("关闭提示")}><X size={13} /></button></div>;
 
-  return <main className={`app app--${screen} ${modal ? 'app--modal' : ''} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`}>
+  return <main data-playing-track={audioState.playing ? audioState.track ?? undefined : undefined} className={`app app--${screen} ${modal ? 'app--modal' : ''} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`}>
     <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} blackout={blackout} tone={tone} />
     <Atmosphere scene={background} reduced={settings.reducedMotion || blackout} />
 
@@ -669,7 +673,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       if ((language === 'en' || language === 'de') && dialogue && dialogue.scrollHeight > dialogue.clientHeight + 2) return;
       if (event.deltaY < -8 && !modal && !intro && !hidden && beat.kind === 'text') openModal('history');
     }}>
-      {tr(beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label={t("查看行迹")}><span className="location-copy"><span className="location-chapter">{tr(presentChapterTitle(scene))}</span><span className="location-name">{tr(locationName)}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label={t("打开旅人手记")}>{campaign === 'overseas' ? <span className="modern-seal-mark">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small />}</button><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{tr(audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">{t("点击开启声音")}</span>)}<IconButton label={t("打开菜单")} onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>)}
+      {tr(beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label={t("查看行迹")}><span className="location-copy"><span className="location-chapter">{tr(presentChapterTitle(scene))}</span><span className="location-name" title={section?.title ?? locationName}>{tr(section?.title ?? locationName)}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label={t("打开旅人手记")}>{campaign === 'overseas' ? <span className="modern-seal-mark">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small />}</button><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{tr(audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">{t("点击开启声音")}</span>)}<IconButton label={t("打开菜单")} onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>)}
       <div className="sr-only" aria-live="polite" aria-atomic="true">{tr(!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? t("{0}{1}", beat.speaker ? t("{0}：", beat.speaker) : '', text) : '')}</div>
       {tr(showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label={t("阅读提示")}><CircleHelp size={16} aria-hidden="true" /><p>{t("点击画面继续，点「回看」重读。")}<small>{t("更多操作可在阅读设置中查看。")}</small></p><button onClick={dismissReadingHint}>{t("知道了")}</button></aside>)}
 
@@ -682,7 +686,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
             {tr(beat.speaker && <div className="speaker"><span className="speaker-seal"><strong>{tr(beat.speaker)}</strong></span>{tr(beat.mood && <span className="speaker-mood">{tr(beat.mood)}</span>)}</div>)}
             <button className="dialogue-advance" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(typing.done ? '继续' : '立即显示全文')}><p className="dialogue-text" data-testid="dialogue-text" data-beat-id={beat.id} aria-label={text}><span aria-hidden="true">{text.slice(0, typing.count)}</span><span aria-hidden="true" className="unrevealed">{text.slice(typing.count)}</span><span className={`advance-indicator ${typing.done ? 'is-ready' : ''}`} aria-hidden="true" /></p></button>
             <footer className="dialogue-footer">
-              <div className="scene-bookmark" title={t("进度已自动保存")}><span className="autosaved-dot" /><span>{t("已留存")}</span><span className="dialogue-page">{tr(position + 1)}<i> / {tr(beats.length)}</i></span></div>
+              <div className="scene-bookmark" title={t("进度已自动保存")}><span className="autosaved-dot" /><span>{t("已留存")}</span><span className="dialogue-page" title={section ? `本节 · ${section.title}` : undefined}>{tr(sectionPage)}<i> / {tr(sectionBeats.length)}</i></span></div>
               <nav className={`reading-controls ${toolsOpen ? 'is-open' : ''}`} aria-label={t("阅读控制")}>
                 <button onClick={() => openModal('history')} title={t("回看 · ← / PageUp")}><InkBacklog /><span>{t("回看")}</span></button>
                 <button className={auto ? 'selected' : ''} onClick={toggleAuto} aria-pressed={auto} title={t("自动阅读 · A")}><InkLamp lit={auto} /><span>{t("自动")}</span></button>

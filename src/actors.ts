@@ -22,6 +22,8 @@ export function portraitCandidatesForActor(actor: StageActor, tone?: OverseasTon
 /** Presentation only: the speaker and the story state stay untouched. */
 export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActor | undefined {
   if (beat.kind !== 'text') return;
+  const voiceOffstage = scene.script === 'shenci' && (beat.mood.includes('画外音') || beat.speaker === '水边的人');
+  if (voiceOffstage) return;
   let character = characterFor(beat.speaker);
   // In the overseas ancient chapters Lin Yue speaks through Xu's body.
   const modernBorrowed = scene.script === 'modern' && character?.key === 'linyue' && scene.route === 'common';

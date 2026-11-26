@@ -86,6 +86,7 @@ const SCENE_TITLES: Readonly<Partial<Record<string, string>>> = {
 };
 
 export function presentStoryText(id: string, source: string): string {
+  if (id.startsWith('shenci-')) return source.replace(/你（(?:沈辞|戌)）/g, '你');
   if (!id.startsWith('modern-')) return source;
   if (isOmittedPage(id) || isSilentPage(id)) return '';
   const text = (PAGE_EDITS[id] ?? []).reduce((value, [anchor, replacement]) => value.replace(anchor, replacement), source);

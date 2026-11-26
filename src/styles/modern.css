@@ -331,3 +331,16 @@
   .campaign-selector { max-width: 100%; gap: 2px; }
   .campaign-selector button { padding-inline: 7px; letter-spacing: 0; font-size: 11px; }
 }
+
+/* Domestic crops are single panels, and remain single panels at mobile widths. */
+.shenci-chapter-label { color: #d4c099; font-size: .82rem; letter-spacing: .08em; margin: 1.25rem .8rem .4rem; font-weight: 400; }
+.scene-image[data-art="shenci-sky-opening"], .scene-image[data-art="shenci-sky-golden"] { background-position: center 45%; }
+.scene-image[data-art="shenci-ritual-steps"] { background-position: 55% center; }
+@media (max-aspect-ratio: 3/4) {
+  .app--play:not(.app--hidden) .scene-image[data-art^="shenci-"] {
+    top: 13%; bottom: auto; height: min(44%, 68vw); width: 100%; left: 0;
+    background-size: cover; background-repeat: no-repeat; background-position: center;
+    transform: none; animation: none;
+    mask-image: linear-gradient(transparent 0%, #000 12%, #000 88%, transparent 100%);
+  }
+}

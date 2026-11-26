@@ -2,6 +2,7 @@
 from __future__ import annotations
 import hashlib, json, re
 from import_modern import ROOT, CIRCLED, pages
+from shenci_polish import polish
 
 SOURCE = ROOT / 'public/原著剧本-沈辞新版.txt'
 HEAD = re.compile(r'^((?:[0-9]+|[A-Z]\d?)-\d+[a-z]?)\s+(.+)$')
@@ -187,7 +188,7 @@ def main():
         ('r','C-1a'):[('令尹府','modern-minister-hall'),('太祝府','modern-minister-ancestor'),('老将府','modern-minister-veteran'),('外戚府','modern-minister-inlaw'),('老臣府','modern-minister-orange')],
         ('k','D-7'):[('六个人坐在空舱','modern-river-aboard')],('k','F-5'):[('一位神，从最高处下来','cg-modern-donghuang')],('k','F-6'):[('青蓝，褪成灰白','river'),('只剩那碗粥','cg-modern-cold-porridge')],
         ('k','C-3'):[('捧着一碗热粥','cg-modern-porridge-offering')],('k','G-1'):[('数一数。是孩子','cg-modern-quiet-shoal-six')],('k','G-2'):[('旁边立着一块木牌','cg-modern-porridge-plaque')],
-        ('m','2-2'):[('沈家卧室','bedroom')],('m','2-3'):[('月考','classroom-day'),('睡到半夜','bedroom')],('m','4-1'):[('药店檐下','modern-herb-eaves'),('琴行','alley')],('m','4-3'):[('到家以后','home')],('m','4-5'):[('沈辞抬头','modern-mountain-path')],
+        ('m','2-2'):[('周老师坐在办公桌后面','modern-office')],('m','2-3'):[('月考后。教室','classroom-day'),('夜里还会醒','bedroom'),('白天上课','classroom-day')],('m','4-1'):[('药店檐下','modern-herb-eaves'),('琴行','alley')],('m','4-3'):[('到家以后','home')],('m','4-5'):[('沈辞抬头','modern-mountain-path')],
     }
     for (g,key),rules in cuts.items():
         for anchor,art in rules:
@@ -210,6 +211,7 @@ def main():
                 if b['tag']=='背景' and 'background' not in b:
                     for cue,bg in location_rules:
                         if cue in ''.join(b['lines']):b['background']=bg;break
+        polish(s)
         for t in [s.get('next'),s.get('redirect',{}).get('target'),*[o.get('target') for b in choices(s) for o in b['options']]]:
             if t:assert t in by,(s['id'],t)
         assert s['blocks'],s['id']

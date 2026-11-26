@@ -6,6 +6,7 @@ import { advance, campaignScenes, choose, compileScene, completeEnding, continue
 import { actorForBeat, portraitCandidatesForActor } from '../src/actors';
 import { SHENCI_STORY } from '../src/story';
 import { validState } from '../src/storage';
+import { scoreFrame } from '../src/score';
 import { MODERN_PHOTO_ART } from '../src/modern';
 import type { GameState, Profile } from '../src/types';
 
@@ -103,9 +104,39 @@ test('both outcomes of local choices converge without swallowing shared prose', 
 
 test('domestic ancient Shen Ci keeps Xu art, and new overseas photo only cuts on shutter', () => {
   const s=sceneById(id('d-1-3a')), b=compileScene(s.id,fresh(),{choices:{},inventory:[]});
-  const line=b.find(x=>x.kind==='text' && x.speaker==='沈辞')!;
+  const line=b.find(x=>x.kind==='text' && ['沈辞','戌'].includes(x.speaker))!;
   const actor=actorForBeat(line,s,b)!; assert.equal(actor.character.key,'xu'); assert.match(portraitCandidatesForActor(actor)[0],/^portrait-xu/);
   const photo=compileScene('modern-o-5-7',newProfile('overseas'),{choices:{},inventory:[]});
   assert.notEqual(photo.find(b=>b.id==='modern-o-5-7:16:0')?.background,MODERN_PHOTO_ART);
   assert.equal(photo.find(b=>b.id==='modern-o-5-7:17:0')?.background,MODERN_PHOTO_ART);
+});
+
+
+test('domestic sections follow stable scene positions and keep even the longest section under 32 data pages', () => {
+  let longestSection = 0;
+  for (const scene of campaignScenes('shenci')) {
+    const cuts = (scene.sections ?? [{ start: 0 }]).map(section=>section.start).concat(scene.blocks.length);
+    for(let i=0;i<cuts.length-1;i++) {
+      const size=scene.blocks.slice(cuts[i],cuts[i+1]).reduce((sum,b)=>sum+(b.options ? 1 : b.pages?.length ?? 0),0);
+      longestSection=Math.max(longestSection,size);
+    }
+  }
+  assert.ok(longestSection<=31);
+  assert.ok(sceneById('shenci-r-C-1a').sections!.some(s=>s.title.includes('算盘')));
+  const p=fresh(), s=newGame(p);
+  assert.equal(validState({...s,scriptRevision:undefined},'shenci'),false);
+});
+
+test('domestic score follows jokes, storm and silence; one-shot accents attach to the intended pages', () => {
+  const frame=(id:string,find:(text:string)=>boolean)=>{
+    const p=fresh(); const b=compileScene(id,p,{choices:{},inventory:[]}).find(b=>b.kind==='text'&&find(b.text))!;
+    assert.ok(b,id);return scoreFrame(id,b);
+  };
+  const woke=frame('shenci-d-0-1',text=>text.includes('从床上坐起来'));
+  assert.equal(woke.music,'paper-note');assert.ok(woke.events.some(e=>e.effects.some(f=>f.id==='alarm')));
+  assert.equal(frame('shenci-d-1-5',s=>s.includes('两只鸡谁也不理')).music,'shenci-playful');
+  assert.equal(frame('shenci-d-1-5',s=>s.includes('笑到一半，脸上僵住了')).music,'old-jade');
+  assert.equal(frame('shenci-k-D-5',s=>s.includes('风从囊里冲出来')).music,'under-current');
+  assert.equal(frame('shenci-k-D-7',s=>s.includes('六个人坐在空舱')).music,null);
+  const shoal=frame('shenci-k-G-1',s=>s.includes('那只小舟很轻'));assert.equal(shoal.music,null);assert.deepEqual(shoal.ambience,[]);
 });

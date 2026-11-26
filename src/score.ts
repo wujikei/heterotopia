@@ -7,7 +7,7 @@ import { OVERSEAS_MUSIC_BY_SCENE } from './data/overseasScore';
 import { MODERN_BLACKOUTS } from './data/modernStaging';
 
 export const ORIGINAL_MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
-export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-question', 'modern-return', 'modern-untranslated', 'modern-ascent', 'modern-afterglow', 'chu-night-river', 'chu-storm'] as const;
+export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-question', 'modern-return', 'modern-untranslated', 'modern-ascent', 'modern-afterglow', 'chu-night-river', 'chu-storm', 'shenci-playful'] as const;
 export type MusicId = typeof MUSIC_IDS[number];
 export const AMBIENCE_IDS = ['river', 'rain', 'hearth', 'wind', 'winter', 'room', 'night', 'street', 'marsh', 'underwater', 'cave', 'palace'] as const;
 export type AmbienceId = typeof AMBIENCE_IDS[number];
@@ -82,7 +82,7 @@ export const TRACK_ART: Record<MusicId, string> = {
   'last-flute': 'snow', 'river-of-names': 'light-river', 'light-in-kitchen': 'home',
   'modern-street': MODERN_ARRIVAL_ART, 'modern-question': 'cg-modern-dorm-carving-r2',
   'modern-return': 'cg-modern-noodles', 'modern-untranslated': MODERN_TRANSLATION_ART,
-  'modern-ascent': 'modern-mountain-path', 'modern-afterglow': MODERN_PHOTO_ART,
+  'modern-ascent': 'modern-mountain-path', 'modern-afterglow': MODERN_PHOTO_ART, 'shenci-playful': 'school',
   'chu-night-river': 'modern-night-river', 'chu-storm': 'cg-modern-storm',
 };
 
@@ -104,14 +104,46 @@ const musicForScene = (sceneId: string): MusicId | null => (
   isModern(sceneId) ? OVERSEAS_MUSIC_BY_SCENE[sceneId] : MUSIC_BY_SCENE[sceneId]
 ) ?? null;
 
-function shenciMusic(id: string, art: string): MusicId | null {
-  if (id.startsWith('shenci-r-')) return id === 'shenci-r-G-0' ? null : art === 'ritual' ? 'ritual' : 'old-jade';
-  if (id.startsWith('shenci-k-')) return /^shenci-k-G-/.test(id) ? null : 'river-journey';
-  if (id.startsWith('shenci-m-')) return /^shenci-m-4-[45]$/.test(id) ? 'river-home' : 'paper-note';
-  return id.startsWith('shenci-d-1-') ? 'hearth' : 'paper-note';
+function shenciMusic(id: string): MusicId | null {
+  const [, group, family, number] = id.split('-');
+  const n = Number(number);
+  if (group === 'd') {
+    if (family === '0') return [1,7,11].includes(n) ? 'under-current' : 'paper-note';
+    if (['2','3'].includes(number)) return 'ritual';
+    if (number === '12z') return 'hearth';
+    if (['9','10','11'].includes(number) || /^12[a-g]/.test(number)) return 'river-of-names';
+    return 'hearth';
+  }
+  if (group === 'r') {
+    if (family === 'G' && n === 0) return null;
+    if (['E2','H','O'].includes(family)) return 'small-goodbyes';
+    if (['G2','R'].includes(family)) return 'river-of-names';
+    if (['L','S','F'].includes(family)) return 'river-home';
+    if (family === 'E1' || family === 'G1' && n >= 5 || family === 'C' && n >= 9) return 'under-current';
+    if (family === 'A' && n === 1) return 'river-journey';
+    if (family === 'A' && n === 3) return 'hearth';
+    if (family === 'A' && n >= 7 || family === 'C' && n >= 5 && n <= 7) return 'ritual';
+    if (family === 'B' && n >= 8 && n <= 13 || family === 'C' && n === 8) return 'under-current';
+    return 'old-jade';
+  }
+  if (group === 'k') {
+    if (family === 'G') return null;
+    if (family === 'A') return [4,5,6,9].includes(n) ? 'shenci-playful' : 'hearth';
+    if (family === 'B') return [8,12,15].includes(n) ? 'small-goodbyes' : [2,3,4,5,6].includes(n) ? 'ritual' : 'river-journey';
+    if (family === 'C') return n < 3 ? 'old-jade' : 'last-flute';
+    if (family === 'D') return n < 4 ? 'river-journey' : n < 7 ? 'under-current' : n === 7 ? null : n < 12 ? 'small-goodbyes' : 'river-of-names';
+    if (family === 'E') return [4,8,10].includes(n) ? 'under-current' : 'river-of-names';
+    if (family === 'F') return n === 5 ? 'river-of-names' : n >= 6 ? null : 'last-flute';
+    return family === 'Z' ? 'river-of-names' : 'small-goodbyes';
+  }
+  if (family === '4' && n === 4) return 'modern-ascent';
+  if (family === '4' && n === 5) return 'light-in-kitchen';
+  return family === '2' || family === '3' ? n === 1 ? 'paper-note' : 'light-in-kitchen' : 'river-home';
 }
+const readShenciMusic = (cue?: string): MusicId | null | undefined => cue === 'silence' ? null : cue === 'playful' ? 'shenci-playful' : MUSIC_IDS.find(m => m === cue);
+
 export function tracksForVisit(sceneId: string): MusicId[] {
-  if (isShenci(sceneId)) { const track = shenciMusic(sceneId, sceneById(sceneId).background); return track ? [track] : []; }
+  if (isShenci(sceneId)) return [...new Set([shenciMusic(sceneId), ...sceneById(sceneId).blocks.map(block => readShenciMusic(block.musicCue))])].filter((track): track is MusicId => !!track);
   const track = musicForScene(sceneId);
   return [...(track ? [track] : []), ...(OTHER_TRACKS[sceneId] ?? []), ...(LEGACY_MODERN_TRACKS[sceneId] ?? [])];
 }
@@ -424,9 +456,22 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
     events: [{ id: beat.audioCueId, effects: CUE_EFFECTS[beat.audioCueId] ?? [] }],
   };
   if (isShenci(sceneId)) {
-    frame.music = shenciMusic(sceneId, beat.background);
-    if (sceneId === 'shenci-r-G-0' || sceneId === 'shenci-k-G-1' || beat.blackout) frame.ambience = [];
-    if (beat.effects?.includes('bronze')) frame.events = [{ id: beat.id, effects: [e('bronze', .38)] }];
+    const cue = readShenciMusic(beat.musicCue);
+    frame.music = cue === undefined ? shenciMusic(sceneId) : cue;
+    frame.musicGain = frame.music === 'shenci-playful' ? .52 : frame.music === 'under-current' ? .64 : .73;
+    frame.transition = frame.music === 'shenci-playful' ? .32 : frame.music ? 2.3 : 1.35;
+    if (beat.ambienceCue === 'none' || sceneId === 'shenci-r-G-0' || sceneId === 'shenci-k-G-1' || beat.blackout) frame.ambience = [];
+    else if (beat.ambienceCue) {
+      const amb = AMBIENCE_IDS.find(x => x === beat.ambienceCue);
+      if (amb) frame.ambience = [[amb, amb === 'rain' ? .50 : amb === 'wind' || amb === 'river' ? .28 : .21]];
+    } else if (sceneId.startsWith('shenci-d-1-12')) frame.ambience = [['river', .24], ['night', .09]];
+    if (beat.blackout) { frame.music = null; frame.transition = .45; }
+    const effects = (beat.effects ?? []).flatMap(x => EFFECT_IDS.includes(x as EffectId) ? [e(x as EffectId, x === 'splash' ? .47 : .34)] : []);
+    if (effects.length) frame.events.push({ id: beat.id, effects });
+    if (beat.stageEffect && beat.stageCueId && EFFECT_IDS.includes(beat.stageEffect as EffectId)) {
+      frame.events.push({ id: beat.stageCueId, effects: [e(beat.stageEffect as EffectId, beat.stageEffect === 'alarm' ? .54 : .33)] });
+      if (beat.stageEffect === 'alarm') frame.transition = .18;
+    }
   }
   if (isModern(sceneId)) directOverseasScore(frame, beat, block);
   if (ACCENTS[beat.id]) frame.events.push({ id: beat.id, effects: ACCENTS[beat.id] });
