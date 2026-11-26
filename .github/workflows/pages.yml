@@ -57,12 +57,10 @@ jobs:
           npm run test:assets
           npm run test:cgs
           npm run test:cache
-      - name: Verify both offline editions
+      - name: Verify the sharded offline edition
         run: |
           npm run portable
           npm run test:portable
-          npm run portable:single
-          VN_PORTABLE_FILE=artifacts/portable/异托邦-单文件.html npm run test:portable
       - name: Keep regression screenshots and device traces
         if: always()
         uses: actions/upload-artifact@v7
@@ -78,6 +76,31 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: dist
+
+  offline-single:
+    name: Verify the standalone offline edition
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Build and test the standalone HTML
+        run: |
+          npm run portable:single
+          VN_PORTABLE_FILE=artifacts/portable/异托邦-单文件.html npm run test:portable
+      - name: Keep standalone regression evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: standalone-offline-evidence
+          path: artifacts/
+          retention-days: 7
+          if-no-files-found: ignore
 
   deploy:
     if: github.event_name != 'pull_request'
