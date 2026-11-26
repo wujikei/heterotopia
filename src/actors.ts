@@ -26,7 +26,8 @@ export function actorForBeat(beat: Beat, scene: Scene, beats: Beat[]): StageActo
   // In the overseas ancient chapters Lin Yue speaks through Xu's body.
   const modernBorrowed = scene.script === 'modern' && character?.key === 'linyue' && scene.route === 'common';
   if (modernBorrowed) character = characterFor('戌');
-  const extra = character ? undefined : extraFor(beat.speaker);
+  const actorName = scene.script === 'shenci' && scene.route === 'return' && beat.speaker === '老师' ? '周老师' : beat.speaker;
+  const extra = character ? undefined : extraFor(actorName);
   if (!character && extra) character = extra;
   let silent = false;
   if (!character) {

@@ -35,7 +35,7 @@ function matches(cg: CG, beat: Beat, sceneId: string): boolean {
 }
 
 export const cgForBeat = (beat: Beat, sceneId: string): CG | undefined => {
-  if (sceneId.startsWith('modern-') && beat.background.startsWith('cg-')) {
+  if ((sceneId.startsWith('modern-') || sceneId.startsWith('shenci-')) && beat.background.startsWith('cg-')) {
     const cg = CGS.find(item => item.file === beat.background);
     return cg ?? { id: beat.background, title: '旅途留影', caption: '', file: beat.background, trigger: { sceneId } };
   }

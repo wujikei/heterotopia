@@ -1,4 +1,4 @@
-import { MODERN_SCENES, SCENES, isStoryReady } from './story';
+import { MODERN_SCENES, SHENCI_SCENES, SCENES, isStoryReady } from './story';
 import { CHARACTERS, MODERN_CHARACTERS } from './data/world';
 import { timeOfDayBackground } from './data/timeOfDay';
 import { campaignOf, isModern, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_RETURN_ENDING, modernReturnMemory } from './modern';
@@ -9,12 +9,15 @@ import type { OverseasOpeningIdentity } from './overseasIdentity';
 import type { Beat, Campaign, ChoiceBeat, EndingId, GameState, Profile, Scene, TextBeat } from './types';
 
 export { STORY, SCENES, loadStory, isStoryReady } from './story';
-export const sceneById = (id: string) => (isModern(id) ? MODERN_SCENES : SCENES).find(scene => scene.id === id) ?? SCENES[0];
-export const campaignScenes = (campaign: Campaign = 'original') => campaign === 'overseas' ? MODERN_SCENES : SCENES;
-export const hasRoyal = (profile: Profile) => campaignOf(profile) === 'overseas' ? modernHasRoyal(profile) : profile.endings.some(e => ['blade', 'mercy', 'leave', 'names'].includes(e));
-export const hasKunlun = (profile: Profile) => campaignOf(profile) === 'overseas' ? modernHasKunlun(profile) : profile.endings.includes('kunlun');
+import { compileShenci, isShenci, SHENCI_FORK, SHENCI_START, SHENCI_RETURN_ENDING, shenciAfterEnding, shenciComplete, shenciHasKunlun, shenciHasRoyal, shenciInventory } from './shenci';
+
+export const campaignForScene = (id: string): Campaign => isModern(id) ? 'overseas' : isShenci(id) ? 'shenci' : 'original';
+export const sceneById = (id: string) => (campaignScenes(campaignForScene(id))).find(scene => scene.id === id) ?? SCENES[0];
+export const campaignScenes = (campaign: Campaign = 'original') => campaign === 'overseas' ? MODERN_SCENES : campaign === 'shenci' ? SHENCI_SCENES : SCENES;
+export const hasRoyal = (profile: Profile) => campaignOf(profile) === 'overseas' ? modernHasRoyal(profile) : campaignOf(profile) === 'shenci' ? shenciHasRoyal(profile) : profile.endings.some(e => ['blade', 'mercy', 'leave', 'names'].includes(e));
+export const hasKunlun = (profile: Profile) => campaignOf(profile) === 'overseas' ? modernHasKunlun(profile) : campaignOf(profile) === 'shenci' ? shenciHasKunlun(profile) : profile.endings.includes('kunlun');
 export const canReturn = (profile: Profile) => hasRoyal(profile) && hasKunlun(profile);
-export const newProfile = (campaign: Campaign = 'original'): Profile => ({ version: 1, ...(campaign === 'overseas' ? { campaign } : {}), visited: [], read: [], art: ['hero'], met: [], endings: [], oldNames: false });
+export const newProfile = (campaign: Campaign = 'original'): Profile => ({ version: 1, ...(campaign !== 'original' ? { campaign } : {}), visited: [], read: [], art: ['hero'], met: [], endings: [], oldNames: false });
 
 const unique = <T,>(values: T[]) => [...new Set(values)];
 
@@ -79,8 +82,9 @@ function makeChoices(scene: Scene, base: Omit<ChoiceBeat, 'kind' | 'prompt' | 'c
 type SceneState = Pick<GameState, 'choices' | 'inventory' | 'overseasIdentity'>;
 
 export function compileScene(sceneId: string, profile: Profile, state: SceneState): Beat[] {
-  if (!isStoryReady(isModern(sceneId) ? 'overseas' : 'original')) throw new Error('剧情尚未载入，请先 await loadStory()。');
+  if (!isStoryReady(campaignForScene(sceneId))) throw new Error('剧情尚未载入，请先 await loadStory()。');
   const scene = sceneById(sceneId);
+  if (scene.script === 'shenci') return compileShenci(scene, profile, state);
   if (scene.script === 'modern') return compileModernScene(scene, profile, state).filter(beat => !isOmittedPage(beat.id));
   const beats: Beat[] = [];
   let background = scene.background;
@@ -208,13 +212,14 @@ function inventoryForScene(sceneId: string, previous: string[]): string[] {
 }
 
 export function enterScene(state: GameState, profile: Profile, sceneId: string, atChoice = false): GameState {
-  const inventory = isModern(sceneId) ? modernInventory(sceneId, state.inventory) : inventoryForScene(sceneId, state.inventory);
+  const inventory = isShenci(sceneId) ? shenciInventory(sceneById(sceneId), state.inventory) : isModern(sceneId) ? modernInventory(sceneId, state.inventory) : inventoryForScene(sceneId, state.inventory);
   const next = { ...state, sceneId, inventory };
   const beats = compileScene(sceneId, profile, next);
   return { ...next, beatId: (atChoice ? beats.find(beat => beat.kind === 'choice') : beats[0])?.id ?? beats[0].id };
 }
 
 export function newGame(profile: Profile, overseasIdentity?: OverseasOpeningIdentity): GameState {
+  if (campaignOf(profile) === 'shenci') return enterScene({ version: 1, campaign: 'shenci', sceneId: SHENCI_START, beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, SHENCI_START);
   if (campaignOf(profile) === 'overseas') return enterScene({ version: 1, campaign: 'overseas', ...(overseasIdentity ? { overseasIdentity } : {}), sceneId: 'modern-o-0-1', beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, 'modern-o-0-1');
   return enterScene({ version: 1, sceneId: '0-1', beatId: '', inventory: [], choices: {}, history: [], cycle: 1 }, profile, '0-1');
 }
@@ -248,8 +253,10 @@ export function advance(state: GameState, profile: Profile): GameState {
   const beats = compileScene(state.sceneId, profile, state);
   const index = beats.findIndex(item => item.id === beat.id);
   if (index < beats.length - 1) return { ...logged, beatId: beats[index + 1].id };
-  if (isModern(state.sceneId)) {
-    const target = sceneById(state.sceneId).next;
+  if (isModern(state.sceneId) || isShenci(state.sceneId)) {
+    const scene = sceneById(state.sceneId);
+    const redirect = scene.redirect;
+    const target = redirect && state.choices[redirect.when.choice] === redirect.when.value ? redirect.target : scene.next;
     return target ? enterScene(logged, profile, target) : logged;
   }
   const naturalNext = SCENES[SCENES.findIndex(scene => scene.id === state.sceneId) + 1];
@@ -266,16 +273,19 @@ export function choose(state: GameState, profile: Profile, optionKey: string): G
   const choiceId = `${beat.id}:${choice.key}`;
   const next = {
     ...state,
-    choices: { ...state.choices, [isModern(state.sceneId) ? beat.id : state.sceneId === '0-2' ? 'breakfast' : state.sceneId]: choice.key },
+    choices: { ...state.choices, [isModern(state.sceneId) || isShenci(state.sceneId) ? beat.id : state.sceneId === '0-2' ? 'breakfast' : state.sceneId]: choice.key },
     history: [...state.history, { id: choiceId, sceneId: state.sceneId, speaker: '选择', text: presentChoiceLabel(choiceId, choice.title), kind: 'choice' as const }],
   };
   if (modernInterlude(state.sceneId) && choice.key === 'return' && state.cycle < 2) {
     return enterScene({ ...next, choices: { ...next.choices, 'modern-cycle': 'first-return' }, cycle: state.cycle + 1 }, profile, choice.target!);
   }
+  if (isShenci(state.sceneId) && choice.key === 'return' && choice.target === `${SHENCI_FORK}r`) {
+    return enterScene({ ...next, cycle: state.cycle + 1, choices: {} }, profile, choice.target);
+  }
   if (choice.target) return enterScene(next, profile, choice.target);
   const beats = compileScene(next.sceneId, profile, next);
   const index = beats.findIndex(item => item.id === beat.id);
-  if (isModern(next.sceneId) && !beats[index + 1]) {
+  if ((isModern(next.sceneId) || isShenci(next.sceneId)) && !beats[index + 1]) {
     const target = sceneById(next.sceneId).next;
     return target ? enterScene(next, profile, target) : next;
   }
@@ -290,6 +300,11 @@ export function completeEnding(state: GameState, profile: Profile): Profile {
 
 export function continueEnding(state: GameState, profile: Profile): GameState {
   const updated = completeEnding(state, profile);
+  if (isShenci(state.sceneId)) {
+    const beat = currentBeat(state, updated);
+    if (beat.kind !== 'ending' || beat.ending === 'shenci-home') return state;
+    return enterScene({ ...state, choices: { ...state.choices, [SHENCI_RETURN_ENDING]: beat.ending } }, updated, shenciAfterEnding(beat.ending));
+  }
   if (isModern(state.sceneId)) {
     const beat = currentBeat(state, updated);
     if (beat.kind !== 'ending' || beat.ending === 'modern-home') return state;
@@ -301,6 +316,10 @@ export function continueEnding(state: GameState, profile: Profile): GameState {
 
 export function revisitScene(state: GameState, profile: Profile, sceneId: string): GameState {
   if (!profile.visited.includes(sceneId)) return state;
+  if (isShenci(sceneId)) {
+    if (campaignOf(profile) !== 'shenci' || /^shenci-m-4-/.test(sceneId) && !shenciComplete(profile)) return state;
+    return enterScene({ ...state, choices: {}, inventory: [] }, profile, sceneId);
+  }
   if (isModern(sceneId)) {
     if (campaignOf(profile) !== 'overseas' || /^modern-o-5-/.test(sceneId) && !modernComplete(profile)) return state;
     // Choice guards must be replayed in this visit; a future decision is never

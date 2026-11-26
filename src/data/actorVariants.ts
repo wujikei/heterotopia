@@ -28,6 +28,12 @@ export const POSE_BEATS: Record<string, ActorVariant> = {
 };
 
 export function variantForBeat(key: string, beat: Beat, scene: Scene): ActorVariant {
+  if (scene.script === 'shenci') {
+    if (ACTOR_VARIANTS[key]?.summit && /^shenci-m-4-[45]$/.test(scene.id)) return 'summit';
+    if (key === 'shen' && beat.background.startsWith('bedroom')) return 'home';
+    if (key === 'shen' && (beat.background.startsWith('classroom') || ['0-2','0-3','0-5','0-9','0-11'].includes(scene.sourceId ?? ''))) return 'school';
+    if (key === 'tang' && scene.id === 'shenci-d-0-2') return 'dining';
+  }
   if (key === 'linyue' && scene.id === 'modern-o-5-4') return 'trail';
   if (ACTOR_VARIANTS[key]?.summit && /^modern-o-5-[4-7]$/.test(scene.id)) return 'summit';
   if (key === 'mi') return POSE_BEATS[beat.id] ?? 'default';

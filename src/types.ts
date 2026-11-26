@@ -1,13 +1,13 @@
 import type { OverseasOpeningIdentity } from './overseasIdentity';
 
 export type Route = 'prologue' | 'common' | 'royal' | 'kunlun' | 'return';
-export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home' | `modern-${string}`;
-export type Campaign = 'original' | 'overseas';
+export type EndingId = 'blade' | 'mercy' | 'leave' | 'names' | 'kunlun' | 'home' | `modern-${string}` | `shenci-${string}`;
+export type Campaign = 'original' | 'overseas' | 'shenci';
 export type Language = 'zh' | 'en' | 'ja' | 'de';
-export interface RawBlock { tag: string; lines: string[]; pages?: string[]; options?: Choice[]; when?: { choice: string; value: string }; background?: string; cast?: string[]; domesticOnly?: boolean; returnMemory?: true }
-export interface Scene { id: string; title: string; chapter: string; route: Route; background: string; blocks: RawBlock[]; next?: string; ending?: EndingId; script?: 'modern'; sourceId?: string }
-export interface Choice { key: string; title: string; detail: string; target?: string; disabled?: boolean; hint?: string }
-export interface BeatBase { id: string; background: string; cast: string[]; atmosphere: string; audioCueId: string; direction: string }
+export interface RawBlock { tag: string; lines: string[]; pages?: string[]; options?: Choice[]; when?: { choice: string; value: string }; background?: string; cast?: string[]; domesticOnly?: boolean; returnMemory?: true; prompt?: string; blackout?: boolean; effects?: string[]; royalCollapseOnly?: boolean }
+export interface Scene { id: string; title: string; chapter: string; route: Route; background: string; blocks: RawBlock[]; next?: string; ending?: EndingId; script?: 'modern' | 'shenci'; sourceId?: string; interlude?: boolean; endingTitle?: string; redirect?: { when: { choice: string; value: string }; target: string } }
+export interface Choice { key: string; title: string; detail: string; target?: string; disabled?: boolean; hint?: string; requires?: { sceneId: string; lastChoice?: string } }
+export interface BeatBase { id: string; background: string; cast: string[]; atmosphere: string; audioCueId: string; direction: string; blackout?: boolean; effects?: string[] }
 export interface TextBeat extends BeatBase { kind: 'text'; speaker: string; mood: string; text: string }
 export interface ChoiceBeat extends BeatBase { kind: 'choice'; prompt: string; choices: Choice[] }
 export interface EndingBeat extends BeatBase { kind: 'ending'; ending: EndingId }

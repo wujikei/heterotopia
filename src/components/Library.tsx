@@ -2,6 +2,7 @@ import { dateLocale, getLanguage, LANGUAGES, localizePage, t, tr, useLocale } fr
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Download, Headphones, Image as ImageIcon, LockKeyhole, RotateCcw, Upload, X } from 'lucide-react';
 import { asset, assetSources, BACKGROUNDS, charactersForCampaign, endingsForCampaign, ITEMS, portraitFace, sourceDocument } from '../data/world';
+import { SHENCI_STORY } from '../story';
 import { campaignOf, hasSeenModernArt } from '../modern';
 import { overseasArt, overseasPortrait, overseasThumbnail } from '../overseasArt';
 import type { OverseasTone } from '../overseasIdentity';
@@ -31,7 +32,7 @@ const ROUTES: { key: Route; name: string; subtitle: string; art: string; number:
 export function ChaptersView({ profile, currentScene, onJump }: { profile: Profile; currentScene?: string; onJump: (id: string) => void }) {
   useLocale();
   const SCENES = campaignScenes(campaignOf(profile));
-  const routes = campaignOf(profile) === 'overseas' ? ROUTES.map(item => item.key === 'prologue' ? { ...item, name: '问字，不问命', subtitle: '现代卷', art: 'modern-dorm' } : item.key === 'common' ? { ...item, name: '天问七夜', art: 'river' } : item.key === 'return' ? { ...item, name: '这边的日子', subtitle: '归来与尾声', art: 'modern-sunset' } : item) : ROUTES;
+  const routes = campaignOf(profile) !== 'original' ? ROUTES.map(item => item.key === 'prologue' ? { ...item, name: campaignOf(profile) === 'shenci' ? '水声之前' : '问字，不问命', subtitle: '现代卷', art: campaignOf(profile) === 'shenci' ? 'classroom' : 'modern-dorm' } : item.key === 'common' ? { ...item, name: '天问七夜', art: 'river' } : item.key === 'return' ? { ...item, name: '这边的日子', subtitle: '归来与尾声', art: 'modern-sunset' } : item) : ROUTES;
   const [route, setRoute] = useState<Route>(currentScene ? sceneById(currentScene).route : 'prologue');
   const selected = routes.find(item => item.key === route)!;
   const scenes = SCENES.filter(scene => scene.route === route);
@@ -124,8 +125,8 @@ export function GalleryView({ profile, tone }: { profile: Profile; tone?: Overse
   useLocale();
   const [tab, setTab] = useState<'landscapes' | 'cgs'>('landscapes');
   const entries = tab === 'landscapes'
-    ? Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day' && (campaignOf(profile) === 'overseas' || !key.includes('modern'))).map(([key, info]) => ({ key, art: key, thumbnail: `${key}-thumb`, ...info, known: hasSeenModernArt(profile, key) }))
-    : CGS.filter(cg => !!cg.file && cg.id.startsWith('modern-') === (campaignOf(profile) === 'overseas')).map(cg => ({ key: cg.id, art: cg.file, thumbnail: cg.thumbnail || cg.file, name: cg.title, subtitle: cg.caption, chapter: '旅途留影', known: cgUnlocked(cg, profile) }));
+    ? Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day' && (campaignOf(profile) !== 'original' || !key.includes('modern'))).map(([key, info]) => ({ key, art: key, thumbnail: `${key}-thumb`, ...info, known: hasSeenModernArt(profile, key) }))
+    : CGS.filter(cg => !!cg.file && (campaignOf(profile) === 'shenci' ? hasSeenModernArt(profile, cg.file) : cg.id.startsWith('modern-') === (campaignOf(profile) === 'overseas'))).map(cg => ({ key: cg.id, art: cg.file, thumbnail: cg.thumbnail || cg.file, name: cg.title, subtitle: cg.caption, chapter: '旅途留影', known: campaignOf(profile) === 'shenci' ? hasSeenModernArt(profile, cg.file) : cgUnlocked(cg, profile) }));
   const unlocked = entries.filter(entry => entry.known);
   const [viewing, setViewing] = useState<string | null>(null);
   const [hideCaption, setHideCaption] = useState(false);
@@ -288,9 +289,9 @@ export function AboutView({ campaign }: { campaign: Campaign }) {
     <div className="about-hero"><span className="about-seal" aria-hidden="true">{getLanguage() === 'en' || getLanguage() === 'de' ? 'HT' : '异托'}</span><div className="about-title">{t("异托邦")}</div></div>
     <blockquote>{t("看路，也看看走路的人。")}</blockquote>
     <p>{campaign === 'overseas' ? '一部关于异乡求学、文化隔阂与重新理解自己的现代故事。' : t("一部关于远行、记忆与回家的楚地奇幻视觉小说。")}</p>
-    <p>{campaign === 'overseas' ? '跟随林越从旧街问字摊出发，经历王裔与昆仑两条古代旅程，两次回到现代生活，最终来到山顶。' : t("改编自《异托邦 V6 完整剧本》，保留序章、共通线、王裔线、昆仑线与归来的完整故事，以及跨路线记忆与四个王裔结局。")}</p>
-    <div className="about-stats">{campaign === 'overseas' ? <><span><strong>2</strong>条古代旅程</span><span><strong>2</strong>次回到现代</span><span><strong>1</strong>段山顶尾声</span></> : <><span><strong>81</strong>{t("场故事")}</span><span><strong>2</strong>{t("条命运")}</span><span><strong>6</strong>{t("页回声")}</span></>}</div>
+    <p>{campaign === 'overseas' ? '跟随林越从旧街问字摊出发，经历王裔与昆仑两条古代旅程，两次回到现代生活，最终来到山顶。' : campaign === 'shenci' ? '改编自新版《异托邦》完整剧情：沈辞的国内序章、天问七夜、王裔与昆仑、两次现代返场与登山尾声。V6 旧版和旧存档独立保留。' : t("改编自《异托邦 V6 完整剧本》，保留序章、共通线、王裔线、昆仑线与归来的完整故事，以及跨路线记忆与四个王裔结局。")}</p>
+    <div className="about-stats">{campaign === 'overseas' ? <><span><strong>2</strong>条古代旅程</span><span><strong>2</strong>次回到现代</span><span><strong>1</strong>段山顶尾声</span></> : <><span><strong>{campaign === 'shenci' ? SHENCI_STORY.sceneCount : 81}</strong>{t("场故事")}</span><span><strong>2</strong>{t("条命运")}</span><span><strong>6</strong>{t("页回声")}</span></>}</div>
     <dl className="about-credit">{tr(credits.map(([role, name]) => <div key={role}><dt>{tr(role)}</dt><dd>{tr(name)}</dd></div>))}</dl>
-    <a className="text-button about-source" href={sourceDocument(campaign)} download={campaign === 'overseas' ? '林越海外现代线-原著剧本.txt' : '异托邦-V6-原著剧本.txt'}>{t("阅读原著剧本")}{' '}<ArrowRight size={15} /></a>
+    <a className="text-button about-source" href={sourceDocument(campaign)} download={campaign === 'overseas' ? '林越海外现代线-原著剧本.txt' : campaign === 'shenci' ? '异托邦-沈辞新版-原著剧本.txt' : '异托邦-V6-原著剧本.txt'}>{t("阅读原著剧本")}{' '}<ArrowRight size={15} /></a>
   </div>;
 }

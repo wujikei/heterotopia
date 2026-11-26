@@ -134,6 +134,8 @@
     "cg-modern-photo-r4-overseas-light-thumb",
     "cg-modern-photo-r4-thumb",
     "cg-modern-photo-thumb",
+    "cg-modern-photo-user",
+    "cg-modern-photo-user-thumb",
     "cg-modern-porridge-offering",
     "cg-modern-porridge-offering-thumb",
     "cg-modern-porridge-plaque",
@@ -748,7 +750,8 @@
     "portrait-linyue-trail-smile-overseas-light": "portrait-linyue-trail-smile-overseas-light.webp",
     "portrait-linyue-trail-smile-overseas-light-m": "portrait-linyue-trail-smile-overseas-light-m.webp",
     "portrait-linyue-trail-smile-overseas-deep": "portrait-linyue-trail-smile-overseas-deep.webp",
-    "portrait-linyue-trail-smile-overseas-deep-m": "portrait-linyue-trail-smile-overseas-deep-m.webp"
+    "portrait-linyue-trail-smile-overseas-deep-m": "portrait-linyue-trail-smile-overseas-deep-m.webp",
+    "cg-modern-photo-user": "cg-modern-photo-user.webp"
   },
   "masters": {
     "cg-e1-blade": "resources/art-src/cgs/v2/e1-blade.png",
@@ -897,7 +900,8 @@
     "cg-modern-paper-note-overseas-light-m": "resources/art-src/overseas-round/cg-modern-paper-note-overseas-light-m.png",
     "cg-modern-paper-note-overseas-deep-m": "resources/art-src/overseas-round/cg-modern-paper-note-overseas-deep-m.png",
     "cg-modern-summit-r4-overseas-light-m": "resources/art-src/overseas-round/cg-modern-summit-r4-overseas-light-m.png",
-    "cg-modern-summit-r4-overseas-deep-m": "resources/art-src/overseas-round/cg-modern-summit-r4-overseas-deep-m.png"
+    "cg-modern-summit-r4-overseas-deep-m": "resources/art-src/overseas-round/cg-modern-summit-r4-overseas-deep-m.png",
+    "cg-modern-photo-user": "resources/art-src/user-delivered/cg-modern-photo-user.png"
   },
   "mobileMasters": {
     "cg-e1-blade": "resources/art-src/cgs/mobile/e1-blade.png",

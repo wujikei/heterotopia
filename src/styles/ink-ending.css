@@ -296,3 +296,19 @@
     font-size: 11px;
   }
 }
+
+/* Domestic expanded titles include subtitles and can run up to seven glyphs. */
+.ending-screen--shenci .ending-stage {
+  align-items: center; flex-wrap: wrap; column-gap: 18px;
+  row-gap: 10px; min-height: 0; margin-top: 20px;
+}
+.ending-screen--shenci .ending-title {
+  writing-mode: horizontal-tb; inline-size: auto; block-size: auto;
+  max-inline-size: 100%; text-wrap: balance; order: -1;
+  font-size: clamp(30px, 6vw, 76px); letter-spacing: .07em;
+}
+.ending-screen--shenci .ending-side { align-self: center; gap: 6px; }
+.ending-screen--shenci .ending-seal { font-size: 16px; }
+@media (max-width: 760px) {
+  .ending-screen--shenci .ending-title { flex-basis: 100%; }
+}

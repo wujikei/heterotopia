@@ -1,10 +1,12 @@
-import type { Character, EndingId } from '../types';
+import type { Character } from '../types';
+import shenciIndex from './shenci-index.json';
 import { MODERN_BACKGROUNDS, MODERN_ENDINGS } from '../modern';
 
-type EmbeddedAssets = typeof globalThis & { __HETEROTOPIA_ASSETS__?: Record<string, string>; __HETEROTOPIA_SOURCE__?: string; __HETEROTOPIA_MODERN_SOURCE__?: string };
+type EmbeddedAssets = typeof globalThis & { __HETEROTOPIA_ASSETS__?: Record<string, string>; __HETEROTOPIA_SOURCE__?: string; __HETEROTOPIA_MODERN_SOURCE__?: string; __HETEROTOPIA_SHENCI_SOURCE__?: string };
 export { asset, assetSources, portraitAsset, portraitFace } from '../assets';
 export const sourceDocument = (campaign = 'original') => campaign === 'overseas'
   ? (globalThis as EmbeddedAssets).__HETEROTOPIA_MODERN_SOURCE__ ?? `${import.meta.env.BASE_URL}原著剧本-海外现代线.txt`
+  : campaign === 'shenci' ? (globalThis as EmbeddedAssets).__HETEROTOPIA_SHENCI_SOURCE__ ?? `${import.meta.env.BASE_URL}原著剧本-沈辞新版.txt`
   : (globalThis as EmbeddedAssets).__HETEROTOPIA_SOURCE__ ?? `${import.meta.env.BASE_URL}原著剧本-V6.txt`;
 
 export const CHARACTERS: Character[] = [
@@ -67,7 +69,7 @@ export const BACKGROUNDS: Record<string, { name: string; subtitle: string; chapt
   'light-river': { name: '两片夜之间', subtitle: '光河之岸 · 无时', chapter: '光河与归来' },
 };
 
-export const ENDINGS: Record<EndingId, { title: string; index: string; subtitle: string; description: string; quote: string; background: string }> = {
+export const ENDINGS: Record<string, { title: string; index: string; subtitle: string; description: string; quote: string; background: string }> = {
   blade: { title: '举刃', index: 'I', subtitle: '王裔 · 一', description: '举铃还击，公开先王之子的身份。', quote: '那些被他们从人脚下拖出来的人，也确实活到了天亮。', background: 'ritual' },
   mercy: { title: '留人', index: 'II', subtitle: '王裔 · 二', description: '以身份与证物，换仍活着的人退场。', quote: '亭外无人等他，他终于不用怕说得慢。', background: 'river' },
   leave: { title: '离席', index: 'III', subtitle: '王裔 · 三', description: '不再替王室落座，带着自己的名字离开。', quote: '昨夜画了一遍又一遍的那条路，就在几步之外。', background: 'palace' },
@@ -98,4 +100,8 @@ export function characterFor(name: string): Character | undefined {
   return CHARACTERS.find(c => c.name === name);
 }
 
-export const endingsForCampaign = (campaign = 'original'): Record<string, typeof ENDINGS['blade']> => campaign === 'overseas' ? MODERN_ENDINGS : ENDINGS;
+const shenciEndings: Record<string, typeof ENDINGS['blade']> = Object.fromEntries(shenciIndex.scenes.filter(s => s.ending).map((s, i) => {
+  const base = (MODERN_ENDINGS as Record<string, typeof ENDINGS['blade']>)[s.ending!.replace('shenci-', 'modern-')];
+  return [s.ending, { title: s.endingTitle ?? s.title, index: String(i + 1), subtitle: s.route === 'return' ? '沈辞 · 尾声' : s.route === 'royal' ? '沈辞 · 王裔' : '沈辞 · 昆仑', description: base?.description ?? '两条路之后，留在这边。', quote: s.ending === 'shenci-home' ? '好。' : base?.quote ?? '', background: s.background }];
+}));
+export const endingsForCampaign = (campaign = 'original'): Record<string, typeof ENDINGS['blade']> => campaign === 'overseas' ? MODERN_ENDINGS : campaign === 'shenci' ? shenciEndings : ENDINGS;

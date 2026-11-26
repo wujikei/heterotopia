@@ -4,7 +4,8 @@ import type { OverseasTone } from './overseasIdentity';
 /** Use only art deliberately exported for this tone. Scene and gallery IDs stay stable. */
 export function overseasArt(name: string, tone?: OverseasTone): string {
   if (!tone || tone === 'neutral') return name;
-  const variant = `${name}-overseas-${tone}`;
+  // The supplied replacement matches the warm appearance. Keep previously authored light/deep states.
+  const variant = `${name === 'cg-modern-photo-user' ? 'cg-modern-photo-r4' : name}-overseas-${tone}`;
   return registeredArtwork(variant) ? variant : name;
 }
 

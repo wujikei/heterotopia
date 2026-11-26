@@ -1,3 +1,5 @@
+import { sceneById } from './engine';
+import { isShenci } from './shenci';
 import rawSoundtrack from './data/soundtrack.json';
 import type { Beat, EndingId, Profile } from './types';
 import { isModern, MODERN_ARRIVAL_ART, MODERN_GLANCE_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_PHOTO_ART, MODERN_STALL_ART, MODERN_SUMMIT_ART, MODERN_TRANSLATION_ART } from './modern';
@@ -102,7 +104,14 @@ const musicForScene = (sceneId: string): MusicId | null => (
   isModern(sceneId) ? OVERSEAS_MUSIC_BY_SCENE[sceneId] : MUSIC_BY_SCENE[sceneId]
 ) ?? null;
 
+function shenciMusic(id: string, art: string): MusicId | null {
+  if (id.startsWith('shenci-r-')) return id === 'shenci-r-G-0' ? null : art === 'ritual' ? 'ritual' : 'old-jade';
+  if (id.startsWith('shenci-k-')) return /^shenci-k-G-/.test(id) ? null : 'river-journey';
+  if (id.startsWith('shenci-m-')) return /^shenci-m-4-[45]$/.test(id) ? 'river-home' : 'paper-note';
+  return id.startsWith('shenci-d-1-') ? 'hearth' : 'paper-note';
+}
 export function tracksForVisit(sceneId: string): MusicId[] {
+  if (isShenci(sceneId)) { const track = shenciMusic(sceneId, sceneById(sceneId).background); return track ? [track] : []; }
   const track = musicForScene(sceneId);
   return [...(track ? [track] : []), ...(OTHER_TRACKS[sceneId] ?? []), ...(LEGACY_MODERN_TRACKS[sceneId] ?? [])];
 }
@@ -414,6 +423,11 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
     ambience: ENVIRONMENTS[beat.background] ?? [['wind', .2]], transition: 4.5,
     events: [{ id: beat.audioCueId, effects: CUE_EFFECTS[beat.audioCueId] ?? [] }],
   };
+  if (isShenci(sceneId)) {
+    frame.music = shenciMusic(sceneId, beat.background);
+    if (sceneId === 'shenci-r-G-0' || sceneId === 'shenci-k-G-1' || beat.blackout) frame.ambience = [];
+    if (beat.effects?.includes('bronze')) frame.events = [{ id: beat.id, effects: [e('bronze', .38)] }];
+  }
   if (isModern(sceneId)) directOverseasScore(frame, beat, block);
   if (ACCENTS[beat.id]) frame.events.push({ id: beat.id, effects: ACCENTS[beat.id] });
   if (sceneId === '0-1' && block >= 6) { frame.music = 'paper-note'; frame.transition = .18; }

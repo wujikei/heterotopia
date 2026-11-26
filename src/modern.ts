@@ -2,12 +2,12 @@ import type { Campaign, GameState, Profile } from './types';
 import { validOverseasIdentity } from './overseasIdentity';
 
 export const isModern = (id: string) => id.startsWith('modern-');
-export const campaignOf = (value?: { campaign?: Campaign } | null): Campaign => value?.campaign === 'overseas' ? 'overseas' : 'original';
+export const campaignOf = (value?: { campaign?: Campaign } | null): Campaign => value?.campaign === 'overseas' || value?.campaign === 'shenci' ? value.campaign : 'original';
 export const modernHasRoyal = (profile: Profile) => profile.endings.some(id => id.startsWith('modern-royal-'));
 export const modernHasKunlun = (profile: Profile) => profile.endings.includes('modern-kunlun');
 export const modernComplete = (profile: Profile) => modernHasRoyal(profile) && modernHasKunlun(profile);
 export const modernInterlude = (id: string) => id === 'modern-o-4-1' || id === 'modern-o-4-2';
-export const modernFinal = (id: string) => id === 'modern-home';
+export const modernFinal = (id: string) => id === 'modern-home' || id === 'shenci-home';
 
 export const MODERN_ARRIVAL_ART = 'modern-street-arrival-r3';
 export const MODERN_STALL_ART = 'cg-modern-word-stall-r3';
@@ -16,7 +16,7 @@ export const MODERN_TRANSLATION_ART = 'cg-modern-translation-r3';
 export const MODERN_PAPER_NOTE_ART = 'cg-modern-paper-note';
 export const MODERN_GLANCE_ART = 'cg-modern-glance-r4';
 export const MODERN_SUMMIT_ART = 'cg-modern-summit-r4';
-export const MODERN_PHOTO_ART = 'cg-modern-photo-r4';
+export const MODERN_PHOTO_ART = 'cg-modern-photo-user';
 const MODERN_ART_PREVIOUS: Readonly<Partial<Record<string, string>>> = {
   [MODERN_ARRIVAL_ART]: 'modern-street-arrival-r2',
   [MODERN_STALL_ART]: 'cg-modern-word-stall',
@@ -27,7 +27,7 @@ const MODERN_ART_PREVIOUS: Readonly<Partial<Record<string, string>>> = {
 };
 export function hasSeenModernArt(profile: Pick<Profile, 'art'>, name: string): boolean {
   const previous = MODERN_ART_PREVIOUS[name];
-  return profile.art.includes(name) || (previous !== undefined && profile.art.includes(previous));
+  return profile.art.includes(name) || (name === MODERN_PHOTO_ART && profile.art.includes('cg-modern-photo-r4')) || (previous !== undefined && profile.art.includes(previous));
 }
 
 export const MODERN_BACKGROUNDS = {
