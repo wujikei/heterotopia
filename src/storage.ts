@@ -17,7 +17,7 @@ function read<T>(key: string, fallback: T, campaign: Campaign = 'original'): T {
 
 export const loadCampaign = (): Campaign => {
   const value = read<unknown>('campaign', null);
-  return value === 'overseas' || value === 'original' || value === 'shenci' ? value : 'shenci';
+  return value === 'overseas' || value === 'original' || value === 'shenci' ? value : 'original';
 };
 
 export function persist(key: string, value: unknown, campaign: Campaign = 'original'): boolean {
