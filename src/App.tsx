@@ -651,7 +651,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
         <div className="home-verse"><span>{campaign === 'overseas' ? '问字，不问命。' : t("魂兮归来。")}</span><p>{campaign === 'overseas' ? '念对了，它会带你去问的人面前。' : t("看路，也看看走路的人。")}</p></div>
         <nav className="campaign-selector" aria-label="选择故事卷">
           <button aria-pressed={campaign === 'shenci'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('shenci')}>沈辞 · 新版</button>
-          <button aria-pressed={campaign === 'original'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('original')}>沈辞 · V6 旧版</button>
+          <button aria-pressed={campaign === 'original'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('original')}>沈辞 · 原篇 V6</button>
           <button aria-pressed={campaign === 'overseas'} disabled={loadingReading || !!languagePending} onClick={() => onCampaign('overseas')}>林越 · 现代新卷</button>
         </nav>
         <p className="campaign-note">各卷独立存档，V6 旧版保留。{campaign === 'shenci' && <span>沈辞新版正文为简体中文。</span>}</p>

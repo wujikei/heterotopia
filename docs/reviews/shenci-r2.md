@@ -20,7 +20,7 @@
 
 ## 旧版、存档与回退
 
-- 发布前主线：[`277d3f0`](https://github.com/wujikei/heterotopia/tree/277d3f0d583ce8c1a196d70afd04dd09f705473a)，这是已含 PR #20 的真实远程基线。归档标签计划使用 `rollback-pre-shenci-r2-277d3f0`；以 GitHub 实际标签为准，旧提交链接可直接打开。更早的原始交付基线：[`c0a1a63`](https://github.com/wujikei/heterotopia/tree/c0a1a63e211cb61dde1ff7f1c6ba83860ff0bb26)。
-- 上一轮沈辞 R1 本地预览包独立保存，本地标签 `rollback-shenci-preview-r1`。发布分支另保留按顺序整合的 R1、R2 提交，便于比较；不能把 R1 离线书签解释为 R2 的同页。
+- 发布前主线：[`277d3f0`](https://github.com/wujikei/heterotopia/tree/277d3f0d583ce8c1a196d70afd04dd09f705473a)，这是已含 PR #20 的真实远程基线。远端已保存 [回退标签](https://github.com/wujikei/heterotopia/tree/rollback-pre-shenci-r2-277d3f0) 和 [备份分支](https://github.com/wujikei/heterotopia/tree/backup/pre-shenci-r2-277d3f0)。更早的原始交付基线：[`c0a1a63`](https://github.com/wujikei/heterotopia/tree/c0a1a63e211cb61dde1ff7f1c6ba83860ff0bb26)。
+- 上一轮沈辞 R1 本地预览包独立保存，本地标签 `rollback-shenci-preview-r1`。远端 [R1 源码标签](https://github.com/wujikei/heterotopia/tree/archive-shenci-r1-source) 保存集成版 R1 源码（当时提交的根目录离线成品仍为旧正式版）。发布分支另保留按顺序整合的 R1、R2 提交，便于比较；不能把 R1 离线书签解释为 R2 的同页。
 - 首页保留「沈辞 · 原篇 V6」。V6 与林越存档键保持不变，沈辞 R1 使用 `shenci` 命名空间，R2 使用 `shenci-r2`。跨目录或网站与离线之间请先导出同版本 JSON；回退源码不会搬迁浏览器存档。
 - 需要继续旧版开发时，从基线新建分支；需要撤回已发布内容时用独立修复分支和可审查的 revert，重新构建两种离线版并复核 Pages。不强推、不改写 `main` 历史，不清除玩家本机存档。
