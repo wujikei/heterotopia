@@ -248,6 +248,23 @@
   font-size: 18px;
 }
 
+:is(.choices--5, .choices--6) > :not(.choice-options) {
+  flex-shrink: 0;
+}
+:is(.choices--5, .choices--6) .choice-options {
+  min-height: 0;
+  width: min(656px, 100%);
+  padding: 6px 8px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 164, 106, 0.72) transparent;
+  scroll-padding-block: 6px;
+}
+:is(.choices--5, .choices--6) .choice-option {
+  flex-shrink: 0;
+}
+
 @keyframes slip-unfurl {
   from {
     opacity: 0;
@@ -355,5 +372,28 @@
   }
   .choice-copy small {
     display: none;
+  }
+}
+
+@media (max-height: 520px) and (min-width: 800px) {
+  :is(.choices--5, .choices--6) .choice-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+  }
+  :is(.choices--5, .choices--6) .choice-option {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+  }
+  :is(.choices--5, .choices--6) .choice-option::before {
+    background-image:
+      var(--fiber-texture),
+      var(--paper-texture),
+      linear-gradient(90deg, #d9cba8 0 44px, #e9e0c9 44px, #efe7d2 70%, #e5dabf);
+  }
+  :is(.choices--5, .choices--6) .choice-option::after {
+    left: 44px;
+  }
+  :is(.choices--5, .choices--6) .choice-copy {
+    padding-left: 14px;
   }
 }

@@ -124,9 +124,10 @@ export function CharactersView({ profile, tone }: { profile: Profile; tone?: Ove
 export function GalleryView({ profile, tone }: { profile: Profile; tone?: OverseasTone }) {
   useLocale();
   const [tab, setTab] = useState<'landscapes' | 'cgs'>('landscapes');
+  const campaign = campaignOf(profile);
   const entries = tab === 'landscapes'
-    ? Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day' && (campaignOf(profile) !== 'original' || !key.includes('modern'))).map(([key, info]) => ({ key, art: key, thumbnail: `${key}-thumb`, ...info, known: hasSeenModernArt(profile, key) }))
-    : CGS.filter(cg => !!cg.file && (campaignOf(profile) === 'shenci' ? hasSeenModernArt(profile, cg.file) : cg.id.startsWith('modern-') === (campaignOf(profile) === 'overseas'))).map(cg => ({ key: cg.id, art: cg.file, thumbnail: cg.thumbnail || cg.file, name: cg.title, subtitle: cg.caption, chapter: '旅途留影', known: campaignOf(profile) === 'shenci' ? hasSeenModernArt(profile, cg.file) : cgUnlocked(cg, profile) }));
+    ? Object.entries(BACKGROUNDS).filter(([key]) => key !== 'classroom-day' && !key.startsWith('cg-modern-hike-') && (campaign !== 'original' || !key.includes('modern'))).map(([key, info]) => ({ key, art: key, thumbnail: `${key}-thumb`, ...info, known: hasSeenModernArt(profile, key) }))
+    : CGS.filter(cg => cg.file && (campaign === 'shenci' ? hasSeenModernArt(profile, cg.file) : !cg.id.startsWith('shenci-') && cg.id.startsWith('modern-') === (campaign === 'overseas'))).map(cg => ({ key: cg.id, art: cg.file, thumbnail: cg.thumbnail || cg.file, name: cg.title, subtitle: cg.caption, chapter: '旅途留影', known: campaign === 'shenci' || cgUnlocked(cg, profile) }));
   const unlocked = entries.filter(entry => entry.known);
   const [viewing, setViewing] = useState<string | null>(null);
   const [hideCaption, setHideCaption] = useState(false);

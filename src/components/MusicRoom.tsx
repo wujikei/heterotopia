@@ -101,7 +101,7 @@ export function MusicRoom({ profile, settings, sceneArt, onChange }: { profile: 
         <div className="music-volume"><AudioButton className="music-step music-step--small" onClick={toggleMute} aria-label={tr(settings.muted ? '开启试听声音' : state.needsGesture ? '点击开启试听声音' : '静音试听')}>{tr(settings.muted ? <VolumeX size={18} /> : <Volume2 size={18} />)}</AudioButton><input type="range" min="0" max="100" value={settings.musicVolume} aria-label={t("试听配乐音量")} style={{ '--range-fill': `${settings.musicVolume}%` } as React.CSSProperties} onChange={event => onChange({ ...settings, musicVolume: Number(event.target.value) })} /><span>{tr(settings.musicVolume)}%</span></div>
         {tr(!quiet && <a className="music-download text-button" href={audioAsset(track.file)} download={t("异托邦-{0}-{1}.mp3", String(index + 1).padStart(2, '0'), track.title)}><Download size={15} />{t("下载此曲")}</a>)}
       </div>
-      <p className={`music-player-note ${state.error ? 'music-player-note--error' : ''}`} role="status">{tr(state.needsGesture && !settings.muted ? '点击开启声音' : state.error ?? <><Headphones size={14} strokeWidth={1.2} />{t(campaign === 'overseas' ? '原声随旅途解锁 · 关闭后继续当前故事的配乐' : '十一首原声，随旅途解锁 · 关闭后继续当前故事的配乐')}</>)}</p>
+      <p className={`music-player-note ${state.error ? 'music-player-note--error' : ''}`} role="status">{tr(state.needsGesture && !settings.muted ? '点击开启声音' : state.error ?? <><Headphones size={14} strokeWidth={1.2} />{t(campaign === 'original' ? '十一首原声，随旅途解锁 · 关闭后继续当前故事的配乐' : '原声随旅途解锁 · 关闭后继续当前故事的配乐')}</>)}</p>
     </footer>
   </div>;
 }

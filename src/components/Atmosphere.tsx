@@ -4,12 +4,13 @@ import { asset } from '../data/world';
 import { artQuality, subscribeArtQuality, artViewport, subscribeArtViewport, avifEnabled, subscribeArtFormat, assetSources, imageUrl } from '../assets';
 import { preloadImage } from '../preload';
 import { overseasArt } from '../overseasArt';
+import { MODERN_PHOTO_ART } from '../modern';
 import type { OverseasTone } from '../overseasIdentity';
 
 type ArtLayer = { name: string; url: string; composition?: 'portrait' };
-const portraitCompositions = new Set(['cg-modern-summit-r4', 'cg-modern-porridge-plaque']);
+const portraitCompositions = new Set(['cg-modern-summit-r4', 'cg-modern-porridge-plaque', MODERN_PHOTO_ART]);
 
-export function SceneArt({ name, motion = true, cg, readingId, blackout = false, tone }: { name: string; motion?: boolean; cg?: string; readingId: string | null; blackout?: boolean; tone?: OverseasTone }) {
+export function SceneArt({ name, motion = true, cg, readingId, blackout = false, tone, onPhotoVisible }: { name: string; motion?: boolean; cg?: string; readingId: string | null; blackout?: boolean; tone?: OverseasTone; onPhotoVisible: (visible: boolean) => void }) {
   useLocale();
   useSyncExternalStore(subscribeArtQuality, artQuality, () => false);
   useSyncExternalStore(subscribeArtFormat, avifEnabled, () => false);
@@ -36,7 +37,7 @@ export function SceneArt({ name, motion = true, cg, readingId, blackout = false,
       for (const [candidate, sceneArt] of sources) {
         if (cancelled) return;
         try {
-          const mobile = portraitCompositions.has(sceneArt) ? assetSources(candidate).mobile : undefined;
+          const mobile = portraitCompositions.has(sceneArt) || sceneArt.startsWith('cg-modern-hike-') ? assetSources(candidate).mobile : undefined;
           const url = await preloadImage(candidate === artwork ? selected : asset(candidate), 'high');
           if (cancelled) return;
           const portrait = mobile && [mobile.webp, mobile.avif].some(source => source && imageUrl(source) === url);
@@ -51,6 +52,8 @@ export function SceneArt({ name, motion = true, cg, readingId, blackout = false,
     void show();
     return () => { cancelled = true; clearTimeout(timer); };
   }, [target, artwork, selected, name, tone]);
+  const photoVisible = !blackout && loaded?.name === MODERN_PHOTO_ART;
+  useEffect(() => onPhotoVisible(photoVisible), [onPhotoVisible, photoVisible]);
   useEffect(() => {
     if (!previous) return;
     const timer = setTimeout(() => setLayers(current => ({ ...current, previous: null })), 1700);

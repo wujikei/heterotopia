@@ -2,12 +2,16 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync, existsSync } from 'node:fs';
 import { test } from 'node:test';
-import { advance, campaignScenes, choose, compileScene, completeEnding, continueEnding, currentBeat, enterScene, loadStory, newGame, newProfile, recordProgress, sceneById } from '../src/engine';
+import { advance, campaignScenes, choose, compileScene, completeEnding, continueEnding, currentBeat, enterScene, loadStory, newGame, newProfile, recordProgress, restoreEditorialBookmark, sceneById } from '../src/engine';
 import { actorForBeat, portraitCandidatesForActor } from '../src/actors';
 import { SHENCI_STORY } from '../src/story';
 import { validState } from '../src/storage';
-import { scoreFrame } from '../src/score';
+import { scoreFrame, tracksForVisit } from '../src/score';
+import { cgForBeat } from '../src/data/cgs';
 import { MODERN_PHOTO_ART } from '../src/modern';
+import { presentStoryText } from '../src/editorial';
+import { slotPresentation } from '../src/savePresentation';
+import { SHENCI_RETURN_ENDING } from '../src/shenci';
 import type { GameState, Profile } from '../src/types';
 
 await loadStory('shenci'); await loadStory('overseas'); await loadStory('original');
@@ -111,6 +115,40 @@ test('domestic ancient Shen Ci keeps Xu art, and new overseas photo only cuts on
   assert.equal(photo.find(b=>b.id==='modern-o-5-7:17:0')?.background,MODERN_PHOTO_ART);
 });
 
+test('domestic hiking cuts and the final score follow the authored handoff, impact and reply', () => {
+  const state = { choices: {}, inventory: [] };
+  const ascent = compileScene('shenci-m-4-4', fresh(), state);
+  const overlook = compileScene('shenci-m-4-5', fresh(), state);
+  for (const [beats, scene, page, art] of [
+    [ascent, 'shenci-m-4-4', '22:0', 'modern-mountain-path'],
+    [ascent, 'shenci-m-4-4', '23:0', 'cg-modern-hike-tang'],
+    [ascent, 'shenci-m-4-4', '24:0', 'cg-modern-hike-tang'],
+    [ascent, 'shenci-m-4-4', '25:0', 'modern-mountain-path'],
+    [overlook, 'shenci-m-4-5', '2:0', 'cg-modern-hike-terrace'],
+    [overlook, 'shenci-m-4-5', '3:0', 'cg-modern-hike-rail'],
+    [overlook, 'shenci-m-4-5', '5:0', 'cg-modern-hike-pickup'],
+    [overlook, 'shenci-m-4-5', '6:0', 'cg-modern-hike-pickup'],
+    [overlook, 'shenci-m-4-5', '7:0', 'cg-modern-hike-return'],
+    [overlook, 'shenci-m-4-5', '14:0', 'cg-modern-hike-held'],
+    [overlook, 'shenci-m-4-5', '15:0', 'cg-modern-hike-invitation'],
+    [overlook, 'shenci-m-4-5', '17:0', 'cg-modern-hike-held'],
+    [overlook, 'shenci-m-4-5', '19:0', 'cg-modern-hike-held'],
+    [overlook, 'shenci-m-4-5', '20:0', 'cg-modern-hike-lookback'],
+    [overlook, 'shenci-m-4-5', 'ending', 'cg-modern-hike-lookback'],
+  ] as const) {
+    const beat = beats.find(candidate => candidate.id === `${scene}:${page}`)!;
+    assert.equal(beat.background, art);
+    if (art.startsWith('cg-')) assert.equal(cgForBeat(beat, scene)?.file, art);
+  }
+  const score = overlook.map(beat => scoreFrame('shenci-m-4-5', beat));
+  assert.deepEqual(score.flatMap(frame => frame.events.filter(event => event.effects.length)), [
+    { id: 'shenci-m-4-5:3:0', effects: [{ id: 'bottle-rail', gain: .48, at: .04, pan: .08 }] },
+  ]);
+  assert.ok(score.slice(0, -2).every(frame => frame.music === null));
+  assert.ok(score.slice(-2).every(frame => frame.music === 'shenci-lookback'));
+  assert.ok(tracksForVisit('shenci-m-4-5').includes('shenci-lookback'));
+});
+
 
 test('domestic sections follow stable scene positions and keep even the longest section under 32 data pages', () => {
   let longestSection = 0;
@@ -134,9 +172,68 @@ test('domestic score follows jokes, storm and silence; one-shot accents attach t
   };
   const woke=frame('shenci-d-0-1',text=>text.includes('从床上坐起来'));
   assert.equal(woke.music,'paper-note');assert.ok(woke.events.some(e=>e.effects.some(f=>f.id==='alarm')));
-  assert.equal(frame('shenci-d-1-5',s=>s.includes('两只鸡谁也不理')).music,'shenci-playful');
+  const market = frame('shenci-d-1-5',s=>s.includes('两只鸡谁也不理'));
+  assert.equal(market.music,'shenci-playful');
+  assert.deepEqual(market.ambience.map(([id]) => id), ['wind']);
   assert.equal(frame('shenci-d-1-5',s=>s.includes('笑到一半，脸上僵住了')).music,'old-jade');
-  assert.equal(frame('shenci-k-D-5',s=>s.includes('风从囊里冲出来')).music,'under-current');
+  const chalk = frame('shenci-d-0-10',s=>s.includes('正抄黑板') || s.includes('古图上'));
+  assert.equal(chalk.prepareMusic, 'under-current');
+  const marsh = frame('shenci-d-0-11',s=>s.includes('血红色的沼泽'));
+  assert.ok(marsh.events.some(event => event.effects.some(effect => effect.id === 'splash')));
+  assert.equal(currentBeat({...visit('d-0-11'), beatId: 'shenci-d-0-11:17:0'}, fresh()).background,'marsh');
+  const ritual = frame('shenci-d-1-2',s=>s.includes('鸡鸣'));
+  assert.equal(ritual.music,'ritual');
+  assert.ok(ritual.releaseBeforeLoad && ritual.transition < 1);
+  assert.equal(frame('shenci-d-1-12a',s=>s.includes('第一夜')).music,'chu-night-river');
+  assert.ok(tracksForVisit('shenci-d-1-12z').includes('chu-night-river'));
+  const storm = frame('shenci-k-D-5',s=>s.includes('风从囊里冲出来'));
+  assert.equal(storm.music,'chu-storm');
+  assert.equal(storm.releaseBeforeLoad,true);
+  assert.equal(frame('shenci-k-D-6',s=>s.includes('雨不是下的')).music,'chu-storm');
+  const fall = frame('shenci-k-D-6',s=>s.includes('风，忽然小了'));
+  assert.equal(fall.music,null);
+  assert.deepEqual(fall.ambience,[['river', .23]]);
   assert.equal(frame('shenci-k-D-7',s=>s.includes('六个人坐在空舱')).music,null);
   const shoal=frame('shenci-k-G-1',s=>s.includes('那只小舟很轻'));assert.equal(shoal.music,null);assert.deepEqual(shoal.ambience,[]);
+  const firstReturn = frame('shenci-m-2-1',s=>s.includes('睁开眼'));
+  assert.equal(firstReturn.music, null);
+  assert.ok(firstReturn.releaseBeforeLoad);
+  assert.deepEqual(firstReturn.ambience, [['room', .18]]);
+  assert.deepEqual(frame('shenci-m-3-1',s=>s.includes('靠岸的小舟')).ambience, [['river', .16]]);
+  assert.deepEqual(frame('shenci-m-3-1',s=>s.includes('睁开眼')).ambience, [['room', .18]]);
+});
+
+test('Shenci narration, old bookmarks and returning branches preserve the intended speaker and passage', () => {
+  const profile = fresh();
+  const narrative = (scene: string, page: string, choices: GameState['choices'] = {}) => {
+    const state = {...visit(scene, profile), beatId: `shenci-${scene}:${page}`, choices};
+    const beat = currentBeat(state, profile);
+    assert.equal(beat.kind, 'text');
+    assert.equal(beat.id, state.beatId);
+    return presentStoryText(beat.id, beat.text);
+  };
+  assert.match(narrative('d-0-4','4:0'), /周围响起笑声/);
+  assert.match(narrative('r-C-1a','108:0', {'shenci-r-C-1a:107': '1'}), /这王位/);
+  assert.match(narrative('r-C-8','2:0'), /持刃站在王背后/);
+  assert.match(narrative('k-Z-6','6:0'), /靠在了船板上/);
+  assert.match(narrative('k-Z-7','7:0'), /药铺的柜台角上/);
+  const porridge = {...visit('k-G-2', profile), beatId: 'shenci-k-G-2:2:0'};
+  assert.match(slotPresentation(porridge, profile).excerpt, /临行那天/);
+  const omitted = {...visit('d-1-11', profile), beatId: 'shenci-d-1-11:0:0'};
+  assert.equal(restoreEditorialBookmark(omitted, profile).beatId, 'shenci-d-1-11:3:0');
+
+  const returnState = visit('m-2-1', profile);
+  const beforeFix = {...returnState, beatId: 'shenci-m-2-1:2:0'};
+  assert.equal(restoreEditorialBookmark(beforeFix, profile).beatId, 'shenci-m-2-1:4:0');
+  const fallenCity = {...beforeFix, choices: {[SHENCI_RETURN_ENDING]: 'shenci-royal-g1'}};
+  assert.equal(restoreEditorialBookmark(fallenCity, profile).beatId, beforeFix.beatId);
+  assert.match(narrative('m-2-1','4:0'), /睁开眼/);
+
+  for (const scene of campaignScenes('shenci')) {
+    const beats = compileScene(scene.id, profile, {choices: {}, inventory: []});
+    for (const beat of beats) {
+      if (beat.kind !== 'text') continue;
+      assert.doesNotMatch(presentStoryText(beat.id, beat.text), /\b[A-Z]\d?[-－–]\d+|\b\d+-\d+[a-z]\b|统一模糊朦胧虚化处理|全剧最瑰丽|幕前·起因|【间场】|最后一个镜头/, beat.id);
+    }
+  }
 });

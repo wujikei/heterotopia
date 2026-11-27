@@ -2660,7 +2660,7 @@
       "id": "shenci-k-F-1",
       "title": "没有黑的地方",
       "sourceId": "F-1",
-      "chapter": "昆仑 · 昆仑 · 幻境",
+      "chapter": "昆仑 · 幻境",
       "route": "kunlun",
       "script": "shenci",
       "background": "cg-modern-kunlun-light",
@@ -2670,7 +2670,7 @@
       "id": "shenci-k-F-2",
       "title": "媭的屋檐",
       "sourceId": "F-2",
-      "chapter": "昆仑 · 昆仑 · 幻境",
+      "chapter": "昆仑 · 幻境",
       "route": "kunlun",
       "script": "shenci",
       "background": "modern-herb-eaves",
@@ -2680,7 +2680,7 @@
       "id": "shenci-k-F-3",
       "title": "芈的完整曲子",
       "sourceId": "F-3",
-      "chapter": "昆仑 · 昆仑 · 幻境",
+      "chapter": "昆仑 · 幻境",
       "route": "kunlun",
       "script": "shenci",
       "background": "light-river",
@@ -2690,7 +2690,7 @@
       "id": "shenci-k-F-4",
       "title": "戌的那颗青米",
       "sourceId": "F-4",
-      "chapter": "昆仑 · 昆仑 · 幻境",
+      "chapter": "昆仑 · 幻境",
       "route": "kunlun",
       "script": "shenci",
       "background": "light-river",
@@ -2700,7 +2700,7 @@
       "id": "shenci-k-F-5",
       "title": "东皇太一·最高的神坐下来",
       "sourceId": "F-5",
-      "chapter": "昆仑 · 昆仑 · 幻境",
+      "chapter": "昆仑 · 幻境",
       "route": "kunlun",
       "script": "shenci",
       "background": "light-river",
@@ -2710,7 +2710,7 @@
       "id": "shenci-k-F-6",
       "title": "视角悬置",
       "sourceId": "F-6",
-      "chapter": "昆仑 · 昆仑 · 幻境",
+      "chapter": "昆仑 · 幻境",
       "route": "kunlun",
       "script": "shenci",
       "background": "light-river",
@@ -3381,7 +3381,7 @@
       "id": "shenci-k-F-7",
       "title": "昆仑 · 诸神的回声",
       "sourceId": "F-7",
-      "chapter": "昆仑 · 昆仑 · 幻境",
+      "chapter": "昆仑 · 幻境",
       "route": "kunlun",
       "script": "shenci",
       "background": "light-river"
@@ -3551,5 +3551,100 @@
       "ending": "shenci-home",
       "endingTitle": "递水的人"
     }
-  ]
+  ],
+  "musicCues": {
+    "shenci-d-0-1": [
+      "paper-note"
+    ],
+    "shenci-d-0-3": [
+      "paper-note",
+      "under-current"
+    ],
+    "shenci-d-0-4": [
+      "playful",
+      "paper-note"
+    ],
+    "shenci-d-0-6": [
+      "under-current",
+      "playful",
+      "paper-note"
+    ],
+    "shenci-d-0-8": [
+      "playful"
+    ],
+    "shenci-d-0-10": [
+      "under-current"
+    ],
+    "shenci-d-0-11": [
+      "under-current"
+    ],
+    "shenci-d-1-2": [
+      "ritual"
+    ],
+    "shenci-d-1-5": [
+      "hearth",
+      "playful",
+      "old-jade"
+    ],
+    "shenci-d-1-8": [
+      "ritual",
+      "old-jade"
+    ],
+    "shenci-d-1-9": [
+      "ritual",
+      "silence"
+    ],
+    "shenci-d-1-11": [
+      "chu-night-river"
+    ],
+    "shenci-d-1-12z": [
+      "under-current",
+      "chu-night-river",
+      "silence"
+    ],
+    "shenci-r-C-5": [
+      "ritual"
+    ],
+    "shenci-r-C-11": [
+      "small-goodbyes"
+    ],
+    "shenci-k-A-2": [
+      "playful"
+    ],
+    "shenci-k-B-7": [
+      "playful",
+      "small-goodbyes"
+    ],
+    "shenci-k-C-6": [
+      "last-flute",
+      "silence"
+    ],
+    "shenci-k-D-5": [
+      "chu-storm"
+    ],
+    "shenci-k-D-6": [
+      "chu-storm",
+      "silence"
+    ],
+    "shenci-k-D-7": [
+      "silence"
+    ],
+    "shenci-k-F-5": [
+      "silence"
+    ],
+    "shenci-k-G-1": [
+      "silence"
+    ],
+    "shenci-m-2-1": [
+      "silence"
+    ],
+    "shenci-m-4-4": [
+      "playful",
+      "modern-ascent"
+    ],
+    "shenci-m-4-5": [
+      "silence",
+      "shenci-lookback"
+    ]
+  }
 }

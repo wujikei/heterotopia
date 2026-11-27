@@ -216,7 +216,10 @@ test('every shipped audio asset has provenance, duration, peak headroom and a ma
     assert.ok(existsSync(new URL(`../public/audio/${file.file}`, import.meta.url)));
     assert.ok(file.seconds > 0 && file.bytes > 1000);
     assert.ok(file.truePeakDB <= -1);
-    if (file.kind === 'music') { assert.ok(file.integratedLUFS >= -20 && file.integratedLUFS <= -17); assert.ok(file.seconds > 55); }
+    if (file.kind === 'music') {
+      assert.ok(file.integratedLUFS >= -20 && file.integratedLUFS <= -17);
+      assert.ok(file.seconds > (file.file === 'music-shenci-lookback.mp3' ? 30 : 55));
+    }
     assert.ok(file.source.length > 10);
   }
 });

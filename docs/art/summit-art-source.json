@@ -1,0 +1,136 @@
+[
+  {
+    "asset": "cg-modern-hike-tang",
+    "comfyFile": "tang-handoff_00001_.png",
+    "sha256": "e4086321a8516a060449420777f0dad61795cdc800f6170afe5118ef8ffcd76f",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 6204182,
+    "prompt": "Landscape story CG for the Chinese painterly visual novel, reusing the exact Jiang valley mountain trail from reference image 1 and the exact teenage Tang Jin design from image 2. On a quiet fork in the stone trail in soft late-afternoon light, viewed at Shen Ci's eye level from arm's length. Tang Jin stands slightly to the right of center, black high ponytail, wispy bangs, light stone-gray hiking overshirt over an off-white shirt, muted olive backpack straps. One eyebrow subtly knits with concern, her look is direct and unposed. She offers Shen Ci one unopened, half-liter CLEAR unbranded disposable plastic water bottle with a small PALE BLUE screw cap and matching tamper ring, no label, fine horizontal ribs in the lower third. The extended hand grips around the middle of the bottle, anatomically clear, bottle fully seen close to the center of the frame, with the cap and normal fingers clearly separated. Her other hand keeps her own partially drunk bottle by her far hip, understated and down away from the exchange. Point of view with only Tang visible; no extra hands in foreground. Crop from the top of her ponytail to below the waist, the bottle around chest height. Keep her face and the offered bottle tightly inside the central 52 percent of image width and above the bottom third so both fit a portrait crop; the trail fork, subdued green foliage, stone steps, and weathered gray guardrail extend to either side. Subtle texture on skin and cotton, oil-gouache realism with visible softly layered brushwork, muted olive and warm stone, atmospheric river hills. Familiarity and restraint, no glamour pose, no text or branding, full single illustration.",
+    "mobileCenter": 0.57,
+    "mobileAspect": 0.8,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-path-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-tang-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-hike-terrace",
+    "comfyFile": "terrace_00001_.png",
+    "sha256": "2f0463dcc046cfcb8321360d3eba28b675f904ab6dd6f6e8daa7e04b2c6ae5c4",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 653119,
+    "prompt": "A close landscape story background in exactly the hand-painted style of reference 1. Camera at standing eye level on a small paved viewing platform halfway up the same Jiang valley mountain trail, facing diagonally across the little terrace toward the river below. The steep mountain path ONLY enters from the left via exactly two shallow stepped gray stone risers in the middle distance. A broad flat landing, then a weathered grey rectangular stone guardrail pillar seated on the stone tiles and its horizontal rail on the right overlooking the valley. Make the bottom and footing of the guardrail visibly clear, recognizably the same as detail in reference 2. The sloping forest and hazy green-grey gorges of the same river below as reference 1. Late afternoon muted warm sky and mossy olive tones, same brushwork, gently yellow atmospheric reflections, no strong sunlight disc, believable local terrain. Open quiet visual rest before an action close-up. No characters in foreground, just a few small distant school-age walkers on the path already above the terrace. No bottle, no hands, no text or frame. Keep the walkway and post in and around the center of the frame so a central portrait crop also reads.",
+    "mobileCenter": 0.43,
+    "mobileAspect": 0.8,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-path-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-scuffed-bottle-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-hike-rail",
+    "comfyFile": "bottle-rail_00001_.png",
+    "sha256": "0ff672cc6a9a516290238a23684a73dbacf5911fd225269ec45f2b0941bd3ae4",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 638811,
+    "prompt": "Landscape CG still life, exact continuation of the stone mountain path from reference 1, same subdued gouache-oil brushwork. Camera at ankle height on a half-way viewing terrace looking down and sideways. One ordinary transparent half-liter disposable water bottle has stopped on weathered gray stone next to the foot of a rectangular gray stone rail post, after rolling down two low steps. Reference 2 is for the exact bottle design only: sky-blue short flat screw cap with no tabs or wings, clear plastic with fine horizontal ribs on the lower part, clean unbranded surface, no sticker, this same bottle now has a single fine chalk-white stress scuff diagonally across its side next to the last two ribs, water around two-thirds full after a sip. The closed blue cap points left, the base right, bottle resting horizontally with its entire silhouette and white mark well visible in lower central half. Show the contact area of the rail base at right and two diagonal stone steps behind, a few believable specks of dust, subtle leaf shadow and quiet amber afternoon reflected in the clear plastic. Frame bottle and rail base together, leave a little context outside, central crop-safe arrangement. Nothing else on the stair, no people, no hands, no stickers, no bottle text, no dramatic action lines, no motion blur. Chinese painterly narrative CG, muted gray stone and olive foliage.",
+    "mobileCenter": 0.55,
+    "mobileAspect": 1.0,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-path-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-bottle-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-hike-pickup",
+    "comfyFile": "bottle-pickup-clear_00001_.png",
+    "sha256": "44c726284234a9ae3eb1c4178787910ae1619593819e7dbf05c3f3628d5aa511",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 618720,
+    "prompt": "Close cropped illustrated CG of one hand in a sunflower-yellow rolled sleeve just lifting the ordinary TRANSPARENT CLEAR colorless disposable plastic water bottle exactly as seen in reference image 2 from the gray stone stair just behind the railing. A first-person view down at the ground, no face, no upper body, only an extended forearm, a hand taking hold of the bottle, and the gray stone stairs. Framed tightly on the centered bottle and the hand. WE CAN SEE THE FINGERS AND THE GRAY STONE THROUGH THE BOTTLE. The cap is the only blue part of the bottle, a tiny pale blue short screw cap, and the body is optically clear and thin. It is a disposable unlabelled bottled-water container with horizontal ribs and a transparent thick base and water sloshing inside. One white diagonal abrasion on the shoulder of the clear bottle. The teen hand enters from right, a fully natural gesture using four fingers, a thumb, and one arm. A glimpse of the exact girl's yellow nylon jacket from reference image 1, the rolled sleeve ends below the elbow. The bottle points roughly diagonally left and up in the frame, close to the rail foot and fully visible. Evening light and soft gray sandstone, matte brushwork over naturalistic small details. No text or border.",
+    "mobileCenter": 0.51,
+    "mobileAspect": 0.8,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-yellow-handoff-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-scuffed-bottle-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-hike-return",
+    "comfyFile": "yellow-jacket_00001_.png",
+    "sha256": "70513884c84c7df2d9fcb141887e34e1b524572989d513b14941a5f31034b229",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 531448,
+    "prompt": "Single landscape story CG in a painterly Chinese visual novel, same hand-painted naturalistic oil and gouache treatment as references. Shen Ci's intimate close first-person eye-level view at a stone mid-mountain overlook, late-afternoon amber light, gray stone railing with Jiang valley beyond like reference 3, faint distant classmates blurred small well behind. The smiling East Asian school-age teenage girl of reference 1 is close in front, same dark chin-to-shoulder-length hair, dark eyes, warm open face, one small uneven canine just visible, vivid sunflower-yellow hiking jacket over a simple white shirt. Both sleeves are rolled to mid-forearm and both arms are present. She extends ONE small clear unlabelled disposable water bottle with a pale blue flat screw cap and a pale short white scuff in the horizontal bottom ribs, like the bottle in reference 2. Grip centered, full bottle visible, no labels. Her other arm bends loosely by her waist. View from top of hair to waist, natural neck and shoulders, amused and matter-of-fact, no glamour. Keep face and bottle centered vertically in one tight composition with space above hair and below bottle; face centered near x=52%, y=31%, bottle near x=43%, y=65%; both occupy the central 48% of width so they fit a phone crop. Warm unforced smile, bright yellow only on her outerwear, soft gray greens, warm river atmosphere. The Shen Ci first-person camera is the only other presence in the foreground, no characters or hands covering the central action, natural fingers, no signage.",
+    "mobileCenter": 0.48,
+    "mobileAspect": 0.8,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-yellow-identity.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-bottle-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-path-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-hike-invitation",
+    "comfyFile": "yellow-invitation_00001_.png",
+    "sha256": "be2c5aa668616097768b12318b8281cd8b3b5afc300f024d9ce35537bdeeb683",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 681598,
+    "prompt": "Single shot for a Chinese painterly visual novel, same teenager exactly as reference 1. At the same stone mid-mountain overlook, Shen Ci has already received his water bottle and is out of shot. The teenage schoolgirl with short dark shoulder-length hair and a warm tooth-showing smile stands naturally beside the gray stone rail, bright sunflower-yellow hiking jacket and white T-shirt, sleeves folded to the elbows, green-brown daypack. She casually uses ONE empty hand to tuck a loose lock of hair behind one ear, fingers softly resting against hair near her ear, other hand empty and relaxed at her side, a little wind lifts the jacket. No objects carried, NO bottle anywhere. She just asked Shen Ci to walk with her, matter of fact and smiling towards him. Camera at eye level from his point of view, medium upper body and natural front three-quarter angle, placing her centrally with face and upper arm fully inside central half. Small groups of classmates blurred and already a short way up the path. Gray stone handrail and the receding blue-green Jiang valley of reference 2, afternoon mild sunlight, gray olive and warm amber matched to reference 1. Soft painterly brushwork, grounded anatomy, no glamour, no signs, no border. She looks cheerful and spontaneous rather than posing.",
+    "mobileCenter": 0.46,
+    "mobileAspect": 0.8,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-yellow-handoff-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-path-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-hike-held",
+    "comfyFile": "bottle-held_00001_.png",
+    "sha256": "4a8d5105a105ee638a16bfff7abb75b78995d7d4760f3d73c25361486c047a0b",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 831550,
+    "prompt": "Close first-person illustration for a Chinese painterly visual novel. Shen Ci is looking down at his own teenage right hand, now gently closed around the middle of the SAME small unbranded clear plastic bottle in reference one. Lid is a simple pale sky blue flat screw cap, lower body ribbed, one slightly diagonal white stress scuff on the side, some water remains in the bottle. A natural single human right hand with its thumb visible and four naturally tucked fingers, dark ink-blue jacket cuff at the bottom of the wrist. Bottle held upright with a slight lean, completely visible, central on canvas. No second hand, no yellow sleeve, no person or face, no labels. Brushed gray stone and a soft muted green shadow out of focus at the trail at the edge of the same half-mountain overlook and weathered gray railing. The view is downward, bottle about arm's length, warm afternoon light and softly layered matte brushwork exactly like the two references. Quiet reflective detail, unposed gesture, no other item and no illustration border.",
+    "mobileCenter": 0.5,
+    "mobileAspect": 0.8,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-scuffed-bottle-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-path-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-hike-lookback",
+    "comfyFile": "yellow-lookback_00001_.png",
+    "sha256": "60721adc815a4b40a6a24ec8f83ee9e2c95728833d6f7b6206949f5ef3cb3925",
+    "model": "qwen_image_2.1_int8_convrot.safetensors",
+    "seed": 554337,
+    "prompt": "A single Chinese painterly visual novel environment/story illustration. Keep the very same East Asian teenage girl of reference one, same face and age, warm eyes, short dark shoulder-length windblown hair, bright sunflower-yellow hiking jacket with its cuffs rolled back to her elbows, off-white t-shirt underneath, backpack. Late afternoon at the same half-mountain stone overlook and valley. She has taken two steps forward toward the summit with a few slightly out-of-focus students further ahead. View from Shen Ci's height about three meters behind her. Her body naturally turned away from the camera, her feet are aimed up the stone path to the upper left, but she looks back over her right shoulder and gives Shen Ci the same unabashed, happy, tooth-showing grin from reference 1. Both hands relaxed and empty, the bottle now in Shen Ci's possession, outside the frame. A loose lock of hair moving sideways in the mountain breeze and folds in the cuffs. Keep her around x=54 percent, her entire head with a little room above, jacket and arms in the middle 58 percent, no photographer, nothing obscuring her face. Trail leads uphill between gray guardrail and hillside shrubs, the hazy valley and tapering blue water to the right, no visible sun disk. Rough painted late-summer light and gray olive hillside, slightly golden atmosphere, same original painterly palette, grounded movement. Frame from top of head to hip, with enough landscape to see that she has gone ahead. No floating graphics, hands are empty, one girl at front, no signage.",
+    "mobileCenter": 0.46,
+    "mobileAspect": 0.8,
+    "referenceInputs": [
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-yellow-handoff-reference.png",
+      "Qwen2.1/Heterotopia/Summit-20261127/summit-path-reference.png"
+    ]
+  },
+  {
+    "asset": "cg-modern-photo-user-m",
+    "source": "public/art-original/cg-modern-photo-user.webp",
+    "sha256": "685b10f774c3058831cf707c1f8fb908c8672652fc049273b63ed04d81916db7",
+    "mobileCenter": 0.52,
+    "mobileAspect": 1.0
+  },
+  {
+    "asset": "cg-modern-photo-r4-overseas-light-m",
+    "source": "public/art-original/cg-modern-photo-r4-overseas-light.webp",
+    "sha256": "9b6efb897b25097950e458e8c04e2d92299d9809caac41a9b6ed8f21940b370e",
+    "mobileCenter": 0.49,
+    "mobileAspect": 1.0
+  },
+  {
+    "asset": "cg-modern-photo-r4-overseas-deep-m",
+    "source": "public/art-original/cg-modern-photo-r4-overseas-deep.webp",
+    "sha256": "cca5984fc4567e75deec68ede865eb3be71fc74971b2c79588646cfd9c182a1e",
+    "mobileCenter": 0.49,
+    "mobileAspect": 1.0
+  }
+]

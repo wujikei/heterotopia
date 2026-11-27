@@ -684,6 +684,28 @@
       "integratedLUFS": -18.27,
       "truePeakDB": -4.2,
       "source": "Original procedural plucked-string synthesis by scripts/build_shenci_playful.py; no samples"
+    },
+    {
+      "file": "music-shenci-lookback.mp3",
+      "title": "回头一笑",
+      "kind": "music",
+      "loop": true,
+      "seconds": 33.47059,
+      "bytes": 805171,
+      "integratedLUFS": -18.34,
+      "truePeakDB": -2.95,
+      "source": "Local ACE-Step 1.5"
+    },
+    {
+      "file": "sfx-bottle-rail.mp3",
+      "title": "水瓶滚阶与碰栏",
+      "kind": "effect",
+      "loop": false,
+      "seconds": 0.75,
+      "bytes": 16409,
+      "integratedLUFS": -26.48,
+      "truePeakDB": -9.75,
+      "source": "Original deterministic procedural sound design"
     }
   ]
 }

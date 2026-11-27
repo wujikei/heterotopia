@@ -178,5 +178,14 @@
     "keyscale": "C major",
     "file": "music-shenci-playful.mp3",
     "seconds": 60.0
+  },
+  {
+    "id": "shenci-lookback",
+    "title": "回头一笑",
+    "subtitle": "山风过后，终于开口。",
+    "bpm": 68,
+    "keyscale": "G major",
+    "file": "music-shenci-lookback.mp3",
+    "seconds": 33.47059
   }
 ]
