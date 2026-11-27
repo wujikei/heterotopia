@@ -17,6 +17,7 @@ export const MODERN_PAPER_NOTE_ART = 'cg-modern-paper-note';
 export const MODERN_GLANCE_ART = 'cg-modern-glance-r4';
 export const MODERN_SUMMIT_ART = 'cg-modern-summit-r4';
 export const MODERN_PHOTO_ART = 'cg-modern-photo-user';
+export const MODERN_SHUTTER_BEAT = 'modern-o-5-7:17:0';
 const MODERN_ART_PREVIOUS: Readonly<Partial<Record<string, string>>> = {
   [MODERN_ARRIVAL_ART]: 'modern-street-arrival-r2',
   [MODERN_STALL_ART]: 'cg-modern-word-stall',

@@ -1,17 +1,17 @@
-import { sceneById } from './engine';
 import { isShenci } from './shenci';
+import { SHENCI_STORY } from './story';
 import rawSoundtrack from './data/soundtrack.json';
 import type { Beat, EndingId, Profile } from './types';
-import { isModern, MODERN_ARRIVAL_ART, MODERN_GLANCE_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_PHOTO_ART, MODERN_STALL_ART, MODERN_SUMMIT_ART, MODERN_TRANSLATION_ART } from './modern';
+import { isModern, MODERN_ARRIVAL_ART, MODERN_GLANCE_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_PHOTO_ART, MODERN_SHUTTER_BEAT, MODERN_STALL_ART, MODERN_SUMMIT_ART, MODERN_TRANSLATION_ART } from './modern';
 import { OVERSEAS_MUSIC_BY_SCENE } from './data/overseasScore';
 import { MODERN_BLACKOUTS } from './data/modernStaging';
 
 export const ORIGINAL_MUSIC_IDS = ['river-home', 'paper-note', 'hearth', 'river-journey', 'old-jade', 'ritual', 'under-current', 'small-goodbyes', 'last-flute', 'river-of-names', 'light-in-kitchen'] as const;
-export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-question', 'modern-return', 'modern-untranslated', 'modern-ascent', 'modern-afterglow', 'chu-night-river', 'chu-storm', 'shenci-playful'] as const;
+export const MUSIC_IDS = [...ORIGINAL_MUSIC_IDS, 'modern-street', 'modern-question', 'modern-return', 'modern-untranslated', 'modern-ascent', 'modern-afterglow', 'chu-night-river', 'chu-storm', 'shenci-playful', 'shenci-lookback'] as const;
 export type MusicId = typeof MUSIC_IDS[number];
 export const AMBIENCE_IDS = ['river', 'rain', 'hearth', 'wind', 'winter', 'room', 'night', 'street', 'marsh', 'underwater', 'cave', 'palace'] as const;
 export type AmbienceId = typeof AMBIENCE_IDS[number];
-export const EFFECT_IDS = ['page', 'choice', 'bookmark', 'bronze', 'triple-bell', 'ritual-drum', 'hull', 'alarm', 'school-bell', 'door', 'wood-latch', 'bamboo', 'cloth', 'ceramic', 'splash', 'oar', 'drop', 'electric', 'chair', 'steps', 'stone', 'string-snap', 'ball', 'bike-bell', 'flute', 'crow', 'pottery', 'heartbeat', 'dorm-bowl', 'camera-shutter'] as const;
+export const EFFECT_IDS = ['page', 'choice', 'bookmark', 'bronze', 'triple-bell', 'ritual-drum', 'hull', 'alarm', 'school-bell', 'door', 'wood-latch', 'bamboo', 'cloth', 'ceramic', 'splash', 'oar', 'drop', 'electric', 'chair', 'steps', 'stone', 'string-snap', 'ball', 'bike-bell', 'flute', 'crow', 'pottery', 'heartbeat', 'dorm-bowl', 'camera-shutter', 'bottle-rail'] as const;
 export type EffectId = typeof EFFECT_IDS[number];
 export interface Track { id: MusicId; title: string; subtitle: string; bpm: number; keyscale: string; file: string; seconds: number }
 export const SOUNDTRACK = rawSoundtrack as Track[];
@@ -83,7 +83,7 @@ export const TRACK_ART: Record<MusicId, string> = {
   'modern-street': MODERN_ARRIVAL_ART, 'modern-question': 'cg-modern-dorm-carving-r2',
   'modern-return': 'cg-modern-noodles', 'modern-untranslated': MODERN_TRANSLATION_ART,
   'modern-ascent': 'modern-mountain-path', 'modern-afterglow': MODERN_PHOTO_ART, 'shenci-playful': 'school',
-  'chu-night-river': 'modern-night-river', 'chu-storm': 'cg-modern-storm',
+  'chu-night-river': 'modern-night-river', 'chu-storm': 'cg-modern-storm', 'shenci-lookback': 'cg-modern-hike-lookback',
 };
 
 // Secondary cues must be discoverable in the listening room before the full
@@ -109,9 +109,10 @@ function shenciMusic(id: string): MusicId | null {
   const n = Number(number);
   if (group === 'd') {
     if (family === '0') return [1,7,11].includes(n) ? 'under-current' : 'paper-note';
+    if (/^12[a-g]$/.test(number)) return 'chu-night-river';
     if (['2','3'].includes(number)) return 'ritual';
     if (number === '12z') return 'hearth';
-    if (['9','10','11'].includes(number) || /^12[a-g]/.test(number)) return 'river-of-names';
+    if (['9','10','11'].includes(number)) return 'river-of-names';
     return 'hearth';
   }
   if (group === 'r') {
@@ -131,19 +132,26 @@ function shenciMusic(id: string): MusicId | null {
     if (family === 'A') return [4,5,6,9].includes(n) ? 'shenci-playful' : 'hearth';
     if (family === 'B') return [8,12,15].includes(n) ? 'small-goodbyes' : [2,3,4,5,6].includes(n) ? 'ritual' : 'river-journey';
     if (family === 'C') return n < 3 ? 'old-jade' : 'last-flute';
-    if (family === 'D') return n < 4 ? 'river-journey' : n < 7 ? 'under-current' : n === 7 ? null : n < 12 ? 'small-goodbyes' : 'river-of-names';
+    if (family === 'D') {
+      if (n < 4) return 'river-journey';
+      if (n < 6) return 'under-current';
+      if (n === 6) return 'chu-storm';
+      return n === 7 ? null : n < 12 ? 'small-goodbyes' : 'river-of-names';
+    }
     if (family === 'E') return [4,8,10].includes(n) ? 'under-current' : 'river-of-names';
     if (family === 'F') return n === 5 ? 'river-of-names' : n >= 6 ? null : 'last-flute';
     return family === 'Z' ? 'river-of-names' : 'small-goodbyes';
   }
   if (family === '4' && n === 4) return 'modern-ascent';
-  if (family === '4' && n === 5) return 'light-in-kitchen';
-  return family === '2' || family === '3' ? n === 1 ? 'paper-note' : 'light-in-kitchen' : 'river-home';
+  if (family === '4' && n === 5) return null;
+  if (family === '2' || family === '3') return n === 1 ? null : 'light-in-kitchen';
+  return 'river-home';
 }
 const readShenciMusic = (cue?: string): MusicId | null | undefined => cue === 'silence' ? null : cue === 'playful' ? 'shenci-playful' : MUSIC_IDS.find(m => m === cue);
+const SHENCI_CUES: Readonly<Partial<Record<string, readonly string[]>>> = SHENCI_STORY.musicCues;
 
 export function tracksForVisit(sceneId: string): MusicId[] {
-  if (isShenci(sceneId)) return [...new Set([shenciMusic(sceneId), ...sceneById(sceneId).blocks.map(block => readShenciMusic(block.musicCue))])].filter((track): track is MusicId => !!track);
+  if (isShenci(sceneId)) return [...new Set([shenciMusic(sceneId), ...(SHENCI_CUES[sceneId] ?? []).map(readShenciMusic)])].filter((track): track is MusicId => !!track);
   const track = musicForScene(sceneId);
   return [...(track ? [track] : []), ...(OTHER_TRACKS[sceneId] ?? []), ...(LEGACY_MODERN_TRACKS[sceneId] ?? [])];
 }
@@ -226,7 +234,7 @@ const ACCENTS: Record<string, Effect[]> = {
   'modern-o-5-2:4:0': [e('electric', .1, .25)],
   'modern-o-5-2:8:0': [e('page', .17, .14, .10)],
   'modern-o-5-6:9:0': [e('cloth', .15, .18, .08)],
-  'modern-o-5-7:17:0': [e('camera-shutter', .32, .09, .04)],
+  [MODERN_SHUTTER_BEAT]: [e('camera-shutter', .32, .02, .04)],
   'modern-k-D-5:3:0': [e('hull', .47, .07), e('splash', .57, .19, -.18)],
   'modern-k-D-5:5:0': [e('wood-latch', .39, .16, -.28)],
   'modern-k-E-12:3:0': [e('ritual-drum', .29, .12)],
@@ -430,8 +438,8 @@ function directOverseasScore(frame: ScoreFrame, beat: Beat, block: number): void
       frame.ambienceFade = .65;
     }
     if (atShutter) {
-      frame.cue = 'modern-o-5-7:17:0';
-      frame.musicFade = .13;
+      frame.cue = MODERN_SHUTTER_BEAT;
+      frame.musicFade = .075;
       frame.ambience = [['wind', .06], ['river', .045]];
       frame.ambienceFade = .24;
     }
@@ -446,6 +454,105 @@ function directOverseasScore(frame: ScoreFrame, beat: Beat, block: number): void
   }
 }
 
+function directShenciScore(frame: ScoreFrame, beat: Beat, block: number): void {
+  const { scene } = frame;
+  const cue = readShenciMusic(beat.musicCue);
+  frame.music = cue === undefined ? shenciMusic(scene) : cue;
+  frame.musicGain = frame.music === 'shenci-playful' ? .52 : frame.music === 'under-current' ? .64 : .73;
+  frame.transition = frame.music === 'shenci-playful' ? .32 : frame.music ? 2.3 : 1.35;
+  if (beat.ambienceCue) {
+    const ambience = AMBIENCE_IDS.find(id => id === beat.ambienceCue);
+    frame.ambience = ambience ? [[ambience, ambience === 'rain' ? .50 : ambience === 'wind' || ambience === 'river' ? .28 : .21]] : [];
+  } else if (scene.startsWith('shenci-d-1-12')) frame.ambience = [['river', .24], ['night', .09]];
+
+  if (scene === 'shenci-d-0-1') {
+    if (frame.music === 'under-current') {
+      frame.prepareMusic = 'paper-note';
+      frame.ambience = ENVIRONMENTS['dream-boat'];
+    } else frame.ambienceFade = .50;
+  }
+  if (scene === 'shenci-d-0-10') {
+    if (frame.music === 'paper-note') frame.prepareMusic = 'under-current';
+    else {
+      frame.releaseBeforeLoad = true;
+      frame.transition = .55;
+      frame.ambienceFade = .60;
+      frame.ambience = [['room', .10], ['underwater', .30]];
+    }
+  }
+  if (scene === 'shenci-d-0-11' && block >= 24) frame.prepareMusic = 'ritual';
+  if (scene === 'shenci-d-1-2') {
+    frame.releaseBeforeLoad = true;
+    frame.transition = .85;
+    frame.ambienceFade = .65;
+    frame.musicGain = .54;
+  }
+  if (frame.music === 'chu-night-river') frame.musicGain = .43;
+
+  if (scene === 'shenci-k-D-4' && block >= 6) {
+    frame.prepareMusic = 'chu-storm';
+    frame.ambience = [['river', .28], ['wind', .35]];
+  }
+  if (scene === 'shenci-k-D-5' && frame.music === 'under-current') {
+    frame.prepareMusic = 'chu-storm';
+    frame.ambience = [['river', .17], ['wind', .42]];
+  }
+  if (frame.music === 'chu-storm') {
+    frame.releaseBeforeLoad = true;
+    frame.transition = .75;
+    frame.ambienceFade = .65;
+    frame.musicGain = scene === 'shenci-k-D-5' && beat.ambienceCue === 'wind' ? .39 : .59;
+    frame.musicFade = .65;
+    frame.ambience = beat.ambienceCue === 'wind' ? [['wind', .48], ['river', .17]] : ENVIRONMENTS['cg-modern-storm'];
+  }
+  if ((scene === 'shenci-k-D-6' && frame.music === null) || scene === 'shenci-k-D-7') {
+    frame.transition = .75;
+    frame.ambienceFade = .65;
+    frame.releaseBeforeLoad = true;
+    frame.ambience = [['river', .23]];
+  }
+  if (scene === 'shenci-m-2-1' || scene === 'shenci-m-3-1') {
+    frame.releaseBeforeLoad = true;
+    frame.transition = .85;
+    frame.ambienceFade = .65;
+    frame.ambience = scene === 'shenci-m-3-1' && block === 2 ? [['river', .16]] : [['room', .18]];
+    frame.prepareMusic = 'light-in-kitchen';
+  }
+  if (scene === 'shenci-m-4-4' && block >= 23) {
+    frame.musicGain = .30;
+    frame.musicFade = .8;
+    frame.ambience = [['wind', .20]];
+    frame.ambienceFade = .65;
+    frame.prepareEffects = ['bottle-rail'];
+  }
+  if (scene === 'shenci-m-4-5') {
+    frame.transition = frame.music ? 1.35 : .55;
+    frame.ambience = [['wind', block >= 3 && block < 7 ? .11 : .20]];
+    frame.ambienceFade = .42;
+    if (block === 2) frame.prepareEffects = ['bottle-rail'];
+    if (frame.music === 'shenci-lookback') frame.musicGain = .43;
+    else frame.prepareMusic = 'shenci-lookback';
+  }
+  if (scene === 'shenci-r-G-0' || scene === 'shenci-k-G-1' || beat.blackout) {
+    frame.ambience = [];
+    frame.ambienceFade = .36;
+    frame.releaseBeforeLoad = true;
+    if (beat.blackout) { frame.music = null; frame.transition = .45; }
+  }
+
+  const effects = (beat.effects ?? []).flatMap(id => EFFECT_IDS.includes(id as EffectId)
+    ? [id === 'bottle-rail' ? e(id, .48, .04, .08) : e(id as EffectId, id === 'splash' ? .47 : .34)]
+    : []);
+  if (effects.length) {
+    frame.events.push({ id: beat.id, effects });
+    if (effects.some(effect => effect.id === 'bottle-rail')) frame.cue = beat.id;
+  }
+  if (beat.stageEffect && beat.stageCueId && EFFECT_IDS.includes(beat.stageEffect as EffectId)) {
+    frame.events.push({ id: beat.stageCueId, effects: [e(beat.stageEffect as EffectId, beat.stageEffect === 'alarm' ? .54 : .33)] });
+    if (beat.stageEffect === 'alarm') frame.transition = .18;
+  }
+}
+
 export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
   if (!beat) return { scene: 'title', cue: 'title', music: 'river-home', musicGain: 1, ambience: ENVIRONMENTS.hero, events: [], transition: 1.6, releaseBeforeLoad: true };
   const [, rawBlock, rawPage] = beat.id.split(':');
@@ -455,24 +562,7 @@ export function scoreFrame(sceneId: string, beat: Beat | null): ScoreFrame {
     ambience: ENVIRONMENTS[beat.background] ?? [['wind', .2]], transition: 4.5,
     events: [{ id: beat.audioCueId, effects: CUE_EFFECTS[beat.audioCueId] ?? [] }],
   };
-  if (isShenci(sceneId)) {
-    const cue = readShenciMusic(beat.musicCue);
-    frame.music = cue === undefined ? shenciMusic(sceneId) : cue;
-    frame.musicGain = frame.music === 'shenci-playful' ? .52 : frame.music === 'under-current' ? .64 : .73;
-    frame.transition = frame.music === 'shenci-playful' ? .32 : frame.music ? 2.3 : 1.35;
-    if (beat.ambienceCue === 'none' || sceneId === 'shenci-r-G-0' || sceneId === 'shenci-k-G-1' || beat.blackout) frame.ambience = [];
-    else if (beat.ambienceCue) {
-      const amb = AMBIENCE_IDS.find(x => x === beat.ambienceCue);
-      if (amb) frame.ambience = [[amb, amb === 'rain' ? .50 : amb === 'wind' || amb === 'river' ? .28 : .21]];
-    } else if (sceneId.startsWith('shenci-d-1-12')) frame.ambience = [['river', .24], ['night', .09]];
-    if (beat.blackout) { frame.music = null; frame.transition = .45; }
-    const effects = (beat.effects ?? []).flatMap(x => EFFECT_IDS.includes(x as EffectId) ? [e(x as EffectId, x === 'splash' ? .47 : .34)] : []);
-    if (effects.length) frame.events.push({ id: beat.id, effects });
-    if (beat.stageEffect && beat.stageCueId && EFFECT_IDS.includes(beat.stageEffect as EffectId)) {
-      frame.events.push({ id: beat.stageCueId, effects: [e(beat.stageEffect as EffectId, beat.stageEffect === 'alarm' ? .54 : .33)] });
-      if (beat.stageEffect === 'alarm') frame.transition = .18;
-    }
-  }
+  if (isShenci(sceneId)) directShenciScore(frame, beat, block);
   if (isModern(sceneId)) directOverseasScore(frame, beat, block);
   if (ACCENTS[beat.id]) frame.events.push({ id: beat.id, effects: ACCENTS[beat.id] });
   if (sceneId === '0-1' && block >= 6) { frame.music = 'paper-note'; frame.transition = .18; }

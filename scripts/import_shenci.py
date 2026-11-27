@@ -199,7 +199,7 @@ def main():
     # a source-neutral cut skips the explicit fatal-collapse recollection when it did not happen.
     return_scene=by[sceneid('m','2-1')]
     for b in return_scene['blocks']:
-        if any(x in ''.join(b['lines']) for x in ('他听见那一声塌','不是耳朵听见的','然后他睁开眼')):b['royalCollapseOnly']=True
+        if any(x in ''.join(b['lines']) for x in ('听见那一声塌','不是耳朵听见的')):b['royalCollapseOnly']=True
     # A common paragraph after the landlord's optional response leads into the nested question.
     first=next(i for i,b in enumerate(visit['blocks']) if '天色暗下来的时候，戌起身告辞' in ''.join(b['lines']))
     for b in visit['blocks'][first:visit['blocks'].index(choices(visit)[4])]:b.pop('when',None)
@@ -215,8 +215,13 @@ def main():
         for t in [s.get('next'),s.get('redirect',{}).get('target'),*[o.get('target') for b in choices(s) for o in b['options']]]:
             if t:assert t in by,(s['id'],t)
         assert s['blocks'],s['id']
-    metadata={'title':'异托邦 · 沈辞新版','sourceSha256':hashlib.sha256(raw).hexdigest(),'sceneCount':len(scenes),'pageCount':sum(len(b.get('pages',[])) for s in scenes for b in s['blocks']),'scenes':scenes}
-    for file,data in [('shenci-story.json',metadata),('shenci-index.json',{**metadata,'scenes':[{k:v for k,v in s.items() if k!='blocks'} for s in scenes]})]:
+    metadata={'title':'异托邦 · 沈辞新版','sourceSha256':hashlib.sha256(raw).hexdigest(),'sceneCount':len(scenes),'pageCount':sum(len(b.get('pages',[])) for s in scenes for b in s['blocks'])}
+    opening=[s for s in scenes if s['route']=='prologue']
+    story=[s for s in scenes if s['route']!='prologue']
+    music_cues={s['id']:list(dict.fromkeys(b['musicCue'] for b in s['blocks'] if b.get('musicCue'))) for s in scenes}
+    index={**metadata,'scenes':[{k:v for k,v in s.items() if k!='blocks'} for s in scenes],
+           'musicCues':{scene:cues for scene,cues in music_cues.items() if cues}}
+    for file,data in [('shenci-opening.json',{'scenes':opening}),('shenci-story.json',{'scenes':story}),('shenci-index.json',index)]:
         (ROOT/'src/data'/file).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(f"Shenci: {len(scenes)} scenes, {metadata['pageCount']} pages")
 if __name__=='__main__':main()

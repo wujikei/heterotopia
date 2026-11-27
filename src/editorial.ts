@@ -9,9 +9,10 @@ const OMITTED_PAGES = new Set([
   'modern-r-F-6:3:0', 'modern-r-O-10:18:0',
   'modern-k-B-15:12:0', 'modern-k-D-13:16:0', 'modern-k-F-3:11:0',
   'modern-k-G-4:6:0', 'modern-k-Z-6:6:0',
+  'shenci-d-1-11:0:0', 'shenci-r-A-4:17:1', 'shenci-k-B-15:12:0', 'shenci-k-D-13:16:0', 'shenci-k-F-3:11:0',
 ]);
 
-const SILENT_PAGES = new Set(['modern-o-0-2:29:0', 'modern-k-G-4:7:0']);
+const SILENT_PAGES = new Set(['modern-o-0-2:29:0', 'modern-k-G-4:7:0', 'shenci-r-G-0:0:0', 'shenci-k-G-4:7:0']);
 
 export const isOmittedPage = (id: string) => OMITTED_PAGES.has(id);
 export const isSilentPage = (id: string) => SILENT_PAGES.has(id);
@@ -73,6 +74,16 @@ const PAGE_EDITS: Readonly<Partial<Record<string, readonly (readonly [string, st
   'modern-k-Z-6:14:0': [['最后一个镜头，落在药铺的柜台上。柜台角上，', '药铺的柜台角上，']],
 };
 
+const SHENCI_PAGE_EDITS: typeof PAGE_EDITS = {
+  'shenci-d-0-4:4:0': [[
+    '（不同老师上课，统一模糊朦胧虚化处理，第一视角你被点起来，音效模糊好像说了什么，周围传来笑声，你低着头（镜头能看见桌子逐渐靠近）缓缓坐下）',
+    '老师又点到了你。你站起来，耳边的话听不分明。周围响起笑声，你低着头，慢慢坐下。',
+  ]],
+  'shenci-r-E2-5:13:0': [['你藏了这只手十二年', '屈衡藏了这只手十二年']],
+  'shenci-k-Z-7:1:0': PAGE_EDITS['modern-k-Z-6:8:0'],
+  'shenci-k-Z-7:7:0': PAGE_EDITS['modern-k-Z-6:14:0'],
+};
+
 const CHOICE_EDITS: Readonly<Partial<Record<string, readonly [string, string]>>> = {
   'modern-r-D-11:11:1': ['守城（进国殇）', '守城'],
   'modern-r-D-11:11:2': ['去西渡口（进橘颂 / 哀郢 / 涉江 / 怀沙）', '去西渡口'],
@@ -83,18 +94,25 @@ const CHOICE_EDITS: Readonly<Partial<Record<string, readonly [string, string]>>>
 const SCENE_TITLES: Readonly<Partial<Record<string, string>>> = {
   'modern-k-F-6': '梦退潮时',
   'modern-k-G-4': '风过河岸',
+  'shenci-k-F-6': '梦退潮时',
+  'shenci-k-G-4': '风过河岸',
+  'shenci-k-Z-7': '药铺',
 };
 
 export function presentStoryText(id: string, source: string): string {
-  if (id.startsWith('shenci-')) return source.replace(/你（(?:沈辞|戌)）/g, '你');
-  if (!id.startsWith('modern-')) return source;
+  const shenci = id.startsWith('shenci-');
+  if (!shenci && !id.startsWith('modern-')) return source;
   if (isOmittedPage(id) || isSilentPage(id)) return '';
-  const text = (PAGE_EDITS[id] ?? []).reduce((value, [anchor, replacement]) => value.replace(anchor, replacement), source);
+  // The two volumes share passages. Match the actual phrase before applying a repair.
+  const shared = PAGE_EDITS[id.replace(/^shenci-/, 'modern-')] ?? [];
+  const edits = [...shared, ...(SHENCI_PAGE_EDITS[id] ?? [])];
+  const text = edits.reduce((value, [anchor, replacement]) => value.replace(anchor, replacement), source);
+  if (shenci) return text.replace(/你（(?:沈辞|戌)）/g, '你');
   return presentOverseasReflection(id, text).replaceAll('你（戌）', '你').replaceAll('你（林越）', '你');
 }
 
 export function presentChoiceLabel(id: string, source: string): string {
-  const edit = CHOICE_EDITS[id];
+  const edit = CHOICE_EDITS[id.replace(/^shenci-/, 'modern-')];
   return edit && source === edit[0] ? edit[1] : presentOverseasChoiceLabel(id, source);
 }
 
@@ -105,5 +123,6 @@ export function presentSceneTitle(scene: Pick<Scene, 'id' | 'title'>): string {
 const RETURN_CHAPTER = '线间 这边的日子';
 
 export function presentChapterTitle(scene: Pick<Scene, 'chapter'>): string {
+  if (scene.chapter === '彩蛋 · 另一边的日子') return '尾声 · 另一边的日子';
   return scene.chapter === RETURN_CHAPTER ? '归来 这边的日子' : scene.chapter;
 }

@@ -14,4 +14,12 @@ export const READING_HOLDS: Record<string, number> = {
   '终-1:22:3': 1000,
   '终-1:28:0': 600,
   '终-1:29:0': 1000,
+  'shenci-m-4-4:23:0': 450,
+  'shenci-m-4-5:3:0': 550,
+  'shenci-m-4-5:7:0': 500,
+  'shenci-m-4-5:19:0': 750,
+  'shenci-m-4-5:20:0': 950,
+  'modern-o-5-7:16:0': 350,
+  'modern-o-5-7:17:0': 650,
+  'modern-o-5-7:18:0': 550,
 };

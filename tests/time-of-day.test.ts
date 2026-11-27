@@ -10,11 +10,14 @@ import { locationForBeat } from '../src/scenePresentation';
 import { scoreFrame, trackById } from '../src/score';
 
 await loadStory();
+await loadStory('shenci');
+await loadStory('overseas');
 const profile = newProfile();
 const state = { choices: { breakfast: 'B' }, inventory: [] };
 function at(id: string) {
   const sceneId = id.split(':')[0];
-  const beats = compileScene(sceneId, profile, state);
+  const reader = sceneId.startsWith('shenci-') ? newProfile('shenci') : sceneId.startsWith('modern-') ? newProfile('overseas') : profile;
+  const beats = compileScene(sceneId, reader, state);
   const beat = beats.find(beat => beat.id === id)!;
   assert.ok(beat, id);
   return { beat, beats, scene: sceneById(sceneId) };
@@ -84,7 +87,7 @@ test('authored pauses use actual text pages and three long themes retain their o
     const { beat } = at(id);
     assert.equal(beat.kind, 'text');
     if (beat.kind !== 'text') continue;
-    assert.ok(hold >= 450 && hold <= 1400);
+    assert.ok(hold >= 350 && hold <= 1400);
     assert.ok(autoDelayFor(beat.text, 4, id) >= autoDelayFor(beat.text, 4));
     assert.ok(autoDelayFor(beat.text, 4, id) <= 9000);
   }

@@ -7,16 +7,39 @@ export let SCENES: Scene[] = index.scenes.map(scene => ({ ...scene, blocks: [] }
 export let STORY = { ...index, scenes: SCENES };
 export let MODERN_SCENES: Scene[] = modernIndex.scenes.map(scene => ({ ...scene, blocks: [] })) as Scene[];
 export const MODERN_STORY = modernIndex;
-export let SHENCI_SCENES = shenciIndex.scenes.map(scene => ({ ...scene, blocks: [] })) as Scene[];
+export const SHENCI_SCENES = shenciIndex.scenes.map(scene => ({ ...scene, blocks: [] })) as Scene[];
 export const SHENCI_STORY = shenciIndex;
-let shenciReady = false;
+const shenciScenePositions = new Map(SHENCI_SCENES.map((scene, index) => [scene.id, index]));
+const shenciOpeningIds = new Set(SHENCI_SCENES.filter(scene => scene.route === 'prologue').map(scene => scene.id));
+let shenciOpeningReady = false;
+let shenciOpeningLoading: Promise<void> | undefined;
 let shenciLoading: Promise<void> | undefined;
+let shenciReady = false;
 let ready = false;
 let modernReady = false;
 let loading: Promise<void> | undefined;
 let modernLoading: Promise<void> | undefined;
 
 export const isStoryReady = (campaign: Campaign = 'original') => campaign === 'overseas' ? modernReady : campaign === 'shenci' ? shenciReady : ready;
+export const isSceneReady = (campaign: Campaign, sceneId: string) =>
+  campaign === 'shenci' && shenciOpeningIds.has(sceneId) ? shenciOpeningReady : isStoryReady(campaign);
+
+function installShenciScenes(scenes: Scene[]) {
+  for (const scene of scenes) SHENCI_SCENES[shenciScenePositions.get(scene.id)!] = scene;
+}
+
+function loadShenciOpening(): Promise<void> {
+  if (shenciOpeningReady) return Promise.resolve();
+  return shenciOpeningLoading ??= import('./data/shenci-opening.json').then(({ default: data }) => {
+    installShenciScenes(data.scenes as Scene[]);
+    shenciOpeningReady = true;
+  }).catch(error => { shenciOpeningLoading = undefined; throw error; });
+}
+
+/** The prologue is independently playable. The main story also needs it for chapter replay. */
+export function loadSceneStory(campaign: Campaign, sceneId: string): Promise<void> {
+  return campaign === 'shenci' && shenciOpeningIds.has(sceneId) ? loadShenciOpening() : loadStory(campaign);
+}
 
 function loadOriginalStory(): Promise<void> {
   if (ready) return Promise.resolve();
@@ -39,8 +62,8 @@ function loadModernStory(): Promise<void> {
 export function loadStory(campaign: Campaign = 'original'): Promise<void> {
   if (campaign === 'shenci') {
     if (shenciReady) return Promise.resolve();
-    return shenciLoading ??= import('./data/shenci-story.json').then(({ default: data }) => {
-      SHENCI_SCENES = data.scenes as Scene[];
+    return shenciLoading ??= Promise.all([loadShenciOpening(), import('./data/shenci-story.json')]).then(([, { default: data }]) => {
+      installShenciScenes(data.scenes as Scene[]);
       shenciReady = true;
     }).catch(error => { shenciLoading = undefined; throw error; });
   }

@@ -2,9 +2,14 @@
 from __future__ import annotations
 
 ART = {
+ 'd-0-11': [('门外是一片血红色的沼泽','marsh')],
  'd-1-2': [('白日。夯土高台','shenci-ritual-steps')],
+ 'd-1-3': [('同上。日头偏西','shenci-ritual-steps')],
+ 'd-1-3a': [('坛下。日头落到台后','shenci-ritual-steps')],
  'd-1-5': [('出村先过一道土堤','shenci-reeds-dawn'),('石板街从堤下一直铺到镇里','village')],
  'd-1-12a': [('河岸。无雨','shenci-night-mooring')],
+ 'd-1-11': [('你回家的时候，衣服湿透了','hut')],
+ 'd-1-12g': [('河岸。天将明未明','shenci-valley-dawn')],
  'r-C-5': [('夜色像一匹','shenci-curtain-altar')],
  'k-C-1': [('逃民说不清楚','shenci-displaced-road')],
  'k-C-4': [('舟被推下河','shenci-wuyang-procession')],
@@ -12,6 +17,24 @@ ART = {
  'k-E-4': [('那屋子，全用水草香草编成','shenci-underwater-eaves')],
  'k-F-5': [('天，真的开了','shenci-sky-opening'),('然后，所有的蓝','shenci-sky-golden')],
  'k-F-6': [('青蓝，褪成灰白','shenci-valley-dawn'),('只剩那碗粥','cg-modern-cold-porridge')],
+ 'm-2-4': [('她照旧坐在旁边','classroom-day')],
+ 'm-4-1': [('有一家琴行','alley'),('教历史的年轻老师','classroom-day'),('巷子口，修伞摊','alley')],
+ 'm-4-2': [('教室、办公室','classroom-day'),('办公室的空调吹得很冷','modern-office')],
+ 'm-4-3': [('回家的路上，两个人没说话','alley')],
+ 'm-4-4': [
+     ('把手里另一瓶没开封的水塞','cg-modern-hike-tang'),
+     ('说完，她转身往上走','modern-mountain-path'),
+ ],
+ 'm-4-5': [
+     ('停下来擦汗','cg-modern-hike-terrace'),
+     ('啪地磕在栏杆','cg-modern-hike-rail'),
+     ('一只手比你先到','cg-modern-hike-pickup'),
+     ('手的主人笑得张扬','cg-modern-hike-return'),
+     ('她把水塞进你手里','cg-modern-hike-held'),
+     ('你一个人掉队啦','cg-modern-hike-invitation'),
+     ('你握住那瓶水','cg-modern-hike-held'),
+     ('她走在前面','cg-modern-hike-lookback'),
+ ],
 }
 # Each row begins a new reading section, not a new scene or save namespace.
 SECTIONS = {
@@ -25,7 +48,7 @@ SECTIONS = {
 BASE_CHAPTER = {
  'd': ['清晨与校园','古图与穿越','选巫','古镇与陆祭','河畔','天问七夜'],
  'r': {'A':'入局 · 五日至寿春','B':'装疯 · 身份','C':'戏中戏 · 验罪','D':'城破 · 决断','E1':'哀郢','E2':'随队','G1':'国殇','G2':'问名','G':'国殇过场','L':'离骚','S':'涉江','H':'怀沙','R':'礼魂','F':'渔父','O':'橘颂'},
- 'k': {'A':'入班 · 巫童','B':'巡游 · 扮神','C':'放舟 · 送行','D':'大风 · 磨难','E':'诸神 · 青蓝','F':'昆仑 · 幻境','G':'浅滩 · 风过','X':'屋檐','N':'小衣','Y':'云里的水声','J':'折桨','S':'半截笛','M':'册外的名字','T':'不肯停的太阳','H':'九条河','L':'传芭','Z':'远游'},
+ 'k': {'A':'入班 · 巫童','B':'巡游 · 扮神','C':'放舟 · 送行','D':'大风 · 磨难','E':'诸神 · 青蓝','F':'幻境','G':'浅滩 · 风过','X':'屋檐','N':'小衣','Y':'云里的水声','J':'折桨','S':'半截笛','M':'册外的名字','T':'不肯停的太阳','H':'九条河','L':'传芭','Z':'远游'},
 }
 SCORE = {
  'd-0-1': [('闹钟骤响','paper-note','room','alarm')],
@@ -33,24 +56,31 @@ SCORE = {
  'd-0-4': [('精准、耐心','playful','room',''),('周末叫你家长','paper-note','room','')],
  'd-0-6': [('梦里多水','under-current','street',''),('可算找着你了','playful','street',''),('有缘再说','paper-note','street','')],
  'd-0-8': [('你去买彩票吧','playful','room','')],
- 'd-0-10': [('笔尖沿淡痕落下','under-current','room','electric')],
+ 'd-0-10': [('笔尖沿淡痕落下','under-current','underwater','electric')],
  'd-0-11': [('走廊空着','under-current','underwater','heartbeat'),('门外是一片','under-current','marsh','splash')],
- 'd-1-5': [('两只鸡谁也不理','playful','street',''),('盐摊是两只蒲包','hearth','street',''),('笑到一半，脸上僵住了','old-jade','street','')],
+ 'd-1-2': [('缶。笙。鼓。铃声','ritual','palace','ritual-drum')],
+ 'd-1-5': [('石板街从堤下一直铺到镇里','hearth','wind','steps'),('两只鸡谁也不理','playful','wind',''),('盐摊是两只蒲包','hearth','wind',''),('笑到一半，脸上僵住了','old-jade','wind','')],
  'd-1-8': [('老觋敲缶','ritual','hearth','ritual-drum'),('墙角的木匣响了一声','old-jade','hearth','wood-latch')],
  'd-1-9': [('老觋站在火边','ritual','hearth','triple-bell'),('笑声没有接上','silence','river','flute')],
- 'd-1-12z': [('睡到半夜','under-current','night',''),('到了河边','river-of-names','river',''),('楚国……没了？','silence','river','')],
+ 'd-1-11': [('河岸。雨夜','chu-night-river','rain',''),('你回家的时候，衣服湿透了','chu-night-river','hearth','')],
+ 'd-1-12z': [('睡到半夜','under-current','night',''),('到了河边','chu-night-river','river',''),('楚国……没了？','silence','river','')],
  'r-C-5': [('夜色像一匹','ritual','palace','ritual-drum')],
  'r-C-11': [('你远远望着她','small-goodbyes','wind','')],
  'k-A-2': [('芈不会说话。他给每人吹','playful','night','flute')],
  'k-B-7': [('新郎急了','playful','hearth',''),('那天散了席','small-goodbyes','hearth','')],
  'k-C-6': [('船离岸了','last-flute','river','oar'),('船上的头一夜','silence','river','')],
- 'k-D-5': [('风从囊里冲出来','under-current','wind','string-snap')],
- 'k-D-6': [('一个巨浪打来','under-current','rain','splash'),('不知过了多久，风，忽然小了','silence','river','')],
+ 'k-D-5': [('风从囊里冲出来','chu-storm','wind','string-snap'),('帆先撕了','chu-storm','rain','hull')],
+ 'k-D-6': [('风大得睁不开眼','chu-storm','rain',''),('一个巨浪打来','chu-storm','rain','splash'),('不知过了多久，风，忽然小了','silence','river','')],
  'k-D-7': [('六个人坐在空舱','silence','river','')],
  'k-F-5': [('然后，所有的蓝','silence','wind','')],
  'k-G-1': [('那只小舟很轻','silence','none','')],
- 'm-4-4': [('周六一早，山脚下集合','playful','wind',''),('岔路口到了','modern-ascent','wind',''),('把手里另一瓶没开封的水塞','light-in-kitchen','wind','')],
- 'm-4-5': [('啪地磕在栏杆','silence','wind','stone'),('她走在前面','light-in-kitchen','wind','')],
+ 'm-2-1': [('下课铃响了','silence','room','school-bell')],
+ 'm-4-4': [('周六一早，山脚下集合','playful','wind',''),('岔路口到了','modern-ascent','wind','')],
+ 'm-4-5': [
+     ('停下来擦汗','silence','wind',''),
+     ('啪地磕在栏杆','silence','wind','bottle-rail'),
+     ('她走在前面','shenci-lookback','wind',''),
+ ],
 }
 
 def polish(scene):

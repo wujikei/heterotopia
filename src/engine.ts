@@ -1,4 +1,4 @@
-import { MODERN_SCENES, SHENCI_SCENES, SCENES, isStoryReady } from './story';
+import { MODERN_SCENES, SHENCI_SCENES, SCENES, isSceneReady } from './story';
 import { CHARACTERS, MODERN_CHARACTERS } from './data/world';
 import { timeOfDayBackground } from './data/timeOfDay';
 import { campaignOf, isModern, modernComplete, modernHasKunlun, modernHasRoyal, modernInterlude, modernInventory, MODERN_RETURN_ENDING, modernReturnMemory } from './modern';
@@ -82,9 +82,9 @@ function makeChoices(scene: Scene, base: Omit<ChoiceBeat, 'kind' | 'prompt' | 'c
 type SceneState = Pick<GameState, 'choices' | 'inventory' | 'overseasIdentity'>;
 
 export function compileScene(sceneId: string, profile: Profile, state: SceneState): Beat[] {
-  if (!isStoryReady(campaignForScene(sceneId))) throw new Error('剧情尚未载入，请先 await loadStory()。');
+  if (!isSceneReady(campaignForScene(sceneId), sceneId)) throw new Error('剧情尚未载入，请先 await loadStory()。');
   const scene = sceneById(sceneId);
-  if (scene.script === 'shenci') return compileShenci(scene, profile, state);
+  if (scene.script === 'shenci') return compileShenci(scene, profile, state).filter(beat => !isOmittedPage(beat.id));
   if (scene.script === 'modern') return compileModernScene(scene, profile, state).filter(beat => !isOmittedPage(beat.id));
   const beats: Beat[] = [];
   let background = scene.background;
@@ -186,13 +186,22 @@ export function currentBeat(state: GameState, profile: Profile): Beat {
   return beats.find(beat => beat.id === state.beatId) ?? beats[0];
 }
 
-/** A legacy bookmark can point to an editorial note between two playable pages. */
+/** A saved page may have been hidden by an editorial fix or its route condition. */
 export function restoreEditorialBookmark(state: GameState, profile: Profile): GameState {
-  if (!isOmittedPage(state.beatId)) return state;
+  const omitted = isOmittedPage(state.beatId);
+  if (!omitted && state.sceneId !== 'shenci-m-2-1') return state;
   const scene = sceneById(state.sceneId);
-  const beats = compileModernScene(scene, profile, state);
+  const block = Number(state.beatId.split(':')[1]);
+  const conditional = scene.blocks[block]?.royalCollapseOnly;
+  if (!omitted && !conditional) return state;
+  const beats = scene.script === 'shenci' ? compileShenci(scene, profile, state) : compileModernScene(scene, profile, state);
   const position = beats.findIndex(beat => beat.id === state.beatId);
-  if (position < 0) return state;
+  if (position < 0) {
+    if (!conditional) return state;
+    const next = beats.find(beat => Number(beat.id.split(':')[1]) > block && !isOmittedPage(beat.id));
+    return next ? { ...state, beatId: next.id } : state;
+  }
+  if (!omitted) return state;
   const next = beats.find((beat, index) => index > position && !isOmittedPage(beat.id));
   if (next) return { ...state, beatId: next.id };
   return scene.next ? enterScene(state, profile, scene.next) : state;

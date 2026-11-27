@@ -209,7 +209,7 @@
   }
   .app--play:not(.app--hidden):not(:has(.ending-screen:not(.ending-screen--clean))) .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-image {
     --cg-stage-top: calc(68px + env(safe-area-inset-top));
-    --cg-stage-avail: max(190px, calc(var(--r2-reading-top, 74dvh) - var(--cg-stage-top) - 14px));
+    --cg-stage-avail: max(var(--cg-stage-min, 190px), calc(var(--r2-reading-top, 74dvh) - var(--cg-stage-top) - var(--cg-stage-gap, 14px)));
     top: calc(var(--cg-stage-top) + max(0px, (var(--cg-stage-avail) - var(--modern-cg-height, 56.25vw)) * 0.44));
     bottom: auto;
     height: min(var(--modern-cg-height, 56.25vw), var(--cg-stage-avail));
@@ -217,10 +217,10 @@
     background-position: center;
     background-repeat: no-repeat;
     transform: none;
-    animation: none;
+    animation: var(--modern-cg-animation, none);
     opacity: 1;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
+    -webkit-mask-image: var(--modern-cg-mask, linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%));
+    mask-image: var(--modern-cg-mask, linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%));
   }
   .app--play:not(.app--hidden):not(:has(.ending-screen:not(.ending-screen--clean))) .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-shade {
     background: linear-gradient(180deg, rgba(3,15,20,.64) 0%, rgba(3,15,20,.24) 11%, transparent 22%, transparent 72%, #031014 96%);
@@ -228,7 +228,7 @@
   .app--play.app--hidden .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) {
     background: #031014;
   }
-  .app--play.app--hidden .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]) .scene-image {
+  .app--play.app--hidden .scene-art[data-art^="cg-modern-"]:not([data-art$="-r2"]):not([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) .scene-image {
     top: 50%;
     bottom: auto;
     height: var(--modern-cg-height, 56.25vw);
@@ -308,22 +308,114 @@
 .ending-screen--modern-home .ending-ink {
   background: linear-gradient(rgba(3,14,19,.72), rgba(3,14,19,.35) 25%, transparent 39%, transparent 53%, rgba(3,14,19,.78) 79%, #051319);
 }
+.photo-view-toggle {
+  position: absolute;
+  z-index: 6;
+  top: max(68px, calc(env(safe-area-inset-top) + 52px));
+  right: max(16px, env(safe-area-inset-right));
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: #08171bd9;
+  border: 1px solid #c8b88c55;
+  border-radius: 4px;
+  color: #f0e6ce;
+  font-size: .82rem;
+}
+.photo-view-toggle:hover { background: #17282b; }
+
+.scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) {
+  --modern-cg-animation: summit-image-arrive .22s ease-out both;
+  --modern-cg-mask: none;
+}
+.scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) .scene-image--current {
+  transform: none;
+  mask-image: none;
+  background-repeat: no-repeat;
+  animation: var(--modern-cg-animation);
+}
+.scene-art[data-art="cg-modern-photo-user"] .scene-image--previous,
+.scene-art .scene-image--previous:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) { display: none; }
+.scene-image[data-art="cg-modern-hike-tang"] { background-position: center 30%; }
+.scene-image[data-art="cg-modern-hike-rail"] { background-position: center 66%; }
+@keyframes summit-image-arrive {
+  from { opacity: .58; }
+  to { opacity: 1; }
+}
+
 @media (max-aspect-ratio: 3/4) {
-  .app--play:has(.ending-screen.ending-screen--modern-home) .scene-art[data-art="cg-modern-photo-user"] {
-    background: radial-gradient(ellipse 80% 52% at 50% 46%, #374743, #0a1b22 72%, #04131a);
+  .app--play .scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) {
+    --cg-stage-min: 0px;
+    --cg-stage-gap: 8px;
   }
-  .app--play:has(.ending-screen--modern-home) .scene-art[data-art="cg-modern-photo-user"] .scene-image--previous { display: none; }
-  .app--play:has(.ending-screen.ending-screen--modern-home) .scene-art[data-art="cg-modern-photo-user"] .scene-image--current {
-    top: calc(46% - 28.125vw);
-    bottom: auto;
-    height: 56.25vw;
+  .app--play .scene-art:is([data-art="cg-modern-photo-user"], [data-art="cg-modern-hike-rail"])[data-composition="portrait"] {
+    --modern-cg-height: 100vw;
+  }
+  .app--play:has(.ending-screen:not(.ending-screen--clean)) .scene-art:is([data-art="cg-modern-photo-user"], [data-art="cg-modern-hike-lookback"]) {
+    background: #031014;
+  }
+  .app--play:has(.ending-screen:not(.ending-screen--clean)) .scene-art:is([data-art="cg-modern-photo-user"], [data-art="cg-modern-hike-lookback"]) .scene-image--current {
+    --ending-image-height: min(43dvh, var(--modern-cg-height, 56.25vw));
+    inset: calc(42% - var(--ending-image-height) / 2) 0 auto;
+    height: var(--ending-image-height);
     background-size: contain;
     background-position: center;
-    background-repeat: no-repeat;
-    transform: none;
-    animation: none;
-    mask-image: linear-gradient(transparent, #000 8%, #000 91%, transparent);
   }
+  .ending-screen--shenci-home {
+    gap: 8px;
+    padding-top: max(38px, env(safe-area-inset-top));
+  }
+  .ending-screen--shenci-home .ending-content { flex: 1 0 auto; margin-block: 0; }
+  .ending-screen--shenci-home .ending-stage { margin-top: 8px; }
+  .ending-screen--shenci-home .ending-subtitle { writing-mode: horizontal-tb; }
+  .ending-screen--shenci-home .ending-emblem { display: none; }
+  .ending-screen--shenci-home .ending-ink {
+    background: linear-gradient(#031014bd, transparent 24%, transparent 60%, #031014 72%);
+  }
+  .ending-screen--shenci-home .ending-content blockquote { margin-top: auto; padding-top: 9dvh; }
+  .ending-screen--shenci-home .ending-actions { margin-top: 14px; }
+}
+
+@media (max-height: 520px) and (min-width: 600px) {
+  .app--play:not(.app--hidden):not(:has(.ending-screen)) .scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) {
+    background: #031014;
+  }
+  .app--play:not(.app--hidden):not(:has(.ending-screen)) .scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) .scene-image--current {
+    inset: 54px max(12px, env(safe-area-inset-right)) 12px 47%;
+    width: auto;
+    height: auto;
+    background-size: contain;
+    background-position: center;
+  }
+  .app--play:not(.app--hidden):has(.scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"])) .dialogue {
+    right: 53%;
+    padding: 8px 8px 8px 16px;
+  }
+  .app--play:not(.app--hidden):has(.scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"])) .dialogue-body { margin: 0; }
+  .photo-view-toggle { top: max(74px, calc(env(safe-area-inset-top) + 58px)); }
+}
+
+@media (max-height: 620px) and (max-aspect-ratio: 3/4) {
+  .app--play:has(.scene-art[data-art^="cg-modern-hike-"]) .dialogue-text { line-height: 1.5; }
+}
+
+.app--play.app--hidden .scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) {
+  background: #031014;
+}
+.app--play.app--hidden .scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) .scene-image--current {
+  inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  width: auto;
+  height: auto;
+  background-size: contain;
+  background-position: center;
+  transform: none;
+  animation: none;
+  mask-image: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene-art:is([data-art="cg-modern-photo-user"], [data-art^="cg-modern-hike-"]) .scene-image--current { animation: none !important; }
 }
 
 /* Keep all three independent editions reachable on narrow windows. */

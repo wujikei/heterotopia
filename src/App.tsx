@@ -12,7 +12,7 @@ import { UpdateNotice } from './components/UpdateNotice';
 import { EndingQuote } from './components/EndingQuote';
 import { InkBacklog, InkBell, InkBookmark, InkBrush, InkClosedEye, InkDrop, InkFigure, InkFlow, InkFrame, InkLamp, InkMenu, InkMore, InkMountain, InkPath, InkReturn, InkScroll, InkWind } from './components/InkIcons';
 import { asset, BACKGROUNDS, endingsForCampaign } from './data/world';
-import { campaignOf, modernFinal, restoreModernState } from './modern';
+import { campaignOf, modernFinal, MODERN_PHOTO_ART, MODERN_SHUTTER_BEAT, restoreModernState } from './modern';
 import { actorForBeat, portraitCandidatesForActor } from './actors';
 import { overseasArt } from './overseasArt';
 import type { OverseasOpeningIdentity } from './overseasIdentity';
@@ -25,7 +25,7 @@ import { MODERN_BLACKOUTS } from './data/modernStaging';
 import { prefetchWhenIdle, preloadImage } from './preload';
 import { afterFirstScreen } from './idle';
 import { warmReadingFonts } from './fonts';
-import { isStoryReady, loadStory } from './story';
+import { isSceneReady, isStoryReady, loadSceneStory, loadStory } from './story';
 import { advance, campaignScenes, canReturn, choose, compileScene, completeEnding, continueEnding, currentBeat, hasKunlun, hasRoyal, newGame, newProfile, recordProgress, restoreEditorialBookmark, revisitScene, SCENES, sceneById } from './engine';
 import { DEFAULT_SETTINGS, exportSave, loadAutosave, loadCampaign, loadProfile, loadSettings, loadSlots, persist as store, validState } from './storage';
 import { scoreFrame } from './score';
@@ -109,6 +109,7 @@ export default function App() {
 function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign: (campaign: Campaign) => void }) {
   const persist = useCallback((key: string, value: unknown) => store(key, value, campaign), [campaign]);
   const ENDINGS = endingsForCampaign(campaign);
+  const openingSceneId = campaignScenes(campaign)[0].id;
   const language = useLocale();
   const [profile, setProfile] = useState<Profile>(() => loadProfile(campaign));
   const [settings, setSettings] = useState<Settings>(loadSettings);
@@ -131,6 +132,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const isSkipping = skipping || holdingSkip;
   const skipPool = useRef(new Set<string>());
   const [hidden, setHidden] = useState(false);
+  const [photoVisible, setPhotoVisible] = useState(false);
   const [intro, setIntro] = useState<Intro | null>(null);
   const [toast, setToast] = useState('');
   const [toastKey, setToastKey] = useState(0);
@@ -219,22 +221,30 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   }, [switchLanguage]);
 
   const scene = game ? sceneById(game.sceneId) : SCENES[0];
-  const beats = useMemo(() => screen === 'play' && game && storyReady ? compileScene(game.sceneId, profile, game) : [], [screen, game, profile, storyReady]);
+  const beats = useMemo(() => screen === 'play' && game ? compileScene(game.sceneId, profile, game) : [], [screen, game, profile]);
   const beat = beats.find(item => item.id === game?.beatId) ?? beats[0] ?? null;
   const text = beat?.kind === 'text' ? localizePage(beat.id, beat.text) : '';
   const typing = useTypewriter(screen === 'play' ? `${beat?.id}:${language}` : undefined, screen === 'play' ? text : '', isSkipping ? 0 : settings.textSpeed, !!intro);
   const background = screen === 'home' ? campaign === 'overseas' ? 'modern-sunset' : 'hero' : beat?.background ?? 'hero';
   const cg = screen === 'play' && beat ? cgForBeat(beat, scene.id) : undefined;
   const tone = campaign === 'overseas' ? game?.overseasIdentity?.tone : undefined;
+  const viewPhoto = beat?.kind === 'text' && cg?.file === MODERN_PHOTO_ART && photoVisible && !intro;
   const blackout = beat !== null && (beat.blackout === true || MODERN_BLACKOUTS.has(beat.id));
   const relic = screen === 'play' && beat?.kind === 'text' ? relicForBeat(beat.id) : undefined;
 
   useLayoutEffect(() => setArtQuality(settings.lightweight), [settings.lightweight]);
 
   useEffect(() => {
-    if (screen !== 'home' || storyReady || (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
-    return afterFirstScreen(() => { void loadStory(campaign).then(() => setStoryReady(true)).catch(() => {}); });
-  }, [screen, storyReady, campaign]);
+    if (storyReady || (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
+    if (screen === 'home') {
+      const target = game?.sceneId ?? openingSceneId;
+      if (!isSceneReady(campaign, target)) return afterFirstScreen(() => {
+        void loadSceneStory(campaign, target).then(() => setStoryReady(isStoryReady(campaign))).catch(() => {});
+      });
+    } else if (campaign === 'shenci' && !intro) {
+      return afterFirstScreen(() => { void loadStory(campaign).then(() => setStoryReady(true)).catch(() => {}); });
+    }
+  }, [screen, storyReady, campaign, game?.sceneId, intro, openingSceneId]);
 
   useEffect(() => {
     persist('settings', settings); sound.update(settings);
@@ -245,11 +255,22 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   useEffect(() => {
     const discontinuous = audioJump.current;
     audioJump.current = false;
-    sound.direct(scoreFrame(screen === 'home' ? '' : scene.id, screen === 'home' ? null : beat), {
+    const frame = scoreFrame(screen === 'home' ? '' : scene.id, screen === 'home' ? null : beat);
+    // The shutter joins the visible photo. A bookmark or skip still consumes
+    // the event immediately, even when the art is still loading.
+    if (!discontinuous && !isSkipping && beat?.id === MODERN_SHUTTER_BEAT && !photoVisible) {
+      frame.events = frame.events.filter(event => event.id !== MODERN_SHUTTER_BEAT);
+    }
+    sound.direct(frame, {
       discontinuous, suppressEffects: discontinuous || isSkipping,
       blocked: !!modal || !!intro, dimmed: !!modal && modal !== 'music', skipping: isSkipping,
     });
-  }, [screen, scene.id, beat, modal, intro, isSkipping]);
+  }, [screen, scene.id, beat, modal, intro, isSkipping, photoVisible]);
+
+  useEffect(() => {
+    if (beat?.id !== 'modern-o-5-7:15:0' && beat?.id !== 'modern-o-5-7:16:0') return;
+    void preloadImage(asset(overseasArt(MODERN_PHOTO_ART, tone)), 'high').catch(() => {});
+  }, [beat?.id, tone, settings.lightweight]);
 
   useEffect(() => {
     const activate = (event?: Event) => {
@@ -294,7 +315,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     const current = compileScene(game.sceneId, currentProfile.current, game);
     const sceneList = campaignScenes(campaign);
     const next = scene.script ? scene.next ? sceneById(scene.next) : undefined : sceneList[sceneList.findIndex(item => item.id === game.sceneId) + 1];
-    const upcoming = next ? compileScene(next.id, currentProfile.current, game) : [];
+    const upcoming = next && isSceneReady(campaign, next.id) ? compileScene(next.id, currentProfile.current, game) : [];
     const position = Math.max(0, current.findIndex(item => item.id === game.beatId));
     const urgentArt = cgForBeat(current[position], scene.id);
     const activeActor = settings.showSprites && !urgentArt ? actorForBeat(current[position], scene, current) : undefined;
@@ -318,7 +339,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       stopIdle = prefetchWhenIdle([...images]);
     });
     return () => { cancelled = true; stopIdle?.(); };
-  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight, settings.showSprites, campaign, tone]);
+  }, [game?.sceneId, game?.cycle, screen, scene, settings.lightweight, settings.showSprites, campaign, tone, storyReady]);
 
   useEffect(() => {
     if (!intro) return;
@@ -326,8 +347,29 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     return () => clearTimeout(timer);
   }, [intro, settings.reducedMotion]);
 
+  const followingScene = beat && beat.id === beats.at(-1)?.id ? scene.next : undefined;
+  const advanceReading = useCallback(() => {
+    const state = currentGame.current;
+    if (!state || readingLoad.current) return;
+    const advanceOnce = () => setGame(previous => previous === state ? advance(previous, currentProfile.current) : previous);
+    if (!followingScene || isSceneReady(campaign, followingScene)) {
+      advanceOnce();
+      return;
+    }
+    readingLoad.current = true; setLoadingReading(true);
+    void loadSceneStory(campaign, followingScene).then(() => {
+      setStoryReady(isStoryReady(campaign));
+      if (readingRef.current) advanceOnce();
+    }).catch(() => {
+      setAuto(false); stopSkipping();
+      notify('旅途未能载入，请检查网络后刷新重试。');
+    }).finally(() => {
+      readingLoad.current = false; setLoadingReading(false);
+    });
+  }, [campaign, followingScene, notify, stopSkipping]);
+
   const next = useCallback((pointer?: { x: number; y: number } | null) => {
-    if (modal || screen !== 'play' || !game || !beat) return;
+    if (modal || screen !== 'play' || !game || !beat || readingLoad.current) return;
     const now = performance.now();
     if (now < nextAllowedAt.current) return;
     if (pointer && typing.done) {
@@ -340,19 +382,17 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     nextAllowedAt.current = now + 180;
     if (!typing.done) { typing.reveal(); return; }
     sound.click('page');
-    setGame(previous => previous ? advance(previous, currentProfile.current) : previous);
-  }, [modal, screen, game, beat, intro, hidden, typing]);
+    advanceReading();
+  }, [modal, screen, game, beat, intro, hidden, typing, advanceReading]);
 
   useEffect(() => {
-    if ((!auto && !isSkipping) || modal || intro || hidden || !pageVisible || screen !== 'play' || !beat || beat.kind !== 'text') return;
+    if ((!auto && !isSkipping) || modal || intro || hidden || loadingReading || !pageVisible || screen !== 'play' || !beat || beat.kind !== 'text') return;
     if (isSkipping && !skipPool.current.has(beat.id)) { stopSkipping(); notify('已到达未读的故事。'); return; }
     if (!typing.done && !isSkipping) return;
     const delay = isSkipping ? 90 : autoDelayFor(text, settings.autoDelay, beat.id, language);
-    const timer = setTimeout(() => {
-      setGame(previous => previous ? advance(previous, currentProfile.current) : previous);
-    }, delay);
+    const timer = setTimeout(advanceReading, delay);
     return () => clearTimeout(timer);
-  }, [auto, isSkipping, modal, intro, hidden, pageVisible, screen, beat, typing.done, settings.autoDelay, text, language, notify, stopSkipping]);
+  }, [auto, isSkipping, modal, intro, hidden, loadingReading, pageVisible, screen, beat, typing.done, settings.autoDelay, text, language, notify, stopSkipping, advanceReading]);
 
   useEffect(() => {
     if (screen === 'play' && beat?.kind === 'choice' && !modal && !intro) sound.prepareUi('stamp');
@@ -401,11 +441,12 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   }, []);
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
-  const prepareReading = async (stateForReading: () => GameState): Promise<GameState | null> => {
+  const prepareReading = async (sceneId: string, stateForReading: () => GameState): Promise<GameState | null> => {
     if (readingLoad.current) return null;
     readingLoad.current = true; setLoadingReading(true); setReadingError(false);
     try {
-      await loadStory(campaign); setStoryReady(true);
+      await loadSceneStory(campaign, sceneId);
+      setStoryReady(isStoryReady(campaign));
       const state = restoreEditorialBookmark(stateForReading(), currentProfile.current);
       const location = sceneById(state.sceneId);
       const items = compileScene(state.sceneId, currentProfile.current, state);
@@ -428,7 +469,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const start = async (identity?: OverseasOpeningIdentity) => {
     setConfirmRestart(false);
     void sound.unlock(settings); sound.click('bell');
-    const state = await prepareReading(() => newGame(currentProfile.current, identity));
+    const state = await prepareReading(openingSceneId, () => newGame(currentProfile.current, identity));
     if (!state) return;
     entryPointerGuardAt.current = performance.now() + 260;
     previousScene.current = state.sceneId; setIntro(openingIntro(state, currentProfile.current));
@@ -445,12 +486,12 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const resume = async (state = game) => {
     if (!state) return;
     void sound.unlock(settings);
-    state = await prepareReading(() => restoreModernState(state!));
-    if (!state) return;
+    const restored = await prepareReading(state.sceneId, () => restoreModernState(state));
+    if (!restored) return;
     audioJump.current = true;
     entryPointerGuardAt.current = performance.now() + 260;
-    previousScene.current = state.sceneId;
-    setGame(state); setScreen('play'); closeModal(); setIntro(null); setAuto(false); stopSkipping(); setHidden(false);
+    previousScene.current = restored.sceneId;
+    setGame(restored); setScreen('play'); closeModal(); setIntro(null); setAuto(false); stopSkipping(); setHidden(false);
   };
 
   const toHome = () => { setScreen('home'); closeModal(); setAuto(false); stopSkipping(); setHidden(false); setIntro(null); };
@@ -502,9 +543,9 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const toggleAuto = () => { sound.click('toggle'); setAuto(value => !value); stopSkipping(); };
 
   const jump = async (id: string) => {
-    if ((id === '0-1' || id === 'modern-o-0-1' || id === 'shenci-d-0-1') && !profile.visited.includes(id)) { requestStart(); return; }
+    if (id === openingSceneId && !profile.visited.includes(id)) { requestStart(); return; }
     void sound.unlock(settings);
-    const jumped = await prepareReading(() => revisitScene(game ?? newGame(currentProfile.current), currentProfile.current, id));
+    const jumped = await prepareReading(id, () => revisitScene(game ?? newGame(currentProfile.current), currentProfile.current, id));
     if (!jumped) return;
     audioJump.current = true;
     entryPointerGuardAt.current = performance.now() + 260;
@@ -543,6 +584,16 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
       if (campaign === 'shenci' && [data.state, ...(Array.isArray(data.slots) ? data.slots.map((slot: SaveSlot | null) => slot?.state) : [])].some(s => s?.campaign === 'shenci' && s.scriptRevision !== 2)) { notify('这是上一版沈辞书签。剧本页序已调整，请用上一版预览打开。'); return; }
       const incoming = data.profile as Profile;
       if (!['visited', 'read', 'art', 'met', 'endings'].every(key => Array.isArray(incoming[key as keyof Profile]))) throw new Error('profile');
+      const importedState = validState(data.state, campaign) ? restoreModernState(data.state) : null;
+      if (screen === 'play' && importedState) {
+        try {
+          await loadSceneStory(campaign, importedState.sceneId);
+          setStoryReady(isStoryReady(campaign));
+        } catch {
+          notify('旅途未能载入，请检查网络后刷新重试。');
+          return;
+        }
+      }
       const defaults = newProfile(campaign);
       const merged = { ...defaults, ...profile };
       merged.visited = [...new Set([...profile.visited, ...incoming.visited.filter(id => campaignScenes(campaign).some(s => s.id === id))])];
@@ -557,7 +608,11 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
         return item?.version === 1 && validState(item.state, campaign) && typeof item.savedAt === 'string' && !Number.isNaN(Date.parse(item.savedAt)) ? { ...item as SaveSlot, state: restoreModernState(item.state) } : slot;
       });
       setSlots(importedSlots); persist('slots', importedSlots);
-      if (validState(data.state, campaign)) { const restored = restoreModernState(data.state); audioJump.current = true; previousScene.current = restored.sceneId; setAuto(false); stopSkipping(); setHidden(false); setIntro(null); persist('autosave', restored); setGame(restored); }
+      if (importedState) {
+        const restored = screen === 'play' ? restoreEditorialBookmark(importedState, merged) : importedState;
+        audioJump.current = true; previousScene.current = restored.sceneId; setAuto(false); stopSkipping(); setHidden(false); setIntro(null);
+        persist('autosave', restored); setGame(restored);
+      }
       notify('旅途已导入，已经历的记忆合在了一处。');
     } catch { notify('这份文件无法识读，请选择从本作导出的 JSON 存档。'); }
   };
@@ -639,7 +694,7 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
   const toastNotice = toast && <div className={`toast ${modal ? 'toast--inline' : ''}`} key={toastKey} role="status"><span className="toast-seal" aria-hidden="true"><Check size={13} strokeWidth={2} /></span><span>{t(toast, ...toastParameters.current)}</span><button onClick={() => setToast('')} aria-label={t("关闭提示")}><X size={13} /></button></div>;
 
   return <main data-playing-track={audioState.playing ? audioState.track ?? undefined : undefined} className={`app app--${screen} ${modal ? 'app--modal' : ''} ${hidden ? 'app--hidden' : ''} ${intro ? 'app--intro' : ''} ${beat?.kind === 'choice' && screen === 'play' ? 'app--choice' : ''}`}>
-    <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} blackout={blackout} tone={tone} />
+    <SceneArt name={background} cg={cg?.file} motion={!settings.reducedMotion && !cg} readingId={screen === 'play' ? beat?.id ?? null : null} blackout={blackout} tone={tone} onPhotoVisible={setPhotoVisible} />
     <Atmosphere scene={background} reduced={settings.reducedMotion || blackout} />
 
     {tr(screen === 'home' ? <div className="home-screen" inert={!!modal} onPointerDownCapture={event => { if (confirmRestart && event.target instanceof Element && !event.target.closest('.start-button')) setConfirmRestart(false); }}>
@@ -675,9 +730,13 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
     }}>
       {tr(beat.kind !== 'ending' && <header className="game-header" inert={hidden || !!intro}><button className="game-location" onClick={() => openModal('chapters')} aria-label={t("查看行迹")}><span className="location-copy"><span className="location-chapter">{tr(presentChapterTitle(scene))}</span><span className="location-name" title={section?.title ?? locationName}>{tr(section?.title ?? locationName)}</span></span><ChevronDown size={13} strokeWidth={1.2} /></button><div className="header-tools"><button className="memory-button" onClick={() => openModal('journal')} aria-label={t("打开旅人手记")}>{campaign === 'overseas' ? <span className="modern-seal-mark">何</span> : <BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small />}</button><IconButton audioControl label={tr(settings.muted ? '开启声音' : audioState.needsGesture ? '点击开启声音' : '静音')} onClick={toggleMute}><InkBell muted={settings.muted} size={20} /></IconButton>{tr(audioState.needsGesture && !settings.muted && <span className="sound-unlock-hint">{t("点击开启声音")}</span>)}<IconButton label={t("打开菜单")} onClick={() => openModal('menu')}><InkMenu size={21} /></IconButton></div></header>)}
       <div className="sr-only" aria-live="polite" aria-atomic="true">{tr(!intro && !modal && !hidden && !isSkipping && beat.kind === 'text' ? t("{0}{1}", beat.speaker ? t("{0}：", beat.speaker) : '', text) : '')}</div>
+      {tr(loadingReading && !modal && <p className="reading-load" role="status">{t("正在载入旅途…")}</p>)}
       {tr(showReadingHint && !intro && !modal && !hidden && !auto && !isSkipping && beat.kind === 'text' && <aside className="reading-hint" aria-label={t("阅读提示")}><CircleHelp size={16} aria-hidden="true" /><p>{t("点击画面继续，点「回看」重读。")}<small>{t("更多操作可在阅读设置中查看。")}</small></p><button onClick={dismissReadingHint}>{t("知道了")}</button></aside>)}
 
       {tr(settings.showSprites && !intro && !cg && !blackout && <ActorLayer beat={beat} scene={scene} beats={beats} reducedMotion={settings.reducedMotion} skipping={isSkipping} tone={tone} />)}
+      {tr(viewPhoto && <button className="photo-view-toggle" aria-keyshortcuts="H" onClick={event => {
+        event.currentTarget.focus({ preventScroll: true }); sound.click('toggle'); setHidden(value => !value);
+      }}><InkFrame size={16} /><span>{tr(hidden ? '返回阅读' : '看合影')}</span></button>)}
       {tr(beat.kind === 'text' && <><button className="advance-surface" onClick={event => next(event.detail > 0 ? { x: event.clientX, y: event.clientY } : { x: -9999, y: -9999 })} aria-label={tr(hidden ? '显示阅读界面' : typing.done ? '继续故事' : '显示全文')} tabIndex={-1} />
         <section className={`dialogue dialogue--${lineKind}`} aria-label={t("故事正文")} inert={hidden || !!intro}>
           <div className="dialogue-mist" aria-hidden="true" />
@@ -703,10 +762,10 @@ function CampaignApp({ campaign, onCampaign }: { campaign: Campaign; onCampaign:
           </div>
           {tr(auto && typing.done && !modal && !intro && !hidden && pageVisible && !settings.reducedMotion && <span className="auto-reading-countdown" key={`${beat.id}:${settings.autoDelay}`} aria-hidden="true" style={{ animationDuration: `${autoDelayFor(text, settings.autoDelay, beat.id, language)}ms` }} />)}
         </section>
-        {tr(hidden && <div className="hidden-hint">{t("点击画面，或按 H，继续听故事。")}</div>)}
+        {tr(hidden && !viewPhoto && <div className="hidden-hint">{t("点击画面，或按 H，继续听故事。")}</div>)}
       </>)}
 
-      {tr(beat.kind === 'choice' && <section className={`choices choices--${beat.choices.length}`} aria-label={t("命运选择")}><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{tr(beat.prompt)}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{tr(beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} aria-keyshortcuts={String(i + 1)} title={tr(t("按 {0} 选择", i + 1))} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[language][i] ?? i + 1}</span><span className="choice-copy"><strong>{choice.disabled && campaign !== 'shenci' ? t("尚未听见的名字") : localizeChoice(`${beat.id}:${choice.key}`, choice.title)}</strong><small>{tr(choice.disabled ? choice.hint : choice.detail)}</small></span><span className="choice-stamp" aria-hidden="true" onAnimationStart={event => stampAtContact(choice.key, event.animationName)}>{t("定")}</span></button>))}</div>{tr(game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{tr(game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。')}</span></div>)}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />{t("在分路前，留一枚书签")}</button></section>)}
+      {tr(beat.kind === 'choice' && <section key={beat.id} className={`choices choices--${beat.choices.length}`} aria-label={t("命运选择")}><div className="choice-ornament"><span /><BoatMark /><span /></div><p className="choice-prompt">{tr(beat.prompt)}</p><div className={`choice-options ${stamped ? 'is-deciding' : ''}`}>{tr(beat.choices.map((choice, i) => <button className={`choice-option ${choice.disabled ? 'choice-option--locked' : ''} ${stamped === choice.key ? 'is-stamped' : ''}`} key={choice.key} disabled={choice.disabled || (!!stamped && stamped !== choice.key)} onClick={() => pickChoice(choice.key)} aria-keyshortcuts={String(i + 1)} title={tr(t("按 {0} 选择", i + 1))} style={{ '--choice-index': i } as CSSProperties}><span className="choice-lamp" aria-hidden="true" /><span className="choice-index" aria-hidden="true">{CHOICE_NUMERALS[language][i] ?? i + 1}</span><span className="choice-copy"><strong>{choice.disabled && campaign !== 'shenci' ? t("尚未听见的名字") : localizeChoice(`${beat.id}:${choice.key}`, choice.title)}</strong><small>{tr(choice.disabled ? choice.hint : choice.detail)}</small></span><span className="choice-stamp" aria-hidden="true" onAnimationStart={event => stampAtContact(choice.key, event.animationName)}>{t("定")}</span></button>))}</div>{tr(game.sceneId === '1-12' && <div className="choice-note"><BoneMark royal={hasRoyal(profile)} kunlun={hasKunlun(profile)} small /><span>{tr(game.cycle > 1 ? '记忆已经留下。此夜的物件，仍在原处。' : '两条路共享此夜。走过之后，记忆会带你回来。')}</span></div>)}<button className="choice-save text-button" onClick={() => openSaves('save')}><InkBookmark size={16} />{t("在分路前，留一枚书签")}</button></section>)}
 
       {tr(beat.kind === 'ending' && <section className={`ending-screen ending-screen--${beat.ending} ${campaign === 'shenci' ? 'ending-screen--shenci' : ''} ${hidden ? 'ending-screen--clean' : ''}`} aria-label={tr(t("结局 · {0}", ENDINGS[beat.ending].title))}>
         <div className="ending-effects" aria-hidden="true"><span className="ending-ink" /><span className="ending-ripple" /></div>

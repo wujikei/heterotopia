@@ -1,4 +1,4 @@
-import { MODERN_ARRIVAL_ART, MODERN_GLANCE_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_PHOTO_ART, MODERN_STALL_ART, MODERN_SUMMIT_ART, MODERN_TRANSLATION_ART } from '../modern';
+import { MODERN_ARRIVAL_ART, MODERN_GLANCE_ART, MODERN_NOTEBOOK_ART, MODERN_PAPER_NOTE_ART, MODERN_PHOTO_ART, MODERN_SHUTTER_BEAT, MODERN_STALL_ART, MODERN_SUMMIT_ART, MODERN_TRANSLATION_ART } from '../modern';
 import type { Scene } from '../types';
 
 // Establish the setting from the screenplay's location and keep it through dialogue.
@@ -204,7 +204,7 @@ export const MODERN_PAGE_CUTS: Readonly<Partial<Record<string, string>>> = {
   'modern-o-5-5:4:0': MODERN_GLANCE_ART,
   'modern-o-5-5:9:0': 'modern-mountain-path',
   'modern-o-5-6:9:0': MODERN_SUMMIT_ART,
-  'modern-o-5-7:17:0': MODERN_PHOTO_ART,
+  [MODERN_SHUTTER_BEAT]: MODERN_PHOTO_ART,
   'modern-c-1-13:18:0': 'cg-modern-fork',
   'modern-k-C-3:2:0': 'cg-modern-porridge-offering',
   'modern-k-C-3:7:0': 'village',

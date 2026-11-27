@@ -211,6 +211,22 @@
       "seed": 11252582,
       "prompt_id": "bea5451e-12ed-4c86-9ff6-9df7d0ef31ca",
       "masterSha256": "b61b984063997be1c49500d943123775ac5924bae0e0215ae776e41967572e20"
+    },
+    {
+      "duration": 37,
+      "bpm": 68,
+      "keyscale": "G major",
+      "timesignature": "4",
+      "lyrics": "[Instrumental]",
+      "preset": "quality",
+      "steps": 8,
+      "seed": 107231,
+      "caption": "Instrumental underscore for a Chinese visual novel quiet mountain trail coda. Warm sparse felt upright piano, a small four-note ascending-and-turning melody, hints of softly plucked classical guitar only far in the back, intimate finger and felt texture. Start with a single clear quiet piano note, leave generous space between phrases, mostly open fifths and gentle add9 chords, restrained wistful tenderness like an understated independent film. Midrange legible at low volume. Slow, steady, slight human rubato. No vocals or humming, no drums, no bass hits, no orchestral pads, no cinematic rise, no fake wind or other sound effects, no glossy pop beat. Remain equally soft through the end, a simple unresolved G-major voicing which can lead back into the first phrase. Consistent low playing intensity, no isolated loud attacks and no abrupt change in dynamics. Clean recording with headroom.",
+      "id": "shenci-lookback",
+      "title": "回头一笑",
+      "subtitle": "山风过后，终于开口。",
+      "prompt_id": "9e5dcc42-007a-4dbd-aee0-5012bc954022",
+      "masterSha256": "34f7d93963cc8abe72cdc48f1c28e9348785254dcf9ef74de5d90c62e3477d9b"
     }
   ],
   "effects": [
@@ -422,6 +438,11 @@
     {
       "id": "sfx-camera-shutter",
       "title": "山顶轻快门",
+      "source": "Original deterministic procedural sound design"
+    },
+    {
+      "id": "sfx-bottle-rail",
+      "title": "水瓶滚阶与碰栏",
       "source": "Original deterministic procedural sound design"
     }
   ]

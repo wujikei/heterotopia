@@ -6,6 +6,7 @@ import { compileScene, enterScene, newGame, newProfile, SCENES } from '../src/en
 import { loadStory } from '../src/story.ts';
 
 await loadStory();
+await loadStory('shenci');
 
 const base = process.env.VN_TEST_URL || 'http://127.0.0.1:4173/heterotopia/';
 const name = process.env.VN_TEST_BROWSER || 'chromium';
@@ -26,7 +27,7 @@ async function open(fixture, forceMedia = false, muted = false, deviceBrowser = 
       localStorage.setItem('heterotopia.v1.settings', JSON.stringify({ textSpeed: 0, reducedMotion: true, muted, musicVolume: 45, ambienceVolume: 38, sfxVolume: 55 }));
       if (data) {
         const campaign = data.profile.campaign ?? 'original';
-        const prefix = campaign === 'overseas' ? 'heterotopia.v1.overseas.' : 'heterotopia.v1.';
+        const prefix = campaign === 'shenci' ? 'heterotopia.v1.shenci-r2.' : campaign === 'overseas' ? 'heterotopia.v1.overseas.' : 'heterotopia.v1.';
         localStorage.setItem('heterotopia.v1.campaign', JSON.stringify(campaign));
         localStorage.setItem(prefix + 'profile', JSON.stringify(data.profile));
         localStorage.setItem(prefix + 'autosave', JSON.stringify(data.state));
@@ -429,7 +430,15 @@ try {
       const state = { ...enterScene(newGame(profile), profile, beatId.split(':')[0]), beatId };
       const sample = await open();
       const file = `music-${id}.mp3`;
+      let releasePhoto;
       try {
+        if (foley?.effect === 'camera-shutter') {
+          const held = new Promise(resolve => { releasePhoto = resolve; });
+          await sample.route('**/art-original/cg-modern-photo-user.webp', async route => {
+            await held;
+            await route.continue();
+          });
+        }
         await sample.getByRole('button', { name: /林越.*现代新卷/ }).click();
         await sample.getByRole('button', { name: '阅读设置', exact: true }).click();
         const save = { format: 'heterotopia-save', version: 1, profile, state, slots: [] };
@@ -447,6 +456,14 @@ try {
           await sample.waitForFunction(effectFile => window.__audioTest.buffers.some(buffer => buffer.file === effectFile), effectFile);
           assert.equal(await count(sample, effectFile), 0, 'Approaching the authored cue can decode it but must not play it');
           await sample.getByRole('button', { name: '继续', exact: true }).click();
+          if (releasePhoto) {
+            await sample.locator('[data-beat-id="modern-o-5-7:17:0"]').waitFor();
+            await sample.waitForTimeout(250);
+            assert.equal(await count(sample, effectFile), 0);
+            assert.equal(await sample.locator('.scene-image--current[data-art="cg-modern-photo-user"]').count(), 0);
+            releasePhoto();
+            await sample.locator('.scene-image--current[data-art="cg-modern-photo-user"]').waitFor();
+          }
           await waitFor(sample, effectFile);
           const ramp = await sample.evaluate(({ file, effectFile, gain }) => {
             const { starts, ramps } = window.__audioTest;
@@ -474,10 +491,50 @@ try {
         await sample.getByRole('button', { name: '听水集', exact: true }).click();
         assert.equal(await sample.getByRole('button', { name: `试听《${title}》`, exact: true }).getAttribute('aria-pressed'), 'true');
         await sample.getByRole('button', { name: '暂停试听', exact: true }).waitFor();
-      } finally { await sample.context().close(); }
+      } finally {
+        releasePhoto?.();
+        await sample.context().close();
+      }
     }
     checks.push('Night river, storm and the four return and finale cues decoded, looped, and appeared unlocked in the listening room');
     checks.push('The bowl and shutter predecoded, hit once after music ducking, and let the same score recover');
+
+    const domestic = newProfile('shenci');
+    const hikeState = enterScene(newGame(domestic), domestic, 'shenci-m-4-5');
+    const hike = await open({ profile: domestic, state: { ...hikeState, beatId: 'shenci-m-4-5:2:0' } });
+    try {
+      await hike.getByRole('button', { name: /^续梦/ }).click();
+      await hike.locator('[data-beat-id="shenci-m-4-5:2:0"]').waitFor();
+      await hike.waitForFunction(() => window.__audioTest.buffers.some(buffer => buffer.file === 'sfx-bottle-rail.mp3'));
+      assert.equal(await count(hike, 'sfx-bottle-rail.mp3'), 0);
+      for (let number = 3; number <= 20; number++) {
+        await hike.waitForTimeout(190);
+        await hike.getByRole('button', { name: '继续', exact: true }).click();
+        await hike.locator(`[data-beat-id="shenci-m-4-5:${number}:0"]`).waitFor();
+        if (number === 3) await waitFor(hike, 'sfx-bottle-rail.mp3');
+        if (number === 19) assert.equal(await count(hike, 'music-shenci-lookback.mp3'), 0);
+      }
+      await waitFor(hike, 'music-shenci-lookback.mp3');
+      assert.equal(await count(hike, 'sfx-bottle-rail.mp3'), 1);
+      assert.equal(await count(hike, 'music-shenci-lookback.mp3'), 1);
+      await hike.waitForTimeout(190);
+      await hike.getByRole('button', { name: '继续', exact: true }).click();
+      await hike.getByRole('button', { name: '静看此景', exact: true }).waitFor();
+      assert.equal(await count(hike, 'music-shenci-lookback.mp3'), 1);
+    } finally { await hike.context().close(); }
+
+    const overseas = newProfile('overseas');
+    const shutterState = enterScene(newGame(overseas), overseas, 'modern-o-5-7');
+    const bookmark = { ...shutterState, beatId: 'modern-o-5-7:17:0' };
+    const restored = await open({ profile: overseas, state: bookmark });
+    try {
+      await restored.getByRole('button', { name: /^续梦/ }).click();
+      await restored.getByRole('button', { name: '看合影', exact: true }).waitFor();
+      await waitFor(restored, 'music-modern-afterglow.mp3');
+      await restored.waitForTimeout(225);
+      assert.equal(await count(restored, 'sfx-camera-shutter.mp3'), 0);
+    } finally { await restored.context().close(); }
+    checks.push('The domestic bottle and piano follow the staged pages and a saved shutter restores the photo quietly');
 
     // An isolated test device permits autoplay; production code changes no policy.
     const permittedBrowser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });

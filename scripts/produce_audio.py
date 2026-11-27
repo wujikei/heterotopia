@@ -228,6 +228,17 @@ def effect_palette(modern_only: bool = False) -> dict[str, tuple[str, np.ndarray
         place(shutter, latch, .024)
         place(shutter, recoil, .066)
         add("camera-shutter", "山顶轻快门", shutter, .025)
+
+        # Thin plastic taps each step, then the bottle hits the rail base.
+        bottle = np.zeros(len(timeline(.75)))
+        for at, pitch, amount in [(.024, 1, .36), (.129, .88, .49), (.232, 1.17, 1)]:
+            tap = resonator(.19, [frequency * pitch for frequency in (294, 566, 1088, 2410)],
+                            [.037, .027, .017, .009], [.25, .38, .22, .14], attack=.001)
+            tap += .13 * noise(.19, 680, 4700, rng) * envelope(timeline(.19), .0009, .018)
+            place(bottle, tap, at, amount)
+        skid = .047 * noise(.23, 280, 3100, rng) * envelope(timeline(.23), .024, .064)
+        place(bottle, skid, .26)
+        add("bottle-rail", "水瓶滚阶与碰栏", bottle, .035)
         return effects
 
     t = timeline(.24)
@@ -439,7 +450,7 @@ def main(modern_only: bool = False, music_ids: list[str] | None = None):
         path = WORK / f"amb-{key}.wav"
         write_wave(path, audio)
         encode(path, f"amb-{key}.mp3", title, "ambience", True, -26, -6, len(audio) / SR)
-    encode_effects(effect_palette())
+    encode_effects(effect_palette() | effect_palette(modern_only=True))
     manifest = {"version": 1, "sampleRate": SR, "musicMastering": "One-bar circular equal-power overlap; two-pass EBU R128 -18 LUFS / -2 dBTP", "files": REPORT}
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     plan["effects"] = [{"id": f["file"].removesuffix(".mp3"), "title": f["title"], "source": f["source"]} for f in REPORT if f["kind"] != "music"]
@@ -450,7 +461,7 @@ def main(modern_only: bool = False, music_ids: list[str] | None = None):
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__)
     scope = parser.add_mutually_exclusive_group()
-    scope.add_argument("--modern-foley", action="store_true", help="Rebuild only the two modern scene effects and their records")
+    scope.add_argument("--modern-foley", action="store_true", help="Rebuild only the modern scene effects and their records")
     scope.add_argument("--music", nargs="+", help="Master only these ACE-Step tracks and update their records")
     args = parser.parse_args()
     main(args.modern_foley, args.music)

@@ -35,6 +35,14 @@ export const charactersForCampaign = (campaign = 'original') => campaign === 'ov
 
 export const BACKGROUNDS: Record<string, { name: string; subtitle: string; chapter: string }> = {
   ...MODERN_BACKGROUNDS,
+  'cg-modern-hike-tang': { name: '拿着', subtitle: '山路岔口 · 午后', chapter: '沈辞 · 尾声' },
+  'cg-modern-hike-terrace': { name: '半山风起', subtitle: '半山观景台 · 午后', chapter: '沈辞 · 尾声' },
+  'cg-modern-hike-rail': { name: '一道白痕', subtitle: '半山观景台 · 午后', chapter: '沈辞 · 尾声' },
+  'cg-modern-hike-pickup': { name: '先到的手', subtitle: '半山观景台 · 午后', chapter: '沈辞 · 尾声' },
+  'cg-modern-hike-return': { name: '水又不会跑', subtitle: '半山观景台 · 午后', chapter: '沈辞 · 尾声' },
+  'cg-modern-hike-invitation': { name: '那一起走吧', subtitle: '半山观景台 · 午后', chapter: '沈辞 · 尾声' },
+  'cg-modern-hike-held': { name: '掌心的温度', subtitle: '半山观景台 · 午后', chapter: '沈辞 · 尾声' },
+  'cg-modern-hike-lookback': { name: '回头一笑', subtitle: '山路 · 午后', chapter: '沈辞 · 尾声' },
   hero: { name: '一叶归舟', subtitle: '循着水声，回家', chapter: '梦的入口' },
   'dream-boat': { name: '水声之前', subtitle: '夜梦 · 船底的敲击', chapter: '水声之前' },
   bedroom: { name: '天光未明', subtitle: '05:41 · 沈家卧室', chapter: '水声之前' },
@@ -102,6 +110,6 @@ export function characterFor(name: string): Character | undefined {
 
 const shenciEndings: Record<string, typeof ENDINGS['blade']> = Object.fromEntries(shenciIndex.scenes.filter(s => s.ending).map((s, i) => {
   const base = (MODERN_ENDINGS as Record<string, typeof ENDINGS['blade']>)[s.ending!.replace('shenci-', 'modern-')];
-  return [s.ending, { title: s.endingTitle ?? s.title, index: String(i + 1), subtitle: s.route === 'return' ? '沈辞 · 尾声' : s.route === 'royal' ? '沈辞 · 王裔' : '沈辞 · 昆仑', description: base?.description ?? '两条路之后，留在这边。', quote: s.ending === 'shenci-home' ? '好。' : base?.quote ?? '', background: s.background }];
+  return [s.ending, { title: s.endingTitle ?? s.title, index: String(i + 1), subtitle: s.route === 'return' ? '沈辞 · 尾声' : s.route === 'royal' ? '沈辞 · 王裔' : '沈辞 · 昆仑', description: base?.description ?? '两条路之后，留在这边。', quote: s.ending === 'shenci-home' ? '好。' : base?.quote ?? '', background: s.ending === 'shenci-home' ? 'cg-modern-hike-lookback' : s.background }];
 }));
 export const endingsForCampaign = (campaign = 'original'): Record<string, typeof ENDINGS['blade']> => campaign === 'overseas' ? MODERN_ENDINGS : campaign === 'shenci' ? shenciEndings : ENDINGS;

@@ -1,5 +1,6 @@
 import type { Beat, EndingId, Profile } from '../types';
 import { hasSeenModernArt, MODERN_CGS } from '../modern';
+import { BACKGROUNDS } from './world';
 
 export type CGTrigger = { endingId: EndingId } | { beatIds: string[] } | { sceneId: string; fromBeat?: string; toBeat?: string };
 export type CG = { id: string; title: string; caption: string; file: string; thumbnail?: string; trigger: CGTrigger };
@@ -7,6 +8,22 @@ export type CG = { id: string; title: string; caption: string; file: string; thu
 // Reviewed ComfyUI exports. The trigger register also controls gallery unlocking.
 export const CGS: CG[] = [
   ...MODERN_CGS,
+  ...([
+    ['tang', '拿着，别一会儿又没水喝。'],
+    ['terrace', '走到半山腰的观景台。'],
+    ['rail', '瓶身磕出一道白痕。'],
+    ['pickup', '一只手比你先到。'],
+    ['return', '慢点嘛，水又不会跑。'],
+    ['invitation', '那一起走吧，我们正好也上去。'],
+    ['held', '瓶身上，还留着她掌心的一点温度。'],
+    ['lookback', '她走在前面，回头冲你笑。'],
+  ] as const).map(([shot, caption]) => {
+    const file = `cg-modern-hike-${shot}`;
+    return {
+      id: `shenci-hike-${shot}`, title: BACKGROUNDS[file].name, caption, file, thumbnail: `${file}-thumb`,
+      trigger: shot === 'lookback' ? { endingId: 'shenci-home' as const } : { beatIds: [] },
+    };
+  }),
   { id: 'e1-blade', title: '天亮以前', caption: '那些被他们从人脚下拖出来的人，也确实活到了天亮。', file: 'cg-e1-blade', thumbnail: 'cg-e1-blade-thumb', trigger: { endingId: 'blade' } },
   { id: 'e2-mercy', title: '亭外无人', caption: '亭外无人等他，他终于不用怕说得慢。', file: 'cg-e2-mercy', thumbnail: 'cg-e2-mercy-thumb', trigger: { endingId: 'mercy' } },
   { id: 'e3-leave', title: '我叫戌', caption: '岸上的鸟，和学校操场后面几乎一样。', file: 'cg-e3-leave', thumbnail: 'cg-e3-leave-thumb', trigger: { endingId: 'leave' } },

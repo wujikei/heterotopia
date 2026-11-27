@@ -305,6 +305,15 @@
   letter-spacing: .12em;
 }
 .reading-load button { min-height: 44px; padding-inline: 8px; }
+.game-screen > .reading-load {
+  z-index: 6;
+  top: 20%;
+  left: 50%;
+  translate: -50%;
+  margin: 0;
+  padding: 8px 14px;
+  background: rgba(3, 14, 19, 0.82);
+}
 .update-notice {
   position: fixed;
   inset: auto 16px max(16px, env(safe-area-inset-bottom)) auto;

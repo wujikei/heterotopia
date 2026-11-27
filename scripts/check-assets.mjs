@@ -10,12 +10,14 @@ import { modernStagedArtNames } from '../src/data/modernStaging.ts';
 
 const root = new URL('../', import.meta.url);
 const imageManifest = JSON.parse(await readFile(new URL('src/data/art-manifest.json', root), 'utf8'));
-const shenci = JSON.parse(await readFile(new URL('src/data/shenci-story.json', root), 'utf8'));
+const shenci = (await Promise.all(['shenci-opening', 'shenci-story'].map(async name =>
+  JSON.parse(await readFile(new URL(`src/data/${name}.json`, root), 'utf8'))
+))).flatMap(volume => volume.scenes);
 const audio = JSON.parse(await readFile(new URL('public/audio/manifest.json', root), 'utf8'));
 const requiredArt = new Set([
   ...RELIC_ART.map(name => `${name}.webp`),
   ...Object.keys(BACKGROUNDS).flatMap(name => [`${name}.webp`, `${name}-thumb.webp`]),
-  ...shenci.scenes.flatMap(scene => [scene.background, ...scene.blocks.flatMap(block => block.background ?? [])]).map(name => `${name}.webp`),
+  ...shenci.flatMap(scene => [scene.background, ...scene.blocks.flatMap(block => block.background ?? [])]).map(name => `${name}.webp`),
   ...modernStagedArtNames().map(name => `${name}.webp`),
   ...[...CHARACTERS, ...MODERN_CHARACTERS].flatMap(character => [`${portraitName(character.key)}.webp`, `portrait-${character.key}-face.webp`]),
   ...imageManifest.avif.flatMap(name => [`${name}.avif`, `${name}.webp`]),
